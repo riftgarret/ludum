@@ -1,0 +1,6 @@
+[submodule "Ludum/Assets/Scripts/libs/davfalcon"]
+	path = Ludum/Assets/Scripts/libs/davfalcon
+	url = git@github.com:RiceGnat/rpglibrary.git
+[submodule "rpglibrary"]
+	path = rpglibrary
+	url = git@github.com:RiceGnat/rpglibrary.git
