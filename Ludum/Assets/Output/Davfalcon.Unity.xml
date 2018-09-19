@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Davfalcon.Unity</name>
+    </assembly>
+    <members>
+        <member name="T:UnityEditor.EditorHelper">
+            <summary>
+            Unity editor helper functions
+            </summary>
+        </member>
+        <member name="M:UnityEditor.EditorHelper.CreateGameObjectWithComponent``1(System.String,UnityEditor.MenuCommand)">
+            <summary>
+            Creates a GameObject with a given component via menu command.
+            </summary>
+            <typeparam name="T">The type of the component attached to the new GameObject.</typeparam>
+            <param name="name">The name of the new GameObject.</param>
+            <param name="menuCommand">The menu command used.</param>
+        </member>
+        <member name="T:UnityEngine.NameableSerializationContainer`1">
+            <summary>
+            A serialization container supporting automatic name binding.
+            </summary>
+            <typeparam name="T">The serialized type.</typeparam>
+        </member>
+        <member name="T:UnityEngine.ObjectContainer">
+            <summary>
+            Extends ScriptableObject to retrieve a stored object as a given type.
+            </summary>
+        </member>
+        <member name="M:UnityEngine.ObjectContainer.GetObjectAs``1">
+            <summary>
+            Get the stored object as a given type.
+            </summary>
+            <typeparam name="T">The type of the object.</typeparam>
+        </member>
+        <member name="T:UnityEngine.SerializationContainer`1">
+            <summary>
+            Stores a C# object in a format serializable by the Unity Engine.
+            </summary>
+            <typeparam name="T">The serialized type.</typeparam>
+        </member>
+        <member name="T:UnityEngine.UI.DataBoundElement">
+            <summary>
+            Binds data to a UI element.
+            </summary>
+        </member>
+        <member name="T:UnityEngine.UI.DataBoundText">
+            <summary>
+            Binds a UI element with text to data.
+            </summary>
+        </member>
+        <member name="T:UnityEngine.UI.Element">
+            <summary>
+            Base class for UI elements.
+            </summary>
+        </member>
+        <member name="T:UnityEngine.UI.EnumerableView">
+            <summary>
+            Creates child object based on an IEnumerable.
+            </summary>
+        </member>
+        <member name="M:UnityEngine.UI.Extensions.SetFieldAndReturnComponent``1(UnityEngine.MonoBehaviour,``0@)">
+            <summary>
+            Used to cache component lookup to avoid unnecessary repeated GetComponent calls
+            </summary>
+            <typeparam name="T">Type of the component.</typeparam>
+            <param name="monoBehaviour">The MonoBehaviour containing the component.</param>
+            <param name="field">The field to cache the component reference.</param>
+        </member>
+        <member name="T:UnityEngine.UI.Menu">
+            <summary>
+            Represents a group of related UI elements that the user is interacting with. Only one should be focused to accept inputs at a time.
+            </summary>
+        </member>
+        <member name="T:UnityEngine.UI.TopLevelScreen">
+            <summary>
+            Top level UI element. Only one should be displayed at a time.
+            </summary>
+        </member>
+    </members>
+</doc>
