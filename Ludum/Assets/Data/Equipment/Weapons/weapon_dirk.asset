@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 245673204, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
+  m_Name: weapon_dirk
+  m_EditorClassIdentifier: 
+  displayName: Dirk
+  icon: {fileID: 0}
+  offenseScalar:
+    slash: 0
+    pierce: 0
+    crush: 0
+    dark: 0
+    light: 0
+    wind: 0
+    earth: 0
+    fire: 0
+    water: 0
+  defenseScalar:
+    slash: 0
+    pierce: 0
+    crush: 0
+    dark: 0
+    light: 0
+    wind: 0
+    earth: 0
+    fire: 0
+    water: 0
+  attributeExtra:
+    strength: 0
+    vitality: 0
+    dexerity: 0
+    agility: 0
+    inteligence: 0
+    wisdom: 0
+    luck: 0
+  damageMin:
+    slash: 0
+    pierce: 0
+    crush: 0
+    dark: 0
+    light: 0
+    wind: 0
+    earth: 0
+    fire: 0
+    water: 0
+  damageMax:
+    slash: 0
+    pierce: 0
+    crush: 0
+    dark: 0
+    light: 0
+    wind: 0
+    earth: 0
+    fire: 0
+    water: 0
+  attributeScaling:
+    strength: 0
+    vitality: 0
+    dexerity: 0
+    agility: 0
+    inteligence: 0
+    wisdom: 0
+    luck: 0
+  weaponHand: 0
