@@ -900,7 +900,7 @@ MonoBehaviour:
   m_Script: {fileID: 2132491945, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ActionPrefab: {fileID: 764269735}
+  m_ActionPrefab: {fileID: 100004, guid: 6db50516dc64b6e449b0f15350629177, type: 2}
 --- !u!114 &620381938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1746,7 +1746,7 @@ MonoBehaviour:
   m_Script: {fileID: 1591522655, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TargetPrefab: {fileID: 641585224}
+  m_TargetPrefab: {fileID: 100004, guid: 3eb15faa9ce07a348b553a1b01d0044e, type: 2}
 --- !u!1 &1623584154
 GameObject:
   m_ObjectHideFlags: 0

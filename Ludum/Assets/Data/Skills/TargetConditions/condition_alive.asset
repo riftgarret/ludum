@@ -8,6 +8,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -781715842, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
+  m_Script: {fileID: 1228954375, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
   m_Name: condition_alive
   m_EditorClassIdentifier: 
+  isAlive: 1

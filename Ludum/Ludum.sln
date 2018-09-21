@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.28010.2026
-MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Davfalcon", "..\rpglibrary\Davfalcon\Davfalcon.csproj", "{1FCB4578-21B8-4DB5-B560-C87BEEB7FD2E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Davfalcon.Unity", "..\rpglibrary\Unity\Davfalcon.Unity\Davfalcon.Unity.csproj", "{37146187-BC62-44E6-BCE1-EBC64C6C9224}"
@@ -48,8 +46,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {C32F7364-730E-496D-A31D-69349FFE306E}
 	EndGlobalSection
 EndGlobal
