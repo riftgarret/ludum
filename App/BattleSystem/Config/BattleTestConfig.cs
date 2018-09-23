@@ -4,29 +4,37 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class BattleTestLoader : BattleConfig {
+namespace App.BattleSystem.Config
+{
+    public class BattleTestLoader : BattleConfig
+    {
 
-    public PCPartySO pcPartySO;
-    public EnemyPartySO enemyPartySO;
+        public PCPartySO pcPartySO;
+        public EnemyPartySO enemyPartySO;
 
-    private PCCharacter[] mPcCharacters;
-    private EnemyCharacter[] mEnemyCharacters;
+        private PCCharacter[] mPcCharacters;
+        private EnemyCharacter[] mEnemyCharacters;
 
-    void Awake() {
-        LoadCharacters();
-    }
+        void Awake()
+        {
+            LoadCharacters();
+        }
 
-    private void LoadCharacters() {
-        mPcCharacters = pcPartySO.CreateUniqueCharacters();
-        mEnemyCharacters = enemyPartySO.CreateUniqueCharacters();
-    }
+        private void LoadCharacters()
+        {
+            mPcCharacters = pcPartySO.CreateUniqueCharacters();
+            mEnemyCharacters = enemyPartySO.CreateUniqueCharacters();
+        }
 
-    public override PCCharacter[] pcCharacters {
-        get { return mPcCharacters; }
-    }
+        public override PCCharacter[] pcCharacters
+        {
+            get { return mPcCharacters; }
+        }
 
-    public override EnemyCharacter[] enemyChracters {
-        get { return mEnemyCharacters; }
-    }
+        public override EnemyCharacter[] enemyChracters
+        {
+            get { return mEnemyCharacters; }
+        }
+    } 
 }
 

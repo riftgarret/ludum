@@ -4,8 +4,12 @@ using System.Linq;
 using System.Text;
 
 
-public interface IBattleConfig {
-    PCCharacter[] pcCharacters { get; }
-    EnemyCharacter[] enemyChracters { get; }    
+namespace App.BattleSystem.Config
+{
+    public interface IBattleConfig
+    {
+        PCCharacter[] pcCharacters { get; }
+        EnemyCharacter[] enemyChracters { get; }
+    } 
 }
 
