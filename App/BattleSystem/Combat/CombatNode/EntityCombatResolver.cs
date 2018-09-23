@@ -18,10 +18,10 @@ namespace App.BattleSystem.Combat.CombatNode
         public EntityCombatResolver(BattleEntity entity, ICombatNode rootNode)
         {
             this.rootNode = rootNode;
-            entity = entity;
+            this.entity = entity;
         }
 
-        public BattleEntity entity
+        public BattleEntity Entity
         {
             get { return entity; }
         }

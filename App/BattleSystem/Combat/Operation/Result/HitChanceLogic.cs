@@ -24,7 +24,7 @@ namespace App.BattleSystem.Combat.Operation.Result
         {
             if (!Hits)
             {
-                combatEvents.Enqueue(new DodgeEvent(src.entity, dest.entity));
+                combatEvents.Enqueue(new DodgeEvent(src.Entity, dest.Entity));
             }
         }
     } 

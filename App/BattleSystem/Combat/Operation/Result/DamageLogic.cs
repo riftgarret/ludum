@@ -62,15 +62,15 @@ namespace App.BattleSystem.Combat.Operation.Result
                 critDamage = (damage * critScale);
             }
 
-            m_HpBefore = dest.entity.currentHP;
+            m_HpBefore = dest.Entity.currentHP;
 
             defense = dest.ElementDefense;
 
             // apply dmg
             m_TotalDamage = CombatUtil.CalculateDamage(damage, critDamage, defense);
-            dest.entity.currentHP -= m_TotalDamage;
+            dest.Entity.currentHP -= m_TotalDamage;
 
-            m_HpAfter = dest.entity.currentHP;
+            m_HpAfter = dest.Entity.currentHP;
 
             Logger.d(this, this);
         }
@@ -80,11 +80,11 @@ namespace App.BattleSystem.Combat.Operation.Result
             // forward to combat events
             critResult.GenerateEvents(src, dest, combatEvents);
 
-            combatEvents.Enqueue(new DamageEvent(src.entity, dest.entity, damage, critDamage, defense));
+            combatEvents.Enqueue(new DamageEvent(src.Entity, dest.Entity, damage, critDamage, defense));
 
             if (m_HpBefore > 0 && m_HpAfter <= 0)
             {
-                combatEvents.Enqueue(new DeathEvent(dest.entity));
+                combatEvents.Enqueue(new DeathEvent(dest.Entity));
             }
         }
 
