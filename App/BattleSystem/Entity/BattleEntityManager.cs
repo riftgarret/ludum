@@ -1,3 +1,4 @@
+using App.BattleSystem.Action;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +11,9 @@ namespace App.BattleSystem.Entity
     /// </summary>
     public class BattleEntityManager
     {
+        public BattleEntity.OnDecisionRequired OnDecisionRequiredDelegate;
+        public BattleEntity.OnExecutionStarted OnExecutionStartedDelegate;
+
         private EnemyBattleEntity[] mEnemyEntities;
         public EnemyBattleEntity[] enemyEntities
         {
@@ -111,6 +115,7 @@ namespace App.BattleSystem.Entity
                 {
                     mPcEntities[i] = new PCBattleEntity((PCCharacter)pcChars[i]);
                     mAllEntities[i] = mPcEntities[i];
+                    HookEntityDelegates(mPcEntities[i]);
                 }
             }
 
@@ -120,10 +125,17 @@ namespace App.BattleSystem.Entity
                 {
                     mEnemyEntities[i] = new EnemyBattleEntity((EnemyCharacter)enemyChars[i]);
                     mAllEntities[pcChars.Length + i] = mEnemyEntities[i];
+                    HookEntityDelegates(mEnemyEntities[i]);
                 }
             }
             // create row specifics
             BuildRowEntities();
+        }
+
+        private void HookEntityDelegates(BattleEntity entity)
+        {
+            entity.OnDecisionRequiredDelegate += delegate (BattleEntity e) { OnDecisionRequiredDelegate?.Invoke(e); };
+            entity.OnExecutionStartedDelegate += delegate (BattleEntity e, IBattleAction action) { OnExecutionStartedDelegate?.Invoke(e, action); };
         }
 
         /// <summary>
@@ -155,5 +167,5 @@ namespace App.BattleSystem.Entity
             mMiddleRowEntities = midRow.ToArray();
             mBackRowEntities = backRow.ToArray();
         }
-    } 
+    }     
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using App.BattleSystem.Effects;
 using App.BattleSystem.Combat.CombatNode;
 using App.BattleSystem.Turn;
+using App.BattleSystem.Action;
 
 namespace App.BattleSystem.Entity
 {
@@ -11,11 +12,13 @@ namespace App.BattleSystem.Entity
     /// </summary>
     public abstract class BattleEntity
     {
-
         public delegate void OnDecisionRequired(BattleEntity entity);
+        public delegate void OnExecutionStarted(BattleEntity entity, IBattleAction action);
 
         // listenener for battle entity upated
         public OnDecisionRequired OnDecisionRequiredDelegate { get; set; }
+
+        public OnExecutionStarted OnExecutionStartedDelegate { get; set; }
 
         // turn phase
         public TurnState TurnState
@@ -51,7 +54,7 @@ namespace App.BattleSystem.Entity
         {
             statusEffectManager = new StatusEffectClient(this);
             combatNodeFactory = new CombatNodeFactory(this);
-            TurnState = new TurnState(this);
+            TurnState = new TurnState();
             this.Character = character;
             this.MaxHP = character.maxHP;
             this.CurrentHP = character.curHP;
@@ -92,17 +95,16 @@ namespace App.BattleSystem.Entity
             // TODO, we can modify time if we have that buff here
             TurnState.IncrementGameClock(gameClockDelta);
             statusEffectManager.OnTimeIncrement(gameClockDelta);
-        }
 
-        public bool requireUserInput()
-        {
-            return TurnState.phase == TurnState.Phase.REQUIRES_INPUT;
+            if (TurnState.Phase == TurnState.PhaseState.REQUIRES_INPUT)
+            {
+                OnDecisionRequiredDelegate?.Invoke(this);
+            }
         }
-
-        public void OnExecuteTurn(TurnState state)
+        
+        private void OnExecuteStart()
         {
-            // do action against character
-            state.action.OnExecuteAction(state.turnClock);
+            OnExecutionStartedDelegate?.Invoke(this, TurnState.Action);
         }
 
         /// <summary>

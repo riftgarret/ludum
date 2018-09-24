@@ -1,5 +1,6 @@
 using App.BattleSystem.Combat.CombatNode;
 using App.BattleSystem.Effects;
+using App.BattleSystem.Entity;
 using App.BattleSystem.Events;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,10 @@ namespace App.BattleSystem.Combat.Operation
 
             public delegate void OnCombatEvent(IBattleEvent e);
 
+            /// <summary>
+            /// Combat events will be generated as actions are performed. These events are to allow
+            /// other components to observe any change. Such as dying, healing, taking damage, moving, etc.
+            /// </summary>
             public OnCombatEvent OnCombatEventDelegate { get; set; }
 
             public void Execute(ICombatOperation combatOperation)

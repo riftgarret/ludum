@@ -12,7 +12,7 @@ namespace App.BattleSystem.Entity
 
         }
 
-        public EnemyCharacter enemyCharacter
+        public EnemyCharacter EnemyCharacter
         {
             get { return (EnemyCharacter)Character; }
         }
@@ -27,7 +27,7 @@ namespace App.BattleSystem.Entity
 
         public override string ToString()
         {
-            return string.Format("[EnemyBattleEntity: enemyCharacter={0}, hp={1}/{2}]", enemyCharacter, CurrentHP, MaxHP);
+            return string.Format("[EnemyBattleEntity: enemyCharacter={0}, hp={1}/{2}]", EnemyCharacter, CurrentHP, MaxHP);
         }
 
     } 

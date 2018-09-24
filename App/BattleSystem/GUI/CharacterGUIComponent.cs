@@ -1,4 +1,5 @@
 ﻿using App.BattleSystem.Entity;
+using App.BattleSystem.Turn;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,22 +65,22 @@ namespace App.BattleSystem.GUI
         /// </summary>
         private void UpdateActionSlider()
         {
-            switch (battleEntity.TurnState.phase)
+            switch (battleEntity.TurnState.Phase)
             {
                 // PREPARE -> animate 0 to 1 as completes
-                case TurnState.Phase.PREPARE:
-                    actionSlider.value = battleEntity.TurnState.turnPercent;
+                case TurnState.PhaseState.PREPARE:
+                    actionSlider.value = battleEntity.TurnState.TurnPercent;
                     break;
                 // EXECUTING -> stays at 1
-                case TurnState.Phase.EXECUTE:
+                case TurnState.PhaseState.EXECUTE:
                     actionSlider.value = 1f;
                     break;
                 // RECOVER -> animate 1 to 0 as completes
-                case TurnState.Phase.RECOVER:
-                    actionSlider.value = 1f - battleEntity.TurnState.turnPercent;
+                case TurnState.PhaseState.RECOVER:
+                    actionSlider.value = 1f - battleEntity.TurnState.TurnPercent;
                     break;
                 // awaiting input, at 0 
-                case TurnState.Phase.REQUIRES_INPUT:
+                case TurnState.PhaseState.REQUIRES_INPUT:
                     actionSlider.value = 0f;
                     break;
                 default:

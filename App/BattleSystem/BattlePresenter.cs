@@ -18,7 +18,7 @@ namespace App.BattleSystem
     public class BattlePresenter
     {
 
-        private TurnManager turnManager = new TurnManager();
+        private PCTurnManager pcTurnManager = new PCTurnManager();
 
         private BattleTimeQueue battleTimeQueue = new BattleTimeQueue();
 
@@ -53,11 +53,17 @@ namespace App.BattleSystem
         {
             entityManager = new BattleEntityManager(partyComponent, enemyComponent);
 
-            // on actions selected 
-            turnManager.OnCompleteDelegate += OnActionSelected;
+            // notifies entity needs decision
+            entityManager.OnDecisionRequiredDelegate += OnActionRequired;
 
-            // on action executed
-            combatExecutor.OnCombatEventDelegate += PostBattleEvent;
+            // notifies entity's action should start to be executed
+            entityManager.OnExecutionStartedDelegate += OnActionExecute;    
+
+            // on a player's successful action selected 
+            pcTurnManager.OnCompleteDelegate += OnActionSelected;
+
+            // on combat events 
+            combatExecutor.OnCombatEventDelegate += OnBattleEvent;
 
             // TODO hook in entities from map
             gameState = GameState.INTRO;
@@ -82,13 +88,13 @@ namespace App.BattleSystem
             }
         }
 
-        private void PostBattleEvent(IBattleEvent e)
+        private void OnBattleEvent(IBattleEvent e)
         {
             Debug.Log("On event: " + e);
             battleEventQueue.Enqueue(e);
         }
 
-        private void PostActionRequired(BattleEntity entity)
+        private void OnActionRequired(BattleEntity entity)
         {
             Debug.Log("entity decision required: " + entity);
             if (!actionRequiredQueue.Contains(entity))
@@ -96,6 +102,13 @@ namespace App.BattleSystem
                 actionRequiredQueue.Enqueue(entity);
             }
         }
+
+        private void OnActionExecute(BattleEntity entity, IBattleAction battleAction)
+        {
+            Debug.Log("Action should be executed: " + entity + " : " + battleAction);
+        }
+
+
 
         private void ExecuteCombat(ICombatOperation combatOperation)
         {
@@ -111,6 +124,14 @@ namespace App.BattleSystem
             {
                 IBattleEvent battleEvent = battleEventQueue.Dequeue();
                 Debug.Log("ProcessEventQueue: " + battleEvent);
+
+                // temp before we find a good place to resolve.
+                switch (battleEvent.EventType)
+                {
+                    case BattleEventType.DEATH:
+                        CheckForVictoryOrAnnilate(!battleEvent.SrcEntity.IsPC); // 
+                        break;
+                }
             }
         }
 
@@ -119,7 +140,7 @@ namespace App.BattleSystem
             while (actionRequiredQueue.Count > 0)
             {
                 BattleEntity entity = actionRequiredQueue.Dequeue();
-                OnActionRequired(entity);
+                ProcessActionRequired(entity);
             }
         }
 
@@ -127,16 +148,16 @@ namespace App.BattleSystem
         /// Action is required for this character.
         /// </summary>
         /// <param name="entity"></param>
-        private void OnActionRequired(BattleEntity entity)
+        private void ProcessActionRequired(BattleEntity entity)
         {
             if (entity is PCBattleEntity)
             {
-                turnManager.QueuePC((PCBattleEntity)entity);
+                pcTurnManager.QueuePC((PCBattleEntity)entity);
             }
             else if (entity is EnemyBattleEntity)
             {
                 EnemyBattleEntity npc = (EnemyBattleEntity)entity;
-                IBattleAction enemyAction = npc.enemyCharacter.skillResolver.ResolveAction(entityManager, npc);
+                IBattleAction enemyAction = npc.EnemyCharacter.SkillResolver.ResolveAction(entityManager, npc);
                 battleTimeQueue.SetAction(entity, enemyAction);
             }
         }
@@ -146,7 +167,7 @@ namespace App.BattleSystem
         {
             get
             {
-                return turnManager.currentEntity == null && gameState == GameState.ACTIVE;
+                return pcTurnManager.currentEntity == null && gameState == GameState.ACTIVE;
             }
         }
 

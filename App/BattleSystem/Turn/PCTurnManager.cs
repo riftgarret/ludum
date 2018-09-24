@@ -7,7 +7,10 @@ using App.BattleSystem.Action;
 
 namespace App.BattleSystem.Turn
 {
-    public class TurnManager
+    /// <summary>
+    /// This class manages the state when the player needs to select a skill and targets.
+    /// </summary>
+    public class PCTurnManager
     {
 
         public enum DecisionState
@@ -20,9 +23,12 @@ namespace App.BattleSystem.Turn
         private Queue<PCBattleEntity> turnQueue;
         public delegate void OnComplete(BattleEntity source, IBattleAction action);
 
+        /// <summary>
+        /// On completing selecting a skill and targets, this will indicate the action is created.
+        /// </summary>
         public OnComplete OnCompleteDelegate { get; set; }
 
-        public TurnManager()
+        public PCTurnManager()
         {
             turnQueue = new Queue<PCBattleEntity>();
             this.currentSelectedSkill = null;
