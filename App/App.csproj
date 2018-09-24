@@ -220,7 +220,6 @@
     <Compile Include="Core\Characters\PCSkillSetSO.cs" />
     <Compile Include="Core\Characters\TestPartyComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TurnManager\DecisionState.cs" />
     <Compile Include="Util\SceneLoader.cs" />
     <Compile Include="Util\Size.cs" />
     <Compile Include="Core\Tags.cs" />

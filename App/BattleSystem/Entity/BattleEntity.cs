@@ -57,6 +57,7 @@ namespace App.BattleSystem.Entity
             statusEffectManager = new StatusEffectClient(this);
             combatNodeFactory = new CombatNodeFactory(this);
             TurnState = new TurnState();
+            TurnState.OnStartActionExecutionDelegate += OnExecuteStart;
             this.Character = character;
             this.MaxHP = character.MaxHP;
             this.CurrentHP = character.curHP;
@@ -64,6 +65,7 @@ namespace App.BattleSystem.Entity
 
         public void InitializeBattlePhase()
         {
+            // this value is temp until we assign an initiative per character
             TurnState.SetAction(new BattleActionInitiative(Random.Range(1, 5)));
         }
 

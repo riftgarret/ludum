@@ -27,48 +27,24 @@ namespace App.BattleSystem.Entity
         private IBattleAction action;       
         public IBattleAction Action { get => action; }
 
-        public float turnClock;
-        public float turnComplete;
+        public float TurnClock { get; private set; }
+        public float TurnComplete { get; private set; }
 
         private PhaseState phase;
-        public PhaseState Phase
-        {
-            get => phase;
-
-            private set
-            {
-                turnClock = 0;
-                this.phase = value;
-                switch (value)
-                {
-                    case PhaseState.REQUIRES_INPUT:
-                        action = null;
-                        turnComplete = -1;
-                        break;
-                    case PhaseState.PREPARE:
-                        turnComplete = action.TimePrepare;
-                        break;
-                    case PhaseState.EXECUTE:
-                        turnComplete = action.TimeAction;
-                        break;
-                    case PhaseState.RECOVER:
-                        turnComplete = action.TimeRecover;
-                        break;
-                }
-            }
-        }
+        public PhaseState Phase { get => phase; }
 
         public delegate void OnStartActionExecution();
+        public OnStartActionExecution OnStartActionExecutionDelegate { get; set; }
 
         public float TurnPercent
         {
             get
             {
-                if (turnComplete == 0)
+                if (TurnComplete == 0)
                 {
                     return 0;
                 }
-                return Mathf.Min(turnClock / turnComplete, 1f);
+                return Mathf.Min(TurnClock / TurnComplete, 1f);
             }
         }
 
@@ -107,7 +83,25 @@ namespace App.BattleSystem.Entity
         /// <param name="phase">Phase.</param>
         private void SetPhase(PhaseState newPhase)
         {
-                      
+            TurnClock = 0;
+            this.phase = newPhase;
+            switch (newPhase)
+            {
+                case PhaseState.REQUIRES_INPUT:
+                    action = null;
+                    TurnComplete = -1;
+                    break;
+                case PhaseState.PREPARE:
+                    TurnComplete = action.TimePrepare;
+                    break;
+                case PhaseState.EXECUTE:
+                    OnStartActionExecutionDelegate?.Invoke();
+                    TurnComplete = action.TimeAction;
+                    break;
+                case PhaseState.RECOVER:
+                    TurnComplete = action.TimeRecover;
+                    break;
+            }
         }
 
         /// <summary>
@@ -115,7 +109,7 @@ namespace App.BattleSystem.Entity
         /// </summary>
         private void CheckNextPhase(bool force)
         {
-            if (force || (Phase != PhaseState.REQUIRES_INPUT && turnComplete == 0))
+            if (force || (Phase != PhaseState.REQUIRES_INPUT && TurnComplete == 0))
             {
                 switch (Phase)
                 {
@@ -141,9 +135,9 @@ namespace App.BattleSystem.Entity
         {
             if (Phase != PhaseState.REQUIRES_INPUT)
             {
-                turnClock += gameClockDelta;
+                TurnClock += gameClockDelta;
 
-                if (turnClock > turnComplete)
+                if (TurnClock >= TurnComplete)
                 {
                     // increment turn
                     CheckNextPhase(true);                                   
