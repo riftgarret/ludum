@@ -6,36 +6,47 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class ActionGUIComponent : MonoBehaviour {
+namespace App.BattleSystem.GUI
+{
+    public class ActionGUIComponent : MonoBehaviour
+    {
 
-	    
-	private ICombatSkill mCombatSkill;
-	private PCTurnManagerComponent mTurnManager;
-	private Button m_Button;
+        public delegate void OnSkillSelected(ICombatSkill combatSkill);
 
-	public GameObject m_ButtonGameObject;
-	public Text m_Text;
+        public OnSkillSelected OnSkillSelectedDelegate { get; set; }
 
-	void Awake() {	
-		mTurnManager = GameObject.FindGameObjectWithTag (Tags.BATTLE_CONTROLLER).GetComponent<PCTurnManagerComponent> ();
-		m_Button = m_ButtonGameObject.GetComponent<Button> ();
-	}
+        private ICombatSkill combatSkill;
+        private Button button;
 
-	void OnGUI() {
-		m_Button.enabled = mTurnManager.decisionState == PCTurnManagerComponent.DecisionState.SKILL;
-	}
+        public GameObject buttonGameObject;
+        public Text text;
 
-    public ICombatSkill CombatSkill {
-		get { return mCombatSkill;}
-		set { 
-			mCombatSkill = value;
-			m_Text.text = mCombatSkill.DisplayName;
-		}
-	}
+        public Boolean EnableButton
+        {
+            get => button.enabled;
+            set => button.enabled = value;
+        }
 
-	public void OnButtonClick() {
-		Debug.Log("Action Selected: " + mCombatSkill.DisplayName);
-		mTurnManager.SelectSkill (mCombatSkill);
-	}
+        void Awake()
+        {
+            button = buttonGameObject.GetComponent<Button>();
+        }
+
+        public ICombatSkill CombatSkill
+        {
+            get { return combatSkill; }
+            set
+            {
+                combatSkill = value;
+                text.text = combatSkill.DisplayName;
+            }
+        }
+
+        public void OnButtonClick()
+        {
+            Debug.Log("Action Selected: " + combatSkill.DisplayName);
+            OnSkillSelectedDelegate?.Invoke(combatSkill);
+        }
+    } 
 }
 

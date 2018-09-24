@@ -1,66 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using App.BattleSystem.Entity;
 using UnityEngine;
-using UnityEngine.UI;
 
 
-public class ActionLayoutComponent: MonoBehaviour {
+namespace App.BattleSystem.GUI
+{
+    public class ActionLayoutComponent : MonoBehaviour
+    {
 
-	[SerializeField]
-	private GameObject m_ActionPrefab;      
+        [SerializeField]
+        private GameObject actionPrefab;
 
-    private RectTransform m_Transform;
-	private PCTurnManagerComponent m_TurnManager;
+        private RectTransform rectTransform;
 
-	// last state checking
-	private PCBattleEntity m_CurrentEntity;
-	private PCTurnManagerComponent.DecisionState m_CurrentDecisionState;
+        void Awake()
+        {
+            rectTransform = GetComponent<RectTransform>();
+        }
 
-    void Awake() {
-		m_TurnManager = GameObject.FindGameObjectWithTag(Tags.BATTLE_CONTROLLER).GetComponent<PCTurnManagerComponent>();
-		m_Transform = GetComponent<RectTransform>();          
-    }
+        /// <summary>
+        /// clear out any buttons in layout.
+        /// </summary>
+        public void Clear()
+        {
+            // destroy old buttons
+            while (rectTransform.childCount > 0)
+            {
+                Transform transform = rectTransform.GetChild(0);
+                transform.SetParent(null);
+                GameObject.Destroy(transform.gameObject);
+            }
+        }
 
-    void Start() {
-        
-    }
+        public void PopulateSkillLayout(PCBattleEntity entity, TurnManager.DecisionState state)
+        {
+            Clear();
 
-	void OnGUI() {
-		PCBattleEntity entity = m_TurnManager.currentEntity;		
-		PCTurnManagerComponent.DecisionState decisionState = m_TurnManager.decisionState;
-		if (m_CurrentEntity != entity || m_CurrentDecisionState != decisionState) {
-			m_CurrentEntity = entity;
-			m_CurrentDecisionState = decisionState;
-			PopulateActions (entity, decisionState);
-		}
-	}
-	
-	
-	void PopulateActions(PCBattleEntity entity, PCTurnManagerComponent.DecisionState state) {
-		// destroy old buttons
-		while (m_Transform.childCount > 0) {
-			Transform transform = m_Transform.GetChild(0);
-			transform.SetParent(null);
-			GameObject.Destroy(transform.gameObject);
-		}
+            if (entity == null)
+            {
+                return;
+            }
 
 
-		if (entity == null) {
-			return;
-		}
+            foreach (ICombatSkill skill in entity.SkillSet.skills)
+            {
+                GameObject actionPrefabInstance = (GameObject)Instantiate(actionPrefab);
+                RectTransform rect = actionPrefabInstance.GetComponent<RectTransform>();
+                ActionGUIComponent actionGUI = actionPrefabInstance.GetComponent<ActionGUIComponent>();
+                actionGUI.CombatSkill = skill;
+                rect.SetParent(rectTransform);
+            }
+        }
 
 
-		foreach (ICombatSkill skill in entity.SkillSet.skills) {
-			GameObject actionPrefabInstance = (GameObject)Instantiate(m_ActionPrefab);
-			RectTransform rect = actionPrefabInstance.GetComponent<RectTransform>();
-			ActionGUIComponent actionGUI = actionPrefabInstance.GetComponent<ActionGUIComponent>();
-			actionGUI.CombatSkill = skill;
-			rect.SetParent(m_Transform);
-		}
-	}
-
-
+    } 
 }
 

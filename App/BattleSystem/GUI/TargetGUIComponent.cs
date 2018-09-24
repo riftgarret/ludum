@@ -6,36 +6,41 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class TargetGUIComponent : MonoBehaviour {
+namespace App.BattleSystem.GUI
+{
+    public class TargetGUIComponent : MonoBehaviour
+    {
 
-	    
-	private SelectableTarget m_SelectableTarget;
-	private PCTurnManagerComponent m_TurnManager;
-	private Button m_Button;
+        public delegate void OnTargetSelected(SelectableTarget selectableTarget);
 
-	public GameObject m_ButtonGameObject;
-	public Text m_Text;
+        public OnTargetSelected OnTargetSelectedDelegate { get; set; }
 
-	void Awake() {	
-		m_TurnManager = GameObject.FindGameObjectWithTag (Tags.BATTLE_CONTROLLER).GetComponent<PCTurnManagerComponent> ();
-		m_Button = m_ButtonGameObject.GetComponent<Button> ();
-	}
+        private SelectableTarget selectableTarget;
+        private Button button;
 
-	void OnGUI() {
-		m_Button.enabled = m_TurnManager.decisionState == PCTurnManagerComponent.DecisionState.TARGET;
-	}
+        public GameObject buttonGameObject;
+        public Text text;
 
-	public SelectableTarget SelectableTarget {
-		get { return m_SelectableTarget;}
-		set { 
-			m_SelectableTarget = value;
-			m_Text.text = m_SelectableTarget.targetName;
-		}
-	}
+        void Awake()
+        {
+            button = buttonGameObject.GetComponent<Button>();
+        }
 
-	public void OnButtonClick() {
-		Debug.Log("Target Selected: " + m_SelectableTarget.targetName);
-		m_TurnManager.SelectTarget (m_SelectableTarget);
-	}
+        public SelectableTarget SelectableTarget
+        {
+            get { return selectableTarget; }
+            set
+            {
+                selectableTarget = value;
+                text.text = selectableTarget.targetName;
+            }
+        }
+
+        public void OnButtonClick()
+        {
+            Debug.Log("Target Selected: " + selectableTarget.targetName);
+            OnTargetSelectedDelegate?.Invoke(selectableTarget);
+        }
+    } 
 }
 
