@@ -1,14 +1,19 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using App.BattleSystem.Entity;
 
-public interface IBattleTargetProvider {
-	/// <summary>
-	/// Gets the targets of specified type.
-	/// </summary>
-	/// <returns>The targets.</returns>
-	/// <param name="targetType">Target type.</param>
-	BattleEntity[] GetTargets(bool pcEntities);
+namespace App.BattleSystem.Targeting
+{
+    public interface IBattleTargetProvider
+    {
+        /// <summary>
+        /// Gets the targets of specified type.
+        /// </summary>
+        /// <returns>The targets.</returns>
+        /// <param name="targetType">Target type.</param>
+        BattleEntity[] GetTargets(bool pcEntities);
 
-	BattleEntity[] GetAllTargets();
+        BattleEntity[] GetAllTargets();
+    } 
 }

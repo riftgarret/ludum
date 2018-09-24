@@ -40,11 +40,11 @@ public class AITargetFilter : IAIFilter
 	}
 
 	public bool FilterPC(BattleEntity entity) {
-		return !entity.isPC;
+		return !entity.IsPC;
 	}
 
 	public bool FilterEnemy(BattleEntity entity) {
-		return entity.isPC;
+		return entity.IsPC;
 	}	
 }
 

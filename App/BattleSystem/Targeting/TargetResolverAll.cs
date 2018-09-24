@@ -1,54 +1,66 @@
+using App.BattleSystem.Entity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class TargetResolverAll : ITargetResolver
+namespace App.BattleSystem.Targeting
 {
-	// only used when the target is single
-	private bool mIsEnemy;
-	private BattleEntityManagerComponent mBattleEntityManager;
-	
-	/// <summary>
-	/// For single targets
-	/// </summary>
-	/// <param name="targetEnum">Target enum.</param>
-	/// <param name="entityManager">Entity manager.</param>
-	public TargetResolverAll (bool isEnemy, BattleEntityManagerComponent manager)
-	{
-		mIsEnemy = isEnemy;
-		mBattleEntityManager = manager;
-	}	
+    public class TargetResolverAll : ITargetResolver
+    {
+        // only used when the target is single
+        private bool isEnemy;
+        private BattleEntityManager battleEntityManager;
 
-	private BattleEntity[] targetEntities {
-		get {
-			if(mIsEnemy) {
-				return mBattleEntityManager.enemyEntities;
-			}
-			return mBattleEntityManager.pcEntities;
-		}
-	}
+        /// <summary>
+        /// For single targets
+        /// </summary>
+        /// <param name="targetEnum">Target enum.</param>
+        /// <param name="entityManager">Entity manager.</param>
+        public TargetResolverAll(bool isEnemy, BattleEntityManager manager)
+        {
+            this.isEnemy = isEnemy;
+            battleEntityManager = manager;
+        }
+
+        private BattleEntity[] TargetEntities
+        {
+            get
+            {
+                if (isEnemy)
+                {
+                    return battleEntityManager.enemyEntities;
+                }
+                return battleEntityManager.pcEntities;
+            }
+        }
 
 
-	public bool HasValidTargets (ICombatSkill skill)
-	{
-		foreach(BattleEntity entity in targetEntities) {
-			if(skill.TargetRule.IsValidTarget(entity)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public BattleEntity[] GetTargets(ICombatSkill skill) {
-		List<BattleEntity> filteredEntities = new List<BattleEntity>();
+        public bool HasValidTargets(ICombatSkill skill)
+        {
+            foreach (BattleEntity entity in TargetEntities)
+            {
+                if (skill.TargetRule.IsValidTarget(entity))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
-		foreach(BattleEntity entity in targetEntities) {					
+        public BattleEntity[] GetTargets(ICombatSkill skill)
+        {
+            List<BattleEntity> filteredEntities = new List<BattleEntity>();
 
-			if(skill.TargetRule.IsValidTarget(entity)) {
-				filteredEntities.Add(entity);
-			}
+            foreach (BattleEntity entity in TargetEntities)
+            {
 
-		}
-		return filteredEntities.ToArray();
-	}
+                if (skill.TargetRule.IsValidTarget(entity))
+                {
+                    filteredEntities.Add(entity);
+                }
+
+            }
+            return filteredEntities.ToArray();
+        }
+    } 
 }

@@ -62,15 +62,15 @@ namespace App.BattleSystem.Combat.Operation.Result
                 critDamage = (damage * critScale);
             }
 
-            m_HpBefore = dest.Entity.currentHP;
+            m_HpBefore = dest.Entity.CurrentHP;
 
             defense = dest.ElementDefense;
 
             // apply dmg
             m_TotalDamage = CombatUtil.CalculateDamage(damage, critDamage, defense);
-            dest.Entity.currentHP -= m_TotalDamage;
+            dest.Entity.CurrentHP -= m_TotalDamage;
 
-            m_HpAfter = dest.Entity.currentHP;
+            m_HpAfter = dest.Entity.CurrentHP;
 
             Logger.d(this, this);
         }

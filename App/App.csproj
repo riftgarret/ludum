@@ -57,10 +57,9 @@
     <Compile Include="BattleSystem\Actions\BattleActionFactory.cs" />
     <Compile Include="BattleSystem\Actions\BattleActionInitiative.cs" />
     <Compile Include="BattleSystem\Actions\IBattleAction.cs" />
-    <Compile Include="BattleSystem\BattleControllerComponent.cs" />
+    <Compile Include="BattleSystem\BattlePresenter.cs" />
     <Compile Include="BattleSystem\BattleService.cs" />
     <Compile Include="BattleSystem\BattleStatusEffect.cs" />
-    <Compile Include="BattleSystem\BattleSystem.cs" />
     <Compile Include="BattleSystem\BattleTimeQueue.cs" />
     <Compile Include="BattleSystem\Combat\CombatNode\ArmorCombatNode.cs" />
     <Compile Include="BattleSystem\Combat\CombatNode\CharacterCombatNode.cs" />
@@ -68,7 +67,7 @@
     <Compile Include="BattleSystem\Combat\CombatNode\CombatNodeFactory.cs" />
     <Compile Include="BattleSystem\Combat\CombatNode\CombatProperty.cs" />
     <Compile Include="BattleSystem\Combat\CombatNode\CombatPropertyType.cs" />
-    <Compile Include="BattleSystem\Combat\CombatNode\CombatResolver.cs" />
+    <Compile Include="BattleSystem\Combat\CombatNode\EntityCombatResolver.cs" />
     <Compile Include="BattleSystem\Combat\CombatNode\CompositeCombatNode.cs" />
     <Compile Include="BattleSystem\Combat\CombatNode\ConfigurableCombatNode.cs" />
     <Compile Include="BattleSystem\Combat\CombatNode\EquipmentCombatNode.cs" />
@@ -95,7 +94,6 @@
     <Compile Include="BattleSystem\Config\BattleConfig.cs" />
     <Compile Include="BattleSystem\Config\BattleTestConfig.cs" />
     <Compile Include="BattleSystem\Config\IBattleConfig.cs" />
-    <Compile Include="BattleSystem\Damage.cs" />
     <Compile Include="BattleSystem\Effects\IStatusEffect.cs" />
     <Compile Include="BattleSystem\Effects\IStatusEffectRunner.cs" />
     <Compile Include="BattleSystem\Effects\StatusEffect.cs" />
@@ -108,7 +106,7 @@
     <Compile Include="BattleSystem\Effects\StatusEffectRunner.cs" />
     <Compile Include="BattleSystem\Effects\StatusEffectSO.cs" />
     <Compile Include="BattleSystem\Entity\BattleEntity.cs" />
-    <Compile Include="BattleSystem\Entity\BattleEntityManagerComponent.cs" />
+    <Compile Include="BattleSystem\Entity\BattleEntityManager.cs" />
     <Compile Include="BattleSystem\Entity\EnemyBattleEntity.cs" />
     <Compile Include="BattleSystem\Entity\IBattleEntityWeapon.cs" />
     <Compile Include="BattleSystem\Entity\PCBattleEntity.cs" />
@@ -118,7 +116,6 @@
     <Compile Include="BattleSystem\Events\DodgeEvent.cs" />
     <Compile Include="BattleSystem\Events\HealEvent.cs" />
     <Compile Include="BattleSystem\Events\IBattleEvent.cs" />
-    <Compile Include="BattleSystem\Events\IBattleEventListener.cs" />
     <Compile Include="BattleSystem\Events\MoveEvent.cs" />
     <Compile Include="BattleSystem\Events\NonDamageEvent.cs" />
     <Compile Include="BattleSystem\Events\ResistEvent.cs" />
@@ -130,7 +127,6 @@
     <Compile Include="BattleSystem\GUI\TargetGUIComponent.cs" />
     <Compile Include="BattleSystem\GUI\TargetLayoutComponent.cs" />
     <Compile Include="BattleSystem\IBattleController.cs" />
-    <Compile Include="BattleSystem\IBattleService.cs" />
     <Compile Include="BattleSystem\Log\BattleLog.cs" />
     <Compile Include="BattleSystem\Targeting\Conditions\TargetConditionSO.cs" />
     <Compile Include="BattleSystem\Targeting\Conditions\TargetLifeConditionSO.cs" />
@@ -144,7 +140,7 @@
     <Compile Include="BattleSystem\Targeting\TargetResolverFactory.cs" />
     <Compile Include="BattleSystem\Targeting\TargetResolverRow.cs" />
     <Compile Include="BattleSystem\Targeting\TargetResolverSingle.cs" />
-    <Compile Include="BattleSystem\Turn\PCTurnManagerComponent.cs" />
+    <Compile Include="BattleSystem\Turn\TurnManager.cs" />
     <Compile Include="BattleSystem\Turn\TurnState.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Debug\DebugStatusEffectGUIComponent.cs" />

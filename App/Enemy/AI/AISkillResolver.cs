@@ -22,7 +22,7 @@ public class AISkillResolver
 		LazyCheck(skillConfig);
 	}
 
-	public IBattleAction ResolveAction(BattleEntityManagerComponent entityManager, EnemyBattleEntity enemyEntity) {
+	public IBattleAction ResolveAction(BattleEntityManager entityManager, EnemyBattleEntity enemyEntity) {
 
 		// for each skill, lets evaulate if we will use it
 		float totalWeight = 0;
@@ -81,7 +81,7 @@ public class AISkillResolver
 		throw new Exception("Failed to find an appropriate skill, random failed");
 	}
 
-	private IBattleAction GenerateBattleAction(EnemyBattleEntity enemyEntity, AISkillResultSet result, BattleEntityManagerComponent entityManager) {
+	private IBattleAction GenerateBattleAction(EnemyBattleEntity enemyEntity, AISkillResultSet result, BattleEntityManager entityManager) {
 		List<BattleEntity> possibleList = new List<BattleEntity>(result.possibleTargets);
 		AISkillComposite composite = result.composite;
 

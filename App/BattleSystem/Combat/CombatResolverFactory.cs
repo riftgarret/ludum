@@ -1,4 +1,5 @@
 ﻿using App.BattleSystem.Combat.CombatNode;
+using App.BattleSystem.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -62,13 +62,13 @@ namespace App.BattleSystem.Combat.CombatNode
             if (useEquipment)
             {
                 // weaopns
-                for (int i = 0; i < mFactory.Entity.equipedWeapons.Length; i++)
+                for (int i = 0; i < mFactory.Entity.EquipedWeapons.Length; i++)
                 {
                     rootNode.AddNode(mFactory.CreateWeaponConfigNode(i, i == weaponIndex));
                 }
 
                 // armor
-                for (int i = 0; i < mFactory.Entity.equipedArmor.Length; i++)
+                for (int i = 0; i < mFactory.Entity.EquipedArmor.Length; i++)
                 {
                     rootNode.AddNode(mFactory.CreateArmorNode(i));
                 }

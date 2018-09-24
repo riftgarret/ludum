@@ -42,7 +42,7 @@ public class DebugStatusEffectLayoutComponent : MonoBehaviour {
 			return;
 		}
 
-		StatusEffectClient client = entity.statusEffectClient;
+		StatusEffectClient client = entity.StatusEffectClient;
 		List<IStatusEffectRunner> runners = new List<IStatusEffectRunner>();
 		client.debugPopulateRunners(runners);
 

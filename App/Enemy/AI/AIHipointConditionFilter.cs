@@ -18,37 +18,37 @@ public class AIHipointConditionFilter : IAIFilter
 		switch(mHpCondition) {
 		case AISkillRule.HitPointCondition.HP_DEAD:
 			entities.RemoveWhere(delegate(BattleEntity obj) {
-				return obj.character.curHP > 0;
+				return obj.Character.curHP > 0;
 			});
 			break;
 		case AISkillRule.HitPointCondition.HP_GT:
 			entities.RemoveWhere(delegate(BattleEntity obj) {
-				return obj.character.curHP / obj.character.maxHP <= mHpPercValue;
+				return obj.Character.curHP / obj.Character.maxHP <= mHpPercValue;
 			});
 			break;
 		case AISkillRule.HitPointCondition.HP_LT:
 			entities.RemoveWhere(delegate(BattleEntity obj) {
-				return obj.character.curHP / obj.character.maxHP >= mHpPercValue;
+				return obj.Character.curHP / obj.Character.maxHP >= mHpPercValue;
 			});
 			break;
 			// highest, just find the max
 		case AISkillRule.HitPointCondition.HP_HIGHEST:
 			float maxHP = -1;
 			foreach(BattleEntity entity in entities) {
-				maxHP = Mathf.Max(maxHP, entity.character.curHP);
+				maxHP = Mathf.Max(maxHP, entity.Character.curHP);
 			}
 			entities.RemoveWhere(delegate(BattleEntity obj) {
-				return obj.character.curHP != maxHP;
+				return obj.Character.curHP != maxHP;
 			});
 			break;
 		case AISkillRule.HitPointCondition.HP_LOWEST:
 			float minHP = 9999999;
 			foreach(BattleEntity entity in entities) {
 				// we want to make sure we dont count dead people
-				minHP = Mathf.Max(1, Mathf.Min(minHP, entity.character.curHP));
+				minHP = Mathf.Max(1, Mathf.Min(minHP, entity.Character.curHP));
 			}
 			entities.RemoveWhere(delegate(BattleEntity obj) {
-				return obj.character.curHP != minHP;
+				return obj.Character.curHP != minHP;
 			});
 			break;		
 		}

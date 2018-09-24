@@ -1,4 +1,5 @@
 using App.BattleSystem.Combat.CombatNode;
+using App.BattleSystem.Effects;
 using App.BattleSystem.Events;
 using System;
 using System.Collections.Generic;
@@ -52,7 +53,7 @@ namespace App.BattleSystem.Combat.Operation
             {
                 // check to see if we were alive before executing the event
                 BattleEntity destEntity = destResolver.Entity;
-                bool wasAlive = destEntity.currentHP > 0;
+                bool wasAlive = destEntity.CurrentHP > 0;
 
                 // execute and apply damage
                 IBattleEvent battleEvent = null;
@@ -62,9 +63,9 @@ namespace App.BattleSystem.Combat.Operation
                 OnCombatEventDelegate?.Invoke(battleEvent);
 
                 // check to see if it was a damage event to see if we killed them
-                if (eventType == BattleEventType.DAMAGE && wasAlive && destEntity.currentHP <= 0)
+                if (eventType == BattleEventType.DAMAGE && wasAlive && destEntity.CurrentHP <= 0)
                 {
-                    destEntity.character.curHP = 0;
+                    destEntity.Character.curHP = 0;
                     DeathEvent deathEvent = new DeathEvent(destEntity);
                     OnCombatEventDelegate?.Invoke(deathEvent);
                 }
@@ -80,7 +81,7 @@ namespace App.BattleSystem.Combat.Operation
                 // iterate through combnat effects to see what should apply
                 foreach (StatusEffectRule combatStatusEffect in effectRules)
                 {
-                    switch (combatStatusEffect.rule)
+                    switch (combatStatusEffect.Rule)
                     {
                         case StatusEffectRule.StatusEffectRuleHitPredicate.ON_HIT:
                             if (hitTarget)

@@ -1,3 +1,4 @@
+using App.BattleSystem.Entity;
 using App.BattleSystem.Events;
 using System;
 

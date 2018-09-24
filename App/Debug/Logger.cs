@@ -10,40 +10,47 @@
 using System;
 using UnityEngine;
 
-public class Logger {
+public class Logger
+{
 
-	enum LogType {
-		DEBUG,
-		ERROR
-	}
+    enum LogType
+    {
+        DEBUG,
+        ERROR
+    }
 
+    public static void d(object curObjCaller, object msgObject)
+    {
+        print(curObjCaller.GetType(), msgObject, LogType.DEBUG);
+    }
 
+    private static string format(string tag, object o)
+    {
+        return String.Format("[{0}] {1}", tag, o);
+    }
 
-	public static void d(object curObjCaller, object msgObject) {
-		print (curObjCaller.GetType (), msgObject, LogType.DEBUG);
-	}
+    private static void print(object curObjCaller, object msgObject, LogType logtype)
+    {
+        print(curObjCaller.GetType().Name, msgObject, logtype);
+    }
 
-	private static string format(string tag, object o) {
-		return String.Format("[{0}] {1}", tag, o);
-	}
+    private static void print(Type type, object msgObject, LogType logType)
+    {
+        print(type.Name, msgObject, logType);
+    }
 
-	private static void print(object curObjCaller, object msgObject, LogType logtype) {
-		print (curObjCaller.GetType().Name, msgObject, logtype);
-	}
-	
-	private static void print(Type type, object msgObject, LogType logType) {
-		print(type.Name, msgObject, logType);
-	}
+    private static void print(string tag, object o, LogType logtype)
+    {
+        switch (logtype)
+        {
+            case LogType.DEBUG:
+                UnityEngine.Debug.Log(format(tag, o));
+                break;
+            case LogType.ERROR:
 
-	private static void print(string tag, object o, LogType logtype) {
-		switch (logtype) {
-		case LogType.DEBUG:
-			Debug.Log(format(tag, o));
-			break;
-		case LogType.ERROR:
+                break;
+        }
+    }
+} 
 
-			break;
-		}
-	}
-}
 

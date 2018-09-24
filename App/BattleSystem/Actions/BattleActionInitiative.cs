@@ -1,34 +1,45 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BattleActionInitiative : IBattleAction {
+namespace App.BattleSystem.Action
+{
+    public class BattleActionInitiative : IBattleAction
+    {
 
-	private float mRecoverTime;
+        private float recoverTime;
 
-	public BattleActionInitiative(float initiativeTime) {
-		mRecoverTime = initiativeTime;
-	}
+        public BattleActionInitiative(float initiativeTime)
+        {
+            recoverTime = initiativeTime;
+        }
 
-	public void OnExecuteAction (float actionClock)
-	{
-		throw new System.NotImplementedException ();
-	}
+        public void OnExecuteAction(float actionClock)
+        {
+            throw new System.NotImplementedException();
+        }
 
-	public float timePrepare {
-		get {
-			return 0;
-		}
-	}
+        public float TimePrepare
+        {
+            get
+            {
+                return 0;
+            }
+        }
 
-	public float timeAction {
-		get {
-			return 0;
-		}
-	}
+        public float TimeAction
+        {
+            get
+            {
+                return 0;
+            }
+        }
 
-	public float timeRecover {
-		get {
-			return mRecoverTime;
-		}
-	}
+        public float TimeRecover
+        {
+            get
+            {
+                return recoverTime;
+            }
+        }
+    } 
 }

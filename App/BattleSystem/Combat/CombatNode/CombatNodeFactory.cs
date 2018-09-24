@@ -1,3 +1,6 @@
+using App.BattleSystem.Effects;
+using App.BattleSystem.Entity;
+
 namespace App.BattleSystem.Combat.CombatNode
 {
     /// <summary>
@@ -21,7 +24,7 @@ namespace App.BattleSystem.Combat.CombatNode
 
         public ICombatNode CreateWeaponConfigNode(int equipedWeaponIndex, bool isActiveWeapon)
         {
-            IWeapon weapon = entity.equipedWeapons[equipedWeaponIndex];
+            IWeapon weapon = entity.EquipedWeapons[equipedWeaponIndex];
             return CreateWeaponConfigNode(weapon, isActiveWeapon);
         }
 
@@ -32,7 +35,7 @@ namespace App.BattleSystem.Combat.CombatNode
 
         public ICombatNode CreateArmorNode(int armorPosition)
         {
-            IArmor armor = entity.character.equipedArmor[armorPosition];
+            IArmor armor = entity.Character.equipedArmor[armorPosition];
             return new ArmorCombatNode(armor);
         }
 
@@ -40,7 +43,7 @@ namespace App.BattleSystem.Combat.CombatNode
         {
             if (mCachedCharacterNode == null)
             {
-                mCachedCharacterNode = new CharacterCombatNode(entity.character);
+                mCachedCharacterNode = new CharacterCombatNode(entity.Character);
             }
             return mCachedCharacterNode;
         }
@@ -49,7 +52,7 @@ namespace App.BattleSystem.Combat.CombatNode
         {
             // map status effects to buff properties
             ConfigurableCombatNode configNode = new ConfigurableCombatNode();
-            foreach (StatusEffectClient.StatusEffectSummary summary in entity.statusEffectClient.Summaries)
+            foreach (StatusEffectClient.StatusEffectSummary summary in entity.StatusEffectClient.Summaries)
             {
                 configNode.LoadStatusEffectProperty(summary.property, summary.netValue);
             }
