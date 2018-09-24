@@ -1,5 +1,6 @@
 using App.BattleSystem.Effects;
 using App.BattleSystem.Entity;
+using App.Core.Equipment;
 
 namespace App.BattleSystem.Combat.CombatNode
 {
@@ -35,7 +36,7 @@ namespace App.BattleSystem.Combat.CombatNode
 
         public ICombatNode CreateArmorNode(int armorPosition)
         {
-            IArmor armor = entity.Character.equipedArmor[armorPosition];
+            IArmor armor = entity.Character.EquipedArmor[armorPosition];
             return new ArmorCombatNode(armor);
         }
 

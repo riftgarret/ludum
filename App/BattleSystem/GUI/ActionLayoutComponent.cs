@@ -1,4 +1,6 @@
 ﻿using App.BattleSystem.Entity;
+using App.BattleSystem.Turn;
+using App.Core.Skills;
 using UnityEngine;
 
 
@@ -31,7 +33,7 @@ namespace App.BattleSystem.GUI
             }
         }
 
-        public void PopulateSkillLayout(PCBattleEntity entity, TurnManager.DecisionState state)
+        public void PopulateSkillLayout(PCBattleEntity entity, PCTurnManager.DecisionState state)
         {
             Clear();
 

@@ -1,3 +1,6 @@
+using App.BattleSystem.Entity;
+using App.Core.Stats;
+
 namespace App.BattleSystem.Combat.CombatNode
 {
     /// <summary>

@@ -1,4 +1,6 @@
 
+using App.BattleSystem.Effects;
+using App.Core.Stats;
 using System;
 using UnityEngine;
 

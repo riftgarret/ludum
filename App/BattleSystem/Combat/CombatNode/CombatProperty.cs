@@ -1,4 +1,4 @@
-using App.Utilities;
+using App.Util;
 using System;
 
 namespace App.BattleSystem.Combat.CombatNode

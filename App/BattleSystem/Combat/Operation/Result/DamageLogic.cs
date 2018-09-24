@@ -1,6 +1,7 @@
 
 using App.BattleSystem.Combat.CombatNode;
 using App.BattleSystem.Events;
+using App.Core.Stats;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

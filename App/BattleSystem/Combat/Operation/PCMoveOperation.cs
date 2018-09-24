@@ -1,4 +1,6 @@
+using App.BattleSystem.Entity;
 using App.BattleSystem.Events;
+using App.Core.Characters;
 using System;
 namespace App.BattleSystem.Combat.Operation
 {

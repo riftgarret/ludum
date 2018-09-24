@@ -1,3 +1,5 @@
+using App.Core.CombatModifiers;
+using App.Core.Equipment;
 using System;
 
 namespace App.BattleSystem.Entity

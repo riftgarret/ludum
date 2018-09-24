@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using App.Core.Characters;
 
 namespace App.BattleSystem.Entity
 {

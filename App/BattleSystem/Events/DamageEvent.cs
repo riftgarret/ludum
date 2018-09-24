@@ -1,6 +1,8 @@
 
+using App.BattleSystem.Combat.Operation;
 using App.BattleSystem.Entity;
 using App.BattleSystem.Events;
+using App.Core.Stats;
 
 namespace App.BattleSystem.Events
 {

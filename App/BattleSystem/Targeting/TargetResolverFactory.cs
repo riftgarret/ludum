@@ -1,4 +1,5 @@
 using App.BattleSystem.Entity;
+using App.Core.Characters;
 using System;
 namespace App.BattleSystem.Targeting
 {

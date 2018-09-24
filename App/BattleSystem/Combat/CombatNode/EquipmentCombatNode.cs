@@ -1,3 +1,5 @@
+using App.Core.Equipment;
+
 namespace App.BattleSystem.Combat.CombatNode
 {
     /// <summary>

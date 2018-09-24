@@ -1,4 +1,5 @@
 ﻿using App.BattleSystem.Combat.CombatNode;
+using App.Core.Stats;
 using System;
 using System.Collections.Generic;
 using System.Linq;

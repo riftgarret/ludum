@@ -1,4 +1,6 @@
 
+using App.BattleSystem.Effects;
+
 namespace App.BattleSystem.Combat.CombatNode
 {
     /// <summary>

@@ -4,6 +4,7 @@ using App.BattleSystem.Combat.Operation.App.BattleSystem.Combat.Operation;
 using App.BattleSystem.Entity;
 using App.BattleSystem.Events;
 using App.BattleSystem.Turn;
+using App.Core.Characters;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;

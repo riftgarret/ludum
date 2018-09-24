@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using App.BattleSystem.Entity;
+using App.Core.Characters;
+using App.Core;
 
 namespace App.BattleSystem
 {
@@ -17,12 +19,9 @@ namespace App.BattleSystem
         private EnemyPartySO enemyParty;
         private PCPartySO pcParty;
 
-
         private BattlePresenter presenter;
 
-        protected BattleEntityManager mEntityManager;
-
-        
+        protected BattleEntityManager mEntityManager;        
 
         // UNITY LIFE CYCLE
 

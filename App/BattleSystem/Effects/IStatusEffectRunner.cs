@@ -1,3 +1,4 @@
+using App.BattleSystem.Entity;
 using System;
 using System.Collections;
 using UnityEngine;

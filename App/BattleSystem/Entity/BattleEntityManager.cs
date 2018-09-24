@@ -1,4 +1,5 @@
 using App.BattleSystem.Action;
+using App.Core.Characters;
 using System;
 using System.Collections;
 using System.Collections.Generic;

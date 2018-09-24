@@ -1,3 +1,5 @@
+using App.BattleSystem.Effects;
+
 namespace App.BattleSystem.Combat.Operation.Result
 {
     /// <summary>
@@ -11,8 +13,8 @@ namespace App.BattleSystem.Combat.Operation.Result
         public override string ToString()
         {
             return string.Format("[StatusEffectRule: p={0}, e={1}]",
-                                  rule.rule,
-                                  rule.effect);
+                                  rule.Rule,
+                                  rule.Effect);
         }
     } 
 }

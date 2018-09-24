@@ -1,5 +1,5 @@
 using App.BattleSystem.Entity;
-
+using App.Core.Skills;
 
 namespace App.BattleSystem.Targeting
 {

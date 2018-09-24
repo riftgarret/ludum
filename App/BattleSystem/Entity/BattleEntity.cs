@@ -4,6 +4,8 @@ using App.BattleSystem.Effects;
 using App.BattleSystem.Combat.CombatNode;
 using App.BattleSystem.Turn;
 using App.BattleSystem.Action;
+using App.Core.Equipment;
+using App.Core.Characters;
 
 namespace App.BattleSystem.Entity
 {
@@ -56,7 +58,7 @@ namespace App.BattleSystem.Entity
             combatNodeFactory = new CombatNodeFactory(this);
             TurnState = new TurnState();
             this.Character = character;
-            this.MaxHP = character.maxHP;
+            this.MaxHP = character.MaxHP;
             this.CurrentHP = character.curHP;
         }
 
@@ -126,15 +128,9 @@ namespace App.BattleSystem.Entity
             return CreateCombatNodeBuilder().Build();
         }
 
-        public IWeapon[] EquipedWeapons
-        {
-            get { return Character.equipedWeapons; }
-        }
+        public IWeapon[] EquipedWeapons => Character.EquipedWeapons;
 
-        public IArmor[] EquipedArmor
-        {
-            get { return Character.equipedArmor; }
-        }
+        public IArmor[] EquipedArmor => Character.EquipedArmor;
 
         public float CurrentHP
         {

@@ -1,4 +1,6 @@
 
+using App.BattleSystem.Entity;
+
 namespace App.BattleSystem.Effects
 {
     public class StatusEffectRunner : IStatusEffectRunner
@@ -90,6 +92,8 @@ namespace App.BattleSystem.Effects
                 return timeCounter >= statusEffect.Duration;
             }
         }
+
+        BattleEntity IStatusEffectRunner.SourceEntity => throw new System.NotImplementedException();
     }
 }
 

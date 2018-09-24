@@ -1,3 +1,5 @@
+using App.Core.Characters;
+
 namespace App.BattleSystem.Combat.CombatNode
 {
     /// <summary>

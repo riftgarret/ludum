@@ -1,4 +1,6 @@
 ﻿using App.BattleSystem.Entity;
+using App.BattleSystem.Targeting;
+using App.BattleSystem.Turn;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +24,7 @@ namespace App.BattleSystem.GUI
             rectTransform = GetComponent<RectTransform>();
         }
 
-        public void PopulateTargets(PCBattleEntity entity, TurnManager.DecisionState state, SelectableTargetManager selectableTargetManager)
+        public void PopulateTargets(PCBattleEntity entity, PCTurnManager.DecisionState state, SelectableTargetManager selectableTargetManager)
         {
             // destroy old buttons
             while (rectTransform.childCount > 0)
@@ -33,13 +35,13 @@ namespace App.BattleSystem.GUI
             }
 
 
-            if (entity == null || state != TurnManager.DecisionState.TARGET)
+            if (entity == null || state != PCTurnManager.DecisionState.TARGET)
             {
                 return;
             }
 
 
-            List<SelectableTarget> selectableTargets = selectableTargetManager.targetList;
+            List<SelectableTarget> selectableTargets = selectableTargetManager.TargetList;
             foreach (SelectableTarget selectableTarget in selectableTargets)
             {
                 GameObject actionPrefabInstance = (GameObject)Instantiate(targetPrefab);

@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using App.BattleSystem.Entity;
+using App.Core.Skills;
+using App.Core.Characters;
 
 namespace App.BattleSystem.Targeting
 {

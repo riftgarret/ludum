@@ -2,7 +2,7 @@
 using App.BattleSystem.Combat.Operation.Result;
 using App.BattleSystem.Effects;
 using App.BattleSystem.Entity;
-
+using App.Core.Skills;
 
 namespace App.BattleSystem.Combat.Operation
 {

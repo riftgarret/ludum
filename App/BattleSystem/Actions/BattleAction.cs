@@ -3,6 +3,7 @@ using System.Collections;
 using App.BattleSystem.Entity;
 using App.BattleSystem.Combat.Operation;
 using App.BattleSystem.Targeting;
+using App.Core.Skills;
 
 namespace App.BattleSystem.Action
 {
