@@ -1,4 +1,4 @@
-﻿using App.BattleSystem.Action;
+﻿using App.BattleSystem.Actions;
 using App.BattleSystem.AI;
 using App.BattleSystem.Combat.Operation;
 using App.BattleSystem.Combat.Operation.App.BattleSystem.Combat.Operation;
@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static App.BattleSystem.Action.BattleAction;
 
 namespace App.BattleSystem
 {
@@ -21,7 +20,7 @@ namespace App.BattleSystem
     public class BattlePresenter
     {
 
-        private PCTurnManager pcTurnManager = new PCTurnManager();       
+        private PCDecisionManager pcDecisionManager = new PCDecisionManager();       
 
         private CombatOperationExecutor combatExecutor = new CombatOperationExecutor();        
 
@@ -49,16 +48,16 @@ namespace App.BattleSystem
         public BattlePresenter()
         {
             // notifies entity needs decision
-            entityManager.OnDecisionRequiredDelegate += OnActionRequired;
+            entityManager.OnDecisionRequiredDelegate = OnActionRequired;
 
             // notifies entity's action should start to be executed
-            entityManager.OnExecutionStartedDelegate += OnActionExecute;
+            entityManager.OnExecuteOperationDelegate = OnExecuteCombat;
 
             // on a player's successful action selected 
-            pcTurnManager.OnCompleteDelegate += OnActionSelected;
+            pcDecisionManager.OnActionSelectedDelegate = OnActionSelected;
 
             // on combat events 
-            combatExecutor.OnCombatEventDelegate += OnBattleEvent;
+            combatExecutor.OnCombatEventDelegate = OnBattleEvent;
         }
 
         /// <summary>
@@ -130,17 +129,11 @@ namespace App.BattleSystem
         }
 
         /// <summary>
-        /// Delegate from BattleEntity. When a character's Execute phase has started.
+        /// Delegate from BattleEntity. When a character's Action executes an operation.
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="battleAction"></param>
-        private void OnActionExecute(BattleEntity entity, IBattleAction battleAction)
-        {
-            Debug.Log("Action should be executed: " + entity + " : " + battleAction);
-        }
-
-        // TODO find who needs this
-        private void ExecuteCombat(ICombatOperation combatOperation)
+        private void OnExecuteCombat(BattleEntity entity, ICombatOperation combatOperation)
         {
             combatExecutor.Execute(combatOperation);
         }
@@ -193,7 +186,7 @@ namespace App.BattleSystem
         {
             if (entity is PCBattleEntity)
             {
-                pcTurnManager.QueuePC((PCBattleEntity)entity);
+                pcDecisionManager.QueuePC((PCBattleEntity)entity);
             }
             else if (entity is EnemyBattleEntity)
             {
@@ -211,7 +204,7 @@ namespace App.BattleSystem
         {
             get
             {
-                return pcTurnManager.currentEntity == null && gameState == GameState.ACTIVE;
+                return pcDecisionManager.currentEntity == null && gameState == GameState.ACTIVE;
             }
         }
 

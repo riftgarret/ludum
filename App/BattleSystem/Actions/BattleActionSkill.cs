@@ -7,7 +7,7 @@ using App.Core.Skills;
 
 namespace App.BattleSystem.Actions
 {
-    public class BattleActioSkill : BaseBattleAction
+    public class BattleActionSkill : BaseBattleAction
     {
         // time it takes to prepare, configured and set
         public override float TimePrepare => combatSkill.TimePrepare;
@@ -21,7 +21,7 @@ namespace App.BattleSystem.Actions
         private int combatRoundCount;
         private int combatRoundIndex;
 
-        public BattleActioSkill(ICombatSkill skill, BattleEntity sourceEntity, ITargetResolver targetResolver)
+        public BattleActionSkill(ICombatSkill skill, BattleEntity sourceEntity, ITargetResolver targetResolver)
         {
             this.combatSkill = skill;
             this.sourceEntity = sourceEntity;
@@ -61,12 +61,5 @@ namespace App.BattleSystem.Actions
                 ExecuteCombatOperationDelegate?.Invoke(combatOperation);
             }
         }
-
-
-        /// <summary>
-        /// To complete action, not useful in current stage.
-        /// </summary>
-        /// <value>The total time.</value>
-        public float TotalTime => TimeAction + TimePrepare + TimeRecover;
     } 
 }

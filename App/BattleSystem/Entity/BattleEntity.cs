@@ -3,9 +3,10 @@ using System.Collections;
 using App.BattleSystem.Effects;
 using App.BattleSystem.Combat.CombatNode;
 using App.BattleSystem.Turn;
-using App.BattleSystem.Action;
 using App.Core.Equipment;
 using App.Core.Characters;
+using App.BattleSystem.Actions;
+using App.BattleSystem.Combat.Operation;
 
 namespace App.BattleSystem.Entity
 {
@@ -15,23 +16,31 @@ namespace App.BattleSystem.Entity
     public abstract class BattleEntity
     {
         public delegate void OnDecisionRequired(BattleEntity entity);
-        public delegate void OnExecutionStarted(BattleEntity entity, IBattleAction action);
+        public delegate void OnExecuteOperation(BattleEntity entity, ICombatOperation operation);
 
         // listenener for battle entity upated
         public OnDecisionRequired OnDecisionRequiredDelegate { get; set; }
 
-        public OnExecutionStarted OnExecutionStartedDelegate { get; set; }
+        public OnExecuteOperation OnExecuteOperationDelegate { get; set; }
 
         // turn phase
-        public PhaseState Phase => actionHandler.Phase;
+        public PhaseState Phase => Action.Phase;
 
-        public float TurnPercent => actionHandler.TurnPercent;
+        public float TurnPercent => Action.PhasePercent;
 
-        private BattleEntityActionHandler actionHandler;
-
-        public void SetAction(IBattleAction action) => actionHandler.SetAction(action);
-
-        public IBattleAction Action => actionHandler.Action;
+        private IBattleAction action;
+        public IBattleAction Action
+        {
+            get => action;
+            set
+            {                
+                if(value != null)
+                {
+                    value.ExecuteCombatOperationDelegate = (ex => OnExecuteOperationDelegate?.Invoke(this, ex));
+                }
+                action = value;
+            }
+        }
 
         /// <summary>
         /// Gets the character associated with this element.
@@ -59,9 +68,7 @@ namespace App.BattleSystem.Entity
         public BattleEntity(Character character)
         {
             statusEffectManager = new StatusEffectClient(this);
-            combatNodeFactory = new CombatNodeFactory(this);
-            actionHandler = new BattleEntityActionHandler();
-            actionHandler.OnStartActionExecutionDelegate += OnExecuteStart;
+            combatNodeFactory = new CombatNodeFactory(this);                        
             this.Character = character;
             this.MaxHP = character.MaxHP;
             this.CurrentHP = character.curHP;
@@ -70,7 +77,7 @@ namespace App.BattleSystem.Entity
         public void InitializeBattlePhase()
         {
             // this value is temp until we assign an initiative per character
-            SetAction(new BattleActionInitiative(Random.Range(1, 5)));
+            Action = new BattleActionInitiative(Random.Range(1, 5));
         }
 
         public void ApplyStatusEffect(BattleEntity sourceEntity, IStatusEffect statusEffect)
@@ -90,19 +97,14 @@ namespace App.BattleSystem.Entity
         public void IncrementGameClock(float gameClockDelta)
         {
             // TODO, we can modify time if we have that buff here
-            actionHandler.IncrementGameClock(gameClockDelta);
+            Action.IncrementGameClock(gameClockDelta);
             statusEffectManager.OnTimeIncrement(gameClockDelta);
 
-            if (actionHandler.Phase == PhaseState.REQUIRES_INPUT)
+            if (Action.Phase == PhaseState.RECOVER && Action.PhaseComplete >= 1f)
             {
                 OnDecisionRequiredDelegate?.Invoke(this);
-            }
-        }
-
-        /// <summary>
-        /// Hooked delegate from TurnState.
-        /// </summary>
-        private void OnExecuteStart() => OnExecutionStartedDelegate.Invoke(this, actionHandler.Action);        
+            }           
+        }        
 
         /// <summary>
         /// Creates the combat node builder. This will have references to most of the 

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using App.BattleSystem.Entity;
 using App.BattleSystem.Targeting;
-using App.BattleSystem.Action;
+using App.BattleSystem.Actions;
 using App.Core.Skills;
 
 namespace App.BattleSystem.Turn
@@ -11,7 +11,7 @@ namespace App.BattleSystem.Turn
     /// <summary>
     /// This class manages the state when the player needs to select a skill and targets.
     /// </summary>
-    public class PCTurnManager
+    public class PCDecisionManager
     {
 
         public enum DecisionState
@@ -22,14 +22,14 @@ namespace App.BattleSystem.Turn
         }
 
         private Queue<PCBattleEntity> turnQueue;
-        public delegate void OnComplete(BattleEntity source, IBattleAction action);
+        public delegate void OnActionSelected(BattleEntity source, IBattleAction action);
 
         /// <summary>
         /// On completing selecting a skill and targets, this will indicate the action is created.
         /// </summary>
-        public OnComplete OnCompleteDelegate { get; set; }
+        public OnActionSelected OnActionSelectedDelegate { get; set; }
 
-        public PCTurnManager()
+        public PCDecisionManager()
         {
             turnQueue = new Queue<PCBattleEntity>();
             this.currentSelectedSkill = null;
@@ -122,11 +122,10 @@ namespace App.BattleSystem.Turn
                 return;
             }
 
-
             PCBattleEntity sourceEntity = turnQueue.Dequeue();
-            ITargetResolver targetResolver = TargetResolverFactory.CreateTargetResolver(target, entityManager);
+            ITargetResolver targetResolver = TargetResolverFactory.CreateTargetResolver(sourceEntity, target, entityManager);
             IBattleAction action = BattleActionFactory.CreateBattleAction(currentSelectedSkill, sourceEntity, targetResolver);
-            OnCompleteDelegate.Invoke(sourceEntity, action);
+            OnActionSelectedDelegate.Invoke(sourceEntity, action);
             //        (sourceEntity, action);		
             currentSelectedSkill = null;
             decisionState = (turnQueue.Count > 0 ? DecisionState.SKILL : DecisionState.IDLE);

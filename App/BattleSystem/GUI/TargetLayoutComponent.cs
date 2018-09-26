@@ -24,7 +24,7 @@ namespace App.BattleSystem.GUI
             rectTransform = GetComponent<RectTransform>();
         }
 
-        public void PopulateTargets(PCBattleEntity entity, PCTurnManager.DecisionState state, SelectableTargetManager selectableTargetManager)
+        public void PopulateTargets(PCBattleEntity entity, PCDecisionManager.DecisionState state, SelectableTargetManager selectableTargetManager)
         {
             // destroy old buttons
             while (rectTransform.childCount > 0)
@@ -35,7 +35,7 @@ namespace App.BattleSystem.GUI
             }
 
 
-            if (entity == null || state != PCTurnManager.DecisionState.TARGET)
+            if (entity == null || state != PCDecisionManager.DecisionState.TARGET)
             {
                 return;
             }

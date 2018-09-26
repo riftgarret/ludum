@@ -7,9 +7,9 @@ namespace App.BattleSystem.Actions
 {
     public class BattleActionFactory
     {
-        public static BattleActioSkill CreateBattleAction(ICombatSkill fromSkill, BattleEntity origin, ITargetResolver targetResolver)
+        public static BattleActionSkill CreateBattleAction(ICombatSkill fromSkill, BattleEntity origin, ITargetResolver targetResolver)
         {
-            return new BattleActioSkill(fromSkill, origin, targetResolver);
+            return new BattleActionSkill(fromSkill, origin, targetResolver);
         }
     } 
 }

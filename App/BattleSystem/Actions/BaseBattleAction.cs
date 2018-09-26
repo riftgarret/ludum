@@ -8,12 +8,16 @@ using UnityEngine;
 
 namespace App.BattleSystem.Actions
 {
+    /// <summary>
+    /// Base implementation that handles incrementing time. It is required by the 
+    /// subclass to call SetPhase() as part of its initialization.
+    /// </summary>
     public abstract class BaseBattleAction : IBattleAction
     {
         // State for this action
         public float PhaseClock { get; private set; }
         public float PhaseComplete { get; private set; }
-        public float PhasePercent => PhaseComplete == 0 ? 0 : Mathf.Min(PhaseClock / PhaseComplete, 1f);
+        public float PhasePercent => PhaseComplete == 0 ? 1f : Mathf.Min(PhaseClock / PhaseComplete, 1f);
         public PhaseState Phase { private set; get; }
 
         public ExecuteCombatOperation ExecuteCombatOperationDelegate { get; set; }
@@ -60,7 +64,7 @@ namespace App.BattleSystem.Actions
                     SetPhase(PhaseState.RECOVER);
                     break;
                 case PhaseState.RECOVER:
-                    SetPhase(PhaseState.REQUIRES_INPUT);
+                    // dont do anything, stay in this state
                     break;
             }
 

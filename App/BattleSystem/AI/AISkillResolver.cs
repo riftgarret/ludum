@@ -1,4 +1,4 @@
-using App.BattleSystem.Action;
+using App.BattleSystem.Actions;
 using App.BattleSystem.Entity;
 using App.BattleSystem.Targeting;
 using App.Core.Characters;
@@ -110,7 +110,7 @@ namespace App.BattleSystem.AI
             }
 
             // get the target resolver
-            ITargetResolver targetResolver = TargetResolverFactory.CreateTargetResolver(selectableTarget, entityManager);
+            ITargetResolver targetResolver = TargetResolverFactory.CreateTargetResolver(enemyEntity, selectableTarget, entityManager);
 
             return BattleActionFactory.CreateBattleAction(composite.skill, enemyEntity, targetResolver);
         }

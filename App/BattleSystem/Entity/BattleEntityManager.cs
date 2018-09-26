@@ -1,4 +1,4 @@
-using App.BattleSystem.Action;
+using App.BattleSystem.Actions;
 using App.Core.Characters;
 using System;
 using System.Collections;
@@ -14,7 +14,7 @@ namespace App.BattleSystem.Entity
     public class BattleEntityManager
     {
         public BattleEntity.OnDecisionRequired OnDecisionRequiredDelegate;
-        public BattleEntity.OnExecutionStarted OnExecutionStartedDelegate;
+        public BattleEntity.OnExecuteOperation OnExecuteOperationDelegate;
 
         internal class ManagedEntity
         {
@@ -109,8 +109,8 @@ namespace App.BattleSystem.Entity
 
         private void HookEntityDelegates(BattleEntity entity)
         {
-            entity.OnDecisionRequiredDelegate += delegate (BattleEntity e) { OnDecisionRequiredDelegate?.Invoke(e); };
-            entity.OnExecutionStartedDelegate += delegate (BattleEntity e, IBattleAction action) { OnExecutionStartedDelegate?.Invoke(e, action); };
+            entity.OnDecisionRequiredDelegate = e => OnDecisionRequiredDelegate?.Invoke(e);
+            entity.OnExecuteOperationDelegate = (e, operation) => OnExecuteOperationDelegate?.Invoke(e, operation); 
         }
 
         /// <summary>
@@ -132,6 +132,6 @@ namespace App.BattleSystem.Entity
         /// <param name="entity"></param>
         /// <param name="action"></param>
         public void SetAction(BattleEntity entity, IBattleAction action)
-            => entity.Phase.SetAction(action);        
+            => entity.Action = action;        
     }     
 }
