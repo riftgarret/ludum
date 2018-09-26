@@ -3,6 +3,7 @@ using App.Core.Characters;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace App.BattleSystem.Entity
@@ -15,122 +16,95 @@ namespace App.BattleSystem.Entity
         public BattleEntity.OnDecisionRequired OnDecisionRequiredDelegate;
         public BattleEntity.OnExecutionStarted OnExecutionStartedDelegate;
 
-        private EnemyBattleEntity[] mEnemyEntities;
-        public EnemyBattleEntity[] enemyEntities
+        internal class ManagedEntity
         {
-            get { LazyInit(); return mEnemyEntities; }
+            internal BattleEntity Entity { get; set; }
+            internal PCCharacter.RowPosition RowPosition { get; set; }
+            internal bool IsEnemy => Entity is EnemyBattleEntity;
         }
 
-        private PCBattleEntity[] mPcEntities;
-        public PCBattleEntity[] pcEntities
-        {
-            get { LazyInit(); return mPcEntities; }
-        }
-
-        private BattleEntity[] mAllEntities;
-        public BattleEntity[] allEntities
-        {
-            get { LazyInit(); return mAllEntities; }
-        }
-
-        private PCBattleEntity[] mFrontRowEntities;
-        public PCBattleEntity[] frontRowEntities
-        {
-            get { LazyInit(); return mFrontRowEntities; }
-        }
-
-        private PCBattleEntity[] mMiddleRowEntities;
-        public PCBattleEntity[] middleRowEntities
-        {
-            get { LazyInit(); return mMiddleRowEntities; }
-        }
-
-        private PCBattleEntity[] mBackRowEntities;
-        public PCBattleEntity[] backRowEntities
-        {
-            get { LazyInit(); return mBackRowEntities; }
-        }
+        private HashSet<ManagedEntity> entityMap = new HashSet<ManagedEntity>();
 
 
-        /// <summary>
-        /// Create a new instance with these party and enemy components.
-        /// </summary>
-        /// <param name="partyComponent"></param>
-        /// <param name="enemyComponent"></param>
-        public BattleEntityManager(PartyComponent partyComponent, EnemyComponent enemyComponent)
+        public IEnumerable<BattleEntity> EnemyEntities
         {
-            LoadCharacters(partyComponent.Characters.ToArray(), enemyComponent.Characters.ToArray());
+            get
+            {
+                return from x in entityMap
+                       where x.IsEnemy
+                       select x.Entity as PCBattleEntity;
+            }
+        }
+        
+        public IEnumerable<PCBattleEntity> PCEntities
+        {
+            get
+            {
+                return from x in entityMap
+                       where !x.IsEnemy
+                       select x.Entity as PCBattleEntity;
+            }
         }
 
-        /// <summary>
-        /// Raises the row update event. Should be called upon listening to row changes.
-        /// </summary>
-        /// <param name="character">Character.</param>
-        public void OnRowUpdate(PCCharacter character)
+        public IEnumerable<BattleEntity> AllEntities
         {
-            // re-evaluate all rows
-            BuildRowEntities();
+            get { return from x in entityMap select x.Entity; }
         }
+
+        public IEnumerable<PCBattleEntity> FrontRowEntities => GetRow(PCCharacter.RowPosition.FRONT);
+        
+        public IEnumerable<PCBattleEntity> MiddleRowEntities => GetRow(PCCharacter.RowPosition.MIDDLE);
+
+        public IEnumerable<PCBattleEntity> BackRowEntities => GetRow(PCCharacter.RowPosition.BACK);
+
 
         /// <summary>
         /// Gets the PCBattleEntities for this row.
         /// </summary>
         /// <returns>The row.</returns>
         /// <param name="rowPos">Row position.</param>
-        public PCBattleEntity[] GetRow(PCCharacter.RowPosition rowPos)
-        {
-            LazyInit();
-            switch (rowPos)
-            {
-                case PCCharacter.RowPosition.FRONT:
-                    return mFrontRowEntities;
-                case PCCharacter.RowPosition.MIDDLE:
-                    return mMiddleRowEntities;
-                case PCCharacter.RowPosition.BACK:
-                    return mBackRowEntities;
-            }
-            return null;
+        public IEnumerable<PCBattleEntity> GetRow(PCCharacter.RowPosition rowPosition)
+        {           
+            return from x in entityMap
+                   where !x.IsEnemy && x.RowPosition == rowPosition
+                   select x.Entity as PCBattleEntity;
         }
 
-        private void LazyInit()
+      
+
+        /// <summary>
+        /// Populate entities.
+        /// </summary>
+        /// <param name="partyComponent"></param>
+        /// <param name="enemyComponent"></param>
+        public void LoadEntities(PartyComponent partyComponent, EnemyComponent enemyComponent)
         {
-            if (mPcEntities != null)
-            {
-                return;
-            }
-
-
-        }
-
+            LoadCharacters(partyComponent.Characters.ToArray(), enemyComponent.Characters.ToArray());
+            InitializeBattlePhase();
+        }         
 
         private void LoadCharacters(Character[] pcChars, Character[] enemyChars)
         {
-            // combine 
-            mAllEntities = new BattleEntity[pcChars.Length + enemyChars.Length];
-            mPcEntities = new PCBattleEntity[pcChars.Length];
-            mEnemyEntities = new EnemyBattleEntity[enemyChars.Length];
 
-            for (int i = 0; i < mPcEntities.Length; i++)
+            foreach (PCCharacter c in pcChars)
             {
-                if (pcChars[i] is PCCharacter)
-                {
-                    mPcEntities[i] = new PCBattleEntity((PCCharacter)pcChars[i]);
-                    mAllEntities[i] = mPcEntities[i];
-                    HookEntityDelegates(mPcEntities[i]);
-                }
+                ManagedEntity entity = new ManagedEntity();
+                entity.Entity = new PCBattleEntity(c);
+                entity.RowPosition = c.rowPosition;
+                entityMap.Add(entity);
+            }
+            
+            foreach(EnemyCharacter c in enemyChars)
+            {
+                ManagedEntity entity = new ManagedEntity();
+                entity.Entity = new EnemyBattleEntity(c);
+                entityMap.Add(entity);
             }
 
-            for (int i = 0; i < mEnemyEntities.Length; i++)
+            foreach(ManagedEntity e in entityMap)
             {
-                if (enemyChars[i] is EnemyCharacter)
-                {
-                    mEnemyEntities[i] = new EnemyBattleEntity((EnemyCharacter)enemyChars[i]);
-                    mAllEntities[pcChars.Length + i] = mEnemyEntities[i];
-                    HookEntityDelegates(mEnemyEntities[i]);
-                }
+                HookEntityDelegates(e.Entity);
             }
-            // create row specifics
-            BuildRowEntities();
         }
 
         private void HookEntityDelegates(BattleEntity entity)
@@ -140,33 +114,24 @@ namespace App.BattleSystem.Entity
         }
 
         /// <summary>
-        /// Builds the row entities. This is to optimize our logic for testing if row is still valid
+        /// Initialize the battle phase, this sets the initial 'Initiative action' 
         /// </summary>
-        private void BuildRowEntities()
-        {
-            List<PCBattleEntity> frontRow = new List<PCBattleEntity>();
-            List<PCBattleEntity> midRow = new List<PCBattleEntity>();
-            List<PCBattleEntity> backRow = new List<PCBattleEntity>();
+        private void InitializeBattlePhase() => AllEntities.ToList().ForEach(unit => unit.InitializeBattlePhase());
 
-            foreach (PCBattleEntity entity in mPcEntities)
-            {
-                switch (entity.pcCharacter.rowPosition)
-                {
-                    case PCCharacter.RowPosition.FRONT:
-                        frontRow.Add(entity);
-                        break;
-                    case PCCharacter.RowPosition.MIDDLE:
-                        midRow.Add(entity);
-                        break;
-                    case PCCharacter.RowPosition.BACK:
-                        backRow.Add(entity);
-                        break;
+        /// <summary>
+        /// Increments the time delta. This will update the internal time
+        /// by adjusting it to the unit of time being used.
+        /// </summary>
+        /// <param name="deltaTime">Delta time.</param>
+        public void IncrementTimeDelta(float deltaTime)
+            => AllEntities.ToList().ForEach(unit => unit.IncrementGameClock(deltaTime));
 
-                }
-            }
-            mFrontRowEntities = frontRow.ToArray();
-            mMiddleRowEntities = midRow.ToArray();
-            mBackRowEntities = backRow.ToArray();
-        }
+        /// <summary>
+        /// Set the action for this entity.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="action"></param>
+        public void SetAction(BattleEntity entity, IBattleAction action)
+            => entity.Phase.SetAction(action);        
     }     
 }

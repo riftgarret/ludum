@@ -19,74 +19,28 @@ namespace App.BattleSystem.GUI
         public Image portraitImage;
         public Text characterTitle;
 
-        private BattleEntity battleEntity;
-        public BattleEntity BattleEntity
+        public void SetDisplayName(String text) => characterTitle.text = text;
+
+
+        private void SetResource(float resourceCurrent, float resourceMax) 
         {
-            get { return battleEntity; }
-            set
-            {
-                battleEntity = value;
-                characterTitle.text = battleEntity.Character.displayName;
-                hpSlider.maxValue = battleEntity.MaxHP;
-                hpSlider.minValue = 0;
-                hpSlider.value = battleEntity.CurrentHP;
-            }
-        }
-
-
-        void OnGUI()
-        {
-            if (battleEntity == null)
-            {
-                return;
-            }
-
-            UpdateActionSlider();
-            UpdateHPSlider();
-            UpdateResourceSlider();
-        }
-
-        private void UpdateResourceSlider()
-        {
-            // TODO implement
+            resourceSlider.maxValue = resourceMax;
+            resourceSlider.value = resourceCurrent;
         }
 
         /// <summary>
         /// Updates the HP slider.
         /// </summary>
-        private void UpdateHPSlider()
+        public void SetHp(float hpCurrent, float hpMax)
         {
-            // TODO provide yeilding animation, decelerating interporlators 
-            hpSlider.value = battleEntity.CurrentHP;
+            hpSlider.maxValue = hpMax;
+            hpSlider.value = hpCurrent;
         }
 
         /// <summary>
         /// Updates the action slider. to meet the four TurnState.Phase states
         /// </summary>
-        private void UpdateActionSlider()
-        {
-            switch (battleEntity.TurnState.Phase)
-            {
-                // PREPARE -> animate 0 to 1 as completes
-                case TurnState.PhaseState.PREPARE:
-                    actionSlider.value = battleEntity.TurnState.TurnPercent;
-                    break;
-                // EXECUTING -> stays at 1
-                case TurnState.PhaseState.EXECUTE:
-                    actionSlider.value = 1f;
-                    break;
-                // RECOVER -> animate 1 to 0 as completes
-                case TurnState.PhaseState.RECOVER:
-                    actionSlider.value = 1f - battleEntity.TurnState.TurnPercent;
-                    break;
-                // awaiting input, at 0 
-                case TurnState.PhaseState.REQUIRES_INPUT:
-                    actionSlider.value = 0f;
-                    break;
-                default:
-                    break;
-            }
-        }
+        public void SetActionPercent(float percent) => actionSlider.value = percent;
     } 
 }
 

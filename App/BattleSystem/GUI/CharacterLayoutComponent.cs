@@ -1,9 +1,5 @@
 ﻿using App.BattleSystem.Entity;
-using App.Core;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,46 +10,42 @@ namespace App.BattleSystem.GUI
     {
         [SerializeField]
         private GameObject characterPortraitPrefab;
-        [SerializeField]
-        private bool isPC = true;
 
-        private BattleEntityManager mEntityManager;
-        private RectTransform mTransform;
+        private Dictionary<BattleEntity, CharacterGUIComponent> entityMap;
 
         void Awake()
         {
-            mEntityManager = GameObject.FindGameObjectWithTag(Tags.BATTLE_CONTROLLER).GetComponent<BattleEntityManager>();
-            mTransform = GetComponent<RectTransform>();
+            entityMap = new Dictionary<BattleEntity, CharacterGUIComponent>();
             EnsureLayout();
         }
 
-        void Start()
+        public void SetEntities(IEnumerable<BattleEntity> entities)
         {
-            BattleEntity[] entities;
-            if (isPC)
-            {
-                entities = mEntityManager.pcEntities;
-            }
-            else
-            {
-                entities = mEntityManager.enemyEntities;
-            }
-
+            RectTransform rect = GetComponent<RectTransform>();
             foreach (BattleEntity be in entities)
             {
                 GameObject characterPortrait = (GameObject)Instantiate(characterPortraitPrefab);
-                RectTransform rect = characterPortrait.GetComponent<RectTransform>();
+                RectTransform childRect = characterPortrait.GetComponent<RectTransform>();
                 CharacterGUIComponent charGUI = characterPortrait.GetComponent<CharacterGUIComponent>();
-                charGUI.BattleEntity = be;
-                rect.SetParent(mTransform);
+                charGUI.SetDisplayName(be.Character.displayName);                
+                childRect.SetParent(rect);
+                entityMap[be] = charGUI;
             }
         }
 
-        void OnGUI()
+        public void SetEntityHp(BattleEntity battleEntity, float hpCurrent, float hpTotal)
         {
-
+            entityMap[battleEntity].SetHp(hpCurrent, hpTotal);
         }
 
+        public void SetEntityActionPercent(BattleEntity battleEntity, float percent)
+        {
+            entityMap[battleEntity].SetActionPercent(percent);
+        }
+
+        /// <summary>
+        /// Check to make sure we have a vertical layout component that will handle adding items.
+        /// </summary>
         private void EnsureLayout()
         {
             LayoutGroup layout = GetComponent<LayoutGroup>();
@@ -64,7 +56,7 @@ namespace App.BattleSystem.GUI
                 vlayout.spacing = 10f;
                 vlayout.childAlignment = TextAnchor.MiddleCenter;
             }
-        }
+        }        
     } 
 }
 

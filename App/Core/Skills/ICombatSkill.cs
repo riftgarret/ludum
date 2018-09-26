@@ -12,7 +12,4 @@ namespace App.Core.Skills
         TargetingRule TargetRule { get; }
         CombatRound[] CombatRounds { get; }
     }
-
-
-
 }

@@ -1,5 +1,6 @@
 using App.BattleSystem.Entity;
 using App.Core.Skills;
+using System.Collections.Generic;
 
 namespace App.BattleSystem.Targeting
 {
@@ -11,6 +12,6 @@ namespace App.BattleSystem.Targeting
         /// <value><c>true</c> if is valid target; otherwise, <c>false</c>.</value>
         bool HasValidTargets(ICombatSkill skill);
 
-        BattleEntity[] GetTargets(ICombatSkill skill);
+        IEnumerable<BattleEntity> GetTargets(ICombatSkill skill);
     } 
 }

@@ -1,18 +1,29 @@
 
-namespace App.BattleSystem.Action
+using App.BattleSystem.Combat.Operation;
+using App.BattleSystem.Entity;
+
+namespace App.BattleSystem.Actions
 {
+    public delegate void ExecuteCombatOperation(ICombatOperation operation);
+
     public interface IBattleAction
     {
-        /// <summary>
-        /// Important to note action clock should always be called even when the delta time has passed.
-        /// the action time threshold, it will be called one last time
-        /// </summary>
-        /// <param name="actionClock">Action clock.</param>
-        void OnExecuteAction(float actionClock);
+        void IncrementGameClock(float actionClock);
 
         float TimePrepare { get; }
         float TimeAction { get; }
         float TimeRecover { get; }
+
+        float PhaseClock { get; }
+        float PhaseComplete { get; }
+        float PhasePercent { get; }
+        PhaseState Phase { get; }
+
+        /// <summary>
+        /// When this action has triggered. This can happen multiple times during
+        /// the execute phase depending on skill meta.
+        /// </summary>
+        ExecuteCombatOperation ExecuteCombatOperationDelegate { get; set; }
     }
 }
 

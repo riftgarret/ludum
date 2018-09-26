@@ -9,23 +9,20 @@ using UnityEngine;
 
 namespace App.BattleSystem.AI
 {
+    /// <summary>
+    /// AI Skill resolver is the process in which a NPC needs to have a skill calculated based
+    /// on the Skill rules and weights set for conditions.
+    /// </summary>
     public class AISkillResolver
-    {
-        // for caching our skill rules, wont save to our scripted objects
-        private List<AISkillComposite> skillComposites;
-
-        public AISkillResolver(EnemySkillSetSO skillConfig)
-        {
-            skillComposites = new List<AISkillComposite>();
-            LazyCheck(skillConfig);
-        }
-
+    {                
         public IBattleAction ResolveAction(BattleEntityManager entityManager, EnemyBattleEntity enemyEntity)
         {
+            // convert our skill rules so we can do math
+            List<AISkillComposite> skillComposites = CreateSkillComposites(enemyEntity.EnemyCharacter.EnemySkillSetSO);
 
             // for each skill, lets evaulate if we will use it
             float totalWeight = 0;
-            List<AISkillResultSet> possibleSkills = new List<AISkillResultSet>();
+            List<AISkillResultSet> possibleSkills = new List<AISkillResultSet>();            
 
             foreach (AISkillComposite composite in skillComposites)
             {
@@ -120,8 +117,10 @@ namespace App.BattleSystem.AI
 
 
 
-        private void LazyCheck(EnemySkillSetSO skillSet)
+        private List<AISkillComposite> CreateSkillComposites(EnemySkillSetSO skillSet)
         {
+            List<AISkillComposite> skills = new List<AISkillComposite>();
+
             foreach (AISkillRule rule in skillSet.skillRules)
             {
                 AISkillComposite composite = new AISkillComposite();
@@ -129,9 +128,13 @@ namespace App.BattleSystem.AI
                 composite.skillRule = rule;
                 composite.conditionFilter = rule.CreateConditionFilter();
                 composite.targetFilter = rule.CreateTargetFilter();
-                skillComposites.Add(composite);
+                skills.Add(composite);
             }
+
+            return skills;
         }
+
+        
 
         public class AISkillResultSet
         {

@@ -22,7 +22,7 @@ namespace App.BattleSystem.GUI
         public GameObject buttonGameObject;
         public Text text;
 
-        public Boolean EnableButton
+        public bool EnableButton
         {
             get => button.enabled;
             set => button.enabled = value;

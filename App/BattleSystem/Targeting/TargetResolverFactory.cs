@@ -16,14 +16,15 @@ namespace App.BattleSystem.Targeting
             switch (target.resolvedTargetType)
             {
                 case ResolvedTargetEnum.SINGLE:
-                    return new TargetResolverSingle(target.entities[0]);
+                    return new TargetResolver(() => manager.AllEntities);
                 case ResolvedTargetEnum.SELF_ROW:
+                    return TargetResolver(() => manager.AllEntities);
                     PCBattleEntity entity = (PCBattleEntity)target.entities[0];
                     return new TargetResolverRow(entity.pcCharacter.rowPosition, manager);
                 case ResolvedTargetEnum.SELF:
                     return new TargetResolverSingle(target.entities[0]);
                 case ResolvedTargetEnum.ENEMY_ALL:
-                    return new TargetResolverAll(true, manager);
+                    return new TargetResolver(true, manager);
                 case ResolvedTargetEnum.ALLY_ROW_MIDDLE:
                     return new TargetResolverRow(PCCharacter.RowPosition.MIDDLE, manager);
                 case ResolvedTargetEnum.ALLY_ROW_FRONT:
@@ -31,7 +32,7 @@ namespace App.BattleSystem.Targeting
                 case ResolvedTargetEnum.ALLY_ROW_BACK:
                     return new TargetResolverRow(PCCharacter.RowPosition.BACK, manager);
                 case ResolvedTargetEnum.ALLY_ALL:
-                    return new TargetResolverAll(false, manager);
+                    return new TargetResolver(false, manager);
             }
             return null; // TODO turn into target classes
         }

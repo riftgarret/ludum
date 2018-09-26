@@ -31,8 +31,8 @@ namespace App.BattleSystem
 
             PartyComponent partyComponent = GameObject.FindGameObjectWithTag(Tags.GAME_CONTROLLER).GetComponent<PartyComponent>();
             EnemyComponent enemyComponent = GameObject.FindGameObjectWithTag(Tags.ENEMY).GetComponent<EnemyComponent>();
-
-            presenter.Initialize(partyComponent, enemyComponent);
+            
+            presenter.Initialize(GetComponent<BattleView>(), partyComponent, enemyComponent);
         }
         
 
@@ -44,10 +44,15 @@ namespace App.BattleSystem
 
             // actions required 
             presenter.ProcessActionsRequireQueue();
-
             
+
             presenter.OnTimeDelta(unitOfTime * Time.deltaTime);            
         }          
+
+        void OnGUI()
+        {
+            presenter.OnGUI();
+        }
     }
 } 
 
