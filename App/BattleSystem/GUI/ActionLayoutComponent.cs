@@ -33,7 +33,7 @@ namespace App.BattleSystem.GUI
             }
         }
 
-        public void PopulateSkillLayout(PCBattleEntity entity, PCTurnManager.DecisionState state)
+        public void PopulateSkillLayout(PCBattleEntity entity, PCDecisionManager.DecisionState state)
         {
             Clear();
 

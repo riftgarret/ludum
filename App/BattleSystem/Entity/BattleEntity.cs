@@ -3,9 +3,10 @@ using System.Collections;
 using App.BattleSystem.Effects;
 using App.BattleSystem.Combat.CombatNode;
 using App.BattleSystem.Turn;
-using App.BattleSystem.Action;
 using App.Core.Equipment;
 using App.Core.Characters;
+using App.BattleSystem.Actions;
+using App.BattleSystem.Combat.Operation;
 
 namespace App.BattleSystem.Entity
 {
@@ -15,18 +16,30 @@ namespace App.BattleSystem.Entity
     public abstract class BattleEntity
     {
         public delegate void OnDecisionRequired(BattleEntity entity);
-        public delegate void OnExecutionStarted(BattleEntity entity, IBattleAction action);
+        public delegate void OnExecuteOperation(BattleEntity entity, ICombatOperation operation);
 
         // listenener for battle entity upated
         public OnDecisionRequired OnDecisionRequiredDelegate { get; set; }
 
-        public OnExecutionStarted OnExecutionStartedDelegate { get; set; }
+        public OnExecuteOperation OnExecuteOperationDelegate { get; set; }
 
         // turn phase
-        public TurnState TurnState
+        public PhaseState Phase => Action.Phase;
+
+        public float TurnPercent => Action.PhasePercent;
+
+        private IBattleAction action;
+        public IBattleAction Action
         {
-            get;
-            protected set;
+            get => action;
+            set
+            {                
+                if(value != null)
+                {
+                    value.ExecuteCombatOperationDelegate = (ex => OnExecuteOperationDelegate?.Invoke(this, ex));
+                }
+                action = value;
+            }
         }
 
         /// <summary>
@@ -55,9 +68,7 @@ namespace App.BattleSystem.Entity
         public BattleEntity(Character character)
         {
             statusEffectManager = new StatusEffectClient(this);
-            combatNodeFactory = new CombatNodeFactory(this);
-            TurnState = new TurnState();
-            TurnState.OnStartActionExecutionDelegate += OnExecuteStart;
+            combatNodeFactory = new CombatNodeFactory(this);                        
             this.Character = character;
             this.MaxHP = character.MaxHP;
             this.CurrentHP = character.curHP;
@@ -66,7 +77,7 @@ namespace App.BattleSystem.Entity
         public void InitializeBattlePhase()
         {
             // this value is temp until we assign an initiative per character
-            TurnState.SetAction(new BattleActionInitiative(Random.Range(1, 5)));
+            Action = new BattleActionInitiative(Random.Range(1, 5));
         }
 
         public void ApplyStatusEffect(BattleEntity sourceEntity, IStatusEffect statusEffect)
@@ -83,33 +94,17 @@ namespace App.BattleSystem.Entity
             get;
         }
 
-        /// <summary>
-        /// Raises the requires input event. This should be managed by either a PC to get actions
-        /// from the user and pause the game, or from the NPC who should decide automatically based on AI
-        /// 
-        /// </summary>
-        /// <param name="state">State.</param>
-        public void OnRequiresInput(TurnState state)
-        {
-            OnDecisionRequiredDelegate?.Invoke(this);
-        }
-
         public void IncrementGameClock(float gameClockDelta)
         {
             // TODO, we can modify time if we have that buff here
-            TurnState.IncrementGameClock(gameClockDelta);
+            Action.IncrementGameClock(gameClockDelta);
             statusEffectManager.OnTimeIncrement(gameClockDelta);
 
-            if (TurnState.Phase == TurnState.PhaseState.REQUIRES_INPUT)
+            if (Action.Phase == PhaseState.RECOVER && Action.PhaseComplete >= 1f)
             {
                 OnDecisionRequiredDelegate?.Invoke(this);
-            }
-        }
-        
-        private void OnExecuteStart()
-        {
-            OnExecutionStartedDelegate?.Invoke(this, TurnState.Action);
-        }
+            }           
+        }        
 
         /// <summary>
         /// Creates the combat node builder. This will have references to most of the 

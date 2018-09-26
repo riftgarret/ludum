@@ -53,14 +53,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BattleSystem\Actions\BattleAction.cs" />
+    <Compile Include="BattleSystem\Actions\BaseBattleAction.cs" />
+    <Compile Include="BattleSystem\Actions\BattleActionSkill.cs" />
     <Compile Include="BattleSystem\Actions\BattleActionFactory.cs" />
     <Compile Include="BattleSystem\Actions\BattleActionInitiative.cs" />
     <Compile Include="BattleSystem\Actions\IBattleAction.cs" />
     <Compile Include="BattleSystem\BattlePresenter.cs" />
     <Compile Include="BattleSystem\BattleService.cs" />
     <Compile Include="BattleSystem\BattleStatusEffect.cs" />
-    <Compile Include="BattleSystem\BattleTimeQueue.cs" />
+    <Compile Include="BattleSystem\BattleView.cs" />
+    <Compile Include="BattleSystem\Entity\EntityState.cs" />
+    <Compile Include="BattleSystem\IBattleView.cs" />
     <Compile Include="BattleSystem\Combat\CombatNode\ArmorCombatNode.cs" />
     <Compile Include="BattleSystem\Combat\CombatNode\CharacterCombatNode.cs" />
     <Compile Include="BattleSystem\Combat\CombatNode\CombatNodeBuilder.cs" />
@@ -135,12 +138,9 @@
     <Compile Include="BattleSystem\Targeting\SelectableTarget.cs" />
     <Compile Include="BattleSystem\Targeting\SelectableTargetManager.cs" />
     <Compile Include="BattleSystem\Targeting\TargetingRule.cs" />
-    <Compile Include="BattleSystem\Targeting\TargetResolverAll.cs" />
+    <Compile Include="BattleSystem\Targeting\TargetResolver.cs" />
     <Compile Include="BattleSystem\Targeting\TargetResolverFactory.cs" />
-    <Compile Include="BattleSystem\Targeting\TargetResolverRow.cs" />
-    <Compile Include="BattleSystem\Targeting\TargetResolverSingle.cs" />
     <Compile Include="BattleSystem\Turn\PCTurnManager.cs" />
-    <Compile Include="BattleSystem\Entity\TurnState.cs" />
     <Compile Include="Core\Constants.cs" />
     <Compile Include="Debug\DebugStatusEffectGUIComponent.cs" />
     <Compile Include="Debug\DebugStatusEffectLayoutComponent.cs" />
@@ -240,6 +240,9 @@
       <Project>{37146187-bc62-44e6-bce1-ebc64c6c9224}</Project>
       <Name>Davfalcon.Unity</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BattleSystem\BattleHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

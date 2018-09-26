@@ -30,7 +30,7 @@ namespace App.BattleSystem.Targeting
         /// <param name="skill">Skill.</param>
         public static SelectableTargetManager CreateAllowedTargets(BattleEntity origin, BattleEntityManager entityManager, ICombatSkill skill)
         {
-            HashSet<BattleEntity> entitySet = new HashSet<BattleEntity>(entityManager.allEntities);
+            HashSet<BattleEntity> entitySet = new HashSet<BattleEntity>(entityManager.AllEntities);
             List<SelectableTarget> targetList = new List<SelectableTarget>();
             Dictionary<BattleEntity, SelectableTarget> targetMap = new Dictionary<BattleEntity, SelectableTarget>();
 

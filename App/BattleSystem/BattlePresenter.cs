@@ -1,14 +1,15 @@
-﻿using App.BattleSystem.Action;
+﻿using App.BattleSystem.Actions;
+using App.BattleSystem.AI;
 using App.BattleSystem.Combat.Operation;
 using App.BattleSystem.Combat.Operation.App.BattleSystem.Combat.Operation;
 using App.BattleSystem.Entity;
 using App.BattleSystem.Events;
 using App.BattleSystem.Turn;
 using App.Core.Characters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static App.BattleSystem.Action.BattleAction;
 
 namespace App.BattleSystem
 {
@@ -19,17 +20,19 @@ namespace App.BattleSystem
     public class BattlePresenter
     {
 
-        private PCTurnManager pcTurnManager = new PCTurnManager();
+        private PCDecisionManager pcDecisionManager = new PCDecisionManager();       
 
-        private BattleTimeQueue battleTimeQueue = new BattleTimeQueue();
-
-        private CombatOperationExecutor combatExecutor = new CombatOperationExecutor();
+        private CombatOperationExecutor combatExecutor = new CombatOperationExecutor();        
 
         private Queue<IBattleEvent> battleEventQueue = new Queue<IBattleEvent>();
 
         private Queue<BattleEntity> actionRequiredQueue = new Queue<BattleEntity>();
 
-        private BattleEntityManager entityManager;
+        private AISkillResolver aiSkillResolver = new AISkillResolver();
+
+        private BattleEntityManager entityManager = new BattleEntityManager();
+
+        private IBattleView view;
 
         protected GameState gameState;
 
@@ -40,53 +43,70 @@ namespace App.BattleSystem
             ACTIVE,
             VICTORY,
             LOSS
-        }
-
+        }        
+        
         public BattlePresenter()
         {
-            
-
-        }
-
-
-
-        public void Initialize(PartyComponent partyComponent, EnemyComponent enemyComponent)
-        {
-            entityManager = new BattleEntityManager(partyComponent, enemyComponent);
-
             // notifies entity needs decision
-            entityManager.OnDecisionRequiredDelegate += OnActionRequired;
+            entityManager.OnDecisionRequiredDelegate = OnActionRequired;
 
             // notifies entity's action should start to be executed
-            entityManager.OnExecutionStartedDelegate += OnActionExecute;    
+            entityManager.OnExecuteOperationDelegate = OnExecuteCombat;
 
             // on a player's successful action selected 
-            pcTurnManager.OnCompleteDelegate += OnActionSelected;
+            pcDecisionManager.OnActionSelectedDelegate = OnActionSelected;
 
             // on combat events 
-            combatExecutor.OnCombatEventDelegate += OnBattleEvent;
-
-            // TODO hook in entities from map
-            gameState = GameState.INTRO;
-           
-        }
-
-        private void OnActionSelected(BattleEntity entity, IBattleAction action)
-        {
-            battleTimeQueue.SetAction(entity, action);
+            combatExecutor.OnCombatEventDelegate = OnBattleEvent;
         }
 
         /// <summary>
-        /// Event 
+        /// Initialize presenter to load up views and prepare for lifecycle calls.
+        /// </summary>
+        /// <param name="view"></param>
+        /// <param name="partyComponent"></param>
+        /// <param name="enemyComponent"></param>
+        public void Initialize(
+            IBattleView view,
+            PartyComponent partyComponent, 
+            EnemyComponent enemyComponent)
+        {
+            this.view = view;
+
+            entityManager.LoadEntities(partyComponent, enemyComponent);
+            
+            gameState = GameState.INTRO;           
+        }
+
+        /// <summary>
+        /// When a PC or enemy AI has selected an action.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="action"></param>
+        private void OnActionSelected(BattleEntity entity, IBattleAction action)
+        {
+            entityManager.SetAction(entity, action);
+        }
+
+        /// <summary>
+        /// Update Time.
         /// </summary>
         /// <param name="delta"></param>
         public void OnTimeDelta(float delta)
         {
             // tic game 
-            if (isTimeActive)
+            if (IsTimeActive)
             {
-                battleTimeQueue.IncrementTimeDelta(delta);
+                entityManager.IncrementTimeDelta(delta);
             }
+        }
+
+        /// <summary>
+        /// Handle our Unity GUI loops here.
+        /// </summary>
+        public void OnGUI()
+        {
+            UpdateEntityGUI();
         }
 
         private void OnBattleEvent(IBattleEvent e)
@@ -95,6 +115,10 @@ namespace App.BattleSystem
             battleEventQueue.Enqueue(e);
         }
 
+        /// <summary>
+        /// Delegate from BattleEntity. When a character needs to make a decision. Lets queue it up.
+        /// </summary>
+        /// <param name="entity"></param>
         private void OnActionRequired(BattleEntity entity)
         {
             Debug.Log("entity decision required: " + entity);
@@ -104,14 +128,12 @@ namespace App.BattleSystem
             }
         }
 
-        private void OnActionExecute(BattleEntity entity, IBattleAction battleAction)
-        {
-            Debug.Log("Action should be executed: " + entity + " : " + battleAction);
-        }
-
-
-
-        private void ExecuteCombat(ICombatOperation combatOperation)
+        /// <summary>
+        /// Delegate from BattleEntity. When a character's Action executes an operation.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="battleAction"></param>
+        private void OnExecuteCombat(BattleEntity entity, ICombatOperation combatOperation)
         {
             combatExecutor.Execute(combatOperation);
         }
@@ -130,12 +152,23 @@ namespace App.BattleSystem
                 switch (battleEvent.EventType)
                 {
                     case BattleEventType.DEATH:
-                        CheckForVictoryOrAnnilate(!battleEvent.SrcEntity.IsPC); // 
+                        if(BattleHelper.CheckForDefeat(entityManager))
+                        {
+                            // TODO should kick off another event to signal we are done.
+                            this.gameState = GameState.LOSS;
+                        }
+                        else if(BattleHelper.CheckForVictory(entityManager))
+                        {
+                            this.gameState = GameState.VICTORY;
+                        }                                                                        
                         break;
                 }
             }
         }
 
+        /// <summary>
+        /// Process actions required incase multiple characters need to make a decision.
+        /// </summary>
         public void ProcessActionsRequireQueue()
         {
             while (actionRequiredQueue.Count > 0)
@@ -153,55 +186,39 @@ namespace App.BattleSystem
         {
             if (entity is PCBattleEntity)
             {
-                pcTurnManager.QueuePC((PCBattleEntity)entity);
+                pcDecisionManager.QueuePC((PCBattleEntity)entity);
             }
             else if (entity is EnemyBattleEntity)
             {
                 EnemyBattleEntity npc = (EnemyBattleEntity)entity;
-                IBattleAction enemyAction = npc.EnemyCharacter.SkillResolver.ResolveAction(entityManager, npc);
-                battleTimeQueue.SetAction(entity, enemyAction);
-            }
-        }
-
-
-        private bool isTimeActive
-        {
-            get
-            {
-                return pcTurnManager.currentEntity == null && gameState == GameState.ACTIVE;
+                IBattleAction enemyAction = aiSkillResolver.ResolveAction(entityManager, npc);
+                entityManager.SetAction(entity, enemyAction);
             }
         }
 
         /// <summary>
-        /// Check case for if battle should end.
+        /// Check if time should be active. This can be false due to the game state being
+        /// over or that the user needs to select a skill.
         /// </summary>
-        /// <param name="isEnemies"></param>
-        private void CheckForVictoryOrAnnilate(bool isEnemies)
+        private bool IsTimeActive
         {
-            BattleEntity[] entities = isEnemies ? (BattleEntity[])entityManager.enemyEntities : (BattleEntity[])entityManager.pcEntities;
-
-
-            foreach (BattleEntity entity in entities)
+            get
             {
-                if (entity.Character.curHP > 0)
-                {
-                    return; // we found an alive player, no way to achieve either state
-                }
-            }
-
-            // if we got here, it means everyone is dead
-            this.gameState = isEnemies ? GameState.VICTORY : GameState.LOSS;
-
-            // not sure if this is the best place to put this, perhaps in its own script
-            if (isEnemies)
-            {
-                Debug.Log("Victory");
-            }
-            else
-            {
-                Debug.Log("Defeat");
+                return pcDecisionManager.currentEntity == null && gameState == GameState.ACTIVE;
             }
         }
-    }
- 
+
+
+        /// <summary>
+        /// Update GUI for characters
+        /// </summary>
+        private void UpdateEntityGUI()
+        {
+            foreach (BattleEntity entity in entityManager.AllEntities)
+            {
+                view.SetEntityHps(entity, entity.CurrentHP, entity.MaxHP);
+                view.SetEntityActionPercent(entity, BattleHelper.GetActionPercent(entity));
+            }
+        }
+    }    
 }
