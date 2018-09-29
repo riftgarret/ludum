@@ -897,13 +897,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 620381933}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 2132491945, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
+  m_Script: {fileID: 1784630823, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ActionPrefab: {fileID: 100004, guid: 6db50516dc64b6e449b0f15350629177, type: 2}
-  m_Transform: {fileID: 0}
-  m_TurnManager: {fileID: 0}
-  m_CurrentDecisionState: 0
+  actionPrefab: {fileID: 100004, guid: 6db50516dc64b6e449b0f15350629177, type: 2}
 --- !u!114 &620381938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1159,6 +1156,7 @@ GameObject:
   m_Component:
   - component: {fileID: 923123132}
   - component: {fileID: 923123134}
+  - component: {fileID: 923123131}
   m_Layer: 0
   m_Name: battleController
   m_TagString: BattleController
@@ -1166,6 +1164,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &923123131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 923123130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 913092378, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyCharacterLayout: {fileID: 1140894174}
+  pcCharacterLayout: {fileID: 1862912408}
 --- !u!4 &923123132
 Transform:
   m_ObjectHideFlags: 0
@@ -1397,14 +1408,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1140894170}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1332383750, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
+  m_Script: {fileID: 2115415626, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CharacterPortraitPrefab: {fileID: 100000, guid: 40d9b61c5994c9f43b75797925ef581e,
+  characterPortraitPrefab: {fileID: 100000, guid: 40d9b61c5994c9f43b75797925ef581e,
     type: 2}
-  m_IsPC: 0
-  mEntityManager: {fileID: 0}
-  mTransform: {fileID: 0}
 --- !u!1 &1217487000
 GameObject:
   m_ObjectHideFlags: 0
@@ -1593,6 +1601,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1438285388}
   - component: {fileID: 1438285389}
+  - component: {fileID: 1438285390}
   m_Layer: 0
   m_Name: gameController
   m_TagString: GameController
@@ -1622,10 +1631,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1438285387}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 772931261, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
+  m_Script: {fileID: 423642999, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pcParty: {fileID: 11400000, guid: 12a1f13c342ec9d44a1b99acc12c90a8, type: 2}
+  unitOfTime: 1
+--- !u!114 &1438285390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1438285387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 913092378, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyCharacterLayout: {fileID: 0}
+  pcCharacterLayout: {fileID: 0}
 --- !u!1 &1497920565
 GameObject:
   m_ObjectHideFlags: 0
@@ -1728,13 +1750,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1497920565}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1591522655, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
+  m_Script: {fileID: 646986308, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TargetPrefab: {fileID: 100004, guid: 3eb15faa9ce07a348b553a1b01d0044e, type: 2}
-  m_Transform: {fileID: 0}
-  m_TurnManager: {fileID: 0}
-  m_CurrentDecisionState: 0
+  targetPrefab: {fileID: 100004, guid: 3eb15faa9ce07a348b553a1b01d0044e, type: 2}
 --- !u!1 &1623584154
 GameObject:
   m_ObjectHideFlags: 0
@@ -2275,14 +2294,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1862912403}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1332383750, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
+  m_Script: {fileID: 2115415626, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CharacterPortraitPrefab: {fileID: 100000, guid: 40d9b61c5994c9f43b75797925ef581e,
+  characterPortraitPrefab: {fileID: 100000, guid: 40d9b61c5994c9f43b75797925ef581e,
     type: 2}
-  m_IsPC: 1
-  mEntityManager: {fileID: 0}
-  mTransform: {fileID: 0}
 --- !u!1001 &1881176094
 Prefab:
   m_ObjectHideFlags: 0

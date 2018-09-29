@@ -8,10 +8,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 245673204, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
+  m_Script: {fileID: 1334661605, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
   m_Name: weapon_dirk
   m_EditorClassIdentifier: 
-  displayName: Dirk
+  displayName: 
   icon: {fileID: 0}
   offenseScalar:
     slash: 0

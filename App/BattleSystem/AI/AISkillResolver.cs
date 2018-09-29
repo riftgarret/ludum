@@ -124,7 +124,7 @@ namespace App.BattleSystem.AI
             foreach (AISkillRule rule in skillSet.skillRules)
             {
                 AISkillComposite composite = new AISkillComposite();
-                composite.skill = rule.skill; // temp lvl 1 skill, probably stay like that
+                composite.skill = rule.Skill; // temp lvl 1 skill, probably stay like that
                 composite.skillRule = rule;
                 composite.conditionFilter = rule.CreateConditionFilter();
                 composite.targetFilter = rule.CreateTargetFilter();
@@ -150,7 +150,7 @@ namespace App.BattleSystem.AI
             public IAIFilter targetFilter;
             public IAIFilter conditionFilter;
             public float weight { get { return skillRule.Weight; } }
-            public AISkillRule.ConditionResolveTarget resolvedTarget { get { return skillRule.resolvedTarget; } }
+            public AISkillRule.ConditionResolveTarget resolvedTarget { get { return skillRule.ResolvedTarget; } }
         }
     } 
 }

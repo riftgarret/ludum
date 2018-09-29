@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\Ludum\Assets\Output\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -145,6 +145,7 @@
     <Compile Include="Debug\DebugStatusEffectGUIComponent.cs" />
     <Compile Include="Debug\DebugStatusEffectLayoutComponent.cs" />
     <Compile Include="Debug\Logger.cs" />
+    <Compile Include="DevNull\DevNullCombatLog.cs" />
     <Compile Include="Editor\AISkillRulePropertyDrawer.cs" />
     <Compile Include="Editor\CustomAssetEditor.cs" />
     <Compile Include="Editor\SizePropertyDrawer.cs" />
@@ -244,6 +245,7 @@
   <ItemGroup>
     <Compile Include="BattleSystem\BattleHelper.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

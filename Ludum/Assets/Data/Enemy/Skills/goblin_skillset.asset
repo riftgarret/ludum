@@ -8,19 +8,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -440384831, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
+  m_Script: {fileID: -2020518809, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
   m_Name: goblin_skillset
   m_EditorClassIdentifier: 
-  mAISkillRules:
-  - mWeight: 1
-    mSkill: {fileID: 11400000, guid: 1119575217921454cb5370388af3474c, type: 2}
-    mConditionTarget: 2
-    mResolvedTarget: 0
-    mConditionType: 0
-    mClassCondition: 0
-    mHitpointCondition: 2
-    mResourceCondition: 2
-    mRowCondition: 4
-    mStatusCondition: 2
-    mPartyCondition: 1
-    mConditionValue: 0
+  aiSkillRules:
+  - weight: 0
+    skill: {fileID: 11400000, guid: 1119575217921454cb5370388af3474c, type: 2}
+    conditionTarget: 2
+    resolvedTarget: 0
+    conditionType: 0
+    classCondition: 0
+    hitpointCondition: 2
+    resourceCondition: 2
+    rowCondition: 4
+    statusCondition: 2
+    partyCondition: 1
+    conditionValue: 0
