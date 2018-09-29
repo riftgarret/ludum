@@ -462,7 +462,6 @@
     <Compile Include="BattleSystem\GUI\TargetGUIComponent.cs" />
     <Compile Include="BattleSystem\GUI\TargetLayoutComponent.cs" />
     <Compile Include="BattleSystem\Log\BattleLogLayout.cs" />
-    <Compile Include="BattleSystem\Log\BattleLogPanel.cs" />
     <Compile Include="BattleSystem\Targeting\Conditions\TargetConditionSO.cs" />
     <Compile Include="BattleSystem\Targeting\Conditions\TargetLifeConditionSO.cs" />
     <Compile Include="BattleSystem\Targeting\IBattleTargetProvider.cs" />
@@ -473,12 +472,12 @@
     <Compile Include="BattleSystem\Targeting\TargetingRule.cs" />
     <Compile Include="BattleSystem\Targeting\TargetResolver.cs" />
     <Compile Include="BattleSystem\Targeting\TargetResolverFactory.cs" />
-    <Compile Include="BattleSystem\Turn\PCTurnManager.cs" />
+    <Compile Include="BattleSystem\Turn\PCDecisionManager.cs" />
     <Compile Include="Core\Constants.cs" />
     <Compile Include="Debug\DebugStatusEffectGUIComponent.cs" />
     <Compile Include="Debug\DebugStatusEffectLayoutComponent.cs" />
     <Compile Include="Debug\Logger.cs" />
-    <Compile Include="Sandbox\DevNullCombatLog.cs" />
+    <Compile Include="Sandbox\SandboxCombatLog.cs" />
     <Compile Include="Editor\AISkillRulePropertyDrawer.cs" />
     <Compile Include="Editor\CustomAssetEditor.cs" />
     <Compile Include="Editor\SizePropertyDrawer.cs" />
