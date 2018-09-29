@@ -14,7 +14,7 @@ namespace App.BattleSystem.Actions
         public override float TimeAction => combatSkill.TimeAction;
         public override float TimeRecover => combatSkill.TimeRecover;
 
-        private ICombatSkill combatSkill;                
+        private ICombatSkill combatSkill;
         private ITargetResolver targetResolver;
         private BattleEntity sourceEntity;
 
@@ -29,7 +29,7 @@ namespace App.BattleSystem.Actions
             this.combatRoundIndex = 0;
             this.combatRoundCount = skill.CombatRounds.Length;
             SetPhase(PhaseState.PREPARE);
-        }             
+        }
 
         /// <summary>
         /// Important to note action clock should always be called even when the delta time has passed.
@@ -37,16 +37,16 @@ namespace App.BattleSystem.Actions
         /// </summary>
         /// <param name="actionClock">Action clock.</param>
         protected override void ExecuteAction(float actionClock)
-        {            
-                float triggerValue = (float)(combatRoundIndex + 1) / (float)combatRoundCount;
+        {
+            float triggerValue = (float)(combatRoundIndex + 1) / (float)combatRoundCount;
 
-                // while we have passed next click for the action clock (incase huge delta change)
-                while (triggerValue <= actionClock)
-                {
-                    DoCombatRound(combatRoundIndex);
-                    combatRoundIndex++;
-                    triggerValue = (float)(combatRoundIndex + 1) / (float)combatRoundCount;
-            }            
+            // while we have passed next click for the action clock (incase huge delta change)
+            while (triggerValue <= actionClock)
+            {
+                DoCombatRound(combatRoundIndex);
+                combatRoundIndex++;
+                triggerValue = (float)(combatRoundIndex + 1) / (float)combatRoundCount;
+            }
         }
 
         /// <summary>
@@ -61,5 +61,5 @@ namespace App.BattleSystem.Actions
                 ExecuteCombatOperationDelegate?.Invoke(combatOperation);
             }
         }
-    } 
+    }
 }

@@ -36,6 +36,6 @@ namespace App.BattleSystem
         private CharacterLayoutComponent GetLayoutForEntity(BattleEntity battleEntity)
         {
             return battleEntity.IsPC ? pcCharacterLayout : enemyCharacterLayout;
-        }
+        }        
     }
 }
