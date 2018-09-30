@@ -8,12 +8,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1397070441, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
+  m_Script: {fileID: 1065128208, guid: 7bb9c6f586806ac4aadd23f844bea4ae, type: 3}
   m_Name: Hunter
   m_EditorClassIdentifier: 
   expertisePerLevel: 1
   hitpointsPerLevel: 10
-  displayName: Hunter
+  displayName: hunker
   hasArmorTorso: 1
   hasArmorLegs: 1
   hasArmorArms: 1

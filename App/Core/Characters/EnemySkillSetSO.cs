@@ -7,10 +7,10 @@ namespace App.Core.Characters
     public class EnemySkillSetSO : ScriptableObject
     {
         [SerializeField]
-        private AISkillRule[] mAISkillRules = new AISkillRule[5];
+        private AISkillRule[] aiSkillRules = new AISkillRule[5];
         public AISkillRule[] skillRules
         {
-            get { return mAISkillRules; }
+            get { return aiSkillRules; }
         }
     } 
 }

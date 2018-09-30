@@ -94,6 +94,12 @@ namespace App.Editor
             CompleteAssetCreation(X.CreateInstance<PCCharacterSO>(), "NPC");
         }
 
+        [MenuItem("Assets/Create/Test/PC Party")]
+        public static void CreateTestPCPartyAsset()
+        {
+            CompleteAssetCreation(X.CreateInstance<PCPartySO>(), "NPC");
+        }
+
 
 
         private static void CompleteAssetCreation(ScriptableObject asset, string entityName)

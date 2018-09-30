@@ -15,12 +15,12 @@ namespace App.Editor
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             // get properties
-            SerializedProperty propWeight = property.FindPropertyRelative("mWeight");
-            SerializedProperty propSkill = property.FindPropertyRelative("mSkill");
-            SerializedProperty propConType = property.FindPropertyRelative("mConditionType");
-            SerializedProperty propConTarget = property.FindPropertyRelative("mConditionTarget");
-            SerializedProperty propConResolv = property.FindPropertyRelative("mResolvedTarget");
-            SerializedProperty propConValue = property.FindPropertyRelative("mConditionValue");
+            SerializedProperty propWeight = property.FindPropertyRelative("weight");
+            SerializedProperty propSkill = property.FindPropertyRelative("skill");
+            SerializedProperty propConType = property.FindPropertyRelative("conditionType");
+            SerializedProperty propConTarget = property.FindPropertyRelative("conditionTarget");
+            SerializedProperty propConResolv = property.FindPropertyRelative("resolvedTarget");
+            SerializedProperty propConValue = property.FindPropertyRelative("conditionValue");
 
 
             // dont make child fiellds indented
@@ -33,22 +33,22 @@ namespace App.Editor
             switch (type)
             {
                 case AISkillRule.ConditionType.CLASS:
-                    propCondRule = property.FindPropertyRelative("mClassCondition");
+                    propCondRule = property.FindPropertyRelative("classCondition");
                     break;
                 case AISkillRule.ConditionType.HP:
-                    propCondRule = property.FindPropertyRelative("mHitpointCondition");
+                    propCondRule = property.FindPropertyRelative("hitpointCondition");
                     break;
                 case AISkillRule.ConditionType.PARTY:
-                    propCondRule = property.FindPropertyRelative("mPartyCondition");
+                    propCondRule = property.FindPropertyRelative("partyCondition");
                     break;
                 case AISkillRule.ConditionType.RES:
-                    propCondRule = property.FindPropertyRelative("mResourceCondition");
+                    propCondRule = property.FindPropertyRelative("resourceCondition");
                     break;
                 case AISkillRule.ConditionType.ROW:
-                    propCondRule = property.FindPropertyRelative("mRowCondition");
+                    propCondRule = property.FindPropertyRelative("rowCondition");
                     break;
                 case AISkillRule.ConditionType.STATUS:
-                    propCondRule = property.FindPropertyRelative("mStatusCondition");
+                    propCondRule = property.FindPropertyRelative("statusCondition");
                     break;
             }
 

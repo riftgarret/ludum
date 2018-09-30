@@ -11,52 +11,43 @@ namespace App.BattleSystem.AI
         /// The m weight of the skill being used after all available skills are evaluated
         /// </summary>
         [SerializeField]
-        private float weight = 1f;
-        public float Weight
-        {
-            get { return weight; }
-        }
+        private float weight;
+        public float Weight { get => weight; }
 
         [SerializeField]
-        private CombatSkillSO mSkill = null;
-        public CombatSkillSO skill
-        {
-            get { return mSkill; }
-        }
+        private CombatSkillSO skill;
+        public CombatSkillSO Skill { get => skill; }
 
         [SerializeField]
-        private ConditionTarget mConditionTarget = ConditionTarget.PC;
+        private ConditionTarget conditionTarget = ConditionTarget.PC;
+
+        [SerializeField]        
+        private ConditionResolveTarget resolvedTarget = ConditionResolveTarget.TARGET;
+        public ConditionResolveTarget ResolvedTarget { get => resolvedTarget;  }        
 
         [SerializeField]
-        private ConditionResolveTarget mResolvedTarget = ConditionResolveTarget.TARGET;
-        public ConditionResolveTarget resolvedTarget
-        {
-            get { return mResolvedTarget; }
-        }
+        private ConditionType conditionType = ConditionType.ANY;
 
         [SerializeField]
-        private ConditionType mConditionType = ConditionType.ANY;
+        private ClassCondition classCondition = ClassCondition.CLASS_FIGHTER;
 
         [SerializeField]
-        private ClassCondition mClassCondition = ClassCondition.CLASS_FIGHTER;
+        private HitPointCondition hitpointCondition = HitPointCondition.HP_HIGHEST;
 
         [SerializeField]
-        private HitPointCondition mHitpointCondition = HitPointCondition.HP_HIGHEST;
+        private ResourceCondition resourceCondition = ResourceCondition.RES_HIGHEST;
 
         [SerializeField]
-        private ResourceCondition mResourceCondition = ResourceCondition.RES_HIGHEST;
+        private RowCondition rowCondition = RowCondition.BACK_COUNT_GT;
 
         [SerializeField]
-        private RowCondition mRowCondition = RowCondition.BACK_COUNT_GT;
+        private StatusCondition statusCondition = StatusCondition.BUFF_COUNT_GT;
 
         [SerializeField]
-        private StatusCondition mStatusCondition = StatusCondition.BUFF_COUNT_GT;
+        private PartyCondition partyCondition = PartyCondition.PARTY_COUNT_GT;
 
         [SerializeField]
-        private PartyCondition mPartyCondition = PartyCondition.PARTY_COUNT_GT;
-
-        [SerializeField]
-        private float mConditionValue = 0f;
+        private float conditionValue = 0f;
 
         public enum ConditionType
         {
@@ -141,22 +132,22 @@ namespace App.BattleSystem.AI
         /// <returns>The condition filter.</returns>
         public IAIFilter CreateConditionFilter()
         {
-            switch (mConditionType)
+            switch (conditionType)
             {
                 case ConditionType.ANY:
                     return new AIAcceptAllFilter();
                 case ConditionType.CLASS:
-                    return new AIClassConditionFilter(mClassCondition);
+                    return new AIClassConditionFilter(classCondition);
                 case ConditionType.HP:
-                    return new AIHipointConditionFilter(mHitpointCondition, mConditionValue);
+                    return new AIHipointConditionFilter(hitpointCondition, conditionValue);
                 case ConditionType.PARTY:
-                    return new AIPartyConditionFilter(mPartyCondition, (int)mConditionValue);
+                    return new AIPartyConditionFilter(partyCondition, (int)conditionValue);
                 case ConditionType.RES:
-                    return new AIResourceConditionFilter(mResourceCondition, mConditionValue);
+                    return new AIResourceConditionFilter(resourceCondition, conditionValue);
                 case ConditionType.ROW:
-                    return new AIRowConditionFilter(mRowCondition, (int)mConditionValue);
+                    return new AIRowConditionFilter(rowCondition, (int)conditionValue);
                 case ConditionType.STATUS:
-                    if (mStatusCondition == StatusCondition.BUFF_COUNT_GT)
+                    if (statusCondition == StatusCondition.BUFF_COUNT_GT)
                     {
                         // TEMP to stop compiler warnings
                     }
@@ -167,7 +158,7 @@ namespace App.BattleSystem.AI
 
         public IAIFilter CreateTargetFilter()
         {
-            return new AITargetFilter(mConditionTarget);
+            return new AITargetFilter(conditionTarget);
         }
 
     } 
