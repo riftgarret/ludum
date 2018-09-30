@@ -2,37 +2,40 @@ using App.BattleSystem.Entity;
 using App.BattleSystem.Events;
 using App.Core.Characters;
 using System;
+using System.Collections.Generic;
+
 namespace App.BattleSystem.Combat.Operation
 {
-    public class PCMoveOperation
-    {
-        // TODO flush out
-        PCCharacter.RowPosition mSrcRow;
-        PCCharacter.RowPosition mDestRow;
+    public class PCMoveOperation : ICombatOperation
+    {        
+        public EntityPosition SrcPosition { get; }
+        public EntityPosition DestPosition { get; }
 
-        PCBattleEntity mSrcEntity;
+        private PCBattleEntity SrcEntity { get; }
 
-        public PCMoveOperation(PCBattleEntity srcEntity, PCCharacter.RowPosition destRow)
+        private MoveEvent result;
+
+        public PCMoveOperation(PCBattleEntity srcEntity, EntityPosition destPosition)
         {
-            this.mSrcEntity = srcEntity;
-            this.mSrcRow = srcEntity.pcCharacter.rowPosition;
-            this.mDestRow = destRow;
+            this.SrcEntity = srcEntity;
+            this.SrcPosition = srcEntity.Position;
+            this.DestPosition = destPosition;
         }
 
-        public IBattleEvent Execute()
+        public void Execute()
         {
             // need to animate this?
-            mSrcEntity.pcCharacter.rowPosition = mDestRow;
-            return new MoveEvent(mSrcEntity, mSrcRow, mDestRow);
+            SrcEntity.MovePosition(DestPosition.Row, DestPosition.Column);
+            result = new MoveEvent(SrcEntity, DestPosition, DestPosition);
         }
 
-        public BattleEntity srcEntity
+        public void GenerateEvents(Queue<IBattleEvent> queue)
         {
-            get
+            if (result != null)
             {
-                return srcEntity;
+                queue.Enqueue(result);
             }
-        }
+        }        
 
         public BattleEventType eventType
         {

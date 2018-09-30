@@ -19,18 +19,14 @@ namespace App.BattleSystem.Targeting
             {
                 case ResolvedTargetEnum.SINGLE:
                     return new TargetResolver(() => manager.AllEntities);
-                case ResolvedTargetEnum.SELF_ROW:
-                    return new TargetResolver(() => manager.GetRow(((PCCharacter) sourceEntity.Character).rowPosition));                    
+                case ResolvedTargetEnum.SELF_PATTERN:
+                    throw new NotImplementedException("Row mechanics missing");                    
                 case ResolvedTargetEnum.SELF:
                     return new TargetResolver(() => new BattleEntity[] { sourceEntity });
                 case ResolvedTargetEnum.ENEMY_ALL:
                     return new TargetResolver(() => manager.EnemyEntities);
-                case ResolvedTargetEnum.ALLY_ROW_MIDDLE:
-                    return new TargetResolver(() => manager.GetRow(PCCharacter.RowPosition.MIDDLE));                    
-                case ResolvedTargetEnum.ALLY_ROW_FRONT:
-                    return new TargetResolver(() => manager.GetRow(PCCharacter.RowPosition.FRONT));                    
-                case ResolvedTargetEnum.ALLY_ROW_BACK:
-                    return new TargetResolver(() => manager.GetRow(PCCharacter.RowPosition.BACK));
+                case ResolvedTargetEnum.ENEMY_PATERN:
+                    throw new NotImplementedException("Row mechanics missing");                    
                 case ResolvedTargetEnum.ALLY_ALL:
                     return new TargetResolver(() => manager.PCEntities);
             }

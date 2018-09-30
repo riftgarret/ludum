@@ -1,10 +1,10 @@
 using App.BattleSystem.Actions;
+using App.BattleSystem.Targeting;
 using App.Core.Characters;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace App.BattleSystem.Entity
 {
@@ -19,7 +19,7 @@ namespace App.BattleSystem.Entity
         internal class ManagedEntity
         {
             internal BattleEntity Entity { get; set; }
-            internal PCCharacter.RowPosition RowPosition { get; set; }
+            internal EntityPosition TilePosition { get => Entity.Position; }
             internal bool IsEnemy => Entity is EnemyBattleEntity;
         }
 
@@ -50,27 +50,45 @@ namespace App.BattleSystem.Entity
         {
             get { return from x in entityMap select x.Entity; }
         }
-
-        public IEnumerable<PCBattleEntity> FrontRowEntities => GetRow(PCCharacter.RowPosition.FRONT);
         
-        public IEnumerable<PCBattleEntity> MiddleRowEntities => GetRow(PCCharacter.RowPosition.MIDDLE);
-
-        public IEnumerable<PCBattleEntity> BackRowEntities => GetRow(PCCharacter.RowPosition.BACK);
-
+        /// <summary>
+        ///  TODO this will take a pattern and location and return all battle entities that are valid.
+        /// </summary>
+        /// <param name="rowIndex"></param>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        /// <returns></returns>
+        public IEnumerable<BattleEntity> GetPattern(int anchorRow, int anchorColumn, bool isEnemies, ITargetPattern pattern)
+        {
+            return (isEnemies ? EnemyEntities : PCEntities)
+                .Where(entity =>
+            {
+                // need to check all squares that are within character
+                EntityPosition position = entity.Position;
+                for (int targetRow = 0; targetRow < position.Size; targetRow++)
+                {
+                    for (int targetColumn = 0; targetColumn < position.Size; targetColumn++)
+                    {
+                        if (pattern.IsInPattern(anchorRow, anchorColumn, targetRow, targetColumn))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            });
+        }      
 
         /// <summary>
-        /// Gets the PCBattleEntities for this row.
+        /// Get Row of entities.
         /// </summary>
-        /// <returns>The row.</returns>
-        /// <param name="rowPos">Row position.</param>
-        public IEnumerable<PCBattleEntity> GetRow(PCCharacter.RowPosition rowPosition)
-        {           
-            return from x in entityMap
-                   where !x.IsEnemy && x.RowPosition == rowPosition
-                   select x.Entity as PCBattleEntity;
+        /// <param name="anchorRow"></param>
+        /// <param name="isEnemy"></param>
+        /// <returns></returns>
+        public IEnumerable<BattleEntity> GetRow(int anchorRow, bool isEnemy)
+        {
+            return GetPattern(anchorRow, 0, isEnemy, TargetPatternFactory.CreateRowPattern());
         }
-
-      
 
         /// <summary>
         /// Populate entities.
@@ -85,19 +103,23 @@ namespace App.BattleSystem.Entity
 
         private void LoadCharacters(Character[] pcChars, Character[] enemyChars)
         {
-
+            // temp assign tile positions
+            int row = 0;
+            int column = 0;
             foreach (PCCharacter c in pcChars)
             {
                 ManagedEntity entity = new ManagedEntity();
                 entity.Entity = new PCBattleEntity(c);
-                entity.RowPosition = c.rowPosition;
+                entity.Entity.MovePosition(column++, row);
                 entityMap.Add(entity);
             }
-            
+
+            column = 0;
             foreach(EnemyCharacter c in enemyChars)
             {
                 ManagedEntity entity = new ManagedEntity();
                 entity.Entity = new EnemyBattleEntity(c);
+                entity.Entity.MovePosition(column++, row);
                 entityMap.Add(entity);
             }
 
