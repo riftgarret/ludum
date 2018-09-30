@@ -5,24 +5,16 @@ namespace App.BattleSystem.Events
 {
     public class MoveEvent : IBattleEvent
     {
-        PCCharacter.RowPosition srcRow;
-        PCCharacter.RowPosition destRow;
+        public EntityPosition SrcPosition { get; }
+        public EntityPosition DestPosition { get; }
 
-        PCBattleEntity srcEntity;
+        public BattleEntity SrcEntity { get; }
 
-        public MoveEvent(PCBattleEntity srcEntity, PCCharacter.RowPosition srcRow, PCCharacter.RowPosition destRow)
+        public MoveEvent(BattleEntity srcEntity, EntityPosition src, EntityPosition dest)
         {
-            this.srcEntity = srcEntity;
-            this.srcRow = srcRow;
-            this.destRow = destRow;
-        }
-
-        public BattleEntity SrcEntity
-        {
-            get
-            {
-                return srcEntity;
-            }
+            this.SrcEntity = srcEntity;
+            this.SrcPosition = src;
+            this.DestPosition = dest;
         }
 
         public BattleEventType EventType
@@ -31,21 +23,11 @@ namespace App.BattleSystem.Events
             {
                 return BattleEventType.MOVE;
             }
-        }
-
-        public PCCharacter.RowPosition SrcRow
-        {
-            get { return srcRow; }
-        }
-
-        public PCCharacter.RowPosition DestRow
-        {
-            get { return destRow; }
-        }
+        }   
 
         public override string ToString()
         {
-            return string.Format("[MoveEvent: mSrcRow={0}, mDestRow={1}, mSrcEntity={2}]", srcRow, destRow, srcEntity);
+            return $"[MoveEvent: SrcPosition={SrcPosition} DestPosition={DestPosition}, SrcEntity={SrcEntity}]";
         }
     } 
 }

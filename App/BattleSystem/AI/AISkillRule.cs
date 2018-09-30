@@ -38,7 +38,10 @@ namespace App.BattleSystem.AI
         private ResourceCondition resourceCondition = ResourceCondition.RES_HIGHEST;
 
         [SerializeField]
-        private RowCondition rowCondition = RowCondition.BACK_COUNT_GT;
+        private RowCondition rowCondition = RowCondition.ROW_COUNT_GT;
+        // TODO put in target count in Editor
+        [SerializeField]
+        private int rowConditionTarget = 0;
 
         [SerializeField]
         private StatusCondition statusCondition = StatusCondition.BUFF_COUNT_GT;
@@ -101,12 +104,8 @@ namespace App.BattleSystem.AI
 
         public enum RowCondition
         {
-            FRONT_COUNT_GT,
-            FRONT_COUNT_LT,
-            MIDDLE_COUNT_GT,
-            MIDDLE_COUNT_LT,
-            BACK_COUNT_GT,
-            BACK_COUNT_LT
+            ROW_COUNT_GT,
+            ROW_COUNT_LT,            
         }
 
         public enum StatusCondition
@@ -145,7 +144,7 @@ namespace App.BattleSystem.AI
                 case ConditionType.RES:
                     return new AIResourceConditionFilter(resourceCondition, conditionValue);
                 case ConditionType.ROW:
-                    return new AIRowConditionFilter(rowCondition, (int)conditionValue);
+                    return new AIRowConditionFilter(rowCondition, (int)conditionValue, rowConditionTarget);
                 case ConditionType.STATUS:
                     if (statusCondition == StatusCondition.BUFF_COUNT_GT)
                     {

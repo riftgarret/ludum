@@ -53,6 +53,16 @@ namespace App.BattleSystem.Entity
         }
 
         /// <summary>
+        /// Tile position of entity
+        /// </summary>
+        public EntityPosition Position { get; private set; } = new EntityPosition(1);
+
+        public void MovePosition(int row, int col)
+        {
+            Position = new EntityPosition(row, col, Position.Size);
+        }
+
+        /// <summary>
         /// The status effect manager. Manages status effects so when a new effect is added, 
         /// we can tell if its refresh, new, or canceling something else.
         /// </summary>

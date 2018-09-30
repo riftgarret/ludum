@@ -6,11 +6,10 @@ namespace App.BattleSystem.Targeting
     {
         SINGLE,
         ENEMY_ALL,
+        ENEMY_PATERN,
         ALLY_ALL,
-        ALLY_ROW_FRONT,
-        ALLY_ROW_MIDDLE,
-        ALLY_ROW_BACK,
-        SELF_ROW,
+        ALLY_PATTERN,
+        SELF_PATTERN,
         SELF
     } 
 }

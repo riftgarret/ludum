@@ -395,6 +395,7 @@
     <Compile Include="BattleSystem\BattleStatusEffect.cs" />
     <Compile Include="BattleSystem\BattleView.cs" />
     <Compile Include="BattleSystem\Entity\EntityState.cs" />
+    <Compile Include="BattleSystem\Entity\EntityPosition.cs" />
     <Compile Include="BattleSystem\IBattleView.cs" />
     <Compile Include="BattleSystem\Combat\CombatNode\ArmorCombatNode.cs" />
     <Compile Include="BattleSystem\Combat\CombatNode\CharacterCombatNode.cs" />
@@ -470,6 +471,8 @@
     <Compile Include="BattleSystem\Targeting\SelectableTarget.cs" />
     <Compile Include="BattleSystem\Targeting\SelectableTargetManager.cs" />
     <Compile Include="BattleSystem\Targeting\TargetingRule.cs" />
+    <Compile Include="BattleSystem\Targeting\ITargetPattern.cs" />
+    <Compile Include="BattleSystem\Targeting\TargetPatternFactory.cs" />
     <Compile Include="BattleSystem\Targeting\TargetResolver.cs" />
     <Compile Include="BattleSystem\Targeting\TargetResolverFactory.cs" />
     <Compile Include="BattleSystem\Turn\PCDecisionManager.cs" />

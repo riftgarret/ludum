@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using App.BattleSystem.Entity;
@@ -11,11 +12,8 @@ namespace App.BattleSystem.Targeting
     public class SelectableTargetManager
     {
 
-        // names to display
-        private const string ROW_FRONT_NAME = "Front Row";
-        private const string ROW_MIDDLE_NAME = "Middle Row";
-        private const string ROW_BACK_NAME = "Back Row";
-
+        // names to display        
+ 
         private const string ROW_CURRENT_NAME = "Current Row";
 
         private const string ALL_ENEMY = "All Enemies";
@@ -185,15 +183,9 @@ namespace App.BattleSystem.Targeting
                                                           HashSet<BattleEntity> entitySet,
                                                           PCBattleEntity sourceEntity)
         {
-            SelectableTarget rowTarget = new SelectableTarget(ROW_CURRENT_NAME, new List<BattleEntity>(), ResolvedTargetEnum.SELF_ROW);
-            PCCharacter.RowPosition rowPos = sourceEntity.pcCharacter.rowPosition;
-            foreach (BattleEntity entity in entitySet)
-            {
-                if (entity.IsPC && ((PCBattleEntity)entity).pcCharacter.rowPosition == rowPos)
-                {
-                    rowTarget.entities.Add(entity);
-                }
-            }
+            SelectableTarget rowTarget = new SelectableTarget(ROW_CURRENT_NAME, new List<BattleEntity>(), ResolvedTargetEnum.SELF_PATTERN);
+
+            rowTarget.entities.AddRange(entitySet.Where(x => x.Position.ContainsRow(sourceEntity.Position)));
 
             if (rowTarget.entities.Count > 0)
             {
@@ -246,44 +238,45 @@ namespace App.BattleSystem.Targeting
         /// <param name="entitySet">Entity set.</param>
         private static void PopulateRowTargets(List<SelectableTarget> entityList, HashSet<BattleEntity> entitySet)
         {
-            // create the bins for when we find the values
-            SelectableTarget frontRowTarget = new SelectableTarget(ROW_FRONT_NAME, new List<BattleEntity>(), ResolvedTargetEnum.ALLY_ROW_FRONT);
-            SelectableTarget middleRowTarget = new SelectableTarget(ROW_MIDDLE_NAME, new List<BattleEntity>(), ResolvedTargetEnum.ALLY_ROW_MIDDLE);
-            SelectableTarget backRowTarget = new SelectableTarget(ROW_BACK_NAME, new List<BattleEntity>(), ResolvedTargetEnum.ALLY_ROW_BACK);
+            // TEMP DISABLED AS IMPLEMENTATION FOR ROWS HAS CHANGED.
+            //// create the bins for when we find the values
+            //SelectableTarget frontRowTarget = new SelectableTarget(ROW_FRONT_NAME, new List<BattleEntity>(), ResolvedTargetEnum.ALLY_ROW_FRONT);
+            //SelectableTarget middleRowTarget = new SelectableTarget(ROW_MIDDLE_NAME, new List<BattleEntity>(), ResolvedTargetEnum.ALLY_ROW_MIDDLE);
+            //SelectableTarget backRowTarget = new SelectableTarget(ROW_BACK_NAME, new List<BattleEntity>(), ResolvedTargetEnum.ALLY_ROW_BACK);
 
-            // populate the bins
-            foreach (BattleEntity entity in entitySet)
-            {
-                if (entity.IsPC)
-                {
-                    switch (((PCBattleEntity)entity).pcCharacter.rowPosition)
-                    {
-                        case PCCharacter.RowPosition.FRONT:
-                            frontRowTarget.entities.Add(entity);
-                            break;
-                        case PCCharacter.RowPosition.MIDDLE:
-                            middleRowTarget.entities.Add(entity);
-                            break;
-                        case PCCharacter.RowPosition.BACK:
-                            backRowTarget.entities.Add(entity);
-                            break;
-                    }
-                }
-            }
+            //// populate the bins
+            //foreach (BattleEntity entity in entitySet)
+            //{
+            //    if (entity.IsPC)
+            //    {
+            //        switch (((PCBattleEntity)entity).pcCharacter.rowPosition)
+            //        {
+            //            case PCCharacter.RowPosition.FRONT:
+            //                frontRowTarget.entities.Add(entity);
+            //                break;
+            //            case PCCharacter.RowPosition.MIDDLE:
+            //                middleRowTarget.entities.Add(entity);
+            //                break;
+            //            case PCCharacter.RowPosition.BACK:
+            //                backRowTarget.entities.Add(entity);
+            //                break;
+            //        }
+            //    }
+            //}
 
-            // only add bins that have ones
-            if (frontRowTarget.entities.Count > 0)
-            {
-                entityList.Add(frontRowTarget);
-            }
-            if (middleRowTarget.entities.Count > 0)
-            {
-                entityList.Add(middleRowTarget);
-            }
-            if (backRowTarget.entities.Count > 0)
-            {
-                entityList.Add(backRowTarget);
-            }
+            //// only add bins that have ones
+            //if (frontRowTarget.entities.Count > 0)
+            //{
+            //    entityList.Add(frontRowTarget);
+            //}
+            //if (middleRowTarget.entities.Count > 0)
+            //{
+            //    entityList.Add(middleRowTarget);
+            //}
+            //if (backRowTarget.entities.Count > 0)
+            //{
+            //    entityList.Add(backRowTarget);
+            //}
         }
 
         /// <summary>

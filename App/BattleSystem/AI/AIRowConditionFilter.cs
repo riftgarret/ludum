@@ -7,53 +7,28 @@ namespace App.BattleSystem.AI
 {
     public class AIRowConditionFilter : IAIFilter
     {
-        private AISkillRule.RowCondition mRowCondition;
-        private int mFilterCount;
+        private AISkillRule.RowCondition rowCondition;
+        private int targetRow;
+        private int filterCount;
 
-        public AIRowConditionFilter(AISkillRule.RowCondition rowCondition, int count)
+        public AIRowConditionFilter(AISkillRule.RowCondition rowCondition, int count, int targetRow)
         {
-            mRowCondition = rowCondition;
-            mFilterCount = count;
+            this.rowCondition = rowCondition;
+            filterCount = count;
+            this.targetRow = targetRow;
         }
 
         // filter out by if targets are within range
         public void FilterEntities(BattleEntity sourceEntity, HashSet<BattleEntity> entities)
-        {
-            // first row filter
-            PCCharacter.RowPosition rowPosition = PCCharacter.RowPosition.FRONT;
-            switch (mRowCondition)
-            {
-                case AISkillRule.RowCondition.BACK_COUNT_GT:
-                case AISkillRule.RowCondition.BACK_COUNT_LT:
-                    rowPosition = PCCharacter.RowPosition.BACK;
-                    break;
-                case AISkillRule.RowCondition.FRONT_COUNT_GT:
-                case AISkillRule.RowCondition.FRONT_COUNT_LT:
-                    rowPosition = PCCharacter.RowPosition.FRONT;
-                    break;
-                case AISkillRule.RowCondition.MIDDLE_COUNT_GT:
-                case AISkillRule.RowCondition.MIDDLE_COUNT_LT:
-                    rowPosition = PCCharacter.RowPosition.MIDDLE;
-                    break;
-            }
-
-            // then remove all entries are not that row
-            entities.RemoveWhere(delegate (BattleEntity obj)
-            {
-                if (obj is PCBattleEntity && ((PCBattleEntity)obj).pcCharacter.rowPosition == rowPosition)
-                {
-                    return false;
-                }
-                return true;
-            });
+        {           
+            // then remove all entries are not that row           
+            entities.RemoveWhere(ent => ent.Position.Row != targetRow);
 
             // finally see if it meets the condition, if it does, leave them, if it doesnt, remove all
-            switch (mRowCondition)
+            switch (rowCondition)
             {
-                case AISkillRule.RowCondition.BACK_COUNT_GT:
-                case AISkillRule.RowCondition.FRONT_COUNT_GT:
-                case AISkillRule.RowCondition.MIDDLE_COUNT_GT:
-                    if (entities.Count > mFilterCount)
+                case AISkillRule.RowCondition.ROW_COUNT_GT:                
+                    if (entities.Count > filterCount)
                     {
                         // ok
                     }
@@ -62,10 +37,8 @@ namespace App.BattleSystem.AI
                         entities.Clear();
                     }
                     break;
-                case AISkillRule.RowCondition.BACK_COUNT_LT:
-                case AISkillRule.RowCondition.FRONT_COUNT_LT:
-                case AISkillRule.RowCondition.MIDDLE_COUNT_LT:
-                    if (entities.Count < mFilterCount)
+                case AISkillRule.RowCondition.ROW_COUNT_LT:
+                    if (entities.Count < filterCount)
                     {
                         // ok
                     }
