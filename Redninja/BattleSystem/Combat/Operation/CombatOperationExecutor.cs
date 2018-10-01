@@ -1,0 +1,125 @@
+using Redninja.BattleSystem.Combat.CombatNode;
+using Redninja.BattleSystem.Effects;
+using Redninja.BattleSystem.Entity;
+using Redninja.BattleSystem.Events;
+using System;
+using System.Collections.Generic;
+
+
+namespace Redninja.BattleSystem.Combat.Operation
+{
+    namespace Redninja.BattleSystem.Combat.Operation
+    {
+        public class CombatOperationExecutor
+        {
+
+            public delegate void OnCombatEvent(IBattleEvent e);
+
+            /// <summary>
+            /// Combat events will be generated as actions are performed. These events are to allow
+            /// other components to observe any change. Such as dying, healing, taking damage, moving, etc.
+            /// </summary>
+            public OnCombatEvent OnCombatEventDelegate { get; set; }
+
+            public void Execute(ICombatOperation combatOperation)
+            {
+
+                // execute
+                combatOperation.Execute();
+
+                // prepare list
+                Queue<IBattleEvent> events = new Queue<IBattleEvent>();
+                combatOperation.GenerateEvents(events);
+
+                // process events
+                ProcessEvents(events);
+            }
+
+            private void ProcessEvents(Queue<IBattleEvent> events)
+            {
+                // do stuff with leftovers?
+                List<IBattleEvent> processedEvents = new List<IBattleEvent>();
+                foreach (IBattleEvent e in events)
+                {
+                    OnCombatEventDelegate?.Invoke(e);
+                }
+            }
+
+
+            /// <summary>
+            /// Execute an operation and manage check resulting event with CombatStatusEffect Rules if any
+            /// </summary>
+            /// <param name="operation">Operation.</param>
+            private void ExecuteAttackOperation(ICombatOperation operation,
+                                                EntityCombatResolver srcResolver,
+                                                EntityCombatResolver destResolver,
+                                                StatusEffectRule[] effectRules)
+            {
+                // check to see if we were alive before executing the event
+                BattleEntity destEntity = destResolver.Entity;
+                bool wasAlive = destEntity.CurrentHP > 0;
+
+                // execute and Redninja.y damage
+                IBattleEvent battleEvent = null;
+                BattleEventType eventType = battleEvent.EventType;
+
+                // notify resulting battle event
+                OnCombatEventDelegate?.Invoke(battleEvent);
+
+                // check to see if it was a damage event to see if we killed them
+                if (eventType == BattleEventType.DAMAGE && wasAlive && destEntity.CurrentHP <= 0)
+                {
+                    destEntity.Character.curHP = 0;
+                    DeathEvent deathEvent = new DeathEvent(destEntity);
+                    OnCombatEventDelegate?.Invoke(deathEvent);
+                }
+
+                // lets see if we hit the target or not
+                bool hitTarget = eventType == BattleEventType.DAMAGE
+                                || eventType == BattleEventType.NON_DAMAGE
+                                || eventType == BattleEventType.ITEM;
+
+                bool missedTarget = eventType == BattleEventType.DODGE
+                                || eventType == BattleEventType.RESIST;
+
+                // iterate through combnat effects to see what should Redninja.y
+                foreach (StatusEffectRule combatStatusEffect in effectRules)
+                {
+                    switch (combatStatusEffect.Rule)
+                    {
+                        case StatusEffectRule.StatusEffectRuleHitPredicate.ON_HIT:
+                            if (hitTarget)
+                            {
+                                Redninja.yEffect(combatStatusEffect, srcResolver.Entity);
+                            }
+                            break;
+                        case StatusEffectRule.StatusEffectRuleHitPredicate.ON_MISS:
+                            if (missedTarget)
+                            {
+                                Redninja.yEffect(combatStatusEffect, srcResolver.Entity);
+                            }
+                            break;
+                        case StatusEffectRule.StatusEffectRuleHitPredicate.ALWAYS:
+                        default:
+                            Redninja.yEffect(combatStatusEffect, srcResolver.Entity);
+                            break;
+                    }
+                }
+
+            }
+
+            /// <summary>
+            /// Redninja.ies the effect. Notify the StatusEffect to the event manager
+            /// </summary>
+            /// <param name="effects">Effects.</param>
+            /// <param name="targetEntity">Target entity.</param>
+            private void Redninja.yEffect(StatusEffectRule combatEffectRule, BattleEntity srcEntity)
+            {
+                //		BattleEntity destEntity = combatEffectRule.rule;
+                //		IStatusEffectRunner statusEffect = combatEffectRule.effect;
+                // first directly Redninja.y the effect, it will notify the event from the StatusEffectManager
+                //		destEntity.Redninja.yStatusEffect (statusEffect);
+            }
+        }
+    } 
+}
