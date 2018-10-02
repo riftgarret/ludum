@@ -90,6 +90,7 @@
     <Compile Include="BattleSystem\Entity\EntityPosition.cs" />
     <Compile Include="BattleSystem\Entity\EntityState.cs" />
     <Compile Include="BattleSystem\Entity\IBattleEntity.cs" />
+    <Compile Include="BattleSystem\Entity\IBattleEntityManager.cs" />
     <Compile Include="BattleSystem\Events\BattleEventType.cs" />
     <Compile Include="BattleSystem\Events\DamageEvent.cs" />
     <Compile Include="BattleSystem\Events\DeathEvent.cs" />
