@@ -1,7 +1,10 @@
-﻿namespace Redninja.BattleSystem
+﻿using System;
+
+namespace Redninja.BattleSystem
 {
 	public interface IClock
 	{
-		void Tick(float timeDelta, float time);
+		float Time { get; }
+		event Action<float> Tick;
 	}
 }

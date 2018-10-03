@@ -27,6 +27,18 @@ namespace Redninja.BattleSystem.Entities
 			entityMap.Add(entity);
 		}
 
+		public void AddBattleEntity(IBattleEntity entity, IClock clock)
+		{
+			entity.SetClock(clock);
+			AddBattleEntity(entity);
+		}
+
+		public void RemoveBattleEntity(IBattleEntity entity)
+		{
+			entity.Dispose();
+			entityMap.Remove(entity);
+		}
+
 		/// <summary>
 		///  TODO this will take a pattern and location and return all battle entities that are valid.
 		/// </summary>
@@ -70,14 +82,6 @@ namespace Redninja.BattleSystem.Entities
         /// Initialize the battle phase, this sets the initial 'Initiative action' 
         /// </summary>
         private void InitializeBattlePhase() => AllEntities.ToList().ForEach(unit => unit.InitializeBattlePhase());
-
-        /// <summary>
-        /// Increments the time delta. This will update the internal time
-        /// by adjusting it to the unit of time being used.
-        /// </summary>
-        /// <param name="deltaTime">Delta time.</param>
-        public void IncrementTime(float deltaTime)
-            => AllEntities.ToList().ForEach(unit => unit.IncrementTime(deltaTime));
 
         /// <summary>
         /// Set the action for this entity.

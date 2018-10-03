@@ -17,7 +17,7 @@ namespace Redninja.BattleSystem.Entities
 		// If we add an action queue here, this will point to the top instead
 		public IBattleAction Action { get; set; }
 		public PhaseState Phase => Action?.Phase ?? PhaseState.Waiting;
-		public float PhasePercent => Action?.PhasePercent ?? 0;
+		public float PhasePercent => Action?.PhaseProgress ?? 0;
 
 		public int Team { get; set; }
 		public bool IsPlayerControlled { get; set; }
@@ -47,19 +47,35 @@ namespace Redninja.BattleSystem.Entities
 		public void MovePosition(int row, int col)
 			=> Position = new EntityPosition(row, col, Position.Size);
 
-		public void Tick(float timeDelta, float time)
+		private void OnTick(float timeDelta)
 		{
-			Action?.Tick(timeDelta, time);
-
 			// Check for buff update interval, then update buffs/status effects
 
-			// Add a DONE state
-			if (Action.Phase == PhaseState.Recovering && Action.PhaseComplete >= 1f)
+			if (Action.Phase == PhaseState.Done)
 			{
 				DecisionRequired?.Invoke(this);
-
 				// If we add an action queue, pop the completed action off here
 			}
 		}
+
+		#region Clock binding
+		public void SetClock(IClock clock)
+		{
+			// Check to unbind from previous clock just in case
+			Dispose();
+
+			this.clock = clock;
+			clock.Tick += OnTick;
+		}
+
+		public void Dispose()
+		{
+			if (clock != null)
+			{
+				clock.Tick -= OnTick;
+				clock = null;
+			}
+		}
+		#endregion
 	}
 }

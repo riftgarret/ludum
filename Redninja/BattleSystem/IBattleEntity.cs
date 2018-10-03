@@ -3,7 +3,7 @@ using Davfalcon.Revelator;
 
 namespace Redninja.BattleSystem
 {
-	public interface IBattleEntity : IClock
+	public interface IBattleEntity : IClockSynchronized
 	{
 		IUnit Character { get; }
 		IBattleAction Action { get; set; }

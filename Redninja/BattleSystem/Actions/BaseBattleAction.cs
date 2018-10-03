@@ -10,94 +10,91 @@ namespace Redninja.BattleSystem.Actions
 	/// </summary>
 	public abstract class BaseBattleAction : IBattleAction
     {
-		private float clock;
+		private IClock clock;
+		private float phaseStart;
+		private float phaseComplete;
 
-        public float PhaseComplete { get; private set; }
-        public float PhasePercent => PhaseComplete == 0 ? 1f : Math.Min(clock / PhaseComplete, 1f);
-        public PhaseState Phase { private set; get; }
-
-		// This function signature needs to be changed completely
-		public event Action<BattleEntity, ICombatOperation> ActionExecuted;
+        public PhaseState Phase { get; private set; }
+		public float PhaseTime => phaseComplete - phaseStart;
+        public float PhaseProgress => PhaseTime == 0 ? 1f : Math.Min((clock.Time - phaseStart) / PhaseTime, 1f);
 
 		// Make these regular properties
         public abstract float TimePrepare { get; }
         public abstract float TimeAction { get; }
         public abstract float TimeRecover { get; }
 
-        protected abstract void ExecuteAction(float timeDelta, float time);
+		public event Action<IBattleAction> ActionExecuting;
+		public event Action<IBattleOperation> BattleOperationReady;
 
-        /// <summary>
-        /// Sets the phase. Reset all state variables
-        /// </summary>
-        /// <param name="phase">Phase.</param>
+		protected abstract void ExecuteAction(float timeDelta, float time);
+
         protected void SetPhase(PhaseState newPhase)
         {
-			clock = 0;
-            Phase = newPhase;
-            switch (newPhase)
+			// In case of manual/premature phase changes, set start time to current time
+			// Otherwise, set it to intended completion time to account for clock overshooting
+			phaseStart = Math.Min(clock.Time, phaseComplete);
+
+			switch (newPhase)
             {
                 case PhaseState.Preparing:
-                    PhaseComplete = TimePrepare;
+                    phaseComplete = phaseStart + TimePrepare;
                     break;
                 case PhaseState.Executing:
-                    PhaseComplete = TimeAction;
+                    phaseComplete = phaseStart + TimeAction;
+					ActionExecuting?.Invoke(this);
                     break;
                 case PhaseState.Recovering:
-                    PhaseComplete = TimeRecover;
+					phaseComplete = phaseStart + TimeRecover;
                     break;
             }
+
+			Phase = newPhase;
+		}
+
+		private void IncrementPhase()
+        {
+			if (Phase < PhaseState.Done)
+			{
+				SetPhase(Phase + 1);
+			}
         }
 
-        /// <summary>
-        /// Checks the next phase. Sometimes we can start with 0 turn, lets skip that
-        /// </summary>
-        private void IncrementPhase()
+        private void OnTick(float timeDelta)
         {
-			// I think you can just use Phase++ here plus a check for RECOVER
-            switch (Phase)
-            {
-                case PhaseState.Preparing:
-                    SetPhase(PhaseState.Executing);
-                    break;
-                case PhaseState.Executing:
-                    SetPhase(PhaseState.Recovering);
-                    break;
-                case PhaseState.Recovering:
-                    // dont do anything, stay in this state
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Increment Game states. This can update the current PhaseState or even trigger
-        /// the OnStartActionExecution delegate.
-        /// </summary>
-        /// <param name="gameClockDelta">Game clock delta.</param>
-        public void Tick(float timeDelta, float time)
-        {
-            if (Phase == PhaseState.Recovering && PhasePercent >= 1f)
+            if (Phase == PhaseState.Done)
             {
                 return;
             }
 
-
-			clock += timeDelta;
-
             if (Phase == PhaseState.Executing)
             {
-				// This should probably return the result of the action
-                ExecuteAction(PhasePercent);
-
-				// Raise event here (placeholder)
-				ActionExecuted?.Invoke(null, null);
+                ExecuteAction(timeDelta, clock.Time);
             }
 
-            if (clock >= PhaseComplete)
+            if (clock.Time >= phaseComplete)
             {
-                // increment turn
                 IncrementPhase();
             }
+		}
 
-        }
-    }
+		#region Clock binding
+		public void SetClock(IClock clock)
+		{
+			// Check to unbind from previous clock just in case
+			Dispose();
+
+			this.clock = clock;
+			clock.Tick += OnTick;
+		}
+
+		public void Dispose()
+		{
+			if (clock != null)
+			{
+				clock.Tick -= OnTick;
+				clock = null;
+			}
+		}
+		#endregion
+	}
 }

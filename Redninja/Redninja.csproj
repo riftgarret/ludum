@@ -49,7 +49,6 @@
     <Compile Include="BattleSystem\Actions\BattleActionSkill.cs" />
     <Compile Include="BattleSystem\IBattleAction.cs" />
     <Compile Include="BattleSystem\BattlePresenter.cs" />
-    <Compile Include="BattleSystem\BattleStatusEffect.cs" />
     <Compile Include="BattleSystem\BattleView.cs" />
     <Compile Include="BattleSystem\Combat\CombatNode\ArmorCombatNode.cs" />
     <Compile Include="BattleSystem\Combat\CombatNode\CharacterCombatNode.cs" />
@@ -79,6 +78,8 @@
     <Compile Include="BattleSystem\Entities\BattleEntityManager.cs" />
     <Compile Include="BattleSystem\EntityPosition.cs" />
     <Compile Include="BattleSystem\IBattlePresenter.cs" />
+    <Compile Include="BattleSystem\IClock.cs" />
+    <Compile Include="BattleSystem\IClockSynchronized.cs" />
     <Compile Include="BattleSystem\PhaseState.cs" />
     <Compile Include="BattleSystem\IBattleEntity.cs" />
     <Compile Include="BattleSystem\IBattleEntityManager.cs" />
@@ -94,7 +95,6 @@
     <Compile Include="BattleSystem\Events\StatusEffectEvent.cs" />
     <Compile Include="BattleSystem\IBattleOperation.cs" />
     <Compile Include="BattleSystem\IBattleView.cs" />
-    <Compile Include="BattleSystem\IGameClock.cs" />
     <Compile Include="BattleSystem\Targeting\Conditions\TargetConditionSO.cs" />
     <Compile Include="BattleSystem\Targeting\Conditions\TargetLifeConditionSO.cs" />
     <Compile Include="BattleSystem\Targeting\IBattleTargetProvider.cs" />

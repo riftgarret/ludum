@@ -12,7 +12,17 @@ namespace Redninja.BattleSystem
 	/// </summary>
 	public class BattlePresenter : IBattlePresenter
 	{
-		private float clock = 0;
+		private class Clock : IClock
+		{
+			public float Time { get; private set; }
+			public event Action<float> Tick;
+			public void IncrementTime(float timeDelta)
+			{
+				Time += timeDelta;
+				Tick?.Invoke(timeDelta);
+			}
+		}
+		private Clock clock = new Clock();
 
         private readonly IBattleView view;
 		private readonly ICombatResolver combatResolver;
@@ -56,8 +66,7 @@ namespace Redninja.BattleSystem
 		{
 			if (IsTimeActive)
 			{
-				clock += timeDelta;
-				entityManager.Tick(timeDelta, clock);
+				clock.IncrementTime(timeDelta);
 			}
 		}
 
@@ -82,9 +91,9 @@ namespace Redninja.BattleSystem
         public void Initialize(IEnumerable<IBattleEntity> units)
         {
 
-            //entityManager.LoadEntities(partyComponent, enemyComponent);
-            
-            gameState = GameState.INTRO;
+			//entityManager.LoadEntities(partyComponent, enemyComponent);
+
+			gameState = GameState.INTRO;
 		}
 
 		#region Decision processing

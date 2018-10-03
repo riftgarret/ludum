@@ -2,19 +2,19 @@ using System;
 
 namespace Redninja.BattleSystem
 {
-	public interface IBattleAction : IClock
+	public interface IBattleAction : IClockSynchronized
     {
 		event Action<IBattleAction> ActionExecuting;
 		event Action<IBattleOperation> BattleOperationReady;
 
-		float TimePrepare { get; }
-        float TimeAction { get; }
-        float TimeRecover { get; }
-
-        float PhaseComplete { get; }
-        float PhasePercent { get; }
         PhaseState Phase { get; }
-    }
+		float PhaseTime { get; }
+        float PhaseProgress { get; }
+
+		float TimePrepare { get; }
+		float TimeAction { get; }
+		float TimeRecover { get; }
+	}
 }
 
 
