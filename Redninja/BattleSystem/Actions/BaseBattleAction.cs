@@ -1,6 +1,6 @@
 ﻿using System;
 using Redninja.BattleSystem.Combat.Operation;
-using Redninja.BattleSystem.Entity;
+using Redninja.BattleSystem.Entities;
 
 namespace Redninja.BattleSystem.Actions
 {
@@ -10,9 +10,10 @@ namespace Redninja.BattleSystem.Actions
 	/// </summary>
 	public abstract class BaseBattleAction : IBattleAction
     {
-        public float PhaseClock { get; private set; }	// This property probably doesn't need to be public
+		private float clock;
+
         public float PhaseComplete { get; private set; }
-        public float PhasePercent => PhaseComplete == 0 ? 1f : Math.Min(PhaseClock / PhaseComplete, 1f);
+        public float PhasePercent => PhaseComplete == 0 ? 1f : Math.Min(clock / PhaseComplete, 1f);
         public PhaseState Phase { private set; get; }
 
 		// This function signature needs to be changed completely
@@ -23,7 +24,7 @@ namespace Redninja.BattleSystem.Actions
         public abstract float TimeAction { get; }
         public abstract float TimeRecover { get; }
 
-        protected abstract void ExecuteAction(float actionClock);
+        protected abstract void ExecuteAction(float timeDelta, float time);
 
         /// <summary>
         /// Sets the phase. Reset all state variables
@@ -31,17 +32,17 @@ namespace Redninja.BattleSystem.Actions
         /// <param name="phase">Phase.</param>
         protected void SetPhase(PhaseState newPhase)
         {
-            PhaseClock = 0;
-            this.Phase = newPhase;
+			clock = 0;
+            Phase = newPhase;
             switch (newPhase)
             {
-                case PhaseState.PREPARE:
+                case PhaseState.Preparing:
                     PhaseComplete = TimePrepare;
                     break;
-                case PhaseState.EXECUTE:
+                case PhaseState.Executing:
                     PhaseComplete = TimeAction;
                     break;
-                case PhaseState.RECOVER:
+                case PhaseState.Recovering:
                     PhaseComplete = TimeRecover;
                     break;
             }
@@ -55,13 +56,13 @@ namespace Redninja.BattleSystem.Actions
 			// I think you can just use Phase++ here plus a check for RECOVER
             switch (Phase)
             {
-                case PhaseState.PREPARE:
-                    SetPhase(PhaseState.EXECUTE);
+                case PhaseState.Preparing:
+                    SetPhase(PhaseState.Executing);
                     break;
-                case PhaseState.EXECUTE:
-                    SetPhase(PhaseState.RECOVER);
+                case PhaseState.Executing:
+                    SetPhase(PhaseState.Recovering);
                     break;
-                case PhaseState.RECOVER:
+                case PhaseState.Recovering:
                     // dont do anything, stay in this state
                     break;
             }
@@ -72,17 +73,17 @@ namespace Redninja.BattleSystem.Actions
         /// the OnStartActionExecution delegate.
         /// </summary>
         /// <param name="gameClockDelta">Game clock delta.</param>
-        public void IncrementGameClock(float gameClockDelta)
+        public void Tick(float timeDelta, float time)
         {
-            if (Phase == PhaseState.RECOVER && PhasePercent >= 1f)
+            if (Phase == PhaseState.Recovering && PhasePercent >= 1f)
             {
                 return;
             }
 
 
-            PhaseClock += gameClockDelta;
+			clock += timeDelta;
 
-            if (Phase == PhaseState.EXECUTE)
+            if (Phase == PhaseState.Executing)
             {
 				// This should probably return the result of the action
                 ExecuteAction(PhasePercent);
@@ -91,7 +92,7 @@ namespace Redninja.BattleSystem.Actions
 				ActionExecuted?.Invoke(null, null);
             }
 
-            if (PhaseClock >= PhaseComplete)
+            if (clock >= PhaseComplete)
             {
                 // increment turn
                 IncrementPhase();

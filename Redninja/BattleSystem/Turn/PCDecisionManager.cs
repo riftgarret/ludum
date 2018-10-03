@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Redninja.BattleSystem.Entity;
+using Redninja.BattleSystem.Entities;
 using Redninja.BattleSystem.Targeting;
 using Redninja.BattleSystem.Actions;
 using Redninja.Core.Skills;

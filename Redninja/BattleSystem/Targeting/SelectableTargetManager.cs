@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using Redninja.BattleSystem.Entity;
+using Redninja.BattleSystem.Entities;
 using Redninja.Core.Skills;
 using Redninja.Core.Characters;
 

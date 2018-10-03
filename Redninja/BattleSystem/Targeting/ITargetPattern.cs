@@ -1,4 +1,4 @@
-﻿using Redninja.BattleSystem.Entity;
+﻿using Redninja.BattleSystem.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

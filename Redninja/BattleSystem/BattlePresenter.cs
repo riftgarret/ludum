@@ -1,43 +1,36 @@
-﻿using Davfalcon.Revelator;
-using Davfalcon.Revelator.Combat;
-using Redninja.BattleSystem.Actions;
-using Redninja.BattleSystem.AI;
-using Redninja.BattleSystem.Combat.Operation;
-using Redninja.BattleSystem.Combat.Operation.Redninja.BattleSystem.Combat.Operation;
-using Redninja.BattleSystem.Entity;
-using Redninja.BattleSystem.Events;
-using Redninja.BattleSystem.Turn;
-using Redninja.Core.Characters;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using Davfalcon.Revelator.Combat;
+using Redninja.BattleSystem.Entities;
+using Redninja.BattleSystem.Turn;
 
 namespace Redninja.BattleSystem
 {
-    /// <summary>
-    /// Main logic that flows through this scene is handled by this presenter in a MVP relationship.
-    /// Where this is the presenter, other components generated will represent the views.  
-    /// </summary>
-    public class BattlePresenter : IGameClock
-    {
-		private ICombatResolver combatResolver;
+	/// <summary>
+	/// Main logic that flows through this scene is handled by this presenter in a MVP relationship.
+	/// Where this is the presenter, other components generated will represent the views.  
+	/// </summary>
+	public class BattlePresenter : IBattlePresenter
+	{
+		private float clock = 0;
 
-        private PCDecisionManager pcDecisionManager = new PCDecisionManager();       
+        private readonly IBattleView view;
+		private readonly ICombatResolver combatResolver;
 
-        private CombatOperationExecutor combatExecutor = new CombatOperationExecutor();        
+		private readonly IBattleEntityManager entityManager = new BattleEntityManager();
 
-        private Queue<IBattleEvent> battleEventQueue = new Queue<IBattleEvent>();
+		private readonly Queue<IBattleEntity> decisionQueue = new Queue<IBattleEntity>();
 
-        private Queue<IBattleEntity> decisionQueue = new Queue<IBattleEntity>();
+		// Maybe consider using a class from a library for performance?
+		private readonly SortedList<float, IBattleOperation> battleOpQueue = new SortedList<float, IBattleOperation>();
 
         //private AISkillResolver aiSkillResolver = new AISkillResolver();
 
-        private BattleEntityManager entityManager = new BattleEntityManager();
-
-        private IBattleView view;
+		// I feel this should be part of the view
+		private readonly PCDecisionManager pcDecisionManager = new PCDecisionManager();
 
 		// Make this public
-        protected GameState gameState;
+		protected GameState gameState;
 
         // a way to we can only be in a certain state when the game is active
         protected enum GameState
@@ -58,144 +51,130 @@ namespace Redninja.BattleSystem
 		/// <summary>
 		/// Update Time.
 		/// </summary>
-		/// <param name="delta"></param>
-		public void IncrementGameClock(float delta)
+		/// <param name="timeDelta"></param>
+		public void IncrementGameClock(float timeDelta)
 		{
 			if (IsTimeActive)
-				entityManager.IncrementGameClock(delta);
+			{
+				clock += timeDelta;
+				entityManager.Tick(timeDelta, clock);
+			}
 		}
 
-		public BattlePresenter(ICombatResolver combatResolver)
-        {
+		public BattlePresenter(IBattleView view, ICombatResolver combatResolver)
+		{
+			this.view = view;
 			this.combatResolver = combatResolver;
 
             // notifies entity needs decision
             entityManager.DecisionRequired += OnActionRequired;
 
-			// I don't think we need this event, just manually inject the combat executor dependency into the BattleAction
-            // notifies entity's action should start to be executed
-            entityManager.OnExecuteOperationDelegate = OnExecuteCombat;
-
             // on a player's successful action selected 
-            pcDecisionManager.OnActionSelectedDelegate = OnActionSelected;
+            //pcDecisionManager.OnActionSelectedDelegate = OnActionSelected;
 
             // on combat events 
-            combatExecutor.OnCombatEventDelegate = OnBattleEvent;
+            //combatExecutor.OnCombatEventDelegate = OnBattleEvent;
         }
 
         /// <summary>
         /// Initialize presenter to load up views and prepare for lifecycle calls.
         /// </summary>
-        public void Initialize(IBattleView view, IEnumerable<IBattleEntity> units)
+        public void Initialize(IEnumerable<IBattleEntity> units)
         {
-            this.view = view;
 
-            entityManager.LoadEntities(partyComponent, enemyComponent);
+            //entityManager.LoadEntities(partyComponent, enemyComponent);
             
-            gameState = GameState.INTRO;           
-        }
+            gameState = GameState.INTRO;
+		}
 
-        /// <summary>
-        /// When a PC or enemy AI has selected an action.
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <param name="action"></param>
-        private void OnActionSelected(BattleEntity entity, IBattleAction action)
-        {
-            entityManager.SetAction(entity, action);
-        }
+		#region Decision processing
+		/// <summary>
+		/// Handles a new action selected for an <see cref="IBattleEntity"/>.
+		/// </summary>
+		/// <param name="entity"></param>
+		/// <param name="action"></param>
+		private void OnActionSelected(IBattleEntity entity, IBattleAction action)
+		{
+			action.BattleOperationReady += OnBattleOperationReady;
 
-        private void OnBattleEvent(IBattleEvent e)
-        {
-            battleEventQueue.Enqueue(e);
-        }
+			entityManager.SetAction(entity, action);
+		}
 
-        /// <summary>
-        /// Delegate from BattleEntity. When a character needs to make a decision. Lets queue it up.
-        /// </summary>
-        /// <param name="entity"></param>
-        private void OnActionRequired(IBattleEntity entity)
-        {
+		/// <summary>
+		/// Enqueues an <see cref="IBattleEntity"/> that is waiting for a decision.
+		/// </summary>
+		/// <param name="entity"></param>
+		private void OnActionRequired(IBattleEntity entity)
+		{
 			// Is this dupe check necessary?
-            if (!decisionQueue.Contains(entity))
-            {
-                decisionQueue.Enqueue(entity);
-            }
-        }
+			if (!decisionQueue.Contains(entity))
+			{
+				decisionQueue.Enqueue(entity);
+			}
+		}
 
-        /// <summary>
-        /// Delegate from BattleEntity. When a character's Action executes an operation.
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <param name="battleAction"></param>
-        private void OnExecuteCombat(BattleEntity entity, ICombatOperation combatOperation)
-        {
-            combatExecutor.Execute(combatOperation);
-        }
-
-        /// <summary>
-        /// Processes the event queue.
-        /// </summary>
-        public void ProcessEventQueue()
-        {
-            while (battleEventQueue.Count > 0)
-            {
-                IBattleEvent battleEvent = battleEventQueue.Dequeue();
-                Debug.Log("ProcessEventQueue: " + battleEvent);
-
-                // temp before we find a good place to resolve.
-                switch (battleEvent.EventType)
-                {
-                    case BattleEventType.DEATH:
-                        if(BattleHelper.CheckForDefeat(entityManager))
-                        {
-                            // TODO should kick off another event to signal we are done.
-                            this.gameState = GameState.LOSS;
-                        }
-                        else if(BattleHelper.CheckForVictory(entityManager))
-                        {
-                            this.gameState = GameState.VICTORY;
-                        }                                                                        
-                        break;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Process actions required incase multiple characters need to make a decision.
-        /// </summary>
-        public void ProcessDecisionQueue()
-        {
-            while (decisionQueue.Count > 0)
-            {
-                IBattleEntity entity = decisionQueue.Dequeue();
-                ProcessDecision(entity);
-            }
-        }
-
-        /// <summary>
-        /// Action is required for this character.
-        /// </summary>
-        /// <param name="entity"></param>
-        private void ProcessDecision(IBattleEntity entity)
-        {
-            if (entity.IsPlayerControlled)
-            {
-                pcDecisionManager.QueuePC(entity);
-            }
-            else
-            {
+		/// <summary>
+		/// Requests a decision for the <see cref="IBattleEntity"/>
+		/// </summary>
+		/// <param name="entity"></param>
+		private void ProcessDecision(IBattleEntity entity)
+		{
+			if (entity.IsPlayerControlled)
+			{
+				// Prompt player for decision
+				//pcDecisionManager.QueuePC(entity);
+			}
+			else
+			{
 				// Move AI skill decision to BattleEntity
-                EnemyBattleEntity npc = (EnemyBattleEntity)entity;
-                IBattleAction enemyAction = aiSkillResolver.ResolveAction(entityManager, npc);
-                entityManager.SetAction(entity, enemyAction);
-            }
-        }
 
+				//EnemyBattleEntity npc = (EnemyBattleEntity)entity;
+				//IBattleAction enemyAction = aiSkillResolver.ResolveAction(entityManager, npc);
+				//entityManager.SetAction(entity, enemyAction);
+			}
+		}
+
+		/// <summary>
+		/// Process actions required incase multiple characters need to make a decision.
+		/// </summary>
+		public void ProcessDecisionQueue()
+		{
+			while (decisionQueue.Count > 0)
+			{
+				IBattleEntity entity = decisionQueue.Dequeue();
+				ProcessDecision(entity);
+			}
+		}
+		#endregion
+
+		#region Battle operations
+		/// <summary>
+		/// Enqueues an <see cref="IBattleOperation"/> for processing.
+		/// </summary>
+		/// <param name="operation"></param>
+		private void OnBattleOperationReady(IBattleOperation operation)
+		{
+			battleOpQueue.Add(operation.ExecutionStartTime, operation);
+		}
+
+		/// <summary>
+		/// Processes the event queue.
+		/// </summary>
+		public void ProcessBattleOperationQueue()
+		{
+			while (battleOpQueue.Count > 0)
+			{
+				IBattleOperation op = battleOpQueue[0];
+				battleOpQueue.RemoveAt(0);
+
+				op.Execute(entityManager, combatResolver);
+			}
+		}
+		#endregion
 
 
 		// Deal with Unity GUI later
-
+		#region View updates
 		/// <summary>
 		/// Handle our Unity GUI loops here.
 		/// </summary>
@@ -211,9 +190,10 @@ namespace Redninja.BattleSystem
         {
             foreach (BattleEntity entity in entityManager.AllEntities)
             {
-                view.SetEntityHps(entity, entity.CurrentHP, entity.MaxHP);
-                view.SetEntityActionPercent(entity, BattleHelper.GetActionPercent(entity));
+                //view.SetEntityHps(entity, entity.CurrentHP, entity.MaxHP);
+                //view.SetEntityActionPercent(entity, BattleHelper.GetActionPercent(entity));
             }
         }
-    }    
+		#endregion
+	}    
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using Redninja.BattleSystem.Actions;
 using Redninja.BattleSystem.Targeting;
 
-namespace Redninja.BattleSystem.Entity
+namespace Redninja.BattleSystem.Entities
 {
 	public class BattleEntityManager : IBattleEntityManager
 	{
@@ -76,8 +76,8 @@ namespace Redninja.BattleSystem.Entity
         /// by adjusting it to the unit of time being used.
         /// </summary>
         /// <param name="deltaTime">Delta time.</param>
-        public void IncrementGameClock(float deltaTime)
-            => AllEntities.ToList().ForEach(unit => unit.IncrementGameClock(deltaTime));
+        public void IncrementTime(float deltaTime)
+            => AllEntities.ToList().ForEach(unit => unit.IncrementTime(deltaTime));
 
         /// <summary>
         /// Set the action for this entity.

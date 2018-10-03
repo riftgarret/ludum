@@ -12,7 +12,7 @@ namespace Redninja.BattleSystem.Combat.Operation.Result
     public interface ICombatLogic
     {
         void Execute(EntityCombatResolver src, EntityCombatResolver dest);
-        void GenerateEvents(EntityCombatResolver src, EntityCombatResolver dest, Queue<IBattleEvent> combatEvents);
+        void GenerateEvents(EntityCombatResolver src, EntityCombatResolver dest, Queue<IBattleOperation> combatEvents);
         bool IsExecuted { get; }
     }
 

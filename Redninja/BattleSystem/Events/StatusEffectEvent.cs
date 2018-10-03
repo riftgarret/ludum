@@ -1,10 +1,10 @@
-using Redninja.BattleSystem.Entity;
+using Redninja.BattleSystem.Entities;
 using Redninja.BattleSystem.Events;
 using System;
 
 namespace Redninja.BattleSystem.Effects
 {
-    public class StatusEffectEvent : IBattleEvent
+    public class StatusEffectEvent : IBattleOperation
     {
         public enum StatusEventType
         {

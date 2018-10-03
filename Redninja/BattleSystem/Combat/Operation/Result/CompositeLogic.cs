@@ -29,7 +29,7 @@ namespace Redninja.BattleSystem.Combat.Operation.Result
             }
         }
 
-        public void GenerateEvents(EntityCombatResolver src, EntityCombatResolver dest, Queue<IBattleEvent> combatEvents)
+        public void GenerateEvents(EntityCombatResolver src, EntityCombatResolver dest, Queue<IBattleOperation> combatEvents)
         {
             foreach (ICombatLogic result in compositeResult)
             {

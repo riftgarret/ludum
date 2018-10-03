@@ -1,30 +1,29 @@
 using System;
 using Davfalcon.Revelator;
 using Davfalcon.Revelator.Combat;
-using Redninja.BattleSystem.Actions;
 
-namespace Redninja.BattleSystem.Entity
+namespace Redninja.BattleSystem.Entities
 {
 	/// <summary>
 	/// Battle entity. Main class that contains all current effects and state of this character in battle.
 	/// </summary>
-	public class BattleEntity : IGameClock, IBattleEntity
+	public class BattleEntity : IBattleEntity
 	{
-		public event Action<IBattleEntity> DecisionRequired;
-
+		private IClock clock;
 		private readonly ICombatResolver combatResolver;
-		private float timer = 0;
 
 		public IUnit Character { get; }
 
 		// If we add an action queue here, this will point to the top instead
 		public IBattleAction Action { get; set; }
-		public PhaseState Phase => Action?.Phase ?? PhaseState.REQUIRES_INPUT;
+		public PhaseState Phase => Action?.Phase ?? PhaseState.Waiting;
 		public float PhasePercent => Action?.PhasePercent ?? 0;
 
 		public int Team { get; set; }
 		public bool IsPlayerControlled { get; set; }
 		public EntityPosition Position { get; private set; } = new EntityPosition(1);
+
+		public event Action<IBattleEntity> DecisionRequired;
 
 		public BattleEntity(IUnit character, ICombatResolver combatResolver)
 		{
@@ -48,16 +47,14 @@ namespace Redninja.BattleSystem.Entity
 		public void MovePosition(int row, int col)
 			=> Position = new EntityPosition(row, col, Position.Size);
 
-		public void IncrementGameClock(float gameClockDelta)
+		public void Tick(float timeDelta, float time)
 		{
-			timer += gameClockDelta;
-
-			Action.IncrementGameClock(gameClockDelta);
+			Action?.Tick(timeDelta, time);
 
 			// Check for buff update interval, then update buffs/status effects
 
 			// Add a DONE state
-			if (Action.Phase == PhaseState.RECOVER && Action.PhaseComplete >= 1f)
+			if (Action.Phase == PhaseState.Recovering && Action.PhaseComplete >= 1f)
 			{
 				DecisionRequired?.Invoke(this);
 

@@ -1,5 +1,5 @@
 using Redninja.BattleSystem.Effects;
-using Redninja.BattleSystem.Entity;
+using Redninja.BattleSystem.Entities;
 using Redninja.Core.Equipment;
 
 namespace Redninja.BattleSystem.Combat.CombatNode

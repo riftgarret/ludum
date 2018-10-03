@@ -7,10 +7,8 @@ namespace Redninja.BattleSystem.Combat.Operation
     /// <summary>
     /// A Combat operation that execute and generate events.
     /// </summary>
-    public interface ICombatOperation
+    public interface ICombatOperation : IBattleOperation
     {
-        void Execute();
-        void GenerateEvents(Queue<IBattleEvent> queue);
-    } 
+	}
 }
 

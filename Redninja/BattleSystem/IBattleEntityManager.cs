@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Redninja.BattleSystem.Actions;
 using Redninja.BattleSystem.Targeting;
 
-namespace Redninja.BattleSystem.Entity
+namespace Redninja.BattleSystem
 {
-	public interface IBattleEntityManager : IGameClock
+	public interface IBattleEntityManager : IClock
 	{
 		IEnumerable<IBattleEntity> AllEntities { get; }
 		IEnumerable<IBattleEntity> EnemyEntities { get; }

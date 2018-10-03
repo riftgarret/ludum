@@ -1,5 +1,5 @@
 using System.Collections;
-using Redninja.BattleSystem.Entity;
+using Redninja.BattleSystem.Entities;
 using Redninja.BattleSystem.Combat.Operation;
 using Redninja.BattleSystem.Targeting;
 using Redninja.Core.Skills;
@@ -27,7 +27,7 @@ namespace Redninja.BattleSystem.Actions
             this.targetResolver = targetResolver;
             this.combatRoundIndex = 0;
             this.combatRoundCount = skill.CombatRounds.Length;
-            SetPhase(PhaseState.PREPARE);
+            SetPhase(PhaseState.Preparing);
         }
 
         /// <summary>

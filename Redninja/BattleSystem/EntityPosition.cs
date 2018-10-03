@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Redninja.BattleSystem.Entity
+﻿namespace Redninja.BattleSystem
 {
-    /// <summary>
-    /// Should probably just be a struct that represents our tile position.
-    /// </summary>
-    public struct EntityPosition
+	/// <summary>
+	/// Should probably just be a struct that represents our tile position.
+	/// </summary>
+	public struct EntityPosition
     {
         public int Column { get;  }
         public int Row { get; }

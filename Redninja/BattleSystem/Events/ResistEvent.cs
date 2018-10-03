@@ -1,4 +1,4 @@
-using Redninja.BattleSystem.Entity;
+using Redninja.BattleSystem.Entities;
 
 namespace Redninja.BattleSystem.Events
 {

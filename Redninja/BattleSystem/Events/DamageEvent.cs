@@ -1,6 +1,6 @@
 
 using Redninja.BattleSystem.Combat.Operation;
-using Redninja.BattleSystem.Entity;
+using Redninja.BattleSystem.Entities;
 using Redninja.BattleSystem.Events;
 using Redninja.Core.Stats;
 

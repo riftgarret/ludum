@@ -1,5 +1,5 @@
 ﻿using Redninja.BattleSystem.Combat.CombatNode;
-using Redninja.BattleSystem.Entity;
+using Redninja.BattleSystem.Entities;
 using Redninja.Core.Skills;
 using System;
 using System.Collections.Generic;

@@ -1,10 +1,9 @@
 ﻿using System;
 using Davfalcon.Revelator;
-using Redninja.BattleSystem.Actions;
 
-namespace Redninja.BattleSystem.Entity
+namespace Redninja.BattleSystem
 {
-	public interface IBattleEntity
+	public interface IBattleEntity : IClock
 	{
 		IUnit Character { get; }
 		IBattleAction Action { get; set; }
@@ -16,7 +15,6 @@ namespace Redninja.BattleSystem.Entity
 
 		event Action<IBattleEntity> DecisionRequired;
 
-		void IncrementGameClock(float gameClockDelta);
 		void InitializeBattlePhase();
 		void MovePosition(int row, int col);
 	}

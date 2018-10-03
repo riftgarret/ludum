@@ -1,4 +1,4 @@
-using Redninja.BattleSystem.Entity;
+using Redninja.BattleSystem.Entities;
 using Redninja.Core.Skills;
 using System.Collections.Generic;
 

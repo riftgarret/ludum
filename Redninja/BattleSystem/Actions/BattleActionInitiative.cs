@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using Redninja.BattleSystem.Entity;
+using Redninja.BattleSystem.Entities;
 
 namespace Redninja.BattleSystem.Actions
 {
@@ -10,7 +10,7 @@ namespace Redninja.BattleSystem.Actions
         public BattleActionInitiative(float initiativeTime)
         {
             recoverTime = initiativeTime;
-            SetPhase(PhaseState.RECOVER);
+            SetPhase(PhaseState.Recovering);
         }        
 
         protected override void ExecuteAction(float actionClock)

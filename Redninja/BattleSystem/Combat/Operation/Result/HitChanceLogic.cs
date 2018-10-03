@@ -19,7 +19,7 @@ namespace Redninja.BattleSystem.Combat.Operation.Result
             Logger.d(this, this);
         }
 
-        public void GenerateEvents(EntityCombatResolver src, EntityCombatResolver dest, Queue<IBattleEvent> combatEvents)
+        public void GenerateEvents(EntityCombatResolver src, EntityCombatResolver dest, Queue<IBattleOperation> combatEvents)
         {
             if (!Hits)
             {
