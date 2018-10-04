@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Redninja.Util
+﻿namespace Redninja.Logging
 {
-    public class RLog
+	public class RLog
     {
         public const string GLOBAL_TAG = "global";
 

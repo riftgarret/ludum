@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Redninja.BattleSystem.Entities;
-using Redninja.BattleSystem.Turn;
 
 namespace Redninja.BattleSystem
 {
@@ -30,34 +29,49 @@ namespace Redninja.BattleSystem
 		// Maybe consider using a class from a library for performance?
 		private readonly SortedList<float, IBattleOperation> battleOpQueue = new SortedList<float, IBattleOperation>();
 
-        //private AISkillResolver aiSkillResolver = new AISkillResolver();
-
-		// I feel this should be part of the view
-		private readonly PCDecisionManager pcDecisionManager = new PCDecisionManager();
-
 		public event Action<IBattleEvent> BattleEventOccurred;
 
-		// Make this public
-		protected GameState gameState;
+		/// <summary>
+		/// Gets the presenter's state.
+		/// </summary>
+		public GameState State { get; private set; } = GameState.Setup;
 
-        // a way to we can only be in a certain state when the game is active
-        protected enum GameState
-        {
-            INTRO,
-            ACTIVE,
-            VICTORY,
-            LOSS
-        }
-
-		// Make this public or merge into below
 		/// <summary>
 		/// Check if time should be active. This can be false due to the game state being
 		/// over or that the user needs to select a skill.
 		/// </summary>
-		private bool IsTimeActive => pcDecisionManager.currentEntity == null && gameState == GameState.ACTIVE;
+		public bool IsTimeActive => State == GameState.Active;
+
+		public BattlePresenter(IBattleView view, ICombatExecutor combatExecutor)
+		{
+			this.view = view;
+			this.combatExecutor = combatExecutor;
+
+            entityManager.DecisionRequired += OnActionRequired;
+        }
+
+		#region Setup and control
+		/// <summary>
+		/// Initialize presenter to load up views and prepare for lifecycle calls.
+		/// </summary>
+		public void Initialize(IEnumerable<IBattleEntity> units)
+        {
+			foreach (IBattleEntity unit in units)
+			{
+				AddBattleEntity(unit);
+			}
+
+			State = GameState.Intro;
+		}
+
+		public void AddBattleEntity(IBattleEntity entity)
+		{
+			entity.ActionDecider.ActionSelected += OnActionSelected;
+			entityManager.AddBattleEntity(entity);
+		}
 
 		/// <summary>
-		/// Update Time.
+		/// Update game clock.
 		/// </summary>
 		/// <param name="timeDelta"></param>
 		public void IncrementGameClock(float timeDelta)
@@ -67,32 +81,7 @@ namespace Redninja.BattleSystem
 				clock.IncrementTime(timeDelta);
 			}
 		}
-
-		public BattlePresenter(IBattleView view, ICombatExecutor combatExecutor)
-		{
-			this.view = view;
-			this.combatExecutor = combatExecutor;
-
-            // notifies entity needs decision
-            entityManager.DecisionRequired += OnActionRequired;
-
-            // on a player's successful action selected 
-            //pcDecisionManager.OnActionSelectedDelegate = OnActionSelected;
-
-            // on combat events 
-            //combatExecutor.OnCombatEventDelegate = OnBattleEvent;
-        }
-
-        /// <summary>
-        /// Initialize presenter to load up views and prepare for lifecycle calls.
-        /// </summary>
-        public void Initialize(IEnumerable<IBattleEntity> units)
-        {
-
-			//entityManager.LoadEntities(partyComponent, enemyComponent);
-
-			gameState = GameState.INTRO;
-		}
+		#endregion
 
 		#region Decision processing
 		/// <summary>
@@ -103,8 +92,8 @@ namespace Redninja.BattleSystem
 		private void OnActionSelected(IBattleEntity entity, IBattleAction action)
 		{
 			action.BattleOperationReady += OnBattleOperationReady;
-
 			entityManager.SetAction(entity, action);
+			State = GameState.Active;
 		}
 
 		/// <summary>
@@ -128,17 +117,11 @@ namespace Redninja.BattleSystem
 		{
 			if (entity.IsPlayerControlled)
 			{
-				// Prompt player for decision
-				//pcDecisionManager.QueuePC(entity);
+				State = GameState.Paused;
 			}
-			else
-			{
-				// Move AI skill decision to BattleEntity
 
-				//EnemyBattleEntity npc = (EnemyBattleEntity)entity;
-				//IBattleAction enemyAction = aiSkillResolver.ResolveAction(entityManager, npc);
-				//entityManager.SetAction(entity, enemyAction);
-			}
+			// Need to figure out the best form of game state to give the decider
+			entity.ActionDecider.ProcessNextAction(entity, this);
 		}
 
 		/// <summary>
@@ -185,26 +168,25 @@ namespace Redninja.BattleSystem
 		}
 		#endregion
 
-
-		// Deal with Unity GUI later
-		#region View updates
+		#region Update loop
+		// This can probably happen together with clock increment
+		// Game state should not change while presenter state is paused
 		/// <summary>
 		/// Handle our Unity GUI loops here.
 		/// </summary>
-		public void OnGUI()
+		public void Update()
 		{
-			UpdateEntityGUI();
+			UpdateView();
 		}
 
 		/// <summary>
-		/// Update GUI for characters
+		/// Update the view.
 		/// </summary>
-		private void UpdateEntityGUI()
+		private void UpdateView()
         {
-            foreach (BattleEntity entity in entityManager.AllEntities)
+            foreach (IBattleEntity entity in entityManager.AllEntities)
             {
-                //view.SetEntityHps(entity, entity.CurrentHP, entity.MaxHP);
-                //view.SetEntityActionPercent(entity, BattleHelper.GetActionPercent(entity));
+				view.UpdateEntity(entity);
             }
         }
 		#endregion
