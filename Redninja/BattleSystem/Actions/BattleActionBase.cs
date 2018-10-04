@@ -6,7 +6,7 @@ namespace Redninja.BattleSystem.Actions
 	/// Base implementation that handles incrementing time. It is required by the 
 	/// subclass to call SetPhase() as part of its initialization.
 	/// </summary>
-	public abstract class BaseBattleAction : IBattleAction
+	public abstract class BattleActionBase : IBattleAction
     {
 		private IClock clock;
 		private float phaseStart;
@@ -25,7 +25,7 @@ namespace Redninja.BattleSystem.Actions
 
 		protected abstract void ExecuteAction(float timeDelta, float time);
 
-		protected BaseBattleAction(float prepare, float action, float recover)
+		protected BattleActionBase(float prepare, float action, float recover)
 		{
 			TimePrepare = prepare;
 			TimeAction = action;
@@ -51,6 +51,9 @@ namespace Redninja.BattleSystem.Actions
                 case PhaseState.Recovering:
 					phaseComplete = phaseStart + TimeRecover;
                     break;
+				case PhaseState.Done:
+					Dispose();
+					break;
             }
 
 			Phase = newPhase;

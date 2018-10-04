@@ -43,17 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BattleSystem\Actions\BaseBattleAction.cs" />
-    <Compile Include="BattleSystem\Actions\InitiativeAction.cs" />
-    <Compile Include="BattleSystem\Events\IMovementEvent.cs" />
+    <Compile Include="BattleSystem\Actions\BattleActionBase.cs" />
+    <Compile Include="BattleSystem\Actions\WaitAction.cs" />
+    <Compile Include="BattleSystem\Events\MovementEvent.cs" />
+    <Compile Include="BattleSystem\GameState.cs" />
+    <Compile Include="BattleSystem\IActionDecider.cs" />
+    <Compile Include="BattleSystem\IBattlePresenter.cs" />
     <Compile Include="BattleSystem\ICombatExecutor.cs" />
     <Compile Include="BattleSystem\IBattleAction.cs" />
     <Compile Include="BattleSystem\BattlePresenter.cs" />
-    <Compile Include="BattleSystem\BattleView.cs" />
     <Compile Include="BattleSystem\Entities\BattleEntity.cs" />
     <Compile Include="BattleSystem\Entities\BattleEntityManager.cs" />
     <Compile Include="BattleSystem\EntityPosition.cs" />
-    <Compile Include="BattleSystem\IBattlePresenter.cs" />
     <Compile Include="BattleSystem\IClock.cs" />
     <Compile Include="BattleSystem\IClockSynchronized.cs" />
     <Compile Include="BattleSystem\Operations\MovementOperation.cs" />
@@ -64,7 +65,7 @@
     <Compile Include="BattleSystem\IBattleOperation.cs" />
     <Compile Include="BattleSystem\IBattleView.cs" />
     <Compile Include="BattleSystem\Targeting\ITargetPattern.cs" />
-    <Compile Include="BattleSystem\Turn\PCDecisionManager.cs" />
+    <Compile Include="BattleSystem\Targeting\TargetPatternFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +78,8 @@
       <Name>Davfalcon</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="BattleSystem\Decisions\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

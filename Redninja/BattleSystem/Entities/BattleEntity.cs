@@ -16,14 +16,16 @@ namespace Redninja.BattleSystem.Entities
 
 		public IUnit Character { get; }
 
+		public int Team { get; set; }
+		public bool IsPlayerControlled => ActionDecider.IsPlayer;
+		public EntityPosition Position { get; private set; } = new EntityPosition(1);
+
 		// If we add an action queue here, this will point to the top instead
 		public IBattleAction Action { get; set; }
 		public PhaseState Phase => Action?.Phase ?? PhaseState.Waiting;
 		public float PhasePercent => Action?.PhaseProgress ?? 0;
 
-		public int Team { get; set; }
-		public bool IsPlayerControlled { get; set; }
-		public EntityPosition Position { get; private set; } = new EntityPosition(1);
+		public IActionDecider ActionDecider { get; set; }
 
 		public event Action<IBattleEntity> DecisionRequired;
 
@@ -44,7 +46,7 @@ namespace Redninja.BattleSystem.Entities
 			combatResolver.Initialize(Character);
 
 			// this value is temp until we assign an initiative per character
-			Action = new InitiativeAction(new RandomInteger(1, 5).Get());
+			Action = new WaitAction(new RandomInteger(1, 5).Get());
 		}
 
 		public void MovePosition(int row, int col)

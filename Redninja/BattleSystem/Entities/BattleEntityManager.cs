@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Redninja.BattleSystem.Actions;
 using Redninja.BattleSystem.Targeting;
 
 namespace Redninja.BattleSystem.Entities

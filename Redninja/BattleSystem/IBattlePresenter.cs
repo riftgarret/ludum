@@ -1,12 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Redninja.BattleSystem
 {
 	public interface IBattlePresenter
 	{
+		event Action<IBattleEvent> BattleEventOccurred;
+
+		void AddBattleEntity(IBattleEntity entity);
+		void IncrementGameClock(float timeDelta);
 		void Initialize(IEnumerable<IBattleEntity> units);
-		void OnGUI();
 		void ProcessBattleOperationQueue();
 		void ProcessDecisionQueue();
+		void Update();
 	}
 }
