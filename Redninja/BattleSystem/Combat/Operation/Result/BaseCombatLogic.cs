@@ -1,5 +1,5 @@
 using Redninja.Util;
-
+using System;
 
 namespace Redninja.BattleSystem.Combat.Operation.Result
 {
@@ -14,8 +14,8 @@ namespace Redninja.BattleSystem.Combat.Operation.Result
         {
             if (executed == true)
             {
-                Debug.LogError("Object has already been executed, illegal execute action: " + this);
-                throw new IllegalStateException("Object has already been executed, illegal execute action: " + this);
+                RLog.E(this, "Object has already been executed, illegal execute action: " + this);
+                throw new InvalidOperationException("Object has already been executed, illegal execute action: " + this);
             }
             executed = true;
         }

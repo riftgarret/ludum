@@ -4,6 +4,7 @@ using Redninja.BattleSystem.Entities;
 using Redninja.BattleSystem.Targeting;
 using Redninja.BattleSystem.Actions;
 using Redninja.Core.Skills;
+using Redninja.Util;
 
 namespace Redninja.BattleSystem.Turn
 {
@@ -102,7 +103,7 @@ namespace Redninja.BattleSystem.Turn
             if (turnQueue.Count == 0)
             {
                 // do nothing bad state
-                Debug.LogError("Bad state, PCTurnManager.SelectSkill when no PC available");
+                RLog.E(this, "Bad state, PCTurnManager.SelectSkill when no PC available");
                 return;
             }
 
@@ -117,7 +118,7 @@ namespace Redninja.BattleSystem.Turn
             if (turnQueue.Count == 0)
             {
                 // do nothing bad state
-                Debug.LogError("Bad state, PCTurnManager.SelectSkill when no PC available");
+                RLog.E(this, "Bad state, PCTurnManager.SelectSkill when no PC available");
                 return;
             }
 
