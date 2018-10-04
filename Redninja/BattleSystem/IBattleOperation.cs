@@ -1,5 +1,4 @@
 ﻿using System;
-using Davfalcon.Revelator.Combat;
 
 namespace Redninja.BattleSystem
 {
@@ -7,6 +6,6 @@ namespace Redninja.BattleSystem
 	{
 		float ExecutionStartTime { get; }
 		event Action<IBattleEvent> BattleEventOccurred;
-		void Execute(IBattleEntityManager manager, ICombatResolver combatResolver);
+		void Execute(IBattleEntityManager manager, ICombatExecutor combatResolver);
 	}
 }

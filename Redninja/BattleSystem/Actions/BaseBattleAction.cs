@@ -1,6 +1,4 @@
 ﻿using System;
-using Redninja.BattleSystem.Combat.Operation;
-using Redninja.BattleSystem.Entities;
 
 namespace Redninja.BattleSystem.Actions
 {
@@ -18,15 +16,22 @@ namespace Redninja.BattleSystem.Actions
 		public float PhaseTime => phaseComplete - phaseStart;
         public float PhaseProgress => PhaseTime == 0 ? 1f : Math.Min((clock.Time - phaseStart) / PhaseTime, 1f);
 
-		// Make these regular properties
-        public abstract float TimePrepare { get; }
-        public abstract float TimeAction { get; }
-        public abstract float TimeRecover { get; }
+        public float TimePrepare { get; }
+        public float TimeAction { get; }
+        public float TimeRecover { get; }
 
 		public event Action<IBattleAction> ActionExecuting;
 		public event Action<IBattleOperation> BattleOperationReady;
 
 		protected abstract void ExecuteAction(float timeDelta, float time);
+
+		protected BaseBattleAction(float prepare, float action, float recover)
+		{
+			TimePrepare = prepare;
+			TimeAction = action;
+			TimeRecover = recover;
+			
+		}
 
         protected void SetPhase(PhaseState newPhase)
         {

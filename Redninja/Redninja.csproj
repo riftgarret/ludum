@@ -44,69 +44,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BattleSystem\Actions\BaseBattleAction.cs" />
-    <Compile Include="BattleSystem\Actions\BattleActionFactory.cs" />
-    <Compile Include="BattleSystem\Actions\BattleActionInitiative.cs" />
-    <Compile Include="BattleSystem\Actions\BattleActionSkill.cs" />
+    <Compile Include="BattleSystem\Actions\InitiativeAction.cs" />
+    <Compile Include="BattleSystem\Events\IMovementEvent.cs" />
+    <Compile Include="BattleSystem\ICombatExecutor.cs" />
     <Compile Include="BattleSystem\IBattleAction.cs" />
     <Compile Include="BattleSystem\BattlePresenter.cs" />
     <Compile Include="BattleSystem\BattleView.cs" />
-    <Compile Include="BattleSystem\Combat\CombatNode\ArmorCombatNode.cs" />
-    <Compile Include="BattleSystem\Combat\CombatNode\CharacterCombatNode.cs" />
-    <Compile Include="BattleSystem\Combat\CombatNode\CombatNodeBuilder.cs" />
-    <Compile Include="BattleSystem\Combat\CombatNode\CombatNodeFactory.cs" />
-    <Compile Include="BattleSystem\Combat\CombatNode\CombatProperty.cs" />
-    <Compile Include="BattleSystem\Combat\CombatNode\CombatPropertyType.cs" />
-    <Compile Include="BattleSystem\Combat\CombatNode\CompositeCombatNode.cs" />
-    <Compile Include="BattleSystem\Combat\CombatNode\ConfigurableCombatNode.cs" />
-    <Compile Include="BattleSystem\Combat\CombatNode\EntityCombatResolver.cs" />
-    <Compile Include="BattleSystem\Combat\CombatNode\EquipmentCombatNode.cs" />
-    <Compile Include="BattleSystem\Combat\CombatNode\ICombatNode.cs" />
-    <Compile Include="BattleSystem\Combat\CombatNode\SkillCombatNode.cs" />
-    <Compile Include="BattleSystem\Combat\CombatNode\StatusEffectCombatNode.cs" />
-    <Compile Include="BattleSystem\Combat\CombatNode\WeaponCombatNode.cs" />
-    <Compile Include="BattleSystem\Combat\CombatResolverFactory.cs" />
-    <Compile Include="BattleSystem\Combat\Operation\ICombatOperation.cs" />
-    <Compile Include="BattleSystem\Combat\Operation\Result\AccuracyEvasionLogic.cs" />
-    <Compile Include="BattleSystem\Combat\Operation\Result\BaseCombatLogic.cs" />
-    <Compile Include="BattleSystem\Combat\Operation\Result\CompositeLogic.cs" />
-    <Compile Include="BattleSystem\Combat\Operation\Result\CritChanceLogic.cs" />
-    <Compile Include="BattleSystem\Combat\Operation\Result\DamageLogic.cs" />
-    <Compile Include="BattleSystem\Combat\Operation\Result\HitChanceLogic.cs" />
-    <Compile Include="BattleSystem\Combat\Operation\Result\ICombatLogic.cs" />
-    <Compile Include="BattleSystem\Combat\Operation\Result\StatusEffectLogic.cs" />
     <Compile Include="BattleSystem\Entities\BattleEntity.cs" />
     <Compile Include="BattleSystem\Entities\BattleEntityManager.cs" />
     <Compile Include="BattleSystem\EntityPosition.cs" />
     <Compile Include="BattleSystem\IBattlePresenter.cs" />
     <Compile Include="BattleSystem\IClock.cs" />
     <Compile Include="BattleSystem\IClockSynchronized.cs" />
+    <Compile Include="BattleSystem\Operations\MovementOperation.cs" />
     <Compile Include="BattleSystem\PhaseState.cs" />
     <Compile Include="BattleSystem\IBattleEntity.cs" />
     <Compile Include="BattleSystem\IBattleEntityManager.cs" />
-    <Compile Include="BattleSystem\Events\BattleEventType.cs" />
-    <Compile Include="BattleSystem\Events\DamageEvent.cs" />
-    <Compile Include="BattleSystem\Events\DeathEvent.cs" />
-    <Compile Include="BattleSystem\Events\DodgeEvent.cs" />
-    <Compile Include="BattleSystem\Events\HealEvent.cs" />
     <Compile Include="BattleSystem\IBattleEvent.cs" />
-    <Compile Include="BattleSystem\Events\MoveEvent.cs" />
-    <Compile Include="BattleSystem\Events\NonDamageEvent.cs" />
-    <Compile Include="BattleSystem\Events\ResistEvent.cs" />
-    <Compile Include="BattleSystem\Events\StatusEffectEvent.cs" />
     <Compile Include="BattleSystem\IBattleOperation.cs" />
     <Compile Include="BattleSystem\IBattleView.cs" />
-    <Compile Include="BattleSystem\Targeting\Conditions\TargetConditionSO.cs" />
-    <Compile Include="BattleSystem\Targeting\Conditions\TargetLifeConditionSO.cs" />
-    <Compile Include="BattleSystem\Targeting\IBattleTargetProvider.cs" />
     <Compile Include="BattleSystem\Targeting\ITargetPattern.cs" />
-    <Compile Include="BattleSystem\Targeting\ITargetResolver.cs" />
-    <Compile Include="BattleSystem\Targeting\ResolvedTargetEnum.cs" />
-    <Compile Include="BattleSystem\Targeting\SelectableTarget.cs" />
-    <Compile Include="BattleSystem\Targeting\SelectableTargetManager.cs" />
-    <Compile Include="BattleSystem\Targeting\TargetingRule.cs" />
-    <Compile Include="BattleSystem\Targeting\TargetPatternFactory.cs" />
-    <Compile Include="BattleSystem\Targeting\TargetResolver.cs" />
-    <Compile Include="BattleSystem\Targeting\TargetResolverFactory.cs" />
     <Compile Include="BattleSystem\Turn\PCDecisionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -120,5 +77,6 @@
       <Name>Davfalcon</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

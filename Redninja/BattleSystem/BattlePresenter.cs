@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Davfalcon.Revelator.Combat;
 using Redninja.BattleSystem.Entities;
 using Redninja.BattleSystem.Turn;
 
@@ -22,15 +21,12 @@ namespace Redninja.BattleSystem
 				Tick?.Invoke(timeDelta);
 			}
 		}
+
 		private Clock clock = new Clock();
-
         private readonly IBattleView view;
-		private readonly ICombatResolver combatResolver;
-
+		private readonly ICombatExecutor combatExecutor;
 		private readonly IBattleEntityManager entityManager = new BattleEntityManager();
-
 		private readonly Queue<IBattleEntity> decisionQueue = new Queue<IBattleEntity>();
-
 		// Maybe consider using a class from a library for performance?
 		private readonly SortedList<float, IBattleOperation> battleOpQueue = new SortedList<float, IBattleOperation>();
 
@@ -38,6 +34,8 @@ namespace Redninja.BattleSystem
 
 		// I feel this should be part of the view
 		private readonly PCDecisionManager pcDecisionManager = new PCDecisionManager();
+
+		public event Action<IBattleEvent> BattleEventOccurred;
 
 		// Make this public
 		protected GameState gameState;
@@ -70,10 +68,10 @@ namespace Redninja.BattleSystem
 			}
 		}
 
-		public BattlePresenter(IBattleView view, ICombatResolver combatResolver)
+		public BattlePresenter(IBattleView view, ICombatExecutor combatExecutor)
 		{
 			this.view = view;
-			this.combatResolver = combatResolver;
+			this.combatExecutor = combatExecutor;
 
             // notifies entity needs decision
             entityManager.DecisionRequired += OnActionRequired;
@@ -163,6 +161,7 @@ namespace Redninja.BattleSystem
 		/// <param name="operation"></param>
 		private void OnBattleOperationReady(IBattleOperation operation)
 		{
+			operation.BattleEventOccurred += OnBattleEventOccurred;
 			battleOpQueue.Add(operation.ExecutionStartTime, operation);
 		}
 
@@ -176,8 +175,13 @@ namespace Redninja.BattleSystem
 				IBattleOperation op = battleOpQueue[0];
 				battleOpQueue.RemoveAt(0);
 
-				op.Execute(entityManager, combatResolver);
+				op.Execute(entityManager, combatExecutor);
 			}
+		}
+
+		private void OnBattleEventOccurred(IBattleEvent battleEvent)
+		{
+			BattleEventOccurred?.Invoke(battleEvent);
 		}
 		#endregion
 
