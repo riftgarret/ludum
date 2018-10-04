@@ -67,6 +67,7 @@
     <Compile Include="BattleSystem\Targeting\ITargetPattern.cs" />
     <Compile Include="BattleSystem\Targeting\TargetPatternFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Logging\RLog.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\rpglibrary\Davfalcon.Revelator\Davfalcon.Revelator.csproj">

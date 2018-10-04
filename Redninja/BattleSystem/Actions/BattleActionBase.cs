@@ -30,7 +30,6 @@ namespace Redninja.BattleSystem.Actions
 			TimePrepare = prepare;
 			TimeAction = action;
 			TimeRecover = recover;
-			
 		}
 
         protected void SetPhase(PhaseState newPhase)
