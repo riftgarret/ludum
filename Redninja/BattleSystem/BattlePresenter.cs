@@ -21,15 +21,12 @@ namespace Redninja.BattleSystem
 				Tick?.Invoke(timeDelta);
 			}
 		}
-		private Clock clock = new Clock();
 
+		private Clock clock = new Clock();
         private readonly IBattleView view;
 		private readonly ICombatExecutor combatExecutor;
-
 		private readonly IBattleEntityManager entityManager = new BattleEntityManager();
-
 		private readonly Queue<IBattleEntity> decisionQueue = new Queue<IBattleEntity>();
-
 		// Maybe consider using a class from a library for performance?
 		private readonly SortedList<float, IBattleOperation> battleOpQueue = new SortedList<float, IBattleOperation>();
 
@@ -37,6 +34,8 @@ namespace Redninja.BattleSystem
 
 		// I feel this should be part of the view
 		private readonly PCDecisionManager pcDecisionManager = new PCDecisionManager();
+
+		public event Action<IBattleEvent> BattleEventOccurred;
 
 		// Make this public
 		protected GameState gameState;
@@ -162,6 +161,7 @@ namespace Redninja.BattleSystem
 		/// <param name="operation"></param>
 		private void OnBattleOperationReady(IBattleOperation operation)
 		{
+			operation.BattleEventOccurred += OnBattleEventOccurred;
 			battleOpQueue.Add(operation.ExecutionStartTime, operation);
 		}
 
@@ -177,6 +177,11 @@ namespace Redninja.BattleSystem
 
 				op.Execute(entityManager, combatExecutor);
 			}
+		}
+
+		private void OnBattleEventOccurred(IBattleEvent battleEvent)
+		{
+			BattleEventOccurred?.Invoke(battleEvent);
 		}
 		#endregion
 

@@ -1,6 +1,8 @@
 using System;
+using Davfalcon.Randomization;
 using Davfalcon.Revelator;
 using Davfalcon.Revelator.Combat;
+using Redninja.BattleSystem.Actions;
 
 namespace Redninja.BattleSystem.Entities
 {
@@ -39,9 +41,10 @@ namespace Redninja.BattleSystem.Entities
 
 		public void InitializeBattlePhase()
 		{
-			// this value is temp until we assign an initiative per character
-			//Action = new BattleActionInitiative(Random.Range(1, 5));
 			combatResolver.Initialize(Character);
+
+			// this value is temp until we assign an initiative per character
+			Action = new InitiativeAction(new RandomInteger(1, 5).Get());
 		}
 
 		public void MovePosition(int row, int col)

@@ -1,16 +1,9 @@
-﻿using Redninja.BattleSystem.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Redninja.BattleSystem.Targeting
+﻿namespace Redninja.BattleSystem.Targeting
 {
-    /// <summary>
-    /// Pattern to define whether a unit lays within it.
-    /// </summary>
-    public interface ITargetPattern
+	/// <summary>
+	/// Pattern to define whether a unit lays within it.
+	/// </summary>
+	public interface ITargetPattern
     {
         /// <summary>
         /// Does this entity lay within this pattern.
