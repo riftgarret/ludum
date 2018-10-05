@@ -11,17 +11,17 @@ namespace Redninja.UnitTests.BattleSystem.Entities
     public class BattleEntityTests
     {
         private BattleEntity subject;
-        private IUnit mockCharacter;
-        private ICombatResolver mockCombatResolver;
+        private IUnit mCharacter;
+        private ICombatResolver mCombatResolver;
         private MockClock clock;
 
         [SetUp]
         public void Setup()
         {
             clock = new MockClock();
-            mockCharacter = Substitute.For<IUnit>();
-            mockCombatResolver = Substitute.For<ICombatResolver>();
-            subject = new BattleEntity(mockCharacter, mockCombatResolver);
+            mCharacter = Substitute.For<IUnit>();
+            mCombatResolver = Substitute.For<ICombatResolver>();
+            subject = new BattleEntity(mCharacter, mCombatResolver);
             subject.SetClock(clock);
         }
         
@@ -39,32 +39,32 @@ namespace Redninja.UnitTests.BattleSystem.Entities
         [Test]
         public void SetAction_GetsClock()
         {
-            IBattleAction action = Substitute.For<IBattleAction>();
+            IBattleAction mAction = Substitute.For<IBattleAction>();
 
-            subject.SetAction(action);
+            subject.SetAction(mAction);
 
-            action.Received().SetClock(clock);
-            action.Received().Start();
+            mAction.Received().SetClock(clock);
+            mAction.Received().Start();
         }
 
         [Test]
         public void SetAction_PreviousActionDisposed()
         {
-            IBattleAction action1 = Substitute.For<IBattleAction>();
-            IBattleAction action2 = Substitute.For<IBattleAction>();
+            IBattleAction mAction1 = Substitute.For<IBattleAction>();
+            IBattleAction mAction2 = Substitute.For<IBattleAction>();
 
-            subject.SetAction(action1);
-            subject.SetAction(action2);
+            subject.SetAction(mAction1);
+            subject.SetAction(mAction2);
 
-            action1.Received().Dispose();
+            mAction1.Received().Dispose();
         }
 
         [Test]
         public void OnTick_ActionDone_InvokeRequireDelegate()
         {
-            IBattleAction action = Substitute.For<IBattleAction>();
-            subject.SetAction(action);
-            action.Phase.Returns(PhaseState.Done);
+            IBattleAction mAction = Substitute.For<IBattleAction>();
+            subject.SetAction(mAction);
+            mAction.Phase.Returns(PhaseState.Done);
 
             bool triggered = false;
             subject.DecisionRequired += (x => triggered = true);

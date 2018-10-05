@@ -112,7 +112,7 @@ namespace Redninja.UnitTests.BattleSystem.Actions
             
             protected override void ExecuteAction(float timeDelta, float time)
             {
-                //
+                
             }
         }
     }
