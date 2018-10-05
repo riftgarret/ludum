@@ -1,4 +1,6 @@
-﻿namespace Redninja.BattleSystem.Actions
+﻿using Redninja.Core.Skills;
+
+namespace Redninja.BattleSystem.Actions
 {
 	public class WaitAction : BattleActionBase
     {        
