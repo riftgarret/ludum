@@ -12,7 +12,7 @@ namespace Redninja.BattleSystem
         float PhaseProgress { get; }
 
 		float TimePrepare { get; }
-		float TimeAction { get; }
+		float TimeExecute { get; }
 		float TimeRecover { get; }
 
 		void Start();
