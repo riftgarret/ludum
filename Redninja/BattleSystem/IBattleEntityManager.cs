@@ -18,5 +18,6 @@ namespace Redninja.BattleSystem
 		IEnumerable<IBattleEntity> GetPattern(int anchorRow, int anchorColumn, bool isEnemies, ITargetPattern pattern);
 		IEnumerable<IBattleEntity> GetRow(int anchorRow, bool isEnemy);
 		void SetAction(IBattleEntity entity, IBattleAction action);
+		void InitializeBattlePhase();
 	}
 }

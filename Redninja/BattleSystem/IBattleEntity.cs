@@ -9,7 +9,7 @@ namespace Redninja.BattleSystem
 		int Team { get; set; }
 		bool IsPlayerControlled { get; }
 		EntityPosition Position { get; }
-		IBattleAction Action { get; set; }
+		IBattleAction CurrentAction { get; }
 		PhaseState Phase { get; }
 		float PhasePercent { get; }
 		IActionDecider ActionDecider { get; set; }
@@ -17,6 +17,7 @@ namespace Redninja.BattleSystem
 		event Action<IBattleEntity> DecisionRequired;
 
 		void InitializeBattlePhase();
+		void SetAction(IBattleAction action);
 		void MovePosition(int row, int col);
 	}
 }

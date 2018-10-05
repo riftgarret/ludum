@@ -2,7 +2,6 @@
 {
 	public enum GameState
 	{
-		Setup,
 		Intro,
 		Active,
 		Paused,

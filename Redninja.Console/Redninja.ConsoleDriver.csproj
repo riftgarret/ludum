@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="ConsoleView.cs" />
     <Compile Include="Output.cs" />
+    <Compile Include="PlayerInput.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

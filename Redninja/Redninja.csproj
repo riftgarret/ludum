@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BattleSystem\Actions\BattleActionBase.cs" />
+    <Compile Include="BattleSystem\Actions\MovementAction.cs" />
     <Compile Include="BattleSystem\Actions\WaitAction.cs" />
     <Compile Include="BattleSystem\Events\MovementEvent.cs" />
     <Compile Include="BattleSystem\GameState.cs" />

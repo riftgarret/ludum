@@ -7,7 +7,7 @@ namespace Redninja.BattleSystem.Entities
 {
 	public class BattleEntityManager : IBattleEntityManager
 	{
-        private HashSet<IBattleEntity> entityMap = new HashSet<IBattleEntity>();
+		private HashSet<IBattleEntity> entityMap = new HashSet<IBattleEntity>();
 
 		public IEnumerable<IBattleEntity> EnemyEntities => entityMap.Where(entity => !entity.IsPlayerControlled);
 
@@ -46,48 +46,48 @@ namespace Redninja.BattleSystem.Entities
 		/// <param name="column"></param>
 		/// <returns></returns>
 		public IEnumerable<IBattleEntity> GetPattern(int anchorRow, int anchorColumn, bool isEnemies, ITargetPattern pattern)
-        {
-            return (isEnemies ? EnemyEntities : PlayerEntities)
-                .Where(entity =>
-            {
-                // need to check all squares that are within character
-                EntityPosition position = entity.Position;
-                for (int targetRow = 0; targetRow < position.Size; targetRow++)
-                {
-                    for (int targetColumn = 0; targetColumn < position.Size; targetColumn++)
-                    {
-                        if (pattern.IsInPattern(anchorRow, anchorColumn, targetRow, targetColumn))
-                        {
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            });
-        }      
+		{
+			return (isEnemies ? EnemyEntities : PlayerEntities)
+				.Where(entity =>
+			{
+				// need to check all squares that are within character
+				EntityPosition position = entity.Position;
+				for (int targetRow = 0; targetRow < position.Size; targetRow++)
+				{
+					for (int targetColumn = 0; targetColumn < position.Size; targetColumn++)
+					{
+						if (pattern.IsInPattern(anchorRow, anchorColumn, targetRow, targetColumn))
+						{
+							return true;
+						}
+					}
+				}
+				return false;
+			});
+		}
 
-        /// <summary>
-        /// Get Row of entities.
-        /// </summary>
-        /// <param name="anchorRow"></param>
-        /// <param name="isEnemy"></param>
-        /// <returns></returns>
-        public IEnumerable<IBattleEntity> GetRow(int anchorRow, bool isEnemy)
-        {
-            return GetPattern(anchorRow, 0, isEnemy, TargetPatternFactory.CreateRowPattern());
-        }
+		/// <summary>
+		/// Get Row of entities.
+		/// </summary>
+		/// <param name="anchorRow"></param>
+		/// <param name="isEnemy"></param>
+		/// <returns></returns>
+		public IEnumerable<IBattleEntity> GetRow(int anchorRow, bool isEnemy)
+		{
+			return GetPattern(anchorRow, 0, isEnemy, TargetPatternFactory.CreateRowPattern());
+		}
 
-        /// <summary>
-        /// Initialize the battle phase, this sets the initial 'Initiative action' 
-        /// </summary>
-        private void InitializeBattlePhase() => AllEntities.ToList().ForEach(unit => unit.InitializeBattlePhase());
+		/// <summary>
+		/// Initialize the battle phase, this sets the initial 'Initiative action' 
+		/// </summary>
+		public void InitializeBattlePhase() => AllEntities.ToList().ForEach(unit => unit.InitializeBattlePhase());
 
-        /// <summary>
-        /// Set the action for this entity.
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <param name="action"></param>
-        public void SetAction(IBattleEntity entity, IBattleAction action)
-            => entity.Action = action;        
-    }     
+		/// <summary>
+		/// Set the action for this entity.
+		/// </summary>
+		/// <param name="entity"></param>
+		/// <param name="action"></param>
+		public void SetAction(IBattleEntity entity, IBattleAction action)
+			=> entity.SetAction(action);
+	}
 }

@@ -8,8 +8,9 @@ namespace Redninja.BattleSystem
 		event Action<IBattleEvent> BattleEventOccurred;
 
 		void AddBattleEntity(IBattleEntity entity);
+		void AddBattleEntities(IEnumerable<IBattleEntity> entities);
 		void IncrementGameClock(float timeDelta);
-		void Initialize(IEnumerable<IBattleEntity> units);
+		void Initialize();
 		void ProcessBattleOperationQueue();
 		void ProcessDecisionQueue();
 		void Update();
