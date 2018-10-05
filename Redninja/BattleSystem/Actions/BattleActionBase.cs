@@ -32,6 +32,9 @@ namespace Redninja.BattleSystem.Actions
             ActionTime = actionTime;
 		}
 
+        protected BattleActionBase(float prepare, float execute, float recover)
+            : this(new ActionTime(prepare, execute, recover)) { }
+
         protected void SetPhase(PhaseState newPhase)
         {
 			// In case of manual/premature phase changes, set start time to current time
