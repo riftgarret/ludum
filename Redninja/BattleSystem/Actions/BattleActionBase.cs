@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Redninja.Core.Skills;
+using System;
 
 namespace Redninja.BattleSystem.Actions
 {
@@ -16,20 +17,19 @@ namespace Redninja.BattleSystem.Actions
 		public float PhaseTime => phaseComplete - phaseStart;
         public float PhaseProgress => PhaseTime == 0 ? 1f : Math.Min((clock.Time - phaseStart) / PhaseTime, 1f);
 
-        public float TimePrepare { get; }
-        public float TimeAction { get; }
-        public float TimeRecover { get; }
+        public ActionTime ActionTime { get; }
+        public float TimePrepare => ActionTime.Prepare;
+        public float TimeExecute => ActionTime.Execute;
+        public float TimeRecover => ActionTime.Recover;
 
 		public event Action<IBattleAction> ActionExecuting;
 		public event Action<IBattleOperation> BattleOperationReady;
 
 		protected abstract void ExecuteAction(float timeDelta, float time);
 
-		protected BattleActionBase(float prepare, float action, float recover)
+		protected BattleActionBase(ActionTime actionTime)
 		{
-			TimePrepare = prepare;
-			TimeAction = action;
-			TimeRecover = recover;
+            ActionTime = actionTime;
 		}
 
         protected void SetPhase(PhaseState newPhase)
@@ -44,7 +44,7 @@ namespace Redninja.BattleSystem.Actions
                     phaseComplete = phaseStart + TimePrepare;
                     break;
                 case PhaseState.Executing:
-                    phaseComplete = phaseStart + TimeAction;
+                    phaseComplete = phaseStart + TimeExecute;
 					ActionExecuting?.Invoke(this);
                     break;
                 case PhaseState.Recovering:
