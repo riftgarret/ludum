@@ -19,7 +19,7 @@ namespace Redninja.BattleSystem.Targeting
 
         public int AnchoredPositionColumn { get; }
 
-        public int TeamSide { get; } // TODO rice comment 
+        public int Team { get; } 
 
         private SelectedTarget(         
             IBattleEntity targetEntity,             
@@ -30,13 +30,13 @@ namespace Redninja.BattleSystem.Targeting
             TargetEntity = targetEntity;            
             AnchoredPositionRow = anchoredPositionRow;
             AnchoredPositionColumn = anchoredPositionColumn;
-            TeamSide = teamSide;
+            Team = teamSide;
         }
 
         public static SelectedTarget CreateEntityTarget(IBattleEntity target)
             => new SelectedTarget(target, -1, -1, -1);
 
-        public static SelectedTarget CreatePositionTarget(int row, int col, int teamSide)
-            => new SelectedTarget(null, row, col, teamSide);
+        public static SelectedTarget CreatePositionTarget(int row, int col, int team)
+            => new SelectedTarget(null, row, col, team);
     }
 }
