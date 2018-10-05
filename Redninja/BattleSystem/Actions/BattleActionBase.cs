@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Redninja.Core.Skills;
+using System;
 
 namespace Redninja.BattleSystem.Actions
 {
