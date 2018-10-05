@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Davfalcon.Revelator", "..\r
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "..\App\App.csproj", "{3295384F-5222-4AAA-92B8-B86D81DDE225}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redninja.ConsoleDriver", "..\Redninja.Console\Redninja.ConsoleDriver.csproj", "{07F10121-23EC-4EBB-93B9-6B99E77E8B75}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{3F1FA461-A8B2-4B6D-8C39-050069CE2A66}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3295384F-5222-4AAA-92B8-B86D81DDE225}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3295384F-5222-4AAA-92B8-B86D81DDE225}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07F10121-23EC-4EBB-93B9-6B99E77E8B75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07F10121-23EC-4EBB-93B9-6B99E77E8B75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07F10121-23EC-4EBB-93B9-6B99E77E8B75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07F10121-23EC-4EBB-93B9-6B99E77E8B75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

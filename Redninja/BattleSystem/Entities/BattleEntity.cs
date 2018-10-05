@@ -21,9 +21,9 @@ namespace Redninja.BattleSystem.Entities
 		public EntityPosition Position { get; private set; } = new EntityPosition(1);
 
 		// If we add an action queue here, this will point to the top instead
-		public IBattleAction Action { get; set; }
-		public PhaseState Phase => Action?.Phase ?? PhaseState.Waiting;
-		public float PhasePercent => Action?.PhaseProgress ?? 0;
+		public IBattleAction CurrentAction { get; private set; }
+		public PhaseState Phase => CurrentAction?.Phase ?? PhaseState.Waiting;
+		public float PhasePercent => CurrentAction?.PhaseProgress ?? 0;
 
 		public IActionDecider ActionDecider { get; set; }
 
@@ -44,9 +44,16 @@ namespace Redninja.BattleSystem.Entities
 		public void InitializeBattlePhase()
 		{
 			combatResolver.Initialize(Character);
+		}
 
-			// this value is temp until we assign an initiative per character
-			Action = new WaitAction(new RandomInteger(1, 5).Get());
+		public void SetAction(IBattleAction action)
+		{
+			if (CurrentAction != null)
+				CurrentAction.Dispose();
+
+			CurrentAction = action;
+			CurrentAction.SetClock(clock);
+			CurrentAction.Start();
 		}
 
 		public void MovePosition(int row, int col)
@@ -56,7 +63,7 @@ namespace Redninja.BattleSystem.Entities
 		{
 			// Check for buff update interval, then update buffs/status effects
 
-			if (Action.Phase == PhaseState.Done)
+			if (CurrentAction.Phase == PhaseState.Done)
 			{
 				DecisionRequired?.Invoke(this);
 				// If we add an action queue, pop the completed action off here

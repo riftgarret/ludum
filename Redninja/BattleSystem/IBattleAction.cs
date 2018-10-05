@@ -14,6 +14,9 @@ namespace Redninja.BattleSystem
 		float TimePrepare { get; }
 		float TimeExecute { get; }
 		float TimeRecover { get; }
+
+		void Start();
+		void Start(IClock clock);
 	}
 }
 

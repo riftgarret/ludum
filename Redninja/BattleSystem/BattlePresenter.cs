@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Davfalcon.Randomization;
+using Redninja.BattleSystem.Actions;
 using Redninja.BattleSystem.Entities;
 
 namespace Redninja.BattleSystem
@@ -22,7 +24,7 @@ namespace Redninja.BattleSystem
 		}
 
 		private Clock clock = new Clock();
-        private readonly IBattleView view;
+		private readonly IBattleView view;
 		private readonly ICombatExecutor combatExecutor;
 		private readonly IBattleEntityManager entityManager = new BattleEntityManager();
 		private readonly Queue<IBattleEntity> decisionQueue = new Queue<IBattleEntity>();
@@ -34,7 +36,7 @@ namespace Redninja.BattleSystem
 		/// <summary>
 		/// Gets the presenter's state.
 		/// </summary>
-		public GameState State { get; private set; } = GameState.Setup;
+		public GameState State { get; private set; } = GameState.Intro;
 
 		/// <summary>
 		/// Check if time should be active. This can be false due to the game state being
@@ -47,27 +49,38 @@ namespace Redninja.BattleSystem
 			this.view = view;
 			this.combatExecutor = combatExecutor;
 
-            entityManager.DecisionRequired += OnActionRequired;
-        }
+			entityManager.DecisionRequired += OnActionRequired;
+		}
 
 		#region Setup and control
 		/// <summary>
 		/// Initialize presenter to load up views and prepare for lifecycle calls.
 		/// </summary>
-		public void Initialize(IEnumerable<IBattleEntity> units)
-        {
-			foreach (IBattleEntity unit in units)
-			{
-				AddBattleEntity(unit);
-			}
+		public void Initialize()
+		{
+			entityManager.InitializeBattlePhase();
 
-			State = GameState.Intro;
+			// this value is temp until we assign an initiative per character
+			//SetAction(new WaitAction(new RandomInteger(1, 5).Get()));
+
+			foreach (IBattleEntity entity in entityManager.AllEntities)
+			{
+				OnActionSelected(entity, new WaitAction(new RandomInteger(1, 5).Get()));
+			}
+		}
+
+		public void AddBattleEntities(IEnumerable<IBattleEntity> entities)
+		{
+			foreach (IBattleEntity entity in entities)
+			{
+				AddBattleEntity(entity);
+			}
 		}
 
 		public void AddBattleEntity(IBattleEntity entity)
 		{
 			entity.ActionDecider.ActionSelected += OnActionSelected;
-			entityManager.AddBattleEntity(entity);
+			entityManager.AddBattleEntity(entity, clock);
 		}
 
 		/// <summary>
@@ -183,12 +196,12 @@ namespace Redninja.BattleSystem
 		/// Update the view.
 		/// </summary>
 		private void UpdateView()
-        {
-            foreach (IBattleEntity entity in entityManager.AllEntities)
-            {
+		{
+			foreach (IBattleEntity entity in entityManager.AllEntities)
+			{
 				view.UpdateEntity(entity);
-            }
-        }
+			}
+		}
 		#endregion
-	}    
+	}
 }
