@@ -1,6 +1,4 @@
 ﻿using System;
-using Davfalcon.Revelator.Borger;
-using Redninja.BattleSystem;
 
 namespace Redninja.ConsoleDriver
 {

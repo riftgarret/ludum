@@ -1,5 +1,4 @@
 ﻿using System;
-using Redninja.BattleSystem;
 
 namespace Redninja.ConsoleDriver
 {

@@ -59,9 +59,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BattleSystem\Actions\BattleActionBaseTests.cs" />
-    <Compile Include="BattleSystem\Entities\BattleEntityTests.cs" />
-    <Compile Include="BattleSystem\MockClock.cs" />
+    <Compile Include="Actions\BattleActionBaseTests.cs" />
+    <Compile Include="Entities\BattleEntityTests.cs" />
+    <Compile Include="MockClock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
