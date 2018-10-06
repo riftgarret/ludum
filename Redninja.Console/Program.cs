@@ -5,9 +5,8 @@ using Davfalcon;
 using Davfalcon.Revelator;
 using Davfalcon.Revelator.Borger;
 using Davfalcon.Revelator.Combat;
-using Redninja.BattleSystem;
-using Redninja.BattleSystem.Entities;
-using Redninja.BattleSystem.Events;
+using Redninja.Entities;
+using Redninja.Events;
 
 namespace Redninja.ConsoleDriver
 {
