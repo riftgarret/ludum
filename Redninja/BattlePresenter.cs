@@ -50,6 +50,7 @@ namespace Redninja
 			this.combatExecutor = combatExecutor;
 
 			entityManager.DecisionRequired += OnActionRequired;
+			combatExecutor.BattleEventOccurred += OnBattleEventOccurred;
 		}
 
 		#region Setup and control
@@ -157,7 +158,6 @@ namespace Redninja
 		/// <param name="operation"></param>
 		private void OnBattleOperationReady(IBattleOperation operation)
 		{
-			operation.BattleEventOccurred += OnBattleEventOccurred;
 			battleOpQueue.Add(operation.ExecutionStartTime, operation);
 		}
 

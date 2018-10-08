@@ -46,6 +46,7 @@
     <Compile Include="Actions\BattleActionBase.cs" />
     <Compile Include="Actions\MovementAction.cs" />
     <Compile Include="Actions\WaitAction.cs" />
+    <Compile Include="CombatExecutor.cs" />
     <Compile Include="Decisions\DecisionManager.cs" />
     <Compile Include="Decisions\ISkillProvider.cs" />
     <Compile Include="Events\MovementEvent.cs" />

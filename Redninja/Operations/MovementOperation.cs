@@ -11,13 +11,9 @@ namespace Redninja.Operations
 
 		public float ExecutionStartTime { get; }
 
-		public event Action<IBattleEvent> BattleEventOccurred;
-
-		public void Execute(IBattleEntityManager manager, ICombatExecutor combatResolver)
+		public void Execute(IBattleEntityManager manager, ICombatExecutor combatExecutor)
 		{
-			EntityPosition position = unit.Position;
-			unit.MovePosition(row, col);
-			BattleEventOccurred?.Invoke(new MovementEvent(unit, unit.Position, position));
+			combatExecutor.MoveEntity(unit, row, col);
 		}
 
 		public MovementOperation(IBattleEntity unit, int row, int col)

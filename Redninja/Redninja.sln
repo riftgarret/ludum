@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redninja.ConsoleDriver", ".
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redninja.UnitTests", "..\Redninja.UnitTests\Redninja.UnitTests.csproj", "{C6FF7814-11C5-4856-902B-9717E9C3A743}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{3B717152-77D9-4109-8F4E-4A1C9576679C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{07F10121-23EC-4EBB-93B9-6B99E77E8B75} = {3B717152-77D9-4109-8F4E-4A1C9576679C}
+		{C6FF7814-11C5-4856-902B-9717E9C3A743} = {3B717152-77D9-4109-8F4E-4A1C9576679C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5D4A79B7-9746-4A6C-ABFE-58D19EF1BC1B}
