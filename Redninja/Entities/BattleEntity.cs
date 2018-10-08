@@ -26,16 +26,12 @@ namespace Redninja.Entities
 
 		public event Action<IBattleEntity> DecisionRequired;
 
-		public BattleEntity(IUnit character, ICombatExecutor combatResolver)
+		public BattleEntity(IUnit character, IActionDecider actionDecider, ICombatExecutor combatExecutor)
 		{
-			// Instead of using ICombatResolver directly, consider extending/wrapping an implementation that calls events
-			this.combatExecutor = combatResolver;
+			this.combatExecutor = combatExecutor;
 
 			Character = character;
-
-			// Combat node stuff should move to action resoluton
-			//combatNodeFactory = new CombatNodeFactory(this);
-
+			ActionDecider = actionDecider;
 		}
 
 		public void InitializeBattlePhase()

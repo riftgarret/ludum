@@ -1,5 +1,4 @@
 ﻿using System;
-using Davfalcon.Nodes;
 using Davfalcon.Revelator;
 using Davfalcon.Revelator.Combat;
 using Redninja.Events;
@@ -40,15 +39,20 @@ namespace Redninja
 		public void MoveEntity(IBattleEntity entity, EntityPosition newPosition)
 			=> MoveEntity(entity, newPosition.Row, newPosition.Column);
 
-		public INode GetRawDamage(IBattleEntity attacker, IDamageSource source)
+		public IDamageNode GetRawDamage(IBattleEntity attacker, IDamageSource source)
 			=> resolver.GetDamageNode(attacker.Character, source);
 
-		public INode GetDamage(IBattleEntity attacker, IBattleEntity defender, IDamageSource source)
-		{
-			throw new NotImplementedException();
-		}
+		public IDefenseNode GetDamage(IBattleEntity attacker, IBattleEntity defender, IDamageSource source)
+			=> GetDamage(defender, GetRawDamage(attacker, source));
 
-		public INode GetDamage(INode incomingDamage, IBattleEntity defender, IDamageSource source)
-			=> resolver.GetDefenseNode(defender.Character, incomingDamage, source.DamageTypes);
+		public IDefenseNode GetDamage(IBattleEntity defender, IDamageNode incomingDamage)
+			=> resolver.GetDefenseNode(defender.Character, incomingDamage);
+
+		public IDefenseNode DealDamage(IBattleEntity attacker, IBattleEntity defender, IDamageSource source)
+		{
+			IDefenseNode damage = GetDamage(attacker, defender, source);
+			BattleEventOccurred?.Invoke(new DamageEvent(defender, damage, resolver.ApplyDamage(damage)));
+			return damage;
+		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using System;
-using Davfalcon.Nodes;
 using Davfalcon.Revelator;
+using Davfalcon.Revelator.Combat;
 
 namespace Redninja
 {
@@ -11,8 +11,9 @@ namespace Redninja
 		void InitializeEntity(IBattleEntity entity);
 		void MoveEntity(IBattleEntity entity, int newRow, int newCol);
 		void MoveEntity(IBattleEntity entity, EntityPosition newPosition);
-		INode GetRawDamage(IBattleEntity attacker, IDamageSource source);
-		INode GetDamage(IBattleEntity attacker, IBattleEntity defender, IDamageSource source);
-		INode GetDamage(INode incomingDamage, IBattleEntity defender, IDamageSource source);
+		IDamageNode GetRawDamage(IBattleEntity attacker, IDamageSource source);
+		IDefenseNode GetDamage(IBattleEntity attacker, IBattleEntity defender, IDamageSource source);
+		IDefenseNode GetDamage(IBattleEntity defender, IDamageNode incomingDamage);
+		IDefenseNode DealDamage(IBattleEntity attacker, IBattleEntity defender, IDamageSource source);
 	}
 }

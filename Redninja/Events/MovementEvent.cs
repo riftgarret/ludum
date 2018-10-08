@@ -1,4 +1,6 @@
-﻿namespace Redninja.Events
+﻿using System;
+
+namespace Redninja.Events
 {
 	public class MovementEvent : IBattleEvent
 	{
@@ -8,7 +10,7 @@
 
 		public MovementEvent(IBattleEntity entity, EntityPosition newPosition, EntityPosition originalPosition)
 		{
-			Entity = entity;
+			Entity = entity ?? throw new ArgumentNullException(nameof(entity));
 			NewPosition = newPosition;
 			OriginalPosition = originalPosition;
 		}

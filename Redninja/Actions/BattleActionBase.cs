@@ -41,6 +41,8 @@ namespace Redninja.Actions
 
 		protected void SetPhase(PhaseState newPhase)
 		{
+			Phase = newPhase;
+
 			// In case of manual/premature phase changes, set start time to current time
 			// Otherwise, set it to intended completion time to account for clock overshooting
 			phaseStart = Math.Min(clock.Time, phaseComplete);
@@ -48,21 +50,25 @@ namespace Redninja.Actions
 			switch (newPhase)
 			{
 				case PhaseState.Preparing:
-					phaseComplete = phaseStart + TimePrepare;
+					if (TimePrepare <= 0) IncrementPhase();
+					else phaseComplete = phaseStart + TimePrepare;
 					break;
 				case PhaseState.Executing:
-					phaseComplete = phaseStart + TimeExecute;
-					ActionExecuting?.Invoke(this);
+					if (TimeExecute <= 0) IncrementPhase();
+					else
+					{
+						phaseComplete = phaseStart + TimeExecute;
+						ActionExecuting?.Invoke(this);
+					}
 					break;
 				case PhaseState.Recovering:
-					phaseComplete = phaseStart + TimeRecover;
+					if (TimeRecover <= 0) IncrementPhase();
+					else phaseComplete = phaseStart + TimeRecover;
 					break;
 				case PhaseState.Done:
 					Dispose();
 					break;
 			}
-
-			Phase = newPhase;
 		}
 
 		private void IncrementPhase()

@@ -62,11 +62,10 @@ namespace Redninja
 			entityManager.InitializeBattlePhase();
 
 			// this value is temp until we assign an initiative per character
-			//SetAction(new WaitAction(new RandomInteger(1, 5).Get()));
 
 			foreach (IBattleEntity entity in entityManager.AllEntities)
 			{
-				OnActionSelected(entity, new WaitAction(new RandomInteger(1, 5).Get()));
+				OnActionSelected(entity, new WaitAction(new RandomInteger(1, 10).Get()));
 			}
 		}
 
@@ -135,7 +134,7 @@ namespace Redninja
 			}
 
 			// Need to figure out the best form of game state to give the decider
-			entity.ActionDecider.ProcessNextAction(entity, this);
+			entity.ActionDecider.ProcessNextAction(entity, entityManager);
 		}
 
 		/// <summary>
@@ -168,7 +167,7 @@ namespace Redninja
 		{
 			while (battleOpQueue.Count > 0)
 			{
-				IBattleOperation op = battleOpQueue[0];
+				IBattleOperation op = battleOpQueue.Values[0];
 				battleOpQueue.RemoveAt(0);
 
 				op.Execute(entityManager, combatExecutor);
@@ -189,7 +188,9 @@ namespace Redninja
 		/// </summary>
 		public void Update()
 		{
+			ProcessBattleOperationQueue();
 			UpdateView();
+			ProcessDecisionQueue();
 		}
 
 		/// <summary>
