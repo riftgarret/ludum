@@ -26,7 +26,7 @@ namespace Redninja.Targeting.Conditions
             private Condition conditionDelegate;
             internal DelegateTargetCondition(Condition condition) => this.conditionDelegate = condition;
 
-            public bool IsValidTarget(BattleEntity entity) => conditionDelegate.Invoke(entity);            
+            public bool IsValidTarget(IBattleEntity entity) => conditionDelegate.Invoke(entity);            
         }
     }   
 }

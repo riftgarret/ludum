@@ -7,6 +7,6 @@ namespace Redninja.Targeting.Conditions
     /// </summary>
     public interface ITargetCondition
     {
-        bool IsValidTarget(BattleEntity entity);
+        bool IsValidTarget(IBattleEntity entity);
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Redninja.Actions;
 
 namespace Redninja.Decisions
 {
@@ -13,15 +14,21 @@ namespace Redninja.Decisions
     /// </summary>
     public class DecisionManager
     {
-        private IBattleEntityManager bem;
+        private IBattleEntityManager entityManager;
 
-        public IEnumerable<ICombatSkill> GetAvailableSkills(IBattleEntity entity)
+        public DecisionManager(IBattleEntityManager entityManager)
+        {
+            this.entityManager = entityManager;
+        }
+
+        public AvailableSkillsResult GetAvailableSkills(IBattleEntity entity)
         {            
+            
             return null;
         }
 
-        public IEnumerable<SelectedTarget> GetSelectableTargets(IBattleEntity entity, ICombatSkill combatSkill)
-        {
+        public AvailableTargetsResult GetSelectableTargets(IBattleEntity entity, ICombatSkill combatSkill)
+        {            
             // right now with a small grid, this could return 1 for each character, or 1 for each position
             // but i feel like there is a better way to communicate this.
             return null;
@@ -29,7 +36,7 @@ namespace Redninja.Decisions
 
         public IBattleAction CreateAction(IBattleEntity entity, ICombatSkill combatSkill, SelectedTarget target)
         {
-            return null;
+            return new CombatSkillAction(entity, combatSkill, target);
         }
     }
 }

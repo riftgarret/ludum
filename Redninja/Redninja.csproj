@@ -44,8 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\BattleActionBase.cs" />
+    <Compile Include="Actions\CombatSkillAction.cs" />
     <Compile Include="Actions\MovementAction.cs" />
     <Compile Include="Actions\WaitAction.cs" />
+    <Compile Include="Decisions\AvailableSkillsResult.cs" />
+    <Compile Include="Decisions\AvailableTargetsResult.cs" />
     <Compile Include="Decisions\DecisionManager.cs" />
     <Compile Include="Decisions\ISkillProvider.cs" />
     <Compile Include="Events\MovementEvent.cs" />
@@ -67,12 +70,16 @@
     <Compile Include="IBattleEvent.cs" />
     <Compile Include="IBattleOperation.cs" />
     <Compile Include="IBattleView.cs" />
+    <Compile Include="Skills\CombatRound.cs" />
     <Compile Include="Targeting\Conditions\ITargetCondition.cs" />
     <Compile Include="Targeting\Conditions\TargetConditionFactory.cs" />
     <Compile Include="Targeting\ITargetPattern.cs" />
+    <Compile Include="Targeting\ITargetResolver.cs" />
     <Compile Include="Targeting\SelectedTarget.cs" />
     <Compile Include="Targeting\TargetingRule.cs" />
     <Compile Include="Targeting\TargetPatternFactory.cs" />
+    <Compile Include="Targeting\TargetResolver.cs" />
+    <Compile Include="Targeting\TargetResolverFactory.cs" />
     <Compile Include="Targeting\TargetType.cs" />
     <Compile Include="CombatStats.cs" />
     <Compile Include="Actions\ActionTime.cs" />

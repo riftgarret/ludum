@@ -12,7 +12,6 @@ namespace Redninja.Targeting
     public enum TargetType
     {
         Target, // targets are not based on tiles
-        Pattern, // targets are based on pattern on tiles
-        TargetAndPattern // target is center of pattern
+        Positional, // targets are based on pattern on tiles
     }
 }

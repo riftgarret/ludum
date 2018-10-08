@@ -28,7 +28,7 @@ namespace Redninja.Targeting
         /// </summary>
         /// <returns><c>true</c> if this instance is valid target the specified entity; otherwise, <c>false</c>.</returns>
         /// <param name="entity">Entity.</param>
-        public bool IsValidTarget(BattleEntity entity)
+        public bool IsValidTarget(IBattleEntity entity)
             => conditions.Where(c => c.IsValidTarget(entity)).Count() > 0;        
     }
 }

@@ -11,7 +11,7 @@ namespace Redninja.Targeting
     /// </summary>
     public class SelectedTarget
     {
-        public bool IsPosition => TargetEntity == null;
+        public TargetType TargetType => TargetEntity == null? TargetType.Positional : TargetType.Target;
 
         public IBattleEntity TargetEntity { get; }        
 
