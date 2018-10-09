@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Davfalcon.Revelator;
+using Redninja.Decisions;
+using Redninja.Skills;
 
 namespace Redninja
 {
@@ -13,6 +16,7 @@ namespace Redninja
 		PhaseState Phase { get; }
 		float PhasePercent { get; }
 		IActionDecider ActionDecider { get; set; }
+		List<ICombatSkill> Skills { get; }
 
 		event Action<IBattleEntity> DecisionRequired;
 

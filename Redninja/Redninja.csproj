@@ -45,8 +45,11 @@
   <ItemGroup>
     <Compile Include="Actions\AttackAction.cs" />
     <Compile Include="Actions\BattleActionBase.cs" />
+    <Compile Include="Actions\CombatSkillAction.cs" />
     <Compile Include="Actions\MovementAction.cs" />
     <Compile Include="Actions\WaitAction.cs" />
+    <Compile Include="Decisions\SkillSelectionMeta.cs" />
+    <Compile Include="Decisions\SkillTargetMeta.cs" />
     <Compile Include="CombatExecutor.cs" />
     <Compile Include="Decisions\DecisionManager.cs" />
     <Compile Include="Decisions\ISkillProvider.cs" />
@@ -55,6 +58,7 @@
     <Compile Include="GameState.cs" />
     <Compile Include="IActionDecider.cs" />
     <Compile Include="IBattlePresenter.cs" />
+    <Compile Include="IBattleViewCallbacks.cs" />
     <Compile Include="ICombatExecutor.cs" />
     <Compile Include="IBattleAction.cs" />
     <Compile Include="BattlePresenter.cs" />
@@ -72,6 +76,7 @@
     <Compile Include="IBattleEvent.cs" />
     <Compile Include="IBattleOperation.cs" />
     <Compile Include="IBattleView.cs" />
+    <Compile Include="Skills\CombatRound.cs" />
     <Compile Include="Targeting\Conditions\ITargetCondition.cs" />
     <Compile Include="Targeting\Conditions\TargetConditionFactory.cs" />
     <Compile Include="Targeting\ITargetPattern.cs" />

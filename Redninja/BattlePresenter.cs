@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using Davfalcon.Revelator;
 using Davfalcon.Randomization;
 using Redninja.Actions;
+using Redninja.Decisions;
 using Redninja.Entities;
+using Redninja.Skills;
+using Redninja.Targeting;
 
 namespace Redninja
 {
@@ -11,7 +14,7 @@ namespace Redninja
 	/// Main logic that flows through this scene is handled by this presenter in a MVP relationship.
 	/// Where this is the presenter, other components generated will represent the views.  
 	/// </summary>
-	public class BattlePresenter : IBattlePresenter
+	public class BattlePresenter : IBattlePresenter, IBattleViewCallbacks
 	{
 		private class Clock : IClock
 		{
@@ -29,6 +32,7 @@ namespace Redninja
 		private readonly ICombatExecutor combatExecutor;
 		private readonly IBattleEntityManager entityManager = new BattleEntityManager();
 		private readonly Queue<IBattleEntity> decisionQueue = new Queue<IBattleEntity>();
+		private readonly DecisionManager decisionManager;
 		// Maybe consider using a class from a library for performance?
 		private readonly SortedList<float, IBattleOperation> battleOpQueue = new SortedList<float, IBattleOperation>();
 
@@ -51,6 +55,8 @@ namespace Redninja
 			this.combatExecutor = combatExecutor;
 
 			entityManager.DecisionRequired += OnActionRequired;
+
+			decisionManager = new DecisionManager(entityManager);
 			combatExecutor.BattleEventOccurred += OnBattleEventOccurred;
 		}
 
@@ -211,6 +217,23 @@ namespace Redninja
 			{
 				view.UpdateEntity(entity);
 			}
+		}
+
+
+		#endregion
+
+		#region battleview callbacks
+		void IBattleViewCallbacks.OnSkillSelected(IBattleEntity entity, ICombatSkill skill)
+		{
+			var targetingInfo = decisionManager.GetSelectableTargets(entity, skill);
+			view.SetViewModeTargeting(targetingInfo);
+		}
+
+		void IBattleViewCallbacks.OnTargetSelected(IBattleEntity entity, ICombatSkill skill, SelectedTarget target)
+		{
+			var battleAction = decisionManager.CreateAction(entity, skill, target);
+			entity.SetAction(battleAction);
+			view.SetViewModeDefault();
 		}
 		#endregion
 	}

@@ -5,31 +5,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Redninja.Actions;
 
 namespace Redninja.Decisions
 {
-    /// <summary>
-    /// Decision Manager for selecting a skill and a target to convert into an action.
-    /// </summary>
-    public class DecisionManager
-    {
-        private IBattleEntityManager bem;
+	/// <summary>
+	/// Decision Manager for selecting a skill and a target to convert into an action.
+	/// </summary>
+	public class DecisionManager
+	{
+		private IBattleEntityManager entityManager;
 
-        public IEnumerable<ICombatSkill> GetAvailableSkills(IBattleEntity entity)
-        {            
-            return null;
-        }
+		public DecisionManager(IBattleEntityManager entityManager)
+		{
+			this.entityManager = entityManager;
+		}
 
-        public IEnumerable<SelectedTarget> GetSelectableTargets(IBattleEntity entity, ICombatSkill combatSkill)
-        {
-            // right now with a small grid, this could return 1 for each character, or 1 for each position
-            // but i feel like there is a better way to communicate this.
-            return null;
-        }
+		public SkillSelectionMeta GetAvailableSkills(IBattleEntity entity)
+			=> new SkillSelectionMeta(entity, entity.Skills);
 
-        public IBattleAction CreateAction(IBattleEntity entity, ICombatSkill combatSkill, SelectedTarget target)
-        {
-            return null;
-        }
-    }
+		public SkillTargetMeta GetSelectableTargets(IBattleEntity entity, ICombatSkill combatSkill)
+			=> new SkillTargetMeta(entity, combatSkill, entityManager);
+
+		public IBattleAction CreateAction(IBattleEntity entity, ICombatSkill combatSkill, SelectedTarget target)
+			=> new CombatSkillAction(entity, combatSkill, target);
+	}
 }

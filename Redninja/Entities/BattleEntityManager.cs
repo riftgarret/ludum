@@ -7,6 +7,9 @@ namespace Redninja.Entities
 {
 	public class BattleEntityManager : IBattleEntityManager
 	{
+		// TEMP for now
+		private Tuple<int, int> GridSize { get; } = new Tuple<int, int>(3, 3);
+
 		private HashSet<IBattleEntity> entityMap = new HashSet<IBattleEntity>();
 
 		public IEnumerable<IBattleEntity> EnemyEntities => entityMap.Where(entity => !entity.IsPlayerControlled);
