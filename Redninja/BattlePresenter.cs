@@ -7,6 +7,7 @@ using Redninja.Decisions;
 using Redninja.Entities;
 using Redninja.Skills;
 using Redninja.Targeting;
+using Ninject;
 
 namespace Redninja
 {
@@ -16,7 +17,7 @@ namespace Redninja
 	/// </summary>
 	public class BattlePresenter : IBattlePresenter, IBattleViewCallbacks
 	{
-		private class Clock : IClock
+		public class Clock : IClock
 		{
 			public float Time { get; private set; }
 			public event Action<float> Tick;
@@ -27,14 +28,15 @@ namespace Redninja
 			}
 		}
 
-		private Clock clock = new Clock();
+		private Clock clock;
 		private readonly IBattleView view;
 		private readonly ICombatExecutor combatExecutor;
-		private readonly IBattleEntityManager entityManager = new BattleEntityManager();
+		private readonly IBattleEntityManager entityManager;
 		private readonly Queue<IBattleEntity> decisionQueue = new Queue<IBattleEntity>();
-		private readonly DecisionManager decisionManager;
+		private readonly IDecisionManager decisionManager;
 		// Maybe consider using a class from a library for performance?
 		private readonly SortedList<float, IBattleOperation> battleOpQueue = new SortedList<float, IBattleOperation>();
+		private readonly IKernel kernel;
 
 		public event Action<IBattleEvent> BattleEventOccurred;
 
@@ -49,14 +51,34 @@ namespace Redninja
 		/// </summary>
 		public bool IsTimeActive => State == GameState.Active;
 
-		public BattlePresenter(IBattleView view, ICombatExecutor combatExecutor)
+		public static IBattlePresenter CreatePresenter(IBattleView battleView, ICombatExecutor combatExecutor)
 		{
-			this.view = view;
+			IKernel kernel = new StandardKernel();
+			kernel.Bind<IBattleView>().ToConstant(battleView);
+			kernel.Bind<IBattleEntityManager>().To<BattleEntityManager>().InSingletonScope();
+			kernel.Bind<ICombatExecutor>().ToConstant(combatExecutor);
+			kernel.Bind<IDecisionManager>().To<DecisionManager>().InSingletonScope();
+			kernel.Bind<IBattlePresenter>().To<BattlePresenter>().InSingletonScope();
+			kernel.Bind<IClock>().To<Clock>().InSingletonScope();
+			kernel.Bind<Clock>().ToSelf().InSingletonScope();
+			return kernel.Get<IBattlePresenter>();
+		}
+
+		public BattlePresenter(ICombatExecutor combatExecutor, 
+			IBattleEntityManager entityManager,
+			IDecisionManager decisionManager,
+			IBattleView battleView,
+			IKernel kernel,
+			Clock clock)
+		{
+			this.kernel = kernel;
 			this.combatExecutor = combatExecutor;
+			this.entityManager = entityManager;
+			this.decisionManager = decisionManager;
+			this.view = battleView;
+			this.clock = clock;
 
-			entityManager.DecisionRequired += OnActionRequired;
-
-			decisionManager = new DecisionManager(entityManager);
+			entityManager.DecisionRequired += OnActionRequired;			
 			combatExecutor.BattleEventOccurred += OnBattleEventOccurred;
 		}
 
@@ -74,6 +96,11 @@ namespace Redninja
 			{
 				OnActionSelected(entity, new WaitAction(new RandomInteger(1, 10).Get()));
 			}
+		}
+
+		public void Dispose()
+		{
+			kernel.Dispose();
 		}
 
 		public void AddBattleEntities(IEnumerable<IBattleEntity> entities)
@@ -223,16 +250,16 @@ namespace Redninja
 		#endregion
 
 		#region battleview callbacks
-		void IBattleViewCallbacks.OnSkillSelected(IBattleEntity entity, ICombatSkill skill)
+		public void OnSkillSelected(IBattleEntity entity, ICombatSkill skill)
 		{
 			var targetingInfo = decisionManager.GetSelectableTargets(entity, skill);
 			view.SetViewModeTargeting(targetingInfo);
 		}
 
-		void IBattleViewCallbacks.OnTargetSelected(IBattleEntity entity, ICombatSkill skill, SelectedTarget target)
+		public void OnTargetSelected(IBattleEntity entity, ICombatSkill skill, SelectedTarget target)
 		{
 			var battleAction = decisionManager.CreateAction(entity, skill, target);
-			entity.SetAction(battleAction);
+			OnActionSelected(entity, battleAction);
 			view.SetViewModeDefault();
 		}
 		#endregion

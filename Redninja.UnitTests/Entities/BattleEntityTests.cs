@@ -11,16 +11,18 @@ namespace Redninja.UnitTests.Entities
     {
         private BattleEntity subject;
         private IUnit mCharacter;
-        private ICombatResolver mCombatResolver;
+        private IActionDecider mActionDecider;
         private MockClock clock;
+		private ICombatExecutor mCombatExecutor;
 
         [SetUp]
         public void Setup()
         {
             clock = new MockClock();
             mCharacter = Substitute.For<IUnit>();
-            mCombatResolver = Substitute.For<ICombatResolver>();
-            subject = new BattleEntity(mCharacter, mCombatResolver);
+			mActionDecider = Substitute.For<IActionDecider>();
+			mCombatExecutor = Substitute.For<ICombatExecutor>();
+            subject = new BattleEntity(mCharacter, mActionDecider, mCombatExecutor);
             subject.SetClock(clock);
         }
         
