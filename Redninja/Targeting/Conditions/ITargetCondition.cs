@@ -2,11 +2,11 @@
 
 namespace Redninja.Targeting.Conditions
 {
-    /// <summary>
-    /// Condition for a BattleEntity to be a target.
-    /// </summary>
-    public interface ITargetCondition
-    {
-        bool IsValidTarget(IBattleEntity entity);
-    }
+	/// <summary>
+	/// Condition for a BattleEntity to be a target.
+	/// </summary>
+	public interface ITargetCondition
+	{
+		bool IsValidTarget(IBattleEntity entity);
+	}
 }

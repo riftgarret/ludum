@@ -32,7 +32,7 @@ namespace Redninja
 		private readonly ICombatExecutor combatExecutor;
 		private readonly IBattleEntityManager entityManager = new BattleEntityManager();
 		private readonly Queue<IBattleEntity> decisionQueue = new Queue<IBattleEntity>();
-        private readonly DecisionManager decisionManager;
+		private readonly DecisionManager decisionManager;
 		// Maybe consider using a class from a library for performance?
 		private readonly SortedList<float, IBattleOperation> battleOpQueue = new SortedList<float, IBattleOperation>();
 
@@ -56,7 +56,7 @@ namespace Redninja
 
 			entityManager.DecisionRequired += OnActionRequired;
 
-            decisionManager = new DecisionManager(entityManager);
+			decisionManager = new DecisionManager(entityManager);
 			combatExecutor.BattleEventOccurred += OnBattleEventOccurred;
 		}
 
@@ -220,21 +220,21 @@ namespace Redninja
 		}
 
 
-        #endregion
+		#endregion
 
-        #region battleview callbacks
-        void IBattleViewCallbacks.OnSkillSelected(IBattleEntity entity, ICombatSkill skill)
-        {
-            var targetingInfo = decisionManager.GetSelectableTargets(entity, skill);
-            view.SetViewModeTargeting(targetingInfo);
-        }
+		#region battleview callbacks
+		void IBattleViewCallbacks.OnSkillSelected(IBattleEntity entity, ICombatSkill skill)
+		{
+			var targetingInfo = decisionManager.GetSelectableTargets(entity, skill);
+			view.SetViewModeTargeting(targetingInfo);
+		}
 
-        void IBattleViewCallbacks.OnTargetSelected(IBattleEntity entity, ICombatSkill skill, SelectedTarget target)
-        {
-            var battleAction = decisionManager.CreateAction(entity, skill, target);
-            entity.SetAction(battleAction);
-            view.SetViewModeDefault();            
-        }
-        #endregion
-    }
+		void IBattleViewCallbacks.OnTargetSelected(IBattleEntity entity, ICombatSkill skill, SelectedTarget target)
+		{
+			var battleAction = decisionManager.CreateAction(entity, skill, target);
+			entity.SetAction(battleAction);
+			view.SetViewModeDefault();
+		}
+		#endregion
+	}
 }

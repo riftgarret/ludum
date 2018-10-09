@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Redninja.Skills
 {
-    public class CombatRound
-    {
-        public ITargetPattern Pattern { get; }
-    }
+	public class CombatRound
+	{
+		public ITargetPattern Pattern { get; }
+	}
 }

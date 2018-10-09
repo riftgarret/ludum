@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Redninja
 {
-    public interface IBattleViewCallbacks
-    {
-        void OnSkillSelected(IBattleEntity entity, ICombatSkill skill);
-        void OnTargetSelected(IBattleEntity entity, ICombatSkill skill, SelectedTarget target);        
-    }
+	public interface IBattleViewCallbacks
+	{
+		void OnSkillSelected(IBattleEntity entity, ICombatSkill skill);
+		void OnTargetSelected(IBattleEntity entity, ICombatSkill skill, SelectedTarget target);
+	}
 }

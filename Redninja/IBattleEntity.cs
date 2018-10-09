@@ -16,9 +16,9 @@ namespace Redninja
 		PhaseState Phase { get; }
 		float PhasePercent { get; }
 		IActionDecider ActionDecider { get; set; }
-        List<ICombatSkill> Skills { get; }
+		List<ICombatSkill> Skills { get; }
 
-        event Action<IBattleEntity> DecisionRequired;
+		event Action<IBattleEntity> DecisionRequired;
 
 		void InitializeBattlePhase();
 		void SetAction(IBattleAction action);
