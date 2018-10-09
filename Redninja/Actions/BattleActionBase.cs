@@ -39,6 +39,9 @@ namespace Redninja.Actions
 		protected BattleActionBase(float prepare, float execute, float recover)
 			: this(new ActionTime(prepare, execute, recover)) { }
 
+		protected float GetPhaseTimeAt(float percent)
+			=> phaseStart + PhaseTime * percent;
+
 		protected void SetPhase(PhaseState newPhase)
 		{
 			// In case of manual/premature phase changes, set start time to current time
@@ -74,6 +77,10 @@ namespace Redninja.Actions
 				{
 					done = true;
 					phaseComplete = phaseStart + phaseTime;
+					if (Phase == PhaseState.Executing)
+					{
+						ActionExecuting?.Invoke(this);
+					}
 				}
 			}
 		}
