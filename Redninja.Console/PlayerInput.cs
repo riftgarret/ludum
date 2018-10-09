@@ -8,7 +8,7 @@ namespace Redninja.ConsoleDriver
 {
 	public class PlayerInput : IActionDecider
 	{
-		private IWeapon weapon = new Weapon.Builder(EquipmentType.Weapon, WeaponType.Sword)
+		private readonly IWeapon weapon = new Weapon.Builder(EquipmentType.Weapon, WeaponType.Sword)
 			.SetName("Longsword")
 			.SetDamage(20)
 			.AddDamageType(DamageType.Physical)
@@ -25,13 +25,14 @@ namespace Redninja.ConsoleDriver
 
 			IBattleAction action = null;
 
-			switch (key) {
+			switch (key)
+			{
 				case ConsoleKey.A:
 					if (entityManager.EnemyEntities.Count() > 0)
 						action = new AttackAction(entity, entityManager.EnemyEntities.First(), weapon, 0.25f, 0.5f, 0.75f);
 					break;
 				case ConsoleKey.M:
-					action = new MovementAction(entity, 3, 3);
+					action = new MovementAction(entity, entity.Position.Row + 1, entity.Position.Column + 1);
 					break;
 				default:
 					action = new WaitAction(5);

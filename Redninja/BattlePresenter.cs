@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Davfalcon.Revelator;
 using Davfalcon.Randomization;
 using Redninja.Actions;
 using Redninja.Entities;
@@ -82,6 +83,16 @@ namespace Redninja
 			entity.ActionDecider.ActionSelected += OnActionSelected;
 			entityManager.AddBattleEntity(entity, clock);
 		}
+
+		public void AddCharacter(IUnit character, IActionDecider actionDecider, int row, int col)
+		{
+			IBattleEntity entity = new BattleEntity(character, actionDecider, combatExecutor);
+			entity.MovePosition(row, col);
+			AddBattleEntity(entity);
+		}
+
+		public void AddCharacter(IBuilder<IUnit> builder, IActionDecider actionDecider, int row, int col)
+			=> AddCharacter(builder.Build(), actionDecider, row, col);
 
 		/// <summary>
 		/// Update game clock.
@@ -181,8 +192,6 @@ namespace Redninja
 		#endregion
 
 		#region Update loop
-		// This can probably happen together with clock increment
-		// Game state should not change while presenter state is paused
 		/// <summary>
 		/// Handle our Unity GUI loops here.
 		/// </summary>

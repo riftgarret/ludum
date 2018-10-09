@@ -5,8 +5,6 @@ using Davfalcon;
 using Davfalcon.Nodes;
 using Davfalcon.Revelator;
 using Davfalcon.Revelator.Borger;
-using Davfalcon.Revelator.Combat;
-using Redninja.Entities;
 using Redninja.Events;
 
 namespace Redninja.ConsoleDriver
@@ -22,24 +20,25 @@ namespace Redninja.ConsoleDriver
 				.AddVolatileStat(CombatStats.HP));
 
 			IBattlePresenter presenter = new BattlePresenter(new ConsoleView(), executor);
-			IBattleEntity unit1 = new BattleEntity(new Unit.Builder(StatsOperations.Default, LinkedStatsResolver.Default)
+			presenter.AddCharacter(
+				new Unit.Builder(StatsOperations.Default, LinkedStatsResolver.Default)
 				.SetMainDetails("Unit 1")
 				.SetBaseStat(CombatStats.HP, 100)
 				.SetBaseStat(CombatStats.ATK, 50)
-				.SetBaseStat(CombatStats.DEF, 10)
-				.Build(), new PlayerInput(), executor);
-			IBattleEntity enemy = new BattleEntity(new Unit.Builder()
+				.SetBaseStat(CombatStats.DEF, 10),
+				new PlayerInput(), 0, 0);
+			presenter.AddCharacter(
+				new Unit.Builder()
 				.SetMainDetails("Enemy 1")
 				.SetBaseStat(CombatStats.HP, 1000)
-				.SetBaseStat(CombatStats.DEF, 10)
-				.Build(), new DummyAI(), executor);
+				.SetBaseStat(CombatStats.DEF, 10),
+				new DummyAI(), 3, 0);
 
-			presenter.AddBattleEntity(unit1);
-			presenter.AddBattleEntity(enemy);
 			presenter.BattleEventOccurred += OnBattleEvent;
 
 			presenter.Initialize();
 			Console.ReadKey();
+
 			while (true)
 			{
 				Console.Clear();
