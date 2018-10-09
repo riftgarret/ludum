@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Davfalcon.Revelator;
 using Davfalcon.Randomization;
 using Redninja.Actions;
 using Redninja.Entities;
@@ -50,6 +51,7 @@ namespace Redninja
 			this.combatExecutor = combatExecutor;
 
 			entityManager.DecisionRequired += OnActionRequired;
+			combatExecutor.BattleEventOccurred += OnBattleEventOccurred;
 		}
 
 		#region Setup and control
@@ -61,11 +63,10 @@ namespace Redninja
 			entityManager.InitializeBattlePhase();
 
 			// this value is temp until we assign an initiative per character
-			//SetAction(new WaitAction(new RandomInteger(1, 5).Get()));
 
 			foreach (IBattleEntity entity in entityManager.AllEntities)
 			{
-				OnActionSelected(entity, new WaitAction(new RandomInteger(1, 5).Get()));
+				OnActionSelected(entity, new WaitAction(new RandomInteger(1, 10).Get()));
 			}
 		}
 
@@ -82,6 +83,16 @@ namespace Redninja
 			entity.ActionDecider.ActionSelected += OnActionSelected;
 			entityManager.AddBattleEntity(entity, clock);
 		}
+
+		public void AddCharacter(IUnit character, IActionDecider actionDecider, int row, int col)
+		{
+			IBattleEntity entity = new BattleEntity(character, actionDecider, combatExecutor);
+			entity.MovePosition(row, col);
+			AddBattleEntity(entity);
+		}
+
+		public void AddCharacter(IBuilder<IUnit> builder, IActionDecider actionDecider, int row, int col)
+			=> AddCharacter(builder.Build(), actionDecider, row, col);
 
 		/// <summary>
 		/// Update game clock.
@@ -134,7 +145,7 @@ namespace Redninja
 			}
 
 			// Need to figure out the best form of game state to give the decider
-			entity.ActionDecider.ProcessNextAction(entity, this);
+			entity.ActionDecider.ProcessNextAction(entity, entityManager);
 		}
 
 		/// <summary>
@@ -157,7 +168,6 @@ namespace Redninja
 		/// <param name="operation"></param>
 		private void OnBattleOperationReady(IBattleOperation operation)
 		{
-			operation.BattleEventOccurred += OnBattleEventOccurred;
 			battleOpQueue.Add(operation.ExecutionStartTime, operation);
 		}
 
@@ -168,7 +178,7 @@ namespace Redninja
 		{
 			while (battleOpQueue.Count > 0)
 			{
-				IBattleOperation op = battleOpQueue[0];
+				IBattleOperation op = battleOpQueue.Values[0];
 				battleOpQueue.RemoveAt(0);
 
 				op.Execute(entityManager, combatExecutor);
@@ -182,14 +192,14 @@ namespace Redninja
 		#endregion
 
 		#region Update loop
-		// This can probably happen together with clock increment
-		// Game state should not change while presenter state is paused
 		/// <summary>
 		/// Handle our Unity GUI loops here.
 		/// </summary>
 		public void Update()
 		{
+			ProcessBattleOperationQueue();
 			UpdateView();
+			ProcessDecisionQueue();
 		}
 
 		/// <summary>

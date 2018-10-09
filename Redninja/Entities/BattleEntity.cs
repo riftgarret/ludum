@@ -1,8 +1,5 @@
 using System;
-using Davfalcon.Randomization;
 using Davfalcon.Revelator;
-using Davfalcon.Revelator.Combat;
-using Redninja.Actions;
 
 namespace Redninja.Entities
 {
@@ -12,7 +9,7 @@ namespace Redninja.Entities
 	public class BattleEntity : IBattleEntity
 	{
 		private IClock clock;
-		private readonly ICombatResolver combatResolver;
+		private readonly ICombatExecutor combatExecutor;
 
 		public IUnit Character { get; }
 
@@ -29,21 +26,17 @@ namespace Redninja.Entities
 
 		public event Action<IBattleEntity> DecisionRequired;
 
-		public BattleEntity(IUnit character, ICombatResolver combatResolver)
+		public BattleEntity(IUnit character, IActionDecider actionDecider, ICombatExecutor combatExecutor)
 		{
-			// Instead of using ICombatResolver directly, consider extending/wrapping an implementation that calls events
-			this.combatResolver = combatResolver;
+			this.combatExecutor = combatExecutor;
 
 			Character = character;
-
-			// Combat node stuff should move to action resoluton
-			//combatNodeFactory = new CombatNodeFactory(this);
-
+			ActionDecider = actionDecider;
 		}
 
 		public void InitializeBattlePhase()
 		{
-			combatResolver.Initialize(Character);
+			combatExecutor.InitializeEntity(this);
 		}
 
 		public void SetAction(IBattleAction action)

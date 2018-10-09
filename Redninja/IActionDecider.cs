@@ -6,6 +6,6 @@ namespace Redninja
 	{
 		bool IsPlayer { get; }
 		event Action<IBattleEntity, IBattleAction> ActionSelected;
-		void ProcessNextAction(IBattleEntity entity, IBattlePresenter presenter);
+		void ProcessNextAction(IBattleEntity entity, IBattleEntityManager entityManager);
 	}
 }

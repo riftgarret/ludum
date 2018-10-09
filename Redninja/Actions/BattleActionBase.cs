@@ -39,30 +39,50 @@ namespace Redninja.Actions
 		protected BattleActionBase(float prepare, float execute, float recover)
 			: this(new ActionTime(prepare, execute, recover)) { }
 
+		protected float GetPhaseTimeAt(float percent)
+			=> phaseStart + PhaseTime * percent;
+
 		protected void SetPhase(PhaseState newPhase)
 		{
 			// In case of manual/premature phase changes, set start time to current time
 			// Otherwise, set it to intended completion time to account for clock overshooting
 			phaseStart = Math.Min(clock.Time, phaseComplete);
 
-			switch (newPhase)
+			bool done = false;
+			while (!done)
 			{
-				case PhaseState.Preparing:
-					phaseComplete = phaseStart + TimePrepare;
-					break;
-				case PhaseState.Executing:
-					phaseComplete = phaseStart + TimeExecute;
-					ActionExecuting?.Invoke(this);
-					break;
-				case PhaseState.Recovering:
-					phaseComplete = phaseStart + TimeRecover;
-					break;
-				case PhaseState.Done:
-					Dispose();
-					break;
-			}
+				Phase = newPhase;
+				float phaseTime = 0;
+				switch (newPhase)
+				{
+					case PhaseState.Preparing:
+						phaseTime = TimePrepare;
+						break;
+					case PhaseState.Executing:
+						phaseTime = TimeExecute;
+						break;
+					case PhaseState.Recovering:
+						phaseTime = TimeRecover;
+						break;
+					case PhaseState.Done:
+						Dispose();
+						return;
+				}
 
-			Phase = newPhase;
+				if (phaseTime <= 0)
+				{
+					newPhase++;
+				}
+				else
+				{
+					done = true;
+					phaseComplete = phaseStart + phaseTime;
+					if (Phase == PhaseState.Executing)
+					{
+						ActionExecuting?.Invoke(this);
+					}
+				}
+			}
 		}
 
 		private void IncrementPhase()
