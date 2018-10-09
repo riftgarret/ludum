@@ -10,9 +10,7 @@ namespace Redninja.Targeting
     /// Selected Target should represent the required meta data for the TargetType.
     /// </summary>
     public class SelectedTarget
-    {
-        public TargetType TargetType => TargetEntity == null? TargetType.Positional : TargetType.Target;
-
+    {        
         public IBattleEntity TargetEntity { get; }        
 
         public int AnchoredPositionRow { get; }
@@ -21,7 +19,7 @@ namespace Redninja.Targeting
 
         public int Team { get; } 
 
-        private SelectedTarget(         
+        public SelectedTarget(         
             IBattleEntity targetEntity,             
             int anchoredPositionRow, 
             int anchoredPositionColumn, 
@@ -32,11 +30,5 @@ namespace Redninja.Targeting
             AnchoredPositionColumn = anchoredPositionColumn;
             Team = teamSide;
         }
-
-        public static SelectedTarget CreateEntityTarget(IBattleEntity target)
-            => new SelectedTarget(target, -1, -1, -1);
-
-        public static SelectedTarget CreatePositionTarget(int row, int col, int team)
-            => new SelectedTarget(null, row, col, team);
     }
 }

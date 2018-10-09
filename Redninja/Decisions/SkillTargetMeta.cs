@@ -8,22 +8,19 @@ using System.Threading.Tasks;
 
 namespace Redninja.Decisions
 {
-    public class AvailableTargetsResult
+    public class SkillTargetMeta
     {
         IBattleEntity Entity { get; }        
         ICombatSkill Skill { get; }
         TargetType TargetType => Skill.TargetRule.TargetType;
-
-        private DecisionManager decisionManager;
+        
         private IBattleEntityManager entityManager;        
 
-        internal AvailableTargetsResult(
-            DecisionManager decisionManager,
+        internal SkillTargetMeta(
             IBattleEntity entity,
             ICombatSkill skill,
             IBattleEntityManager entityManager)
         {
-            this.decisionManager = decisionManager;
             this.entityManager = entityManager;            
             Skill = skill;
             Entity = entity;            
@@ -45,16 +42,18 @@ namespace Redninja.Decisions
         /// </summary>
         /// <param name="target"></param>
         /// <returns></returns>
-        public IBattleAction SelectTarget(IBattleEntity target)
-            => decisionManager.CreateAction(Entity, Skill, SelectedTarget.CreateEntityTarget(target));
-
+        public SelectedTarget CreateSelectedTarget(IBattleEntity target)
+            => CreateSelectTarget(target, 0, 0, 0);
 
         /// <summary>
         /// Select target and return evaluated Battle Action
         /// </summary>
         /// <param name="target"></param>
         /// <returns></returns>
-        public IBattleAction SelectTarget(int anchorRow, int anchorColumn, int team)
-            => decisionManager.CreateAction(Entity, Skill, SelectedTarget.CreatePositionTarget(anchorRow, anchorColumn, team));
+        public SelectedTarget CreateSelectTarget(int anchorRow, int anchorColumn, int team)
+            => CreateSelectTarget(null, anchorRow, anchorColumn, team);
+
+        private SelectedTarget CreateSelectTarget(IBattleEntity entity, int anchorRow, int anchorColumn, int team)
+            => new SelectedTarget(entity, anchorRow, anchorColumn, team);
     }
 }

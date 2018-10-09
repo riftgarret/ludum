@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using Davfalcon.Randomization;
 using Davfalcon.Revelator;
 using Davfalcon.Revelator.Combat;
 using Redninja.Actions;
+using Redninja.Skills;
 
 namespace Redninja.Entities
 {
@@ -19,6 +21,8 @@ namespace Redninja.Entities
 		public int Team { get; set; }
 		public bool IsPlayerControlled => ActionDecider.IsPlayer;
 		public EntityPosition Position { get; private set; } = new EntityPosition(1);
+
+        public List<ICombatSkill> Skills { get; } = new List<ICombatSkill>();
 
 		// If we add an action queue here, this will point to the top instead
 		public IBattleAction CurrentAction { get; private set; }
