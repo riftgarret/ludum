@@ -16,7 +16,7 @@ namespace Redninja.Decisions
 
 		private IBattleEntityManager entityManager;
 
-		internal SkillTargetMeta(
+		public SkillTargetMeta(
 			IBattleEntity entity,
 			ICombatSkill skill,
 			IBattleEntityManager entityManager)

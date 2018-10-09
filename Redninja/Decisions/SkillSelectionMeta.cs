@@ -15,7 +15,7 @@ namespace Redninja.Decisions
 		public IEnumerable<ICombatSkill> Skills { get; }
 		public IBattleEntity Entity { get; }
 
-		internal SkillSelectionMeta(IBattleEntity entity, IEnumerable<ICombatSkill> skills)
+		public SkillSelectionMeta(IBattleEntity entity, IEnumerable<ICombatSkill> skills)
 		{
 			Skills = skills;
 			Entity = entity;

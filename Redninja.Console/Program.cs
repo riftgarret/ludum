@@ -19,7 +19,7 @@ namespace Redninja.ConsoleDriver
 				.SetDefaultDamageResource(CombatStats.HP)
 				.AddVolatileStat(CombatStats.HP));
 
-			IBattlePresenter presenter = new BattlePresenter(new ConsoleView(), executor);
+			IBattlePresenter presenter = BattlePresenter.CreatePresenter(new ConsoleView(), executor);
 			presenter.AddCharacter(
 				new Unit.Builder(StatsOperations.Default, LinkedStatsResolver.Default)
 				.SetMainDetails("Unit 1")
