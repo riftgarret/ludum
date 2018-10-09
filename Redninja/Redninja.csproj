@@ -43,14 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\AttackAction.cs" />
     <Compile Include="Actions\BattleActionBase.cs" />
     <Compile Include="Actions\CombatSkillAction.cs" />
     <Compile Include="Actions\MovementAction.cs" />
     <Compile Include="Actions\WaitAction.cs" />
     <Compile Include="Decisions\SkillSelectionMeta.cs" />
     <Compile Include="Decisions\SkillTargetMeta.cs" />
+    <Compile Include="CombatExecutor.cs" />
     <Compile Include="Decisions\DecisionManager.cs" />
     <Compile Include="Decisions\ISkillProvider.cs" />
+    <Compile Include="Events\DamageEvent.cs" />
     <Compile Include="Events\MovementEvent.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="IActionDecider.cs" />
@@ -64,6 +67,8 @@
     <Compile Include="EntityPosition.cs" />
     <Compile Include="IClock.cs" />
     <Compile Include="IClockSynchronized.cs" />
+    <Compile Include="Operations\BattleOperationBase.cs" />
+    <Compile Include="Operations\DamageOperation.cs" />
     <Compile Include="Operations\MovementOperation.cs" />
     <Compile Include="PhaseState.cs" />
     <Compile Include="IBattleEntity.cs" />
