@@ -12,22 +12,17 @@ namespace Redninja.Decisions
 	/// <summary>
 	/// Decision Manager for selecting a skill and a target to convert into an action.
 	/// </summary>
-	public class DecisionManager : IDecisionManager
+	public class DecisionHelper
 	{
-		private IBattleEntityManager entityManager;
+		private DecisionHelper() { }
 
-		public DecisionManager(IBattleEntityManager entityManager)
-		{
-			this.entityManager = entityManager;
-		}
-
-		public SkillSelectionMeta GetAvailableSkills(IBattleEntity entity)
+		public static SkillSelectionMeta GetAvailableSkills(IBattleEntity entity)
 			=> new SkillSelectionMeta(entity, entity.Skills);
 
-		public SkillTargetMeta GetSelectableTargets(IBattleEntity entity, ICombatSkill combatSkill)
+		public static SkillTargetMeta GetSelectableTargets(IBattleEntity entity, IBattleEntityManager entityManager, ICombatSkill combatSkill)
 			=> new SkillTargetMeta(entity, combatSkill, entityManager);
 
-		public IBattleAction CreateAction(IBattleEntity entity, ICombatSkill combatSkill, SelectedTarget target)
+		public static IBattleAction CreateAction(IBattleEntity entity, ICombatSkill combatSkill, SelectedTarget target)
 			=> new CombatSkillAction(entity, combatSkill, target);
 	}
 }

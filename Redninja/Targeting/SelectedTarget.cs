@@ -19,11 +19,22 @@ namespace Redninja.Targeting
 
 		public int Team { get; }
 
-		public SelectedTarget(
-			IBattleEntity targetEntity,
-			int anchoredPositionRow,
-			int anchoredPositionColumn,
-			int teamSide)
+		public SelectedTarget(IBattleEntity target)
+			: this(target, target.Position.Row, target.Position.Column, target.Team)
+		{
+
+		}
+
+		public SelectedTarget(int anchoredPositionRow, int anchoredPositionColumn, int teamSide)
+			: this(null, anchoredPositionRow, anchoredPositionColumn, teamSide)
+		{
+		}
+
+		private SelectedTarget(
+		IBattleEntity targetEntity,
+		int anchoredPositionRow,
+		int anchoredPositionColumn,
+		int teamSide)
 		{
 			TargetEntity = targetEntity;
 			AnchoredPositionRow = anchoredPositionRow;
