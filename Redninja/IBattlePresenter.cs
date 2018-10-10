@@ -4,7 +4,7 @@ using Davfalcon.Revelator;
 
 namespace Redninja
 {
-	public interface IBattlePresenter
+	public interface IBattlePresenter : IDisposable
 	{
 		event Action<IBattleEvent> BattleEventOccurred;
 

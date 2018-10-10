@@ -12,7 +12,7 @@ namespace Redninja.Decisions
 	/// <summary>
 	/// Decision Manager for selecting a skill and a target to convert into an action.
 	/// </summary>
-	public class DecisionManager
+	public class DecisionManager : IDecisionManager
 	{
 		private IBattleEntityManager entityManager;
 
