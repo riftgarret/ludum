@@ -1,20 +1,23 @@
-﻿using Redninja.Skills;
-using Redninja.Targeting;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Redninja.Actions;
+using Redninja.Skills;
+using Redninja.Targeting;
 
 namespace Redninja.Decisions
 {
 	public class SkillTargetMeta
 	{
-		IBattleEntity Entity { get; }
-		ICombatSkill Skill { get; }
-		TargetType TargetType => Skill.TargetRule.Type;
+		private readonly IBattleEntityManager entityManager;
+		private readonly IEnumerable<SkillResolver>[] skillResolvers;
+		private int currentIndex = 0;
 
-		private IBattleEntityManager entityManager;
+		public IBattleEntity Entity { get; }
+		public ICombatSkill Skill { get; }
+		public SkillTargetingSet TargetingSet => Skill.Targets[currentIndex];
+		public ITargetingRule TargetingRule => TargetingSet.TargetingRule;
+		public TargetType TargetType => TargetingRule.Type;
+		public bool Ready => currentIndex > Skill.Targets.Count;
 
 		public SkillTargetMeta(
 			IBattleEntity entity,
@@ -24,36 +27,61 @@ namespace Redninja.Decisions
 			this.entityManager = entityManager;
 			Skill = skill;
 			Entity = entity;
+
+			skillResolvers = new IEnumerable<SkillResolver>[Skill.Targets.Count];
 		}
 
-		///// <summary>
-		///// Is this entity selectable?
-		///// </summary>
-		///// <param name="entity"></param>
-		///// <returns></returns>
-		//public bool IsValidTargetForRule(IBattleEntity entity)
-		//	=> Skill.TargetRule.IsValidTarget(entity);
+		/// <summary>
+		/// Checks if the entity is targetable.
+		/// </summary>
+		/// <param name="entity"></param>
+		/// <returns></returns>
+		public bool IsValidTargetForRule(IBattleEntity entity)
+			=> TargetingRule.IsValidTarget(entity);
 
-		//public bool IsInPattern(int anchorRow, int anchorColumn, int targetRow, int targetColumn)
-		//	=> Skill.CombatRounds.First(round => round.Pattern.ContainsLocation(anchorRow, anchorColumn, targetRow, targetColumn)) != null;
+		/// <summary>
+		/// Checks if the location is in the target pattern.
+		/// </summary>
+		/// <param name="anchorRow"></param>
+		/// <param name="anchorColumn"></param>
+		/// <param name="targetRow"></param>
+		/// <param name="targetColumn"></param>
+		/// <returns></returns>
+		public bool IsInPattern(int anchorRow, int anchorColumn, int targetRow, int targetColumn)
+			=> TargetingRule.Pattern?.ContainsLocation(anchorRow, anchorColumn, targetRow, targetColumn) ?? false;
 
-		///// <summary>
-		///// Select target and return evaluated Battle Action
-		///// </summary>
-		///// <param name="target"></param>
-		///// <returns></returns>
-		//public SelectedTargets CreateSelectedTarget(IBattleEntity target)
-		//	=> CreateSelectTarget(target, 0, 0, 0);
+		/// <summary>
+		/// Selects a target and moves on to the next target.
+		/// </summary>
+		/// <param name="target"></param>
+		public void SelectTarget(IBattleEntity target) {
+			skillResolvers[currentIndex] = TargetingSet.GetSkillResolvers(new SelectedTarget(TargetingRule, target));
+			Next();
+		}
 
-		///// <summary>
-		///// Select target and return evaluated Battle Action
-		///// </summary>
-		///// <param name="target"></param>
-		///// <returns></returns>
-		//public SelectedTargets CreateSelectTarget(int anchorRow, int anchorColumn, int team)
-		//	=> CreateSelectTarget(null, anchorRow, anchorColumn, team);
+		/// <summary>
+		/// Selects a pattern anchor to target and moves on to the next target.
+		/// </summary>
+		/// <param name="anchor"></param>
+		public void SelectTarget(int team, Coordinate anchor)
+		{
+			skillResolvers[currentIndex] = TargetingSet.GetSkillResolvers(team, anchor);
+			Next();
+		}
 
-		//private SelectedTargets CreateSelectTarget(IBattleEntity entity, int anchorRow, int anchorColumn, int team)
-		//	=> new SelectedTargets(entity, anchorRow, anchorColumn, team);
+		private void Next()
+		{
+			currentIndex++;
+		}
+
+		public void Back()
+		{
+			currentIndex--;
+			skillResolvers[currentIndex] = null;
+		}
+
+		public IBattleAction BuildAction()
+			=> new CombatSkillAction(Entity, Skill,
+				skillResolvers.Aggregate(new List<SkillResolver>() as IEnumerable<SkillResolver>, (accumulator, next) => accumulator.Union(next)));
 	}
 }

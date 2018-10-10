@@ -257,7 +257,7 @@ namespace Redninja
 			view.SetViewModeTargeting(targetingInfo);
 		}
 
-		public void OnTargetSelected(IBattleEntity entity, ICombatSkill skill, SelectedTargets target)
+		public void OnTargetSelected(IBattleEntity entity, ICombatSkill skill, SelectedTarget target)
 		{
 			//var battleAction = decisionManager.CreateAction(entity, skill, target);
 			//OnActionSelected(entity, battleAction);

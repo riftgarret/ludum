@@ -11,28 +11,21 @@ namespace Redninja.Targeting
 
 		public TargetType Type { get; }
 
-		public int MaxTargets { get; }
-
 		public ITargetPattern Pattern { get; }
 
-		private TargetingRule(TargetType targetType, int maxTargets, ITargetPattern targetPattern, TargetCondition condition)
+		private TargetingRule(TargetType targetType, ITargetPattern targetPattern, TargetCondition condition)
 		{
 			this.condition = condition ?? throw new ArgumentNullException(nameof(condition));
 			Type = targetType;
-			MaxTargets = maxTargets;
 			Pattern = targetPattern;
 		}
 
 		public TargetingRule(ITargetPattern targetPattern, TargetCondition condition)
-			: this(TargetType.Pattern, 1, targetPattern, condition)
-		{ }
-
-		public TargetingRule(int maxTargets, TargetCondition condition)
-			: this(TargetType.Entity, maxTargets, null, condition)
+			: this(TargetType.Pattern, targetPattern, condition)
 		{ }
 
 		public TargetingRule(TargetCondition condition)
-			: this(1, condition)
+			: this(TargetType.Entity, null, condition)
 		{ }
 
 		/// <summary>

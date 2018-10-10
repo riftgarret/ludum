@@ -2,7 +2,7 @@
 
 namespace Redninja.Skills
 {
-	public class SkillExecutionTrigger
+	public class CombatRound
 	{
 		public delegate IBattleOperation OperationProvider(IBattleEntity entity, ISelectedTarget target, ICombatSkill skill);
 

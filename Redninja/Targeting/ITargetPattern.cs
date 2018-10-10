@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Redninja.Targeting
+﻿namespace Redninja.Targeting
 {
 	/// <summary>
 	/// Pattern to define whether a unit lays within it.

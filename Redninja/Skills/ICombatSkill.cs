@@ -13,10 +13,6 @@ namespace Redninja.Skills
 	{
 		ActionTime Time { get; }
 
-		ITargetingRule TargetRule { get; }
-
-		IList<SkillExecutionTrigger> Operations { get; }
-
-		IBattleAction CreateAction(IBattleEntity entity, ISelectedTarget target);
+		IReadOnlyList<SkillTargetingSet> Targets { get; }
 	}
 }

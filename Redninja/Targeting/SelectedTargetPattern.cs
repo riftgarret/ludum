@@ -7,16 +7,18 @@ namespace Redninja.Targeting
 	{
 		public ITargetingRule Rule { get; }
 		public ITargetPattern Pattern { get; }
+		public int Team { get; }
 		public Coordinate Anchor { get; }
 
-		public SelectedTargetPattern(ITargetingRule rule, ITargetPattern pattern, int anchorRow, int anchorColumn)
-			: this(rule, pattern, new Coordinate(anchorRow, anchorColumn))
+		public SelectedTargetPattern(ITargetingRule rule, ITargetPattern pattern, int team, int anchorRow, int anchorColumn)
+			: this(rule, pattern, team, new Coordinate(anchorRow, anchorColumn))
 		{ }
 
-		public SelectedTargetPattern(ITargetingRule rule, ITargetPattern pattern, Coordinate anchor)
+		public SelectedTargetPattern(ITargetingRule rule, ITargetPattern pattern, int team, Coordinate anchor)
 		{
 			Rule = rule;
 			Pattern = pattern;
+			Team = team;
 			Anchor = anchor;
 		}
 
