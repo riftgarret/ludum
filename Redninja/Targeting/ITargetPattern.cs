@@ -1,4 +1,6 @@
-﻿namespace Redninja.Targeting
+﻿using System.Collections.Generic;
+
+namespace Redninja.Targeting
 {
 	/// <summary>
 	/// Pattern to define whether a unit lays within it.
@@ -14,5 +16,6 @@
 		/// <param name="targetColumn">Tested Column</param>
 		/// <returns></returns>
 		bool IsInPattern(int anchorRow, int anchorColumn, int targetRow, int targetColumn);
+		bool IsInPattern(Coordinate anchor, Coordinate target);
 	}
 }

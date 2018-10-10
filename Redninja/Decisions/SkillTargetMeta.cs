@@ -12,7 +12,7 @@ namespace Redninja.Decisions
 	{
 		IBattleEntity Entity { get; }
 		ICombatSkill Skill { get; }
-		TargetType TargetType => Skill.TargetRule.TargetType;
+		TargetType TargetType => Skill.TargetRule.Type;
 
 		private IBattleEntityManager entityManager;
 

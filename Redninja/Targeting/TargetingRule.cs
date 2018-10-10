@@ -1,27 +1,38 @@
-﻿using Redninja.Entities;
-using Redninja.Targeting.Conditions;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 
 namespace Redninja.Targeting
 {
 	/// <summary>
 	/// Targeting Rule represents a collection of conditions and target type.
 	/// </summary>
-	public class TargetingRule
+	public class TargetingRule : ITargetingRule
 	{
-		public TargetType TargetType { get; private set; }
+		private readonly TargetCondition condition;
 
-		public ITargetPattern TargetPattern { get; private set; }
+		public TargetType Type { get; }
 
-		private IEnumerable<ITargetCondition> conditions;
+		public int MaxTargets { get; }
 
-		public TargetingRule(TargetType targetType, ITargetPattern targetPattern, IEnumerable<ITargetCondition> conditions)
+		public ITargetPattern Pattern { get; }
+
+		private TargetingRule(TargetType targetType, int maxTargets, ITargetPattern targetPattern, TargetCondition condition)
 		{
-			TargetType = targetType;
-			TargetPattern = targetPattern;
-			this.conditions = conditions;
+			this.condition = condition ?? throw new ArgumentNullException();
+			Type = TargetType.Pattern;
+			Pattern = targetPattern;
 		}
+
+		public TargetingRule(ITargetPattern targetPattern, TargetCondition condition)
+			: this(TargetType.Pattern, 1, targetPattern, condition)
+		{ }
+
+		public TargetingRule(int maxTargets, TargetCondition condition)
+			: this(TargetType.Entity, maxTargets, null, condition)
+		{ }
+
+		public TargetingRule(TargetCondition condition)
+			: this(1, condition)
+		{ }
 
 		/// <summary>
 		/// Determines whether this instance is valid target the specified entity.
@@ -29,6 +40,6 @@ namespace Redninja.Targeting
 		/// <returns><c>true</c> if this instance is valid target the specified entity; otherwise, <c>false</c>.</returns>
 		/// <param name="entity">Entity.</param>
 		public bool IsValidTarget(IBattleEntity entity)
-			=> conditions.Where(c => c.IsValidTarget(entity)).Count() > 0;
+			=> condition(entity);
 	}
 }
