@@ -12,11 +12,11 @@ namespace Redninja
 
 		event Action<IBattleEntity> DecisionRequired;
 
-		void AddBattleEntity(IBattleEntity entity);
 		void AddBattleEntity(IBattleEntity entity, IClock clock);
 		void RemoveBattleEntity(IBattleEntity entity);
-		IEnumerable<IBattleEntity> GetPattern(int anchorRow, int anchorColumn, bool isEnemies, ITargetPattern pattern);
-		IEnumerable<IBattleEntity> GetRow(int anchorRow, bool isEnemy);
+		IEnumerable<IBattleEntity> GetEntitiesInPattern(int anchorRow, int anchorColumn, ITargetPattern pattern);
+		IEnumerable<IBattleEntity> GetEntitiesInPattern(Coordinate anchor, ITargetPattern pattern);
+		IEnumerable<IBattleEntity> GetEntitiesInRow(int anchorRow);
 		void SetAction(IBattleEntity entity, IBattleAction action);
 		void InitializeBattlePhase();
 	}

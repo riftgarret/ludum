@@ -24,13 +24,16 @@ namespace Redninja.Targeting
 			private readonly EvalPattern EvalPatternDelegate;
 
 			public EvalfPattern(EvalPattern evalPattern)
-				=> EvalPatternDelegate = evalPattern ?? throw new ArgumentNullException();
+				=> EvalPatternDelegate = evalPattern ?? throw new ArgumentNullException(nameof(EvalPatternDelegate));
 
-			public bool IsInPattern(int anchorRow, int anchorColumn, int targetRow, int targetColumn)
+			public bool ContainsLocation(int anchorRow, int anchorColumn, int targetRow, int targetColumn)
 				=> EvalPatternDelegate(anchorRow, anchorColumn, targetRow, targetColumn);
 
-			public bool IsInPattern(Coordinate anchor, Coordinate target)
-				=> IsInPattern(anchor.Row, anchor.Column, target.Row, target.Column);
+			public bool ContainsLocation(Coordinate anchor, int targetRow, int targetColumn)
+				=> ContainsLocation(anchor.Row, anchor.Column, targetRow, targetColumn);
+
+			public bool ContainsLocation(Coordinate anchor, Coordinate target)
+				=> ContainsLocation(anchor.Row, anchor.Column, target.Row, target.Column);
 		}
 	}
 }

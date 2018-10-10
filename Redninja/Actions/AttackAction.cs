@@ -26,7 +26,7 @@ namespace Redninja.Actions
 		{
 			while (times.Count > 0 && PhaseProgress >= times[0])
 			{
-				SendBattleOperation(new DamageOperation(GetPhaseTimeAt(times[0]), unit, target, weapon));
+				SendBattleOperation(GetPhaseTimeAt(times[0]), new DamageOperation(unit, target, weapon));
 				times.RemoveAt(0);
 			}
 		}

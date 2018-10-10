@@ -15,7 +15,8 @@ namespace Redninja.Targeting
 		/// <param name="targetRow">Tested Row</param>
 		/// <param name="targetColumn">Tested Column</param>
 		/// <returns></returns>
-		bool IsInPattern(int anchorRow, int anchorColumn, int targetRow, int targetColumn);
-		bool IsInPattern(Coordinate anchor, Coordinate target);
+		bool ContainsLocation(int anchorRow, int anchorColumn, int targetRow, int targetColumn);
+		bool ContainsLocation(Coordinate anchor, int targetRow, int targetColumn);
+		bool ContainsLocation(Coordinate anchor, Coordinate target);
 	}
 }

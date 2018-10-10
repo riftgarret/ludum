@@ -23,16 +23,11 @@ namespace Redninja.Entities
 		private void OnEntityDecisionRequired(IBattleEntity entity)
 			=> DecisionRequired?.Invoke(entity);
 
-		public void AddBattleEntity(IBattleEntity entity)
-		{
-			entity.DecisionRequired += OnEntityDecisionRequired;
-			entityMap.Add(entity);
-		}
-
 		public void AddBattleEntity(IBattleEntity entity, IClock clock)
 		{
 			entity.SetClock(clock);
-			AddBattleEntity(entity);
+			entity.DecisionRequired += OnEntityDecisionRequired;
+			entityMap.Add(entity);
 		}
 
 		public void RemoveBattleEntity(IBattleEntity entity)
@@ -42,43 +37,36 @@ namespace Redninja.Entities
 		}
 
 		/// <summary>
-		///  TODO this will take a pattern and location and return all battle entities that are valid.
+		/// Gets all entities within the specified pattern.
 		/// </summary>
-		/// <param name="rowIndex"></param>
-		/// <param name="row"></param>
-		/// <param name="column"></param>
+		/// <param name="anchorRow"></param>
+		/// <param name="anchorColumn"></param>
+		/// <param name="pattern"></param>
 		/// <returns></returns>
-		public IEnumerable<IBattleEntity> GetPattern(int anchorRow, int anchorColumn, bool isEnemies, ITargetPattern pattern)
+		public IEnumerable<IBattleEntity> GetEntitiesInPattern(int anchorRow, int anchorColumn, ITargetPattern pattern)
 		{
-			return (isEnemies ? EnemyEntities : PlayerEntities)
-				.Where(entity =>
+			return AllEntities.Where(entity =>
 			{
-				// need to check all squares that are within character
-				EntityPosition position = entity.Position;
-				for (int targetRow = 0; targetRow < position.Size; targetRow++)
+				for (int r = entity.Position.Row; r <= entity.Position.Bound.Row; r++)
 				{
-					for (int targetColumn = 0; targetColumn < position.Size; targetColumn++)
+					for (int c = entity.Position.Column; c <= entity.Position.Bound.Column; c++)
 					{
-						if (pattern.IsInPattern(anchorRow, anchorColumn, targetRow, targetColumn))
-						{
+						if (pattern.ContainsLocation(anchorRow, anchorColumn, r, c))
 							return true;
-						}
 					}
 				}
 				return false;
 			});
 		}
 
+		public IEnumerable<IBattleEntity> GetEntitiesInPattern(Coordinate anchor, ITargetPattern pattern)
+			=> GetEntitiesInPattern(anchor.Row, anchor.Column, pattern);
+
 		/// <summary>
 		/// Get Row of entities.
 		/// </summary>
-		/// <param name="anchorRow"></param>
-		/// <param name="isEnemy"></param>
-		/// <returns></returns>
-		public IEnumerable<IBattleEntity> GetRow(int anchorRow, bool isEnemy)
-		{
-			return GetPattern(anchorRow, 0, isEnemy, TargetPatternFactory.CreateRowPattern());
-		}
+		public IEnumerable<IBattleEntity> GetEntitiesInRow(int anchorRow)
+			=> GetEntitiesInPattern(anchorRow, 0, TargetPatternFactory.CreateRowPattern());
 
 		/// <summary>
 		/// Initialize the battle phase, this sets the initial 'Initiative action' 

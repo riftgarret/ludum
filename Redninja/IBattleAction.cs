@@ -5,7 +5,7 @@ namespace Redninja
 	public interface IBattleAction : IClockSynchronized
     {
 		event Action<IBattleAction> ActionExecuting;
-		event Action<IBattleOperation> BattleOperationReady;
+		event Action<float, IBattleOperation> BattleOperationReady;
 
         PhaseState Phase { get; }
 		float PhaseTime { get; }

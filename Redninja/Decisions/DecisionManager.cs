@@ -27,7 +27,7 @@ namespace Redninja.Decisions
 		public SkillTargetMeta GetSelectableTargets(IBattleEntity entity, ICombatSkill combatSkill)
 			=> new SkillTargetMeta(entity, combatSkill, entityManager);
 
-		public IBattleAction CreateAction(IBattleEntity entity, ICombatSkill combatSkill, SelectedTarget target)
-			=> new CombatSkillAction(entity, combatSkill, target);
+		//public IBattleAction CreateAction(IBattleEntity entity, ICombatSkill combatSkill, SelectedTargets target)
+		//	=> new CombatSkillAction(entity, combatSkill, target);
 	}
 }

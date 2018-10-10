@@ -26,34 +26,34 @@ namespace Redninja.Decisions
 			Entity = entity;
 		}
 
-		/// <summary>
-		/// Is this entity selectable?
-		/// </summary>
-		/// <param name="entity"></param>
-		/// <returns></returns>
-		public bool IsValidTargetForRule(IBattleEntity entity)
-			=> Skill.TargetRule.IsValidTarget(entity);
+		///// <summary>
+		///// Is this entity selectable?
+		///// </summary>
+		///// <param name="entity"></param>
+		///// <returns></returns>
+		//public bool IsValidTargetForRule(IBattleEntity entity)
+		//	=> Skill.TargetRule.IsValidTarget(entity);
 
-		public bool IsInPattern(int anchorRow, int anchorColumn, int targetRow, int targetColumn)
-			=> Skill.CombatRounds.First(round => round.Pattern.IsInPattern(anchorRow, anchorColumn, targetRow, targetColumn)) != null;
+		//public bool IsInPattern(int anchorRow, int anchorColumn, int targetRow, int targetColumn)
+		//	=> Skill.CombatRounds.First(round => round.Pattern.ContainsLocation(anchorRow, anchorColumn, targetRow, targetColumn)) != null;
 
-		/// <summary>
-		/// Select target and return evaluated Battle Action
-		/// </summary>
-		/// <param name="target"></param>
-		/// <returns></returns>
-		public SelectedTarget CreateSelectedTarget(IBattleEntity target)
-			=> CreateSelectTarget(target, 0, 0, 0);
+		///// <summary>
+		///// Select target and return evaluated Battle Action
+		///// </summary>
+		///// <param name="target"></param>
+		///// <returns></returns>
+		//public SelectedTargets CreateSelectedTarget(IBattleEntity target)
+		//	=> CreateSelectTarget(target, 0, 0, 0);
 
-		/// <summary>
-		/// Select target and return evaluated Battle Action
-		/// </summary>
-		/// <param name="target"></param>
-		/// <returns></returns>
-		public SelectedTarget CreateSelectTarget(int anchorRow, int anchorColumn, int team)
-			=> CreateSelectTarget(null, anchorRow, anchorColumn, team);
+		///// <summary>
+		///// Select target and return evaluated Battle Action
+		///// </summary>
+		///// <param name="target"></param>
+		///// <returns></returns>
+		//public SelectedTargets CreateSelectTarget(int anchorRow, int anchorColumn, int team)
+		//	=> CreateSelectTarget(null, anchorRow, anchorColumn, team);
 
-		private SelectedTarget CreateSelectTarget(IBattleEntity entity, int anchorRow, int anchorColumn, int team)
-			=> new SelectedTarget(entity, anchorRow, anchorColumn, team);
+		//private SelectedTargets CreateSelectTarget(IBattleEntity entity, int anchorRow, int anchorColumn, int team)
+		//	=> new SelectedTargets(entity, anchorRow, anchorColumn, team);
 	}
 }

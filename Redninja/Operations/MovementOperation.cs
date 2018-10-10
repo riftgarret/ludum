@@ -6,8 +6,7 @@
 		private readonly int row;
 		private readonly int col;
 
-		public MovementOperation(float time, IBattleEntity unit, int row, int col)
-			: base(time)
+		public MovementOperation(IBattleEntity unit, int row, int col)
 		{
 			this.unit = unit;
 			this.row = row;

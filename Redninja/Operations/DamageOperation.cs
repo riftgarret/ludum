@@ -9,8 +9,7 @@ namespace Redninja.Operations
 		private readonly IBattleEntity target;
 		private readonly IDamageSource source;
 
-		public DamageOperation(float time, IBattleEntity unit, IBattleEntity target, IDamageSource source)
-			: base(time)
+		public DamageOperation(IBattleEntity unit, IBattleEntity target, IDamageSource source)
 		{
 			this.unit = unit ?? throw new ArgumentNullException(nameof(unit));
 			this.target = target ?? throw new ArgumentNullException(nameof(target));

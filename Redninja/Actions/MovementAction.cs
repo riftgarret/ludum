@@ -11,7 +11,7 @@ namespace Redninja.Actions
 		protected override void ExecuteAction(float timeDelta, float time)
 		{
 			if (PhaseProgress >= 1)
-				SendBattleOperation(new MovementOperation(time, entity, row, col));
+				SendBattleOperation(GetPhaseTimeAt(0), new MovementOperation(entity, row, col));
 		}
 
 		public MovementAction(IBattleEntity entity, int row, int col)

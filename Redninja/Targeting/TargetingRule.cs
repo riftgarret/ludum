@@ -17,8 +17,9 @@ namespace Redninja.Targeting
 
 		private TargetingRule(TargetType targetType, int maxTargets, ITargetPattern targetPattern, TargetCondition condition)
 		{
-			this.condition = condition ?? throw new ArgumentNullException();
-			Type = TargetType.Pattern;
+			this.condition = condition ?? throw new ArgumentNullException(nameof(condition));
+			Type = targetType;
+			MaxTargets = maxTargets;
 			Pattern = targetPattern;
 		}
 

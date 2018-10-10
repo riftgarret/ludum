@@ -198,10 +198,11 @@ namespace Redninja
 		/// <summary>
 		/// Enqueues an <see cref="IBattleOperation"/> for processing.
 		/// </summary>
+		/// <param name="startTime"></param>
 		/// <param name="operation"></param>
-		private void OnBattleOperationReady(IBattleOperation operation)
+		private void OnBattleOperationReady(float startTime, IBattleOperation operation)
 		{
-			battleOpQueue.Add(operation.ExecutionStartTime, operation);
+			battleOpQueue.Add(startTime, operation);
 		}
 
 		/// <summary>
@@ -256,11 +257,11 @@ namespace Redninja
 			view.SetViewModeTargeting(targetingInfo);
 		}
 
-		public void OnTargetSelected(IBattleEntity entity, ICombatSkill skill, SelectedTarget target)
+		public void OnTargetSelected(IBattleEntity entity, ICombatSkill skill, SelectedTargets target)
 		{
-			var battleAction = decisionManager.CreateAction(entity, skill, target);
-			OnActionSelected(entity, battleAction);
-			view.SetViewModeDefault();
+			//var battleAction = decisionManager.CreateAction(entity, skill, target);
+			//OnActionSelected(entity, battleAction);
+			//view.SetViewModeDefault();
 		}
 		#endregion
 	}
