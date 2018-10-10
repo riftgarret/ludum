@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
-
-namespace Redninja.Targeting
+﻿namespace Redninja.Targeting
 {
-	public interface ISelectedTarget
+	public interface ISelectedTarget : ITargetResolver
 	{
-		IEnumerable<IBattleEntity> GetValidTargets(IBattleEntityManager entityManager);
+		ITargetingRule Rule { get; }
+		IBattleEntity Target { get; }
+		ITargetPattern Pattern { get; }
+		int Team { get; }
+		Coordinate Anchor { get; }
 	}
 }

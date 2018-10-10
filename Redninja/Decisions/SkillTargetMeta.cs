@@ -6,7 +6,7 @@ using Redninja.Targeting;
 
 namespace Redninja.Decisions
 {
-	public class SkillTargetMeta
+	public class SkillTargetMeta : ISkillTargetingManager
 	{
 		private readonly IBattleEntityManager entityManager;
 		private readonly IEnumerable<SkillResolver>[] skillResolvers;
@@ -34,10 +34,10 @@ namespace Redninja.Decisions
 		/// <summary>
 		/// Checks if the entity is targetable.
 		/// </summary>
-		/// <param name="entity"></param>
+		/// <param name="targetEntity"></param>
 		/// <returns></returns>
-		public bool IsValidTargetForRule(IBattleEntity entity)
-			=> TargetingRule.IsValidTarget(entity);
+		public bool IsValidTarget(IBattleEntity targetEntity)
+			=> TargetingRule.IsValidTarget(Entity, targetEntity);
 
 		/// <summary>
 		/// Checks if the location is in the target pattern.
@@ -51,21 +51,28 @@ namespace Redninja.Decisions
 			=> TargetingRule.Pattern?.ContainsLocation(anchorRow, anchorColumn, targetRow, targetColumn) ?? false;
 
 		/// <summary>
+		/// Selects a target entity.
+		/// </summary>
+		/// <param name="target"></param>
+		/// <returns></returns>
+		public ISelectedTarget GetSelectedTarget(IBattleEntity target)
+			=> new SelectedTarget(TargetingRule, target);
+
+		/// <summary>
+		/// Selects a target anchor for the pattern.
+		/// </summary>
+		/// <param name="team"></param>
+		/// <param name="anchor"></param>
+		/// <returns></returns>
+		public ISelectedTarget GetSelectedTarget(int team, Coordinate anchor)
+			=> new SelectedTargetPattern(TargetingRule, TargetingRule.Pattern, team, anchor);
+
+		/// <summary>
 		/// Selects a target and moves on to the next target.
 		/// </summary>
 		/// <param name="target"></param>
-		public void SelectTarget(IBattleEntity target) {
-			skillResolvers[currentIndex] = TargetingSet.GetSkillResolvers(new SelectedTarget(TargetingRule, target));
-			Next();
-		}
-
-		/// <summary>
-		/// Selects a pattern anchor to target and moves on to the next target.
-		/// </summary>
-		/// <param name="anchor"></param>
-		public void SelectTarget(int team, Coordinate anchor)
-		{
-			skillResolvers[currentIndex] = TargetingSet.GetSkillResolvers(team, anchor);
+		public void SelectTarget(ISelectedTarget target) {
+			skillResolvers[currentIndex] = TargetingSet.GetSkillResolvers(target);
 			Next();
 		}
 
@@ -80,7 +87,7 @@ namespace Redninja.Decisions
 			skillResolvers[currentIndex] = null;
 		}
 
-		public IBattleAction BuildAction()
+		public IBattleAction GetAction()
 			=> new CombatSkillAction(Entity, Skill,
 				skillResolvers.Aggregate(new List<SkillResolver>() as IEnumerable<SkillResolver>, (accumulator, next) => accumulator.Union(next)));
 	}

@@ -2,9 +2,10 @@
 {
 	public interface ITargetingRule
 	{
-		ITargetPattern Pattern { get; }
 		TargetType Type { get; }
+		TargetTeam Team { get; }
+		ITargetPattern Pattern { get; }
 
-		bool IsValidTarget(IBattleEntity entity);
+		bool IsValidTarget(IBattleEntity target, IBattleEntity user);
 	}
 }

@@ -5,7 +5,7 @@ namespace Redninja
 	public interface IBattleView
 	{
 		void UpdateEntity(IBattleEntity entity);
-		void SetViewModeTargeting(SkillTargetMeta targets);
+		void SetViewModeTargeting(ISkillTargetingInfo targets);
 		void SetViewModeDefault();
 	}
 }

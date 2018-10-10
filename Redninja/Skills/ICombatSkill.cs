@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Davfalcon.Revelator;
 using Redninja.Actions;
-using Redninja.Targeting;
 
 namespace Redninja.Skills
 {

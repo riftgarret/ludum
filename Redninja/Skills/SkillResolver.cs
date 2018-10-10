@@ -6,12 +6,12 @@ namespace Redninja.Skills
 	public class SkillResolver : ISkillResolver
 	{
 		private readonly CombatRound definition;
-		private readonly ISelectedTarget target;
+		private readonly ITargetResolver target;
 
 		public float ExecutionStart => definition.ExecutionStart;
 		public bool Resolved { get; private set; } = false;
 
-		public SkillResolver(CombatRound definition, ISelectedTarget target)
+		public SkillResolver(CombatRound definition, ITargetResolver target)
 		{
 			this.definition = definition ?? throw new ArgumentNullException(nameof(definition));
 			this.target = target;

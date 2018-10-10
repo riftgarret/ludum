@@ -10,22 +10,23 @@ namespace Redninja.Targeting
 		private readonly TargetCondition condition;
 
 		public TargetType Type { get; }
+		public TargetTeam Team { get; }
 
 		public ITargetPattern Pattern { get; }
 
-		private TargetingRule(TargetType targetType, ITargetPattern targetPattern, TargetCondition condition)
+		private TargetingRule(TargetType targetType, TargetTeam team, ITargetPattern targetPattern, TargetCondition condition)
 		{
 			this.condition = condition ?? throw new ArgumentNullException(nameof(condition));
 			Type = targetType;
 			Pattern = targetPattern;
 		}
 
-		public TargetingRule(ITargetPattern targetPattern, TargetCondition condition)
-			: this(TargetType.Pattern, targetPattern, condition)
+		public TargetingRule(ITargetPattern targetPattern, TargetTeam team, TargetCondition condition)
+			: this(TargetType.Pattern, team, targetPattern, condition)
 		{ }
 
-		public TargetingRule(TargetCondition condition)
-			: this(TargetType.Entity, null, condition)
+		public TargetingRule(TargetTeam team, TargetCondition condition)
+			: this(TargetType.Entity, team, null, condition)
 		{ }
 
 		/// <summary>
@@ -33,7 +34,7 @@ namespace Redninja.Targeting
 		/// </summary>
 		/// <returns><c>true</c> if this instance is valid target the specified entity; otherwise, <c>false</c>.</returns>
 		/// <param name="entity">Entity.</param>
-		public bool IsValidTarget(IBattleEntity entity)
-			=> condition(entity);
+		public bool IsValidTarget(IBattleEntity target, IBattleEntity user)
+			=> condition(target, user);
 	}
 }

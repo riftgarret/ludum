@@ -10,9 +10,12 @@ namespace Redninja.Skills
 		public IEnumerable<CombatRound> Rounds { get; }
 
 		public IEnumerable<SkillResolver> GetSkillResolvers(ISelectedTarget target)
-			=> Rounds.Select(round => round.GetResolver(target));
-
-		public IEnumerable<SkillResolver> GetSkillResolvers(int team, Coordinate anchor)
-			=> Rounds.Select(round => round.GetResolver(new SelectedTargetPattern(TargetingRule, round.Pattern, team, anchor)));
+		{
+			if (TargetingRule.Type == TargetType.Pattern)
+			{
+				return Rounds.Select(round => round.GetResolver(new SelectedTargetPattern(TargetingRule, round.Pattern ?? TargetingRule.Pattern, target.Team, target.Anchor)));
+			}
+			else return Rounds.Select(round => round.GetResolver(target));
+		}
 	}
 }

@@ -39,31 +39,33 @@ namespace Redninja.AI
 		public IEnumerable<ICombatSkill> GetAssignableSkills(SkillSelectionMeta meta)
 			=> meta.Skills.Intersect(SkillAssignments.Select(x => x.Item2));
 
-		public SelectedTarget TryFindTarget(SkillTargetMeta meta, IBattleEntity source, IBattleEntityManager bem)
+		public bool TryFindTarget(ISkillTargetingInfo meta, IBattleEntity source, IBattleEntityManager bem, out ISelectedTarget target)
 		{
 			// filter targets
-			IEnumerable<IBattleEntity> filteredTargets = FilterTargets(meta.Skill, source, bem);
+			IEnumerable<IBattleEntity> filteredTargets = FilterTargets(meta.TargetingRule, source, bem);
 
 			if (filteredTargets.Count() == 0)
 			{
-				return null; // didnt find any valid targets
+				target = null;
+				return false; // didnt find any valid targets
 			}
 
 			// select best target
 			IAITargetPriority targetPriority = SkillAssignments.First(x => x.Item2 == meta.Skill).Item1;
 			IBattleEntity entityTarget = targetPriority.GetBestTarget(filteredTargets);
 
-			// convert into SelectedTarget
-			return new SelectedTarget(entityTarget);
+			// we could set this directly here but it's probably more "correct" to set the out var
+			target = meta.GetSelectedTarget(entityTarget);
+			return true;
 		}
 
-		private IEnumerable<IBattleEntity> FilterTargets(ICombatSkill skill, IBattleEntity source, IBattleEntityManager bem)
+		private IEnumerable<IBattleEntity> FilterTargets(ITargetingRule rule, IBattleEntity source, IBattleEntityManager bem)
 		{
 			// first filter by TargetType
 			IEnumerable<IBattleEntity> leftoverTargets = FilterByType(TargetType, source, bem);
 
 			// filter by skill rule
-			leftoverTargets = leftoverTargets.Where(ex => skill.TargetRule.IsValidTarget(ex));
+			leftoverTargets = leftoverTargets.Where(ex => rule.IsValidTarget(source, ex));
 
 			// filter by filter conditions (exclude by finding first condition that fails)
 			leftoverTargets = leftoverTargets.Where(ex => FilterConditions.First(cond => !cond.IsValid(ex)) == null);
@@ -81,7 +83,7 @@ namespace Redninja.AI
 				case AITargetType.Self:
 					return new List<IBattleEntity>() { source };
 				default:
-					throw new InvalidProgramException("Unexpected target type, should implement!");
+					throw new InvalidOperationException("Unexpected target type, should implement!");
 			}
 		}
 	}

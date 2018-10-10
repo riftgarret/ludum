@@ -10,6 +10,8 @@ namespace Redninja.Targeting
 		public int Team { get; }
 		public Coordinate Anchor { get; }
 
+		IBattleEntity ISelectedTarget.Target => null;
+
 		public SelectedTargetPattern(ITargetingRule rule, ITargetPattern pattern, int team, int anchorRow, int anchorColumn)
 			: this(rule, pattern, team, new Coordinate(anchorRow, anchorColumn))
 		{ }
@@ -22,7 +24,7 @@ namespace Redninja.Targeting
 			Anchor = anchor;
 		}
 
-		public IEnumerable<IBattleEntity> GetValidTargets(IBattleEntityManager entityManager)
-			=> entityManager.GetEntitiesInPattern(Anchor, Pattern).Where(e => Rule.IsValidTarget(e));
+		public IEnumerable<IBattleEntity> GetValidTargets(IBattleEntity user, IBattleEntityManager entityManager)
+			=> entityManager.GetEntitiesInPattern(Anchor, Pattern).Where(e => Rule.IsValidTarget(user, e));
 	}
 }

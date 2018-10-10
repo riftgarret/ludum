@@ -41,14 +41,14 @@ namespace Redninja.AI
 				foreach(ICombatSkill skill in availableSkills)
 				{
 					// look for available targets
-					SkillTargetMeta targetMeta = DecisionHelper.GetSelectableTargets(source, bem, skill);
+					ISkillTargetingManager targetMeta = DecisionHelper.GetTargetingManager(source, bem, skill);
 
-					SelectedTarget target = rule.TryFindTarget(targetMeta, source, bem);
-
-					// found!
-					if(target != null)
+					while (rule.TryFindTarget(targetMeta, source, bem, out ISelectedTarget target))
 					{
-						return DecisionHelper.CreateAction(source, skill, target);
+						targetMeta.SelectTarget(target);
+
+						if (targetMeta.Ready)
+							return targetMeta.GetAction();
 					}					
 				}
 
@@ -56,7 +56,7 @@ namespace Redninja.AI
 				weightedPool.Remove(rule);
 			}
 
-			throw new InvalidProgramException("We couldnt find any rules to use, we should have implemented attack for all!");
+			throw new InvalidOperationException("We couldnt find any rules to use, we should have implemented attack for all!");
 		}
 	}
 }

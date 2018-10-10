@@ -61,8 +61,9 @@
     <Compile Include="AI\IAITargetCondition.cs" />
     <Compile Include="AI\IAITargetPriority.cs" />
     <Compile Include="AI\WeightedPool.cs" />
-    <Compile Include="Decisions\IDecisionManager.cs" />
     <Compile Include="Coordinate.cs" />
+    <Compile Include="Decisions\ISkillTargetingInfo.cs" />
+    <Compile Include="Decisions\ISkillTargetingManager.cs" />
     <Compile Include="Decisions\SkillSelectionMeta.cs" />
     <Compile Include="Decisions\SkillTargetMeta.cs" />
     <Compile Include="CombatExecutor.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Skills\SkillResolver.cs" />
     <Compile Include="Skills\SkillTargetingSet.cs" />
     <Compile Include="Targeting\ISelectedTarget.cs" />
+    <Compile Include="Targeting\ITargetResolver.cs" />
     <Compile Include="Targeting\ITargetingRule.cs" />
     <Compile Include="Targeting\ITargetPattern.cs" />
     <Compile Include="Targeting\SelectedTarget.cs" />
@@ -102,6 +104,7 @@
     <Compile Include="Targeting\TargetCondition.cs" />
     <Compile Include="Targeting\TargetingRule.cs" />
     <Compile Include="Targeting\TargetPatternFactory.cs" />
+    <Compile Include="Targeting\TargetTeam.cs" />
     <Compile Include="Targeting\TargetType.cs" />
     <Compile Include="CombatStats.cs" />
     <Compile Include="Actions\ActionTime.cs" />

@@ -10,16 +10,20 @@ namespace Redninja.Targeting
 		public ITargetingRule Rule { get; }
 		public IBattleEntity Target { get; }
 
+		ITargetPattern ISelectedTarget.Pattern => null;
+		int ISelectedTarget.Team => Target.Team;
+		Coordinate ISelectedTarget.Anchor => Target.Position;
+
 		public SelectedTarget(ITargetingRule rule, IBattleEntity target)
 		{
 			Rule = rule;
 			Target = target;
 		}
 
-		public IEnumerable<IBattleEntity> GetValidTargets(IBattleEntityManager entityManager)
+		public IEnumerable<IBattleEntity> GetValidTargets(IBattleEntity user, IBattleEntityManager entityManager)
 		{
 			List<IBattleEntity> list = new List<IBattleEntity>();
-			if (Rule.IsValidTarget(Target))
+			if (Rule.IsValidTarget(user, Target))
 				list.Add(Target);
 			return list;
 		}

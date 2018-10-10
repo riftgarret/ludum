@@ -37,6 +37,8 @@ namespace Redninja
 		private readonly SortedList<float, IBattleOperation> battleOpQueue = new SortedList<float, IBattleOperation>();
 		private readonly IKernel kernel;
 
+		private ISkillTargetingManager currentSkill;
+
 		public event Action<IBattleEvent> BattleEventOccurred;
 
 		/// <summary>
@@ -249,15 +251,23 @@ namespace Redninja
 		#region battleview callbacks
 		public void OnSkillSelected(IBattleEntity entity, ICombatSkill skill)
 		{			
-			var targetingInfo = DecisionHelper.GetSelectableTargets(entity, entityManager, skill);
-			view.SetViewModeTargeting(targetingInfo);
+			currentSkill = DecisionHelper.GetTargetingManager(entity, entityManager, skill);
+			view.SetViewModeTargeting(currentSkill);
 		}
 
-		public void OnTargetSelected(IBattleEntity entity, ICombatSkill skill, SelectedTarget target)
+		public void OnTargetSelected(ISelectedTarget target)
 		{
-			var battleAction = DecisionHelper.CreateAction(entity, skill, target);
-			OnActionSelected(entity, battleAction);
-			view.SetViewModeDefault();
+			if (currentSkill == null) throw new InvalidOperationException("No skill currently being targeted.");
+
+			currentSkill.SelectTarget(target);
+
+			if (currentSkill.Ready)
+			{
+				IBattleAction battleAction = currentSkill.GetAction();
+				OnActionSelected(currentSkill.Entity, battleAction);
+				currentSkill = null;
+				view.SetViewModeDefault();
+			}
 		}
 		#endregion
 	}
