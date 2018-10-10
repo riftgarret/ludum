@@ -18,7 +18,6 @@ namespace Redninja.UnitTests
     {
 		private ICombatExecutor mCombatExecutor;
 		private IBattleEntityManager mEntityManager;
-		private IDecisionManager mDecisionManager;
 		private IBattleView mBattleView;
 		private IKernel kernel;
 		private BattlePresenter.Clock clock;
@@ -31,7 +30,6 @@ namespace Redninja.UnitTests
 			// setup mocks
 			mCombatExecutor = Substitute.For<ICombatExecutor>();
 			mEntityManager = Substitute.For<IBattleEntityManager>();
-			mDecisionManager = Substitute.For<IDecisionManager>();
 			mBattleView = Substitute.For<IBattleView>();
 			clock = new BattlePresenter.Clock();
 
@@ -39,7 +37,6 @@ namespace Redninja.UnitTests
 			kernel = new StandardKernel();
 			kernel.Bind<ICombatExecutor>().ToConstant(mCombatExecutor);
 			kernel.Bind<IBattleEntityManager>().ToConstant(mEntityManager);
-			kernel.Bind<IDecisionManager>().ToConstant(mDecisionManager);
 			kernel.Bind<IBattleView>().ToConstant(mBattleView);
 			kernel.Bind<BattlePresenter.Clock>().ToConstant(clock);
 
@@ -67,33 +64,25 @@ namespace Redninja.UnitTests
 		[Test]
 		public void OnTargetSelected_ActionCreatedAndAssigned()
 		{
-			IBattleEntity mEntity = Substitute.For<IBattleEntity>();
-			IBattleAction mAction = Substitute.For<IBattleAction>();
+			IBattleEntity mEntity = Substitute.For<IBattleEntity>();			
 			ICombatSkill mSkill = Substitute.For<ICombatSkill>();
-			SelectedTarget target = new SelectedTarget(null, 0, 0, 0);
-
-			mDecisionManager.CreateAction(null, null, null).ReturnsForAnyArgs(mAction);
+			SelectedTarget target = new SelectedTarget(0, 0, 0);
+			
 
 			subject.OnTargetSelected(
 				mEntity,
 				mSkill,
 				target);
 
-			mDecisionManager.Received().CreateAction(mEntity, mSkill, target);
-			mEntityManager.Received().SetAction(mEntity, mAction);
-
-			mAction.Received().BattleOperationReady += Arg.Any<Action<IBattleOperation>>();
+			mEntityManager.Received().SetAction(mEntity, Arg.Any<IBattleAction>());			
 		}
 
 		[Test]
 		public void OnTargetSelected_ViewModeReset()
 		{
-			IBattleEntity mEntity = Substitute.For<IBattleEntity>();
-			IBattleAction mAction = Substitute.For<IBattleAction>();
+			IBattleEntity mEntity = Substitute.For<IBattleEntity>();			
 			ICombatSkill mSkill = Substitute.For<ICombatSkill>();		
-			SelectedTarget target = new SelectedTarget(null, 0, 0, 0);
-
-			mDecisionManager.CreateAction(null, null, null).ReturnsForAnyArgs(mAction);
+			SelectedTarget target = new SelectedTarget(0, 0, 0);
 
 			subject.OnTargetSelected(
 				mEntity,
@@ -108,14 +97,10 @@ namespace Redninja.UnitTests
 		{
 			IBattleEntity mEntity = Substitute.For<IBattleEntity>();			
 			ICombatSkill mSkill = Substitute.For<ICombatSkill>();
-			SkillTargetMeta meta = new SkillTargetMeta(mEntity, mSkill, mEntityManager);
-
-			mDecisionManager.GetSelectableTargets(null, null).ReturnsForAnyArgs(meta);
 
 			subject.OnSkillSelected(mEntity, mSkill);
-
-			mDecisionManager.Received().GetSelectableTargets(mEntity, mSkill);
-			mBattleView.Received().SetViewModeTargeting(meta);
+			
+			mBattleView.Received().SetViewModeTargeting(Arg.Any<SkillTargetMeta>());
 		}
 	}
 }

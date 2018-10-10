@@ -32,8 +32,7 @@ namespace Redninja
 		private readonly IBattleView view;
 		private readonly ICombatExecutor combatExecutor;
 		private readonly IBattleEntityManager entityManager;
-		private readonly Queue<IBattleEntity> decisionQueue = new Queue<IBattleEntity>();
-		private readonly IDecisionManager decisionManager;
+		private readonly Queue<IBattleEntity> decisionQueue = new Queue<IBattleEntity>();		
 		// Maybe consider using a class from a library for performance?
 		private readonly SortedList<float, IBattleOperation> battleOpQueue = new SortedList<float, IBattleOperation>();
 		private readonly IKernel kernel;
@@ -57,7 +56,6 @@ namespace Redninja
 			kernel.Bind<IBattleView>().ToConstant(battleView);
 			kernel.Bind<IBattleEntityManager>().To<BattleEntityManager>().InSingletonScope();
 			kernel.Bind<ICombatExecutor>().ToConstant(combatExecutor);
-			kernel.Bind<IDecisionManager>().To<DecisionManager>().InSingletonScope();
 			kernel.Bind<IBattlePresenter>().To<BattlePresenter>().InSingletonScope();
 			kernel.Bind<IClock>().To<Clock>().InSingletonScope();
 			kernel.Bind<Clock>().ToSelf().InSingletonScope();
@@ -66,7 +64,6 @@ namespace Redninja
 
 		public BattlePresenter(ICombatExecutor combatExecutor, 
 			IBattleEntityManager entityManager,
-			IDecisionManager decisionManager,
 			IBattleView battleView,
 			IKernel kernel,
 			Clock clock)
@@ -74,7 +71,6 @@ namespace Redninja
 			this.kernel = kernel;
 			this.combatExecutor = combatExecutor;
 			this.entityManager = entityManager;
-			this.decisionManager = decisionManager;
 			this.view = battleView;
 			this.clock = clock;
 
@@ -252,16 +248,16 @@ namespace Redninja
 
 		#region battleview callbacks
 		public void OnSkillSelected(IBattleEntity entity, ICombatSkill skill)
-		{
-			var targetingInfo = decisionManager.GetSelectableTargets(entity, skill);
+		{			
+			var targetingInfo = DecisionHelper.GetSelectableTargets(entity, entityManager, skill);
 			view.SetViewModeTargeting(targetingInfo);
 		}
 
 		public void OnTargetSelected(IBattleEntity entity, ICombatSkill skill, SelectedTarget target)
 		{
-			//var battleAction = decisionManager.CreateAction(entity, skill, target);
-			//OnActionSelected(entity, battleAction);
-			//view.SetViewModeDefault();
+			var battleAction = DecisionHelper.CreateAction(entity, skill, target);
+			OnActionSelected(entity, battleAction);
+			view.SetViewModeDefault();
 		}
 		#endregion
 	}
