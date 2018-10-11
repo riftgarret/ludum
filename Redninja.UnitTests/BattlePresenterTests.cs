@@ -60,39 +60,5 @@ namespace Redninja.UnitTests
 			mEntityManager.Received().SetAction(mEntity, Arg.Any<WaitAction>());
 			Assert.That(subject.State, Is.EqualTo(GameState.Active));
 		}
-
-		// Not sure how to go about testing this
-		[Test]
-		public void OnTargetSelected_ActionCreatedAndAssigned()
-		{
-			IBattleEntity mEntity = Substitute.For<IBattleEntity>();
-			ICombatSkill mSkill = Substitute.For<ICombatSkill>();
-			SelectedTarget target = new SelectedTarget(null, mEntity);
-
-			subject.OnTargetSelected(target);
-
-			mEntityManager.Received().SetAction(mEntity, Arg.Any<IBattleAction>());
-		}
-
-		[Test]
-		public void OnTargetSelected_ViewModeReset()
-		{
-			SelectedTarget target = Substitute.For<SelectedTarget>();
-
-			subject.OnTargetSelected(target);
-
-			mBattleView.Received().SetViewModeDefault();
-		}
-
-		[Test]
-		public void OnSkillSelected_ViewModeTargeting()
-		{
-			IBattleEntity mEntity = Substitute.For<IBattleEntity>();
-			ICombatSkill mSkill = Substitute.For<ICombatSkill>();
-
-			subject.OnSkillSelected(mEntity, mSkill);
-
-			mBattleView.Received().SetViewModeTargeting(Arg.Any<SkillTargetMeta>());
-		}
 	}
 }
