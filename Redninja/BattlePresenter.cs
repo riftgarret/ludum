@@ -80,6 +80,7 @@ namespace Redninja
 
 			entityManager.DecisionRequired += OnActionRequired;			
 			combatExecutor.BattleEventOccurred += OnBattleEventOccurred;
+			combatExecutor.BattleEventOccurred += view.OnBattleEventOccurred;
 			playerDecisionManager.WaitingForDecision += WaitForDecision;
 			playerDecisionManager.WaitResolved += Start;
 
@@ -239,10 +240,10 @@ namespace Redninja
 			}
 		}
 
+		// This is not needed right now, but may be useful to implement other functionality that responds to battle events
 		private void OnBattleEventOccurred(IBattleEvent battleEvent)
 		{
 			BattleEventOccurred?.Invoke(battleEvent);
-			view.BattleEventOccurred(battleEvent);
 		}
 		#endregion
 	}

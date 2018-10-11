@@ -72,7 +72,7 @@ namespace Redninja.Decisions.UnitTests
 
 			subject.ProcessNextAction(mEntity, mEntityManager);
 
-			mBattleView.Received().NotifyDecisionNeeded(mEntity);
+			mBattleView.Received().OnDecisionNeeded(mEntity);
 		}
 
 		[Test]

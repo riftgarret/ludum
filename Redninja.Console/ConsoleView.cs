@@ -30,7 +30,7 @@ namespace Redninja.ConsoleDriver
 			}
 		}
 
-		public void BattleEventOccurred(IBattleEvent battleEvent)
+		public void OnBattleEventOccurred(IBattleEvent battleEvent)
 		{
 			Debug.WriteLine("Battle event occured");
 			if (battleEvent is MovementEvent me)
@@ -43,7 +43,7 @@ namespace Redninja.ConsoleDriver
 			}
 		}
 
-		public void NotifyDecisionNeeded(IBattleEntity entity)
+		public void OnDecisionNeeded(IBattleEntity entity)
 		{
 			Draw();
 			Console.WriteLine("Waiting for player input...");

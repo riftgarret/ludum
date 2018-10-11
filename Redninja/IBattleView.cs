@@ -13,8 +13,8 @@ namespace Redninja
 		event Action TargetingCanceled;
 
 		void SetBattleModel(IBattleModel model);
-		void BattleEventOccurred(IBattleEvent battleEvent);
-		void NotifyDecisionNeeded(IBattleEntity entity);
+		void OnBattleEventOccurred(IBattleEvent battleEvent);
+		void OnDecisionNeeded(IBattleEntity entity);
 		void SetViewModeTargeting(ISkillTargetingInfo targetingInfo);
 		void SetViewModeDefault();
 	}

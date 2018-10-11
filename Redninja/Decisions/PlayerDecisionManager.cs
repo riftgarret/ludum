@@ -90,7 +90,7 @@ namespace Redninja.Decisions
 		{
 			blockingEntity = entity;
 			WaitingForDecision?.Invoke(entity);
-			view.NotifyDecisionNeeded(entity);
+			view.OnDecisionNeeded(entity);
 		}
 
 		private void ResumeIfDecided(IBattleEntity entity)
