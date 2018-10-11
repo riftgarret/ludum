@@ -56,7 +56,6 @@ namespace Redninja.ConsoleDriver
 			while (true)
 			{
 				presenter.IncrementGameClock(0.2f);
-				presenter.Update();
 				view.Draw();
 				Thread.Sleep(100);
 			}

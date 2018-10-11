@@ -13,8 +13,5 @@ namespace Redninja
 		void IncrementGameClock(float timeDelta);
 		void Initialize();
 		void Start();
-		void ProcessBattleOperationQueue();
-		void ProcessDecisionQueue();
-		void Update();
 	}
 }

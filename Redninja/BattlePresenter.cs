@@ -80,16 +80,8 @@ namespace Redninja
 
 			entityManager.DecisionRequired += OnActionRequired;			
 			combatExecutor.BattleEventOccurred += OnBattleEventOccurred;
-
-			// This mess is to keep view control in the presenter
 			playerDecisionManager.WaitingForDecision += WaitForDecision;
 			playerDecisionManager.WaitResolved += Start;
-			playerDecisionManager.TargetingSkill += view.SetViewModeTargeting;
-			playerDecisionManager.TargetingEnded += view.SetViewModeDefault;
-			view.ActionSelected += playerDecisionManager.OnActionSelected;
-			view.SkillSelected += playerDecisionManager.OnSkillSelected;
-			view.TargetSelected += playerDecisionManager.OnTargetSelected;
-			view.TargetingCanceled += playerDecisionManager.OnTargetingCanceled;
 
 			view.SetBattleModel(entityManager);
 		}
@@ -113,6 +105,11 @@ namespace Redninja
 		public void Start()
 		{
 			State = GameState.Active;
+		}
+
+		public void Pause()
+		{
+			State = GameState.Paused;
 		}
 
 		public void Dispose()
@@ -146,34 +143,28 @@ namespace Redninja
 			=> AddCharacter(builder.Build(), actionDecider, team, row, col);
 
 		/// <summary>
-		/// Update game clock.
+		/// Update game clock. This drives the presenter.
 		/// </summary>
-		/// <param name="timeDelta"></param>
 		public void IncrementGameClock(float timeDelta)
 		{
 			if (IsTimeActive)
 			{
+				// This will cause actions to trigger
 				clock.IncrementTime(timeDelta);
 			}
+
+			// The queue contains operations that already triggered, so we always want to process this
+			ProcessBattleOperationQueue();
+
+			// This function contains a time check
+			ProcessDecisionQueue();
 		}
 		#endregion
 
 		#region Decision processing
 		/// <summary>
-		/// Handles a new action selected for an <see cref="IBattleEntity"/>.
-		/// </summary>
-		/// <param name="entity"></param>
-		/// <param name="action"></param>
-		private void OnActionSelected(IBattleEntity entity, IBattleAction action)
-		{
-			action.BattleOperationReady += OnBattleOperationReady;
-			entityManager.SetAction(entity, action);
-		}
-
-		/// <summary>
 		/// Enqueues an <see cref="IBattleEntity"/> that is waiting for a decision.
 		/// </summary>
-		/// <param name="entity"></param>
 		private void OnActionRequired(IBattleEntity entity)
 		{
 			// Is this dupe check necessary?
@@ -184,24 +175,42 @@ namespace Redninja
 		}
 
 		/// <summary>
-		/// Requests a decision for the <see cref="IBattleEntity"/>
+		/// Handles a new action selected for an <see cref="IBattleEntity"/>.
 		/// </summary>
-		/// <param name="entity"></param>
+		private void OnActionSelected(IBattleEntity entity, IBattleAction action)
+		{
+			action.BattleOperationReady += OnBattleOperationReady;
+			entityManager.SetAction(entity, action);
+		}
+
+		/// <summary>
+		/// Requests the next action for the <see cref="IBattleEntity"/>.
+		/// </summary>
 		private void ProcessDecision(IBattleEntity entity)
 		{
 			entity.ActionDecider.ProcessNextAction(entity, entityManager);
 		}
 
 		/// <summary>
-		/// Process actions required incase multiple characters need to make a decision.
+		/// Process entities waiting for a decision.
 		/// </summary>
 		public void ProcessDecisionQueue()
 		{
-			while (decisionQueue.Count > 0)
+			// A waiting player character should pause the game so we don't want to keep processing decisions
+			while (IsTimeActive && decisionQueue.Count > 0)
 			{
 				IBattleEntity entity = decisionQueue.Dequeue();
 				ProcessDecision(entity);
 			}
+		}
+
+		/// <summary>
+		/// Pause the game execution to wait for a player decision.
+		/// </summary>
+		/// <param name="entity"></param>
+		private void WaitForDecision(IBattleEntity entity)
+		{
+			Pause();
 		}
 		#endregion
 
@@ -234,39 +243,6 @@ namespace Redninja
 		{
 			BattleEventOccurred?.Invoke(battleEvent);
 			view.BattleEventOccurred(battleEvent);
-		}
-		#endregion
-
-		#region Update loop
-		/// <summary>
-		/// Handle our Unity GUI loops here.
-		/// </summary>
-		public void Update()
-		{
-			ProcessBattleOperationQueue();
-			//UpdateView();
-			ProcessDecisionQueue();
-		}
-
-		/// <summary>
-		/// Update the view.
-		/// </summary>
-		private void UpdateView()
-		{
-			//foreach (IBattleEntity entity in entityManager.AllEntities)
-			//{
-			//	view.UpdateEntity(entity);
-			//}
-		}
-
-
-		#endregion
-
-		#region View control
-		private void WaitForDecision(IBattleEntity entity)
-		{
-			State = GameState.Paused;
-			view.NotifyDecisionNeeded(entity);
 		}
 		#endregion
 	}
