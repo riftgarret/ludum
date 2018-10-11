@@ -35,7 +35,7 @@ namespace Redninja.Decisions
 			=> Skill.TargetRule.IsValidTarget(entity);
 
 		public bool IsInPattern(int anchorRow, int anchorColumn, int targetRow, int targetColumn)
-			=> Skill.CombatRounds.First(round => round.Pattern.IsInPattern(anchorRow, anchorColumn, targetRow, targetColumn)) != null;
+			=> Skill.CombatRounds.FirstOrDefault(round => round.Pattern.IsInPattern(anchorRow, anchorColumn, targetRow, targetColumn)) != null;
 
 	}
 }

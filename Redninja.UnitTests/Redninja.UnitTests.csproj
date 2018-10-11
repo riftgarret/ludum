@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\BattleActionBaseTests.cs" />
+    <Compile Include="AI\WeightedPoolTests.cs" />
     <Compile Include="BattlePresenterTests.cs" />
     <Compile Include="Entities\BattleEntityTests.cs" />
     <Compile Include="MockClock.cs" />
