@@ -96,7 +96,7 @@ namespace Redninja.UnitTests.AI
 		[TestCase(0.45, 3, new double[] { 1, 1, 1, 5 })]
 		[TestCase(0.45, 0, new double[] { 5, 1, 1, 1 })]
 		[TestCase(0.45, 0, new double[] { 5 })]
-		public void GetItem_WeightCalculated(double forcedWeight, int expectedIndex , double [] weights)
+		public void GetItem_MatchesFixedValue(double forcedWeight, int expectedIndex , double [] weights)
 		{
 			object[] items = new object[weights.Length];
 			for (int i = 0; i < weights.Length; i++)
@@ -117,7 +117,7 @@ namespace Redninja.UnitTests.AI
 		[TestCase(0.2, 1, 0, new double[] { 5, 5, 5, 5 })]
 		[TestCase(0.3, 3, 0, new double[] { 1, 1, 1, 5 })]
 		[TestCase(0.45, 2, 0, new double[] { 5, 1, 1, 1 })]
-		public void RemoveItem_GetItem_WeightCalculated(double forcedWeight, int expectedIndex, int removeIndex, double[] weights)
+		public void RemoveItem_GetItem_MatchesFixedValue(double forcedWeight, int expectedIndex, int removeIndex, double[] weights)
 		{
 			object[] items = new object[weights.Length];
 			for (int i = 0; i < weights.Length; i++)
