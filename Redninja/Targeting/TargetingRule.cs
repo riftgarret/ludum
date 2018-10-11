@@ -18,6 +18,7 @@ namespace Redninja.Targeting
 		{
 			this.condition = condition ?? throw new ArgumentNullException(nameof(condition));
 			Type = targetType;
+			Team = team;
 			Pattern = targetPattern;
 		}
 
@@ -29,6 +30,10 @@ namespace Redninja.Targeting
 			: this(TargetType.Entity, team, null, condition)
 		{ }
 
+		public TargetingRule(TargetTeam team)
+			: this(team, TargetConditions.None)
+		{ }
+
 		/// <summary>
 		/// Determines whether this instance is valid target the specified entity.
 		/// </summary>
@@ -36,5 +41,7 @@ namespace Redninja.Targeting
 		/// <param name="entity">Entity.</param>
 		public bool IsValidTarget(IBattleEntity target, IBattleEntity user)
 			=> condition(target, user);
+
+		public static ITargetingRule Any { get; } = new TargetingRule(TargetTeam.Any);
 	}
 }

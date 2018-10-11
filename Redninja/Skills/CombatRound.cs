@@ -1,4 +1,5 @@
-﻿using Redninja.Targeting;
+﻿using System;
+using Redninja.Targeting;
 
 namespace Redninja.Skills
 {
@@ -12,5 +13,16 @@ namespace Redninja.Skills
 
 		public SkillResolver GetResolver(ITargetResolver target)
 			=> new SkillResolver(this, target);
+
+		public CombatRound(float executionStart, OperationProvider getOperation)
+			: this(executionStart, null, getOperation)
+		{ }
+
+		public CombatRound(float executionStart, ITargetPattern pattern, OperationProvider getOperation)
+		{
+			ExecutionStart = executionStart;
+			Pattern = pattern;
+			GetOperation = getOperation ?? throw new ArgumentNullException(nameof(getOperation));
+		}
 	}
 }

@@ -64,6 +64,7 @@
     <Compile Include="Coordinate.cs" />
     <Compile Include="Decisions\ISkillTargetingInfo.cs" />
     <Compile Include="Decisions\ISkillTargetingManager.cs" />
+    <Compile Include="Decisions\PlayerDecisionManager.cs" />
     <Compile Include="Decisions\SkillSelectionMeta.cs" />
     <Compile Include="Decisions\SkillTargetMeta.cs" />
     <Compile Include="CombatExecutor.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Events\MovementEvent.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="IActionDecider.cs" />
+    <Compile Include="IBattleModel.cs" />
     <Compile Include="IBattlePresenter.cs" />
     <Compile Include="IBattleViewCallbacks.cs" />
     <Compile Include="ICombatExecutor.cs" />
@@ -91,6 +93,7 @@
     <Compile Include="IBattleEvent.cs" />
     <Compile Include="IBattleOperation.cs" />
     <Compile Include="IBattleView.cs" />
+    <Compile Include="Skills\CombatSkill.cs" />
     <Compile Include="Skills\ISkillResolver.cs" />
     <Compile Include="Skills\CombatRound.cs" />
     <Compile Include="Skills\SkillResolver.cs" />

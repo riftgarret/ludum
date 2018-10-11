@@ -2,6 +2,7 @@
 {
 	public enum TargetTeam
 	{
+		Any,
 		Self,
 		Ally,
 		Enemy

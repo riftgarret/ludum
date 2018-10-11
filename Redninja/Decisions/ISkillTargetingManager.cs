@@ -5,7 +5,7 @@ namespace Redninja.Decisions
 	public interface ISkillTargetingManager : ISkillTargetingInfo
 	{
 		void SelectTarget(ISelectedTarget target);
-		void Back();
+		bool Back();
 		IBattleAction GetAction();
 	}
 }

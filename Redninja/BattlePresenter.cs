@@ -15,7 +15,7 @@ namespace Redninja
 	/// Main logic that flows through this scene is handled by this presenter in a MVP relationship.
 	/// Where this is the presenter, other components generated will represent the views.  
 	/// </summary>
-	public class BattlePresenter : IBattlePresenter, IBattleViewCallbacks
+	public class BattlePresenter : IBattlePresenter
 	{
 		public class Clock : IClock
 		{
@@ -29,15 +29,14 @@ namespace Redninja
 		}
 
 		private Clock clock;
+		private readonly IKernel kernel;
 		private readonly IBattleView view;
 		private readonly ICombatExecutor combatExecutor;
 		private readonly IBattleEntityManager entityManager;
+		private readonly PlayerDecisionManager playerDecisionManager;
 		private readonly Queue<IBattleEntity> decisionQueue = new Queue<IBattleEntity>();		
 		// Maybe consider using a class from a library for performance?
 		private readonly SortedList<float, IBattleOperation> battleOpQueue = new SortedList<float, IBattleOperation>();
-		private readonly IKernel kernel;
-
-		private ISkillTargetingManager currentSkill;
 
 		public event Action<IBattleEvent> BattleEventOccurred;
 
@@ -52,32 +51,47 @@ namespace Redninja
 		/// </summary>
 		public bool IsTimeActive => State == GameState.Active;
 
-		public static IBattlePresenter CreatePresenter(IBattleView battleView, ICombatExecutor combatExecutor)
+		public static IBattlePresenter CreatePresenter(IBattleView view, ICombatExecutor combatExecutor)
 		{
 			IKernel kernel = new StandardKernel();
-			kernel.Bind<IBattleView>().ToConstant(battleView);
+			kernel.Bind<IBattleView>().ToConstant(view);
 			kernel.Bind<IBattleEntityManager>().To<BattleEntityManager>().InSingletonScope();
 			kernel.Bind<ICombatExecutor>().ToConstant(combatExecutor);
+			kernel.Bind<PlayerDecisionManager>().ToSelf().InSingletonScope();
 			kernel.Bind<IBattlePresenter>().To<BattlePresenter>().InSingletonScope();
 			kernel.Bind<IClock>().To<Clock>().InSingletonScope();
 			kernel.Bind<Clock>().ToSelf().InSingletonScope();
 			return kernel.Get<IBattlePresenter>();
 		}
 
-		public BattlePresenter(ICombatExecutor combatExecutor, 
+		public BattlePresenter(ICombatExecutor combatExecutor,
 			IBattleEntityManager entityManager,
-			IBattleView battleView,
+			PlayerDecisionManager playerDecisionManager,
+			IBattleView view,
 			IKernel kernel,
 			Clock clock)
 		{
 			this.kernel = kernel;
 			this.combatExecutor = combatExecutor;
 			this.entityManager = entityManager;
-			this.view = battleView;
+			this.playerDecisionManager = playerDecisionManager;
+			this.view = view;
 			this.clock = clock;
 
 			entityManager.DecisionRequired += OnActionRequired;			
 			combatExecutor.BattleEventOccurred += OnBattleEventOccurred;
+
+			// This mess is to keep view control in the presenter
+			playerDecisionManager.WaitingForDecision += WaitForDecision;
+			playerDecisionManager.WaitResolved += Start;
+			playerDecisionManager.TargetingSkill += view.SetViewModeTargeting;
+			playerDecisionManager.TargetingEnded += view.SetViewModeDefault;
+			view.ActionSelected += playerDecisionManager.OnActionSelected;
+			view.SkillSelected += playerDecisionManager.OnSkillSelected;
+			view.TargetSelected += playerDecisionManager.OnTargetSelected;
+			view.TargetingCanceled += playerDecisionManager.OnTargetingCanceled;
+
+			view.SetBattleModel(entityManager);
 		}
 
 		#region Setup and control
@@ -96,34 +110,40 @@ namespace Redninja
 			}
 		}
 
+		public void Start()
+		{
+			State = GameState.Active;
+		}
+
 		public void Dispose()
 		{
 			kernel.Dispose();
 		}
 
-		public void AddBattleEntities(IEnumerable<IBattleEntity> entities)
-		{
-			foreach (IBattleEntity entity in entities)
-			{
-				AddBattleEntity(entity);
-			}
-		}
-
-		public void AddBattleEntity(IBattleEntity entity)
+		private void AddBattleEntity(IBattleEntity entity)
 		{
 			entity.ActionDecider.ActionSelected += OnActionSelected;
 			entityManager.AddBattleEntity(entity, clock);
 		}
 
-		public void AddCharacter(IUnit character, IActionDecider actionDecider, int row, int col)
+		public void AddCharacter(IUnit character, int row, int col)
+			=> AddCharacter(character, playerDecisionManager, 0, row, col);
+
+		public void AddCharacter(IUnit character, IActionDecider actionDecider, int team, int row, int col)
 		{
-			IBattleEntity entity = new BattleEntity(character, actionDecider, combatExecutor);
+			IBattleEntity entity = new BattleEntity(character, actionDecider, combatExecutor)
+			{
+				Team = team
+			};
 			entity.MovePosition(row, col);
 			AddBattleEntity(entity);
 		}
 
-		public void AddCharacter(IBuilder<IUnit> builder, IActionDecider actionDecider, int row, int col)
-			=> AddCharacter(builder.Build(), actionDecider, row, col);
+		public void AddCharacter(IBuilder<IUnit> builder, int row, int col)
+			=> AddCharacter(builder.Build(), row, col);
+
+		public void AddCharacter(IBuilder<IUnit> builder, IActionDecider actionDecider, int team, int row, int col)
+			=> AddCharacter(builder.Build(), actionDecider, team, row, col);
 
 		/// <summary>
 		/// Update game clock.
@@ -148,7 +168,6 @@ namespace Redninja
 		{
 			action.BattleOperationReady += OnBattleOperationReady;
 			entityManager.SetAction(entity, action);
-			State = GameState.Active;
 		}
 
 		/// <summary>
@@ -170,12 +189,6 @@ namespace Redninja
 		/// <param name="entity"></param>
 		private void ProcessDecision(IBattleEntity entity)
 		{
-			if (entity.IsPlayerControlled)
-			{
-				State = GameState.Paused;
-			}
-
-			// Need to figure out the best form of game state to give the decider
 			entity.ActionDecider.ProcessNextAction(entity, entityManager);
 		}
 
@@ -220,6 +233,7 @@ namespace Redninja
 		private void OnBattleEventOccurred(IBattleEvent battleEvent)
 		{
 			BattleEventOccurred?.Invoke(battleEvent);
+			view.BattleEventOccurred(battleEvent);
 		}
 		#endregion
 
@@ -230,7 +244,7 @@ namespace Redninja
 		public void Update()
 		{
 			ProcessBattleOperationQueue();
-			UpdateView();
+			//UpdateView();
 			ProcessDecisionQueue();
 		}
 
@@ -239,35 +253,20 @@ namespace Redninja
 		/// </summary>
 		private void UpdateView()
 		{
-			foreach (IBattleEntity entity in entityManager.AllEntities)
-			{
-				view.UpdateEntity(entity);
-			}
+			//foreach (IBattleEntity entity in entityManager.AllEntities)
+			//{
+			//	view.UpdateEntity(entity);
+			//}
 		}
 
 
 		#endregion
 
-		#region battleview callbacks
-		public void OnSkillSelected(IBattleEntity entity, ICombatSkill skill)
-		{			
-			currentSkill = DecisionHelper.GetTargetingManager(entity, entityManager, skill);
-			view.SetViewModeTargeting(currentSkill);
-		}
-
-		public void OnTargetSelected(ISelectedTarget target)
+		#region View control
+		private void WaitForDecision(IBattleEntity entity)
 		{
-			if (currentSkill == null) throw new InvalidOperationException("No skill currently being targeted.");
-
-			currentSkill.SelectTarget(target);
-
-			if (currentSkill.Ready)
-			{
-				IBattleAction battleAction = currentSkill.GetAction();
-				OnActionSelected(currentSkill.Entity, battleAction);
-				currentSkill = null;
-				view.SetViewModeDefault();
-			}
+			State = GameState.Paused;
+			view.NotifyDecisionNeeded(entity);
 		}
 		#endregion
 	}

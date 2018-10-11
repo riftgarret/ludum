@@ -1,4 +1,5 @@
-﻿using Redninja.Skills;
+﻿using System.Collections.Generic;
+using Redninja.Skills;
 using Redninja.Targeting;
 
 namespace Redninja.Decisions
@@ -12,6 +13,7 @@ namespace Redninja.Decisions
 		TargetType TargetType { get; }
 		bool Ready { get; }
 
+		IEnumerable<IBattleEntity> GetTargetableEntities();
 		bool IsValidTarget(IBattleEntity targetEntity);
 		bool IsInPattern(int anchorRow, int anchorColumn, int targetRow, int targetColumn);
 		ISelectedTarget GetSelectedTarget(IBattleEntity target);

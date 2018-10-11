@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Davfalcon.Collections.Generic;
 using Redninja.Actions;
 using Redninja.Skills;
 using Redninja.Targeting;
@@ -17,7 +19,7 @@ namespace Redninja.Decisions
 		public SkillTargetingSet TargetingSet => Skill.Targets[currentIndex];
 		public ITargetingRule TargetingRule => TargetingSet.TargetingRule;
 		public TargetType TargetType => TargetingRule.Type;
-		public bool Ready => currentIndex > Skill.Targets.Count;
+		public bool Ready => currentIndex >= Skill.Targets.Count;
 
 		public SkillTargetMeta(
 			IBattleEntity entity,
@@ -29,6 +31,20 @@ namespace Redninja.Decisions
 			Entity = entity;
 
 			skillResolvers = new IEnumerable<SkillResolver>[Skill.Targets.Count];
+		}
+
+		public IEnumerable<IBattleEntity> GetTargetableEntities()
+		{
+			switch (TargetingRule.Team)
+			{
+				case TargetTeam.Ally:
+					return entityManager.AllEntities.Where(e => e.Team == Entity.Team && IsValidTarget(e));
+				case TargetTeam.Enemy:
+					return entityManager.AllEntities.Where(e => e.Team != Entity.Team && IsValidTarget(e));
+				case TargetTeam.Self:
+					return IsValidTarget(Entity) ? new List<IBattleEntity>() { Entity }.AsReadOnly() as IEnumerable<IBattleEntity> : new EmptyEnumerable<IBattleEntity>();
+				default: throw new InvalidOperationException();
+			}
 		}
 
 		/// <summary>
@@ -81,10 +97,15 @@ namespace Redninja.Decisions
 			currentIndex++;
 		}
 
-		public void Back()
+		public bool Back()
 		{
-			currentIndex--;
-			skillResolvers[currentIndex] = null;
+			if (currentIndex > 0)
+			{
+				currentIndex--;
+				skillResolvers[currentIndex] = null;
+				return true;
+			}
+			else return false;
 		}
 
 		public IBattleAction GetAction()

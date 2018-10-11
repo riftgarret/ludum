@@ -1,11 +1,9 @@
-﻿using Redninja.Decisions;
-using Redninja.Skills;
-using Redninja.Targeting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Redninja.Decisions;
+using Redninja.Skills;
+using Redninja.Targeting;
 
 namespace Redninja.AI
 {
