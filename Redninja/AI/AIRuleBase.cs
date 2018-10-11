@@ -28,9 +28,9 @@ namespace Redninja.AI
 		public bool IsValidTriggerConditions(IBattleEntity source, IBattleEntityManager entityManager)
 		{
 			// find first fail, if no failed, then true
-			return TriggerConditions.First(trigger =>
+			return TriggerConditions.FirstOrDefault(trigger =>
 				AIHelper.FilterByType(trigger.Item1, source, entityManager)
-				.First(ex => !trigger.Item2.IsValid(ex)) != null) == null;
+				.FirstOrDefault(ex => !trigger.Item2.IsValid(ex)) != null) == null;
 		}
 
 		public abstract IBattleAction GenerateAction(IBattleEntity source, IBattleEntityManager bem); 				

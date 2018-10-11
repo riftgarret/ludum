@@ -59,7 +59,7 @@ namespace Redninja.AI
 			}
 
 			// select best target
-			IAITargetPriority targetPriority = SkillAssignments.First(x => x.Item2 == meta.Skill).Item1;
+			IAITargetPriority targetPriority = SkillAssignments.FirstOrDefault(x => x.Item2 == meta.Skill).Item1;
 			IBattleEntity entityTarget = targetPriority.GetBestTarget(filteredTargets);
 
 			// convert into SelectedTarget
@@ -75,7 +75,7 @@ namespace Redninja.AI
 			leftoverTargets = leftoverTargets.Where(ex => skill.TargetRule.IsValidTarget(ex));
 
 			// filter by filter conditions (exclude by finding first condition that fails)
-			leftoverTargets = leftoverTargets.Where(ex => FilterConditions.First(cond => !cond.IsValid(ex)) == null);
+			leftoverTargets = leftoverTargets.Where(ex => FilterConditions.FirstOrDefault(cond => !cond.IsValid(ex)) == null);
 			return leftoverTargets;
 		}		
 

@@ -80,11 +80,11 @@ namespace Redninja.AI
 
 				case AITargetingPriorityQualifier.Highest:
 					int maxValue = entities.Max(entity => extractValueMethod.Invoke(entity));
-					return entities.First(entity => maxValue == extractValueMethod.Invoke(entity));
+					return entities.FirstOrDefault(entity => maxValue == extractValueMethod.Invoke(entity));
 
 				case AITargetingPriorityQualifier.Lowest:				
 					int minValue = entities.Min(entity => extractValueMethod.Invoke(entity));
-					return entities.First(entity => minValue == extractValueMethod.Invoke(entity));
+					return entities.FirstOrDefault(entity => minValue == extractValueMethod.Invoke(entity));
 
 				case AITargetingPriorityQualifier.None:
 				default:
