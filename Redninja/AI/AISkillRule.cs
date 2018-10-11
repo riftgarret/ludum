@@ -14,32 +14,14 @@ namespace Redninja.AI
 	/// This represents a set of conditions that may be attached to a list of
 	/// actionable items. All skills in this rule should be unique.
 	/// </summary>
-	public class AISkillRule : IAIRule
+	public class AISkillRule : AIRuleBase
 	{
-		// trigger conditions can rely on different targets
-		private List<Tuple<AITargetType, IAITargetCondition>> TriggerConditions { get; } = new List<Tuple<AITargetType, IAITargetCondition>>();
-
 		// targeting who gets focused should be uniform for rule
 		private AITargetType TargetType { get; set; }
 		private List<IAITargetCondition> FilterConditions { get; } = new List<IAITargetCondition>();
 		private List<Tuple<IAITargetPriority, ICombatSkill>> SkillAssignments { get; } = new List<Tuple<IAITargetPriority, ICombatSkill>>();
 
-		public string RuleName { get; private set; } = "Unnamed Rule";
-
-		public int Weight { get; private set; }
-
-		public int RefreshTime { get; private set; }
-
-
-		public bool IsValidTriggerConditions(IBattleEntity source, IBattleEntityManager entityManager)
-		{
-			// find first fail, if no failed, then true
-			return TriggerConditions.First(trigger =>
-				AIHelper.FilterByType(trigger.Item1, source, entityManager)
-				.First(ex => !trigger.Item2.IsValid(ex)) != null) == null;
-		}
-
-		public IBattleAction GenerateAction(IBattleEntity source, IBattleEntityManager bem)
+		public override IBattleAction GenerateAction(IBattleEntity source, IBattleEntityManager bem)
 		{
 			SkillSelectionMeta skillMeta = DecisionHelper.GetAvailableSkills(source);
 
@@ -100,7 +82,7 @@ namespace Redninja.AI
 		/// <summary>
 		/// Builder class for a rule.
 		/// </summary>
-		public class Builder : IBuilder<AISkillRule>
+		public class Builder : AIRuleBase.BuilderBase<Builder>, IBuilder<AISkillRule>
 		{
 			private AISkillRule rule;
 			private AITargetType? nullableType;
@@ -111,6 +93,7 @@ namespace Redninja.AI
 			{
 				rule = new AISkillRule();
 				nullableType = null;
+				ResetBase(rule);
 				return this;
 			}
 
@@ -122,18 +105,6 @@ namespace Redninja.AI
 			public Builder SetRuleTargetType(AITargetType type)
 			{
 				nullableType = type;
-				return this;
-			}
-
-			/// <summary>
-			/// Trigger conditions pairs can be any target meating a condition.
-			/// </summary>
-			/// <param name="type"></param>
-			/// <param name="condition"></param>
-			/// <returns></returns>
-			public Builder AddTriggerCondition(AITargetType type, IAITargetCondition condition)
-			{
-				rule.TriggerConditions.Add(Tuple.Create(type, condition));
 				return this;
 			}
 
@@ -160,43 +131,15 @@ namespace Redninja.AI
 				return this;
 			}
 
-			/// <summary>
-			/// Sets the name, mostly useful for debugging purposes.
-			/// </summary>
-			/// <param name="name"></param>
-			/// <returns></returns>
-			public Builder SetName(string name)
-			{
-				rule.RuleName = name;
-				return this;
-			}
-
-			/// <summary>
-			/// Weight that represents the chance in a sum of weights to be used
-			/// </summary>
-			/// <param name="weight"></param>
-			/// <returns></returns>
-			public Builder SetWeight(int weight)
-			{
-				rule.Weight = weight;
-				return this;
-			}
-
 			public AISkillRule Build()
 			{
-				// validation check
+				// validation check				
 				if (rule.SkillAssignments.Count() == 0) throw new InvalidOperationException($"Missing at least 1 skill assignment for Rule: {rule.RuleName}");
-				if (nullableType == null) throw new InvalidOperationException($"Missing AITargetType for Rule: {rule.RuleName}");				
-				if (rule.Weight <= 0) throw new InvalidOperationException($"Invalid weight, must be > 0 for Rule: {rule.RuleName}");
-
-				if (rule.TriggerConditions.Count() == 0)
-				{
-					Logging.RLog.D(this, $"No conditions found for {rule.RuleName}, adding always true");
-					AddTriggerCondition(AITargetType.Self, AIConditionFactory.AlwaysTrue);
-				}
+				if (nullableType == null) throw new InvalidOperationException($"Missing AITargetType for Rule: {rule.RuleName}");
+				BuildBase();
 
 				rule.TargetType = nullableType.Value;
-
+				
 				AISkillRule builtRule = this.rule;
 				Reset();
 				return builtRule;
