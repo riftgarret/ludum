@@ -56,6 +56,7 @@ namespace Redninja.UnitTests
 			mEntityManager.AllEntities.Returns(new List<IBattleEntity>() { mEntity });
 
 			subject.Initialize();
+			subject.Start();
 
 			mEntityManager.Received().SetAction(mEntity, Arg.Any<WaitAction>());
 			Assert.That(subject.State, Is.EqualTo(GameState.Active));
