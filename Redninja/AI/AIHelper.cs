@@ -6,13 +6,36 @@ using System.Threading.Tasks;
 
 namespace Redninja.AI
 {
-	public class AIHelper
+	internal class AIHelper
 	{
-		public delegate int ExtractValue(IBattleEntity entity);
+		internal delegate int ExtractValue(IBattleEntity entity);
 
 		private AIHelper()
 		{
 
+		}
+
+
+		/// <summary>
+		/// Filter total entities by AITargetType.
+		/// </summary>
+		/// <param name="type"></param>
+		/// <param name="source"></param>
+		/// <param name="bem"></param>
+		/// <returns></returns>
+		internal static IEnumerable<IBattleEntity> FilterByType(AITargetType type, IBattleEntity source, IBattleEntityManager bem)
+		{
+			switch (type)
+			{
+				case AITargetType.Ally:
+					return bem.AllEntities.Where(x => x.Team == source.Team);
+				case AITargetType.Enemy:
+					return bem.AllEntities.Where(x => x.Team != source.Team);
+				case AITargetType.Self:
+					return new List<IBattleEntity>() { source };
+				default:
+					throw new InvalidProgramException("Unexpected target type, should implement!");
+			}
 		}
 
 		/// <summary>
@@ -22,7 +45,7 @@ namespace Redninja.AI
 		/// <param name="op"></param>
 		/// <param name="right"></param>
 		/// <returns></returns>
-		public static bool EvaluateCondition(double left, AIValueConditionOperator op, double right)
+		internal static bool EvaluateCondition(double left, AIValueConditionOperator op, double right)
 		{
 			switch(op)
 			{				
@@ -42,7 +65,7 @@ namespace Redninja.AI
 		/// <param name="qualifier"></param>
 		/// <param name="extractValueMethod"></param>
 		/// <returns></returns>
-		public static IBattleEntity FindBestMatch(IEnumerable<IBattleEntity> entities, 
+		internal static IBattleEntity FindBestMatch(IEnumerable<IBattleEntity> entities, 
 			AITargetingPriorityQualifier qualifier,  
 			ExtractValue extractValueMethod)
 		{
