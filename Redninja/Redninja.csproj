@@ -99,6 +99,7 @@
     <Compile Include="IBattleEvent.cs" />
     <Compile Include="IBattleOperation.cs" />
     <Compile Include="IBattleView.cs" />
+    <Compile Include="Skills\BasicAttack.cs" />
     <Compile Include="Skills\CombatSkill.cs" />
     <Compile Include="Skills\ISkillResolver.cs" />
     <Compile Include="Skills\CombatRound.cs" />
