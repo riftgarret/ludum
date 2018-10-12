@@ -5,14 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Redninja.AI
-{
-	public enum AITargetType
-	{
-		Self,
-		Enemy,
-		Ally
-	}
-
+{	
 	public enum AIPriorityType
 	{
 		None,

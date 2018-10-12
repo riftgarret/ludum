@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Redninja.Targeting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace Redninja.AI
 		public static AISkillRule CreateAttackRule()
 			=> new AISkillRule.Builder()
 				.SetName("Attack")
-				.SetRuleTargetType(AITargetType.Enemy)
+				.SetRuleTargetType(TargetTeam.Enemy)
 				.SetWeight(1)				
 				.AddSkillAndPriority(null, AITargetPriorityFactory.NoPriority) // TODO
 				.Build();

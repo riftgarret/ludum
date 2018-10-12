@@ -17,7 +17,7 @@ namespace Redninja.AI
 	public class AISkillRule : AIRuleBase
 	{
 		// targeting who gets focused should be uniform for rule
-		private AITargetType TargetType { get; set; }
+		private TargetTeam TargetType { get; set; }
 		private List<IAITargetCondition> FilterConditions { get; } = new List<IAITargetCondition>();
 		private List<Tuple<IAITargetPriority, ICombatSkill>> SkillAssignments { get; } = new List<Tuple<IAITargetPriority, ICombatSkill>>();
 
@@ -90,7 +90,7 @@ namespace Redninja.AI
 		public class Builder : AIRuleBase.BuilderBase<Builder>, IBuilder<AISkillRule>
 		{
 			private AISkillRule rule;
-			private AITargetType? nullableType;
+			private TargetTeam? nullableType;
 
 			public Builder() => Reset();
 
@@ -107,7 +107,7 @@ namespace Redninja.AI
 			/// </summary>
 			/// <param name="type"></param>
 			/// <returns></returns>
-			public Builder SetRuleTargetType(AITargetType type)
+			public Builder SetRuleTargetType(TargetTeam type)
 			{
 				nullableType = type;
 				return this;

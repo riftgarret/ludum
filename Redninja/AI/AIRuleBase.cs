@@ -16,7 +16,7 @@ namespace Redninja.AI
 	public abstract class AIRuleBase : IAIRule
 	{
 		// trigger conditions can rely on different targets
-		private List<Tuple<AITargetType, IAITargetCondition>> TriggerConditions { get; } = new List<Tuple<AITargetType, IAITargetCondition>>();
+		private List<Tuple<TargetTeam, IAITargetCondition>> TriggerConditions { get; } = new List<Tuple<TargetTeam, IAITargetCondition>>();
 
 		public string RuleName { get; private set; } = "Unnamed Rule";
 
@@ -54,7 +54,7 @@ namespace Redninja.AI
 			/// <param name="type"></param>
 			/// <param name="condition"></param>
 			/// <returns></returns>
-			public ParentBuilder AddTriggerCondition(AITargetType type, IAITargetCondition condition)
+			public ParentBuilder AddTriggerCondition(TargetTeam type, IAITargetCondition condition)
 			{
 				rule.TriggerConditions.Add(Tuple.Create(type, condition));
 				return this as ParentBuilder;
@@ -90,7 +90,7 @@ namespace Redninja.AI
 				if (rule.TriggerConditions.Count() == 0)
 				{
 					Logging.RLog.D(this, $"No conditions found for {rule.RuleName}, adding always true");
-					AddTriggerCondition(AITargetType.Self, AIConditionFactory.AlwaysTrue);
+					AddTriggerCondition(TargetTeam.Self, AIConditionFactory.AlwaysTrue);
 				}
 			}
 		}
