@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace Redninja.AI
 {
-	public class AIRuleFactory
-	{
-		private AIRuleFactory() { }
-
+	public static class AIRuleFactory
+	{		
 		public static AISkillRule CreateAttackRule()
 			=> new AISkillRule.Builder()
 				.SetName("Attack")

@@ -7,15 +7,9 @@ using System.Threading.Tasks;
 
 namespace Redninja.AI
 {
-	internal class AIHelper
+	internal static class AIHelper
 	{
-		internal delegate int ExtractValue(IBattleEntity entity);
-
-		private AIHelper()
-		{
-
-		}
-
+		internal delegate int ExtractValue(IBattleEntity entity);	
 
 		/// <summary>
 		/// Filter total entities by AITargetType.

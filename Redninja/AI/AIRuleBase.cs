@@ -27,10 +27,17 @@ namespace Redninja.AI
 
 		public bool IsValidTriggerConditions(IBattleEntity source, IBattleEntityManager entityManager)
 		{
-			// find first fail, if no failed, then true
-			return TriggerConditions.FirstOrDefault(trigger =>
-				AIHelper.FilterByType(trigger.Item1, source, entityManager)
-				.FirstOrDefault(ex => !trigger.Item2.IsValid(ex)) != null) == null;
+			foreach(var trigger in TriggerConditions)
+			{
+				var validEntities = AIHelper.FilterByType(trigger.Item1, source, entityManager);
+
+				if (validEntities.Count() == 0) return false; // couldnt find any targets to test triggers
+
+				bool foundValid = null != validEntities.FirstOrDefault(ex => trigger.Item2.IsValid(ex));
+
+				if (!foundValid) return false;
+			}
+			return true;			
 		}
 
 		public abstract IBattleAction GenerateAction(IBattleEntity source, IBattleEntityManager bem); 				
@@ -42,7 +49,7 @@ namespace Redninja.AI
 		{
 			private AIRuleBase rule;
 			
-			internal ParentBuilder ResetBase(AIRuleBase rule)
+			protected ParentBuilder ResetBase(AIRuleBase rule)
 			{
 				this.rule = rule;
 				return this as ParentBuilder;
@@ -82,7 +89,18 @@ namespace Redninja.AI
 				return this as ParentBuilder;
 			}
 
-			internal void BuildBase()
+			/// <summary>
+			/// Refresh time is how frequent this rule can trigger successfully.
+			/// </summary>
+			/// <param name="time"></param>
+			/// <returns></returns>
+			public ParentBuilder SetRefreshTime(int time)
+			{
+				rule.RefreshTime = time;
+				return this as ParentBuilder;
+			}
+
+			protected void BuildBase()
 			{
 				// validation check				
 				if (rule.Weight <= 0) throw new InvalidOperationException($"Invalid weight, must be > 0 for Rule: {rule.RuleName}");

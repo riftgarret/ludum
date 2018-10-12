@@ -63,6 +63,7 @@
     <Compile Include="AI\AIRuleFactory.cs" />
     <Compile Include="AI\AIRuleSet.cs" />
     <Compile Include="AI\AITargetPriorityFactory.cs" />
+    <Compile Include="AI\IAIHistoryState.cs" />
     <Compile Include="AI\IAIRule.cs" />
     <Compile Include="AI\IAITargetCondition.cs" />
     <Compile Include="AI\IAITargetPriority.cs" />
