@@ -32,14 +32,17 @@ namespace Redninja.AI
 			foreach (ICombatSkill skill in availableSkills)
 			{
 				// look for available targets
-				SkillTargetMeta targetMeta = DecisionHelper.GetSelectableTargets(source, bem, skill);
-
-				SelectedTarget target = TryFindTarget(targetMeta, source, bem);
+				ISkillTargetingManager targetMeta = DecisionHelper.GetTargetingManager(source, bem, skill);
 
 				// found!				
-				if (target != null)
+				while (TryFindTarget(targetMeta, source, bem, out ISelectedTarget selectedTarget))
 				{
-					return DecisionHelper.CreateAction(source, skill, target);
+					targetMeta.SelectTarget(selectedTarget);
+
+					if (targetMeta.Ready)
+					{
+						return targetMeta.GetAction();
+					}
 				}
 			}
 			return null;
@@ -48,31 +51,33 @@ namespace Redninja.AI
 		internal IEnumerable<ICombatSkill> GetAssignableSkills(SkillSelectionMeta meta)
 			=> meta.Skills.Intersect(SkillAssignments.Select(x => x.Item2));
 
-		internal SelectedTarget TryFindTarget(SkillTargetMeta meta, IBattleEntity source, IBattleEntityManager bem)
+		internal bool TryFindTarget(ISkillTargetingInfo meta, IBattleEntity source, IBattleEntityManager bem, out ISelectedTarget selectedTarget)
 		{
 			// filter targets
-			IEnumerable<IBattleEntity> filteredTargets = FilterTargets(meta.Skill, source, bem);
+			IEnumerable<IBattleEntity> filteredTargets = FilterTargets(meta.TargetingRule, source, bem);
 
 			if (filteredTargets.Count() == 0)
 			{
-				return null; // didnt find any valid targets
+				selectedTarget = null;
+				return false; // didnt find any valid targets
 			}
 
 			// select best target
 			IAITargetPriority targetPriority = SkillAssignments.FirstOrDefault(x => x.Item2 == meta.Skill).Item1;
 			IBattleEntity entityTarget = targetPriority.GetBestTarget(filteredTargets);
 
-			// convert into SelectedTarget
-			return new SelectedTarget(entityTarget);
+			// convert into ISelectedTarget
+			selectedTarget = meta.GetSelectedTarget(entityTarget);
+			return true;
 		}
 
-		private IEnumerable<IBattleEntity> FilterTargets(ICombatSkill skill, IBattleEntity source, IBattleEntityManager bem)
+		private IEnumerable<IBattleEntity> FilterTargets(ITargetingRule targetingRule, IBattleEntity source, IBattleEntityManager bem)
 		{
 			// first filter by TargetType
 			IEnumerable<IBattleEntity> leftoverTargets = AIHelper.FilterByType(TargetType, source, bem);
 
 			// filter by skill rule
-			leftoverTargets = leftoverTargets.Where(ex => skill.TargetRule.IsValidTarget(ex));
+			leftoverTargets = leftoverTargets.Where(ex => targetingRule.IsValidTarget(source, ex));
 
 			// filter by filter conditions (exclude by finding first condition that fails)
 			leftoverTargets = leftoverTargets.Where(ex => FilterConditions.FirstOrDefault(cond => !cond.IsValid(ex)) == null);

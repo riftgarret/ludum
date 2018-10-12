@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="ConsoleView.cs" />
     <Compile Include="DummyAI.cs" />
+    <Compile Include="Objects\CombatSkills.cs" />
+    <Compile Include="Objects\Weapons.cs" />
     <Compile Include="Output.cs" />
     <Compile Include="PlayerInput.cs" />
     <Compile Include="Program.cs" />

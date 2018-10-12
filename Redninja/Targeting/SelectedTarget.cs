@@ -1,45 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Redninja.Targeting
 {
 	/// <summary>
 	/// Selected Target should represent the required meta data for the TargetType.
 	/// </summary>
-	public class SelectedTarget
+	public class SelectedTarget : ISelectedTarget
 	{
-		public IBattleEntity TargetEntity { get; }
+		public ITargetingRule Rule { get; }
+		public IBattleEntity Target { get; }
 
-		public int AnchoredPositionRow { get; }
+		ITargetPattern ISelectedTarget.Pattern => null;
+		int ISelectedTarget.Team => Target.Team;
+		Coordinate ISelectedTarget.Anchor => Target.Position;
 
-		public int AnchoredPositionColumn { get; }
-
-		public int Team { get; }
-
-		public SelectedTarget(IBattleEntity target)
-			: this(target, target.Position.Row, target.Position.Column, target.Team)
+		public SelectedTarget(ITargetingRule rule, IBattleEntity target)
 		{
-
+			Rule = rule;
+			Target = target;
 		}
 
-		public SelectedTarget(int anchoredPositionRow, int anchoredPositionColumn, int teamSide)
-			: this(null, anchoredPositionRow, anchoredPositionColumn, teamSide)
+		public IEnumerable<IBattleEntity> GetValidTargets(IBattleEntity user, IBattleEntityManager entityManager)
 		{
-		}
-
-		private SelectedTarget(
-		IBattleEntity targetEntity,
-		int anchoredPositionRow,
-		int anchoredPositionColumn,
-		int teamSide)
-		{
-			TargetEntity = targetEntity;
-			AnchoredPositionRow = anchoredPositionRow;
-			AnchoredPositionColumn = anchoredPositionColumn;
-			Team = teamSide;
+			List<IBattleEntity> list = new List<IBattleEntity>();
+			if (Rule.IsValidTarget(user, Target))
+				list.Add(Target);
+			return list;
 		}
 	}
 }

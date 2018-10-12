@@ -10,12 +10,12 @@ namespace Redninja.Actions
 	public abstract class BattleActionBase : IBattleAction
 	{
 		private IClock clock;
-		private float phaseStart;
 		private float phaseComplete;
 
 		public PhaseState Phase { get; private set; }
-		public float PhaseTime => phaseComplete - phaseStart;
-		public float PhaseProgress => PhaseTime == 0 ? 1f : Math.Min((clock.Time - phaseStart) / PhaseTime, 1f);
+		public float PhaseStart { get; private set; }
+		public float PhaseTime => phaseComplete - PhaseStart;
+		public float PhaseProgress => PhaseTime == 0 ? 1f : Math.Min((clock.Time - PhaseStart) / PhaseTime, 1f);
 
 		public ActionTime ActionTime { get; }
 		public float TimePrepare => ActionTime.Prepare;
@@ -23,13 +23,13 @@ namespace Redninja.Actions
 		public float TimeRecover => ActionTime.Recover;
 
 		public event Action<IBattleAction> ActionExecuting;
-		public event Action<IBattleOperation> BattleOperationReady;
+		public event Action<float, IBattleOperation> BattleOperationReady;
 
 		protected abstract void ExecuteAction(float timeDelta, float time);
 
-		protected void SendBattleOperation(IBattleOperation operation)
+		protected void SendBattleOperation(float time, IBattleOperation operation)
 		{
-			BattleOperationReady?.Invoke(operation);
+			BattleOperationReady?.Invoke(time, operation);
 		}
 		protected BattleActionBase(ActionTime actionTime)
 		{
@@ -40,13 +40,13 @@ namespace Redninja.Actions
 			: this(new ActionTime(prepare, execute, recover)) { }
 
 		protected float GetPhaseTimeAt(float percent)
-			=> phaseStart + PhaseTime * percent;
+			=> PhaseStart + PhaseTime * percent;
 
 		protected void SetPhase(PhaseState newPhase)
 		{
 			// In case of manual/premature phase changes, set start time to current time
 			// Otherwise, set it to intended completion time to account for clock overshooting
-			phaseStart = Math.Min(clock.Time, phaseComplete);
+			PhaseStart = Math.Min(clock.Time, phaseComplete);
 
 			bool done = false;
 			while (!done)
@@ -76,7 +76,7 @@ namespace Redninja.Actions
 				else
 				{
 					done = true;
-					phaseComplete = phaseStart + phaseTime;
+					phaseComplete = PhaseStart + phaseTime;
 					if (Phase == PhaseState.Executing)
 					{
 						ActionExecuting?.Invoke(this);

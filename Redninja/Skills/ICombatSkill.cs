@@ -1,7 +1,6 @@
-﻿using Davfalcon;
+﻿using System.Collections.Generic;
+using Davfalcon.Revelator;
 using Redninja.Actions;
-using Redninja.Targeting;
-using System.Collections.Generic;
 
 namespace Redninja.Skills
 {
@@ -9,15 +8,10 @@ namespace Redninja.Skills
 	/// Implementation that should contain details of what the skill should do and
 	/// target scenario.
 	/// </summary>
-	public interface ICombatSkill : INameable
+	public interface ICombatSkill : IDamageSource
 	{
 		ActionTime Time { get; }
 
-		TargetingRule TargetRule { get; }
-
-		// TODO list? or something to spcify the amount of time required between rounds?
-		List<CombatRound> CombatRounds { get; }
-
-		// TODO figure out how to capture combat parameters
+		IReadOnlyList<SkillTargetingSet> Targets { get; }
 	}
 }

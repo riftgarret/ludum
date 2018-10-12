@@ -1,4 +1,8 @@
-﻿namespace Redninja.Targeting
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Redninja.Targeting
 {
 	/// <summary>
 	/// Helper method for building out patterns.
@@ -6,28 +10,30 @@
 	public class TargetPatternFactory
 	{
 		public static ITargetPattern CreateRowPattern() => new EvalfPattern((ar, ac, tr, tc) => tr == ar);
-
 		public static ITargetPattern CreateColumnPattern() => new EvalfPattern((ar, ac, tr, tc) => tc == ac);
-
-
-		/// <summary>
-		/// Create simple delegate to handle what the interface does
-		/// </summary>
-		internal class EvalfPattern : ITargetPattern
+		public static ITargetPattern CreatePattern(params Coordinate[] tiles)
 		{
-			internal delegate bool EvalPattern(int anchorRow, int anchorColumn, int targetRow, int targetColumn);
+			List<Coordinate> list = new List<Coordinate>(tiles);
+			return new EvalfPattern((ar, ac, tr, tc) => list.Select(c => new Coordinate(c.Row + ar, c.Column + ac)).Contains(new Coordinate(tr, tc)));
+		}
 
-			private EvalPattern EvalPatternDelegate;
+		private class EvalfPattern : ITargetPattern
+		{
+			public delegate bool EvalPattern(int anchorRow, int anchorColumn, int targetRow, int targetColumn);
 
-			internal EvalfPattern(EvalPattern evalPattern)
-			{
-				EvalPatternDelegate = evalPattern;
-			}
+			private readonly EvalPattern EvalPatternDelegate;
 
-			public bool IsInPattern(int anchorRow, int anchorColumn, int targetRow, int targetColumn)
-			{
-				return EvalPatternDelegate.Invoke(anchorRow, anchorColumn, targetRow, targetColumn);
-			}
+			public EvalfPattern(EvalPattern evalPattern)
+				=> EvalPatternDelegate = evalPattern ?? throw new ArgumentNullException(nameof(EvalPatternDelegate));
+
+			public bool ContainsLocation(int anchorRow, int anchorColumn, int targetRow, int targetColumn)
+				=> EvalPatternDelegate(anchorRow, anchorColumn, targetRow, targetColumn);
+
+			public bool ContainsLocation(Coordinate anchor, int targetRow, int targetColumn)
+				=> ContainsLocation(anchor.Row, anchor.Column, targetRow, targetColumn);
+
+			public bool ContainsLocation(Coordinate anchor, Coordinate target)
+				=> ContainsLocation(anchor.Row, anchor.Column, target.Row, target.Column);
 		}
 	}
 }

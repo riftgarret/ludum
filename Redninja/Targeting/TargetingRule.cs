@@ -1,34 +1,47 @@
-﻿using Redninja.Entities;
-using Redninja.Targeting.Conditions;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 
 namespace Redninja.Targeting
 {
 	/// <summary>
 	/// Targeting Rule represents a collection of conditions and target type.
 	/// </summary>
-	public class TargetingRule
+	public class TargetingRule : ITargetingRule
 	{
-		public TargetType TargetType { get; private set; }
+		private readonly TargetCondition condition;
 
-		public ITargetPattern TargetPattern { get; private set; }
+		public TargetType Type { get; }
+		public TargetTeam Team { get; }
 
-		private IEnumerable<ITargetCondition> conditions;
+		public ITargetPattern Pattern { get; }
 
-		public TargetingRule(TargetType targetType, ITargetPattern targetPattern, IEnumerable<ITargetCondition> conditions)
+		private TargetingRule(TargetType targetType, TargetTeam team, ITargetPattern targetPattern, TargetCondition condition)
 		{
-			TargetType = targetType;
-			TargetPattern = targetPattern;
-			this.conditions = conditions;
+			this.condition = condition ?? throw new ArgumentNullException(nameof(condition));
+			Type = targetType;
+			Team = team;
+			Pattern = targetPattern;
 		}
+
+		public TargetingRule(ITargetPattern targetPattern, TargetTeam team, TargetCondition condition)
+			: this(TargetType.Pattern, team, targetPattern, condition)
+		{ }
+
+		public TargetingRule(TargetTeam team, TargetCondition condition)
+			: this(TargetType.Entity, team, null, condition)
+		{ }
+
+		public TargetingRule(TargetTeam team)
+			: this(team, TargetConditions.None)
+		{ }
 
 		/// <summary>
 		/// Determines whether this instance is valid target the specified entity.
 		/// </summary>
 		/// <returns><c>true</c> if this instance is valid target the specified entity; otherwise, <c>false</c>.</returns>
 		/// <param name="entity">Entity.</param>
-		public bool IsValidTarget(IBattleEntity entity)
-			=> conditions.Where(c => c.IsValidTarget(entity)).Count() > 0;
+		public bool IsValidTarget(IBattleEntity target, IBattleEntity user)
+			=> condition(target, user);
+
+		public static ITargetingRule Any { get; } = new TargetingRule(TargetTeam.Any);
 	}
 }

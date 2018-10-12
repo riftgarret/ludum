@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Davfalcon.Revelator;
 using Redninja.Operations;
+using Redninja.Targeting;
 
 namespace Redninja.Actions
 {
@@ -26,7 +27,7 @@ namespace Redninja.Actions
 		{
 			while (times.Count > 0 && PhaseProgress >= times[0])
 			{
-				SendBattleOperation(new DamageOperation(GetPhaseTimeAt(times[0]), unit, target, weapon));
+				SendBattleOperation(GetPhaseTimeAt(times[0]), new DamageOperation(unit, new SelectedTarget(TargetingRule.Any, target), weapon));
 				times.RemoveAt(0);
 			}
 		}

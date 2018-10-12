@@ -5,28 +5,31 @@
 	/// </summary>
 	public struct EntityPosition
     {
-        public int Column { get;  }
         public int Row { get; }
+        public int Column { get; }
         public int Size { get; }
+
+		public Coordinate Bound { get; }
 
         public EntityPosition(int row, int col, int size)
         {
-            Column = col;
             Row = row;
+            Column = col;
             Size = size;
-        }
-        
-        public EntityPosition(int size)
-        {
-            Column = 0;
-            Row = 0;
-            Size = size;            
-        }
+
+			Bound = new Coordinate(Row + Size - 1, Column + Size - 1);
+		}
+
+		public EntityPosition(int row, int col)
+			: this(row, col, 1)
+		{ }
+
+		public EntityPosition(int size)
+			: this(0, 0, size)
+        { }
 
         public EntityPosition Move(int x, int y)
-        {
-            return new EntityPosition(x, y, Size);
-        }
+			=> new EntityPosition(x, y, Size);
 
         public bool ContainsRow(EntityPosition other)
         {            
@@ -35,8 +38,9 @@
         }
 
         public override string ToString()
-        {
-            return $"[EntityPosition ({Row}, {Column}, {Size})]";
-        }
+			=> $"[EntityPosition ({Row}, {Column}, {Size})]";
+
+		public static implicit operator Coordinate(EntityPosition position)
+			=> new Coordinate(position.Row, position.Column);
     }
 }
