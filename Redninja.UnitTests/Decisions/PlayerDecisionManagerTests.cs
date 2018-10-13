@@ -33,6 +33,7 @@ namespace Redninja.Decisions.UnitTests
 			kernel = new StandardKernel();
 			kernel.Bind<IBattleEntityManager>().ToConstant(mEntityManager);
 			kernel.Bind<IBattleView>().ToConstant(mBattleView);
+			kernel.Bind<IDecisionHelper>().ToConstant(Substitute.For<IDecisionHelper>());
 
 			subject = kernel.Get<PlayerDecisionManager>();
 		}

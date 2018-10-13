@@ -1,16 +1,19 @@
-﻿using System;
+﻿using Redninja.Decisions;
+using System;
 
 namespace Redninja.AI
 {
 	public class AIActionDecider : IActionDecider
 	{
-		private AIRuleSet ruleSet;
-		private IAIHistoryState historyState;
+		private readonly AIRuleSet ruleSet;
+		private readonly IAIHistoryState historyState;
+		private readonly IDecisionHelper decisionHelper;
 
 		public bool IsPlayer => false;
 
-		public AIActionDecider(AIRuleSet ruleSet, IAIHistoryState historyState)
+		public AIActionDecider(AIRuleSet ruleSet, IAIHistoryState historyState, IDecisionHelper decisionHelper)
 		{
+			this.decisionHelper = decisionHelper;
 			this.ruleSet = ruleSet;
 			this.historyState = historyState;
 		}
@@ -19,7 +22,7 @@ namespace Redninja.AI
 
 		public void ProcessNextAction(IBattleEntity source, IBattleEntityManager entityManager)
 		{
-			IBattleAction action = ruleSet.ResolveAction(source, entityManager, historyState);
+			IBattleAction action = ruleSet.ResolveAction(source, decisionHelper, historyState);
 			ActionSelected?.Invoke(source, action);
 		}
 	}

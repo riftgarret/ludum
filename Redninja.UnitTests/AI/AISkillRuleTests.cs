@@ -7,189 +7,151 @@ using Davfalcon.Revelator;
 using NSubstitute;
 using NUnit.Framework;
 using Redninja.AI;
+using Redninja.Decisions;
+using Redninja.Skills;
 using Redninja.Targeting;
 
 namespace Redninja.UnitTests.AI
 {
 	[TestFixture]
-	public class AISkillRuleTests
-	{
-		private IBattleEntityManager mBem;		
-		private IBattleEntity mSource;
-		private int sourceTeam;
-		private int enemyTeam;
-		private List<IBattleEntity> allEntities;
-		
+	public class AISkillRuleTests : AIRuleBaseTests<AISkillRule.Builder, AISkillRule>
+	{			
 		private AISkillRule.Builder subjectBuilder;
+
+		private IActionPhaseHelper mActionHelper;
+
+		// need this to allow builder to complete but we set it to have no resolvement
+		private Tuple<ICombatSkill, IAITargetPriority> mInitialSkill;				
+
+		protected override AIRuleBase.BuilderBase<AISkillRule.Builder, AISkillRule> SubjectBuilder => subjectBuilder;
 
 		[SetUp]
 		public void Setup()
-		{
-			enemyTeam = 1;
-			sourceTeam = 2;
-
-			mBem = Substitute.For<IBattleEntityManager>();
-			mSource = Substitute.For<IBattleEntity>();
-			mSource.Team.Returns(sourceTeam);
-
-			allEntities = new List<IBattleEntity>() { mSource };
-			mBem.AllEntities.Returns(allEntities);
-
-			subjectBuilder = new AISkillRule.Builder();
-			subjectBuilder.SetWeight(1);
-			subjectBuilder.SetName("test");
-		}
-
-		private IBattleEntity AddEntity(int teamId)
-		{
-			var mEntity = Substitute.For<IBattleEntity>();
-			mEntity.Team.Returns(teamId);
-			allEntities.Add(mEntity);
-			return mEntity;
-		}
-
-		private IAITargetCondition AddMockCondition(TargetTeam target, bool isValid, IBattleEntity entityArg = null)
-		{
-			IAITargetCondition mockCondition = Substitute.For<IAITargetCondition>();
-			mockCondition.IsValid(entityArg?? Arg.Any<IBattleEntity>()).Returns(isValid);
-			subjectBuilder.AddTriggerCondition(target, mockCondition);
-			return mockCondition;
-		}
-		
-		[Test]
-		public void IsValidCondition_ReturnsTrue(
-			[Values] TargetTeam target, 
-			[Range(1, 4)] int numberOfTrueConditions)
 		{			
-		
-			for(int i=0; i < numberOfTrueConditions; i++)
-			{
-				AddMockCondition(target, true);				
-			}
+			subjectBuilder = new AISkillRule.Builder();
+			subjectBuilder.SetRuleTargetType(TargetTeam.Enemy);
+			mInitialSkill = AddSkillPriority(null); // required for builder			
 
-			AddEntity(sourceTeam);
-			AddEntity(enemyTeam);
+			mActionHelper = Substitute.For<IActionPhaseHelper>();
+			mDecisionHelper.GetAvailableSkills(Arg.Any<IBattleEntity>()).Returns(mActionHelper);
+
+			SetupBuilder();
+		}
+
+		private IAITargetCondition AddFilterCondition(bool isTrue, IBattleEntity onlyForTarget = null)
+		{
+			IAITargetCondition mFilterCondition = Substitute.For<IAITargetCondition>();
+			mFilterCondition.IsValid(onlyForTarget ?? Arg.Any<IBattleEntity>()).Returns(isTrue);
+			subjectBuilder.AddFilterCondition(mFilterCondition);
+			return mFilterCondition;
+		}
+
+		private Tuple<ICombatSkill, IAITargetPriority> AddSkillPriority(IBattleEntity bestTarget)
+		{
+			var mSkill = Substitute.For<ICombatSkill>();
+			var mPriority = Substitute.For<IAITargetPriority>();
+
+			mPriority.GetBestTarget(Arg.Any<IEnumerable<IBattleEntity>>()).Returns(bestTarget);
+			subjectBuilder.AddSkillAndPriority(mSkill, mPriority);
+			
+			return Tuple.Create(mSkill, mPriority);
+		}
+
+		// this is a nasty test and should be just be ran as an integration test later.
+		// if this breaks, just comment it out and let me know.
+		[Test]
+		public void GenerateAction_FilterCondition_FindsSelf()
+		{
+			subjectBuilder.SetRuleTargetType(TargetTeam.Self);
+
+			// setup the skill
+			var skillMeta = AddSkillPriority(mSource);
+			var mSkill = skillMeta.Item1;
+			mActionHelper.Skills.Returns(new List<ICombatSkill>() { mSkill });
+
+			// make sure the skill has target meta
+			var returnedAction = Substitute.For<IBattleAction>();			
+			var mTargetHelper = Substitute.For<ITargetPhaseHelper>();
+			var mSelectedTarget = mTargetHelper.GetSelectedTarget(mSource);
+
+			mTargetHelper.TargetingRule.IsValidTarget(mSource, mSource).Returns(true);			
+			mTargetHelper.Ready.Returns(true);			
+			mTargetHelper.Skill.Returns(mSkill);
+			mDecisionHelper.GetTargetingManager(mSource, mSkill).Returns(mTargetHelper);
+
+			var subject = subjectBuilder.Build();			
+
+			var result = subject.GenerateAction(mSource, mDecisionHelper);
+
+			mTargetHelper.Received().SelectTarget(mSelectedTarget);
+			Assert.That(result, Is.Not.Null);
+		}
+
+		[Test]
+		public void GetAssignableSkills_FindsOnlyAssignedSkills()
+		{
+			var skill1 = AddSkillPriority(null).Item1;
+			var skill2 = AddSkillPriority(null).Item1;
+			var skill3 = AddSkillPriority(null).Item1;
+
+			mActionHelper.Skills.Returns(new List<ICombatSkill>() { skill1, skill2 });
 
 			var subject = subjectBuilder.Build();
-			bool result = subject.IsValidTriggerConditions(mSource, mBem);
+
+			var result = subject.GetAssignableSkills(mActionHelper);
+
+			Assert.That(result, Has.Exactly(2).Items);
+			Assert.That(result, Does.Contain(skill1));
+			Assert.That(result, Does.Contain(skill2));
+			Assert.That(result, Does.Not.Contain(skill3));
+		}
+
+		[Test]
+		public void TryFindTarget_HasFindsTarget()
+		{
+			var enemy1 = AddEntity(enemyTeam);			
+			var enemy2 = AddEntity(enemyTeam);
+			var condition = AddFilterCondition(true);
+			
+			condition.IsValid(Arg.Is<IBattleEntity>(x => x == enemy1 || x == enemy2)).Returns(true);			
+
+			ITargetPhaseHelper mTargetHelper = Substitute.For<ITargetPhaseHelper>();
+			mTargetHelper.TargetingRule.IsValidTarget(Arg.Is<IBattleEntity>(x => x == enemy1 || x == enemy2), mSource).Returns(true);
+			mTargetHelper.Skill.Returns(mInitialSkill.Item1);
+			mInitialSkill.Item2.GetBestTarget(Arg.Any<IEnumerable<IBattleEntity>>())
+				.ReturnsForAnyArgs(x => x.Arg<IEnumerable<IBattleEntity>>()
+				.First(e => e == enemy1));
+			
+			subjectBuilder.SetRuleTargetType(TargetTeam.Enemy);
+			var subject = SubjectBuilder.Build();
+
+			ISelectedTarget resultTarget = null;
+			var result = subject.TryFindTarget(mTargetHelper, mSource, mBem, out resultTarget);
 
 			Assert.That(result, Is.True);
+			mTargetHelper.Received().GetSelectedTarget(enemy1);
 		}
 
 		[Test]
-		public void IsValidCondition_ReturnsFalse(
-			[Values] TargetTeam target,
-			[Range(0, 2)] int numberOfTrueConditions)
+		public void TryFindTarget_DoesNotFindTarget()
 		{
-			for (int i = 0; i < numberOfTrueConditions; i++)
-			{
-				AddMockCondition(target, true);
-			}
+			var enemy1 = AddEntity(enemyTeam);
+			var enemy2 = AddEntity(enemyTeam);
+			var condition = AddFilterCondition(true);
 
-			AddMockCondition(target, false);	// add one to fail the test of AND statements
+			condition.IsValid(Arg.Is<IBattleEntity>(x => x == enemy1 || x == enemy2)).Returns(true);
 
-			AddEntity(sourceTeam);
-			AddEntity(enemyTeam);
+			ITargetPhaseHelper mTargetHelper = Substitute.For<ITargetPhaseHelper>();
+			mTargetHelper.TargetingRule.IsValidTarget(Arg.Is<IBattleEntity>(x => x == enemy1 || x == enemy2), mSource).Returns(false);
+			mTargetHelper.Skill.Returns(mInitialSkill.Item1);
 
-			var subject = subjectBuilder.Build();
-			bool result = subject.IsValidTriggerConditions(mSource, mBem);
+			subjectBuilder.SetRuleTargetType(TargetTeam.Enemy);
+			var subject = SubjectBuilder.Build();
 
-			Assert.That(result, Is.False);
-		}
+			ISelectedTarget resultTarget = null;
+			var result = subject.TryFindTarget(mTargetHelper, mSource, mBem, out resultTarget);
 
-		[Test]
-		public void IsValidCondition_ChecksTarget([Values] TargetTeam target)
-		{
-			IEnumerable<IBattleEntity> entities;
-			switch(target)
-			{
-				case TargetTeam.Ally:
-					entities = allEntities.Where(x => x.Team == mSource.Team);
-					break;
-				case TargetTeam.Self:
-					entities = allEntities.Where(x => x == mSource);
-					break;
-				case TargetTeam.Enemy:
-					entities = allEntities.Where(x => x.Team != mSource.Team);
-					break;
-				case TargetTeam.Any:
-				default:
-					entities = allEntities;
-					break;
-			}
-
-			AddEntity(sourceTeam);
-			AddEntity(enemyTeam);
-
-			var mCondition = AddMockCondition(target, true);
-
-			var subject = subjectBuilder.Build();
-			subject.IsValidTriggerConditions(mSource, mBem);
-
-			mCondition.Received().IsValid(Arg.Is<IBattleEntity>(x => entities.Contains(x)));
-		}
-
-		[TestCase(0)]
-		[TestCase(-1)]
-		[TestCase(-20)]
-		public void BuilderInvalidWeight_ThrowsException(int weight)
-		{
-			subjectBuilder.SetWeight(weight);
-
-			Assert.Throws<InvalidOperationException>(() => subjectBuilder.Build());
-		}
-
-		[TestCase("first")]
-		[TestCase("second")]
-		[TestCase("the third")]
-		public void BuilderName_IsBuilt(string name)
-		{
-			subjectBuilder.SetName(name);
-
-			var subject = subjectBuilder.Build();
-			Assert.That(subject.RuleName, Is.EqualTo(name));
-		}
-
-		[TestCase(0)]
-		[TestCase(10)]
-		[TestCase(30)]
-		public void BuilderRefresh_IsBuilt(int refresh)
-		{
-			subjectBuilder.SetRefreshTime(refresh);
-
-			var subject = subjectBuilder.Build();
-			Assert.That(subject.RefreshTime, Is.EqualTo(refresh));
-		}
-
-		/// <summary>
-		/// Make this abstract class to be testable.
-		/// </summary>
-		internal class TestableRuleBase : AIRuleBase
-		{			
-
-			public override IBattleAction GenerateAction(IBattleEntity source, IBattleEntityManager bem)
-			{
-				return null; // ignored in tests
-			}
-
-			internal class Builder : AIRuleBase.BuilderBase<Builder>, IBuilder<TestableRuleBase>
-			{
-				private TestableRuleBase rule;
-				internal Builder() => Reset();
-
-				public Builder Reset()
-				{
-					rule = new TestableRuleBase();
-					ResetBase(rule);
-					return this;
-				}
-
-				public TestableRuleBase Build()
-				{
-					BuildBase();
-					return rule;
-				}
-			}
+			Assert.That(result, Is.False);			
 		}
 	}
 }

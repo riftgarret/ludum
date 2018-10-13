@@ -17,7 +17,7 @@ namespace Redninja.AI
 	public class AIMovementRule : AIRuleBase
 	{
 		
-		public override IBattleAction GenerateAction(IBattleEntity source, IBattleEntityManager bem)
+		public override IBattleAction GenerateAction(IBattleEntity source, IDecisionHelper decisionHelper)
 		{
 			// psuedo code for now
 			// 1. Find available tiles you can move to (cannot be occupied or have units currently moving there)
@@ -29,7 +29,7 @@ namespace Redninja.AI
 		/// <summary>
 		/// Builder class for a rule.
 		/// </summary>
-		public class Builder : AIRuleBase.BuilderBase<Builder>, IBuilder<AIMovementRule>
+		public class Builder : AIRuleBase.BuilderBase<Builder, AIMovementRule>, IBuilder<AIMovementRule>
 		{
 			private AIMovementRule rule;
 
@@ -42,8 +42,7 @@ namespace Redninja.AI
 				return this;
 			}
 					
-
-			public AIMovementRule Build()
+			public override AIMovementRule Build()
 			{
 				BuildBase();
 				AIMovementRule builtRule = this.rule;

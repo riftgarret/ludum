@@ -25,11 +25,11 @@ namespace Redninja.AI
 		public int RefreshTime { get; private set; }
 
 
-		public bool IsValidTriggerConditions(IBattleEntity source, IBattleEntityManager entityManager)
+		public bool IsValidTriggerConditions(IBattleEntity source, IDecisionHelper decisionHelper)
 		{
 			foreach(var trigger in TriggerConditions)
 			{
-				var validEntities = AIHelper.FilterByType(trigger.Item1, source, entityManager);
+				var validEntities = AIHelper.FilterByType(trigger.Item1, source, decisionHelper.BattleEntityManager);
 
 				if (validEntities.Count() == 0) return false; // couldnt find any targets to test triggers
 
@@ -40,12 +40,14 @@ namespace Redninja.AI
 			return true;			
 		}
 
-		public abstract IBattleAction GenerateAction(IBattleEntity source, IBattleEntityManager bem); 				
+		public abstract IBattleAction GenerateAction(IBattleEntity source, IDecisionHelper decisionHelper); 				
 
 		/// <summary>
 		/// Builder class for a rule.
 		/// </summary>
-		public abstract class BuilderBase<ParentBuilder> where ParentBuilder:BuilderBase<ParentBuilder>
+		public abstract class BuilderBase<ParentBuilder, T> : IBuilder<T>
+			where ParentBuilder:BuilderBase<ParentBuilder, T>
+			where T:AIRuleBase
 		{
 			private AIRuleBase rule;
 			
@@ -111,6 +113,8 @@ namespace Redninja.AI
 					AddTriggerCondition(TargetTeam.Self, AIConditionFactory.AlwaysTrue);
 				}
 			}
+
+			public abstract T Build();
 		}
 	}
 }

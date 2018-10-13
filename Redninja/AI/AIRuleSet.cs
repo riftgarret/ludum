@@ -23,14 +23,14 @@ namespace Redninja.AI
 		/// <param name="bem"></param>
 		/// <param name="historyState"></param>
 		/// <returns></returns>
-		public IBattleAction ResolveAction(IBattleEntity source, IBattleEntityManager bem, IAIHistoryState historyState) 
+		public IBattleAction ResolveAction(IBattleEntity source, IDecisionHelper decisionHelper, IAIHistoryState historyState) 
 		{
 			// DEBUG rule name -> in pool
 			var debugRuleMeta = new Dictionary<string, bool>();
-			Rules.ForEach(x => debugRuleMeta[x.RuleName] = false);
+			Rules.ForEach(x => debugRuleMeta[x.RuleName] = false);			
 
 			// find rules triggers
-			IEnumerable<IAIRule> validRules = Rules.Where(rule => rule.IsValidTriggerConditions(source, bem));				
+			IEnumerable<IAIRule> validRules = Rules.Where(rule => rule.IsValidTriggerConditions(source, decisionHelper));				
 
 			// assign pool
 			WeightedPool<IAIRule> weightedPool = new WeightedPool<IAIRule>();
@@ -46,7 +46,7 @@ namespace Redninja.AI
 				// pick weighted rule
 				IAIRule rule = weightedPool.Random();
 
-				IBattleAction action = rule.GenerateAction(source, bem);
+				IBattleAction action = rule.GenerateAction(source, decisionHelper);
 				
 				if(action != null)
 				{

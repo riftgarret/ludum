@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 using NSubstitute;
 using NUnit.Framework;
 using Redninja.AI;
+using Redninja.Decisions;
 
 namespace Redninja.UnitTests.AI
 {
 	[TestFixture]
 	public class AIRuleSetTests
-	{
-		private IBattleEntityManager mBem;		
+	{		
+		private IDecisionHelper mDecisionHelper;
 		private IBattleEntity mSource;
 		private IAIHistoryState mHistory;
 		private AIRuleSet.Builder builder;
 
 		[SetUp]
 		public void Setup()
-		{
-			mBem = Substitute.For<IBattleEntityManager>();
+		{			
 			mSource = Substitute.For<IBattleEntity>();
 			mHistory = Substitute.For<IAIHistoryState>();
 			builder = new AIRuleSet.Builder();
@@ -31,9 +31,9 @@ namespace Redninja.UnitTests.AI
 			IAIRule rule = Substitute.For<IAIRule>();
 
 			rule.Weight.Returns(weight);
-			rule.IsValidTriggerConditions(Arg.Any<IBattleEntity>(), Arg.Any<IBattleEntityManager>())
+			rule.IsValidTriggerConditions(Arg.Any<IBattleEntity>(), Arg.Any<IDecisionHelper>())
 				.Returns(isValidTrigger);
-			rule.GenerateAction(Arg.Any<IBattleEntity>(), Arg.Any<IBattleEntityManager>())
+			rule.GenerateAction(Arg.Any<IBattleEntity>(), Arg.Any<IDecisionHelper>())
 				.Returns(willBuildAction ? Substitute.For<IBattleAction>() : null);
 
 			return rule;
@@ -53,7 +53,7 @@ namespace Redninja.UnitTests.AI
 			mHistory.IsRuleReady(Arg.Any<IAIRule>()).Returns(true);
 
 			var subject = builder.Build();
-			var result = subject.ResolveAction(mSource, mBem, mHistory);
+			var result = subject.ResolveAction(mSource, mDecisionHelper, mHistory);
 
 			Assert.That(result, Is.Not.Null);
 		}
@@ -73,7 +73,7 @@ namespace Redninja.UnitTests.AI
 
 			var subject = builder.Build();
 
-			var result = subject.ResolveAction(mSource, mBem, mHistory);
+			var result = subject.ResolveAction(mSource, mDecisionHelper, mHistory);
 
 			Assert.That(result, Is.Null);
 		}
@@ -87,7 +87,7 @@ namespace Redninja.UnitTests.AI
 
 			var subject = builder.Build();
 
-			var result = subject.ResolveAction(mSource, mBem, mHistory);
+			var result = subject.ResolveAction(mSource, mDecisionHelper, mHistory);
 
 			mHistory.Received().IsRuleReady(mRule);
 			Assert.That(result, Is.Null);

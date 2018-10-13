@@ -21,9 +21,9 @@ namespace Redninja.AI
 		private List<IAITargetCondition> FilterConditions { get; } = new List<IAITargetCondition>();
 		private List<Tuple<IAITargetPriority, ICombatSkill>> SkillAssignments { get; } = new List<Tuple<IAITargetPriority, ICombatSkill>>();
 
-		public override IBattleAction GenerateAction(IBattleEntity source, IBattleEntityManager bem)
+		public override IBattleAction GenerateAction(IBattleEntity source, IDecisionHelper decisionHelper)
 		{
-			SkillSelectionMeta skillMeta = DecisionHelper.GetAvailableSkills(source);
+			IActionPhaseHelper skillMeta = decisionHelper.GetAvailableSkills(source);
 
 			// filter out what skills this rule uses
 			IEnumerable<ICombatSkill> availableSkills = GetAssignableSkills(skillMeta);
@@ -32,10 +32,10 @@ namespace Redninja.AI
 			foreach (ICombatSkill skill in availableSkills)
 			{
 				// look for available targets
-				ISkillTargetingManager targetMeta = DecisionHelper.GetTargetingManager(source, bem, skill);
+				ITargetPhaseHelper targetMeta = decisionHelper.GetTargetingManager(source, skill);
 
 				// found!				
-				while (TryFindTarget(targetMeta, source, bem, out ISelectedTarget selectedTarget))
+				while (TryFindTarget(targetMeta, source, decisionHelper.BattleEntityManager, out ISelectedTarget selectedTarget))
 				{
 					targetMeta.SelectTarget(selectedTarget);
 
@@ -48,7 +48,7 @@ namespace Redninja.AI
 			return null;
 		}
 
-		internal IEnumerable<ICombatSkill> GetAssignableSkills(SkillSelectionMeta meta)
+		internal IEnumerable<ICombatSkill> GetAssignableSkills(IActionPhaseHelper meta)
 			=> meta.Skills.Intersect(SkillAssignments.Select(x => x.Item2));
 
 		internal bool TryFindTarget(ISkillTargetingInfo meta, IBattleEntity source, IBattleEntityManager bem, out ISelectedTarget selectedTarget)
@@ -71,13 +71,13 @@ namespace Redninja.AI
 			return true;
 		}
 
-		private IEnumerable<IBattleEntity> FilterTargets(ITargetingRule targetingRule, IBattleEntity source, IBattleEntityManager bem)
+		internal IEnumerable<IBattleEntity> FilterTargets(ITargetingRule targetingRule, IBattleEntity source, IBattleEntityManager bem)
 		{
 			// first filter by TargetType
 			IEnumerable<IBattleEntity> leftoverTargets = AIHelper.FilterByType(TargetType, source, bem);
 
 			// filter by skill rule
-			leftoverTargets = leftoverTargets.Where(ex => targetingRule.IsValidTarget(source, ex));
+			leftoverTargets = leftoverTargets.Where(ex => targetingRule.IsValidTarget(ex, source));
 
 			// filter by filter conditions (exclude by finding first condition that fails)
 			leftoverTargets = leftoverTargets.Where(ex => FilterConditions.FirstOrDefault(cond => !cond.IsValid(ex)) == null);
@@ -87,7 +87,7 @@ namespace Redninja.AI
 		/// <summary>
 		/// Builder class for a rule.
 		/// </summary>
-		public class Builder : AIRuleBase.BuilderBase<Builder>, IBuilder<AISkillRule>
+		public class Builder : BuilderBase<Builder, AISkillRule>
 		{
 			private AISkillRule rule;
 			private TargetTeam? nullableType;
@@ -136,7 +136,7 @@ namespace Redninja.AI
 				return this;
 			}
 
-			public AISkillRule Build()
+			public override AISkillRule Build()
 			{
 				// validation check				
 				if (rule.SkillAssignments.Count() == 0) throw new InvalidOperationException($"Missing at least 1 skill assignment for Rule: {rule.RuleName}");

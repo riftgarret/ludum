@@ -7,25 +7,27 @@ using Davfalcon.Revelator;
 using NSubstitute;
 using NUnit.Framework;
 using Redninja.AI;
+using Redninja.Decisions;
 using Redninja.Targeting;
 
 namespace Redninja.UnitTests.AI
 {
 	[TestFixture]
-	public abstract class AIRuleBaseTests<T> where T : AIRuleBase.BuilderBase<T>
+	public abstract class AIRuleBaseTests<B, T> 
+		where B : AIRuleBase.BuilderBase<B, T>
+		where T : AIRuleBase
 	{
-		private IBattleEntityManager mBem;		
-		private IBattleEntity mSource;
-		private int sourceTeam;
-		private int enemyTeam;
-		private List<IBattleEntity> allEntities;
-		
-		private TestableRuleBase.Builder subjectBuilder;
+		protected IDecisionHelper mDecisionHelper;
+		protected IBattleEntityManager mBem;
+		protected IBattleEntity mSource;
+		protected int sourceTeam;
+		protected int enemyTeam;
+		protected List<IBattleEntity> allEntities;			
 
-		protected abstract AIRuleBase.BuilderBase<T> Builder { get; }
+		protected abstract AIRuleBase.BuilderBase<B, T> SubjectBuilder { get; }		
 
 		[SetUp]
-		public void Setup()
+		public void BaseSetup()
 		{
 			enemyTeam = 1;
 			sourceTeam = 2;
@@ -34,15 +36,22 @@ namespace Redninja.UnitTests.AI
 			mSource = Substitute.For<IBattleEntity>();
 			mSource.Team.Returns(sourceTeam);
 
-			allEntities = new List<IBattleEntity>() { mSource };
-			mBem.AllEntities.Returns(allEntities);
+			mDecisionHelper = Substitute.For<IDecisionHelper>();
+			mDecisionHelper.BattleEntityManager.Returns(mBem);
 
-			subjectBuilder = new TestableRuleBase.Builder();
-			subjectBuilder.SetWeight(1);
-			subjectBuilder.SetName("test");
+			allEntities = new List<IBattleEntity>() { mSource };
+			mBem.AllEntities.Returns(allEntities);			
 		}
 
-		private IBattleEntity AddEntity(int teamId)
+		// due to base class being called [SetUp] first before derived class, the
+		// derived class must call SetupBuilder after its initialized its Builder property.
+		protected void SetupBuilder()
+		{			
+			SubjectBuilder.SetWeight(1);
+			SubjectBuilder.SetName("test");
+		}
+
+		protected IBattleEntity AddEntity(int teamId)
 		{
 			var mEntity = Substitute.For<IBattleEntity>();
 			mEntity.Team.Returns(teamId);
@@ -50,11 +59,11 @@ namespace Redninja.UnitTests.AI
 			return mEntity;
 		}
 
-		private IAITargetCondition AddMockCondition(TargetTeam target, bool isValid, IBattleEntity entityArg = null)
-		{
+		protected IAITargetCondition AddMockCondition(TargetTeam target, bool isValid, IBattleEntity entityArg = null)
+		{			
 			IAITargetCondition mockCondition = Substitute.For<IAITargetCondition>();
 			mockCondition.IsValid(entityArg?? Arg.Any<IBattleEntity>()).Returns(isValid);
-			subjectBuilder.AddTriggerCondition(target, mockCondition);
+			SubjectBuilder.AddTriggerCondition(target, mockCondition);
 			return mockCondition;
 		}
 		
@@ -63,8 +72,7 @@ namespace Redninja.UnitTests.AI
 			[Values] TargetTeam target, 
 			[Range(1, 4)] int numberOfTrueConditions)
 		{			
-		
-			for(int i=0; i < numberOfTrueConditions; i++)
+			for (int i=0; i < numberOfTrueConditions; i++)
 			{
 				AddMockCondition(target, true);				
 			}
@@ -72,8 +80,8 @@ namespace Redninja.UnitTests.AI
 			AddEntity(sourceTeam);
 			AddEntity(enemyTeam);
 
-			var subject = subjectBuilder.Build();
-			bool result = subject.IsValidTriggerConditions(mSource, mBem);
+			var subject = SubjectBuilder.Build();			
+			bool result = subject.IsValidTriggerConditions(mSource, mDecisionHelper);
 
 			Assert.That(result, Is.True);
 		}
@@ -82,7 +90,7 @@ namespace Redninja.UnitTests.AI
 		public void IsValidCondition_ReturnsFalse(
 			[Values] TargetTeam target,
 			[Range(0, 2)] int numberOfTrueConditions)
-		{
+		{			
 			for (int i = 0; i < numberOfTrueConditions; i++)
 			{
 				AddMockCondition(target, true);
@@ -93,8 +101,8 @@ namespace Redninja.UnitTests.AI
 			AddEntity(sourceTeam);
 			AddEntity(enemyTeam);
 
-			var subject = subjectBuilder.Build();
-			bool result = subject.IsValidTriggerConditions(mSource, mBem);
+			var subject = SubjectBuilder.Build();
+			bool result = subject.IsValidTriggerConditions(mSource, mDecisionHelper);
 
 			Assert.That(result, Is.False);
 		}
@@ -125,8 +133,8 @@ namespace Redninja.UnitTests.AI
 
 			var mCondition = AddMockCondition(target, true);
 
-			var subject = subjectBuilder.Build();
-			subject.IsValidTriggerConditions(mSource, mBem);
+			var subject = SubjectBuilder.Build();
+			subject.IsValidTriggerConditions(mSource, mDecisionHelper);
 
 			mCondition.Received().IsValid(Arg.Is<IBattleEntity>(x => entities.Contains(x)));
 		}
@@ -136,9 +144,9 @@ namespace Redninja.UnitTests.AI
 		[TestCase(-20)]
 		public void BuilderInvalidWeight_ThrowsException(int weight)
 		{
-			subjectBuilder.SetWeight(weight);
+			SubjectBuilder.SetWeight(weight);
 
-			Assert.Throws<InvalidOperationException>(() => subjectBuilder.Build());
+			Assert.Throws<InvalidOperationException>(() => SubjectBuilder.Build());
 		}
 
 		[TestCase("first")]
@@ -146,9 +154,9 @@ namespace Redninja.UnitTests.AI
 		[TestCase("the third")]
 		public void BuilderName_IsBuilt(string name)
 		{
-			subjectBuilder.SetName(name);
+			SubjectBuilder.SetName(name);
 
-			var subject = subjectBuilder.Build();
+			var subject = SubjectBuilder.Build();
 			Assert.That(subject.RuleName, Is.EqualTo(name));
 		}
 
@@ -157,41 +165,10 @@ namespace Redninja.UnitTests.AI
 		[TestCase(30)]
 		public void BuilderRefresh_IsBuilt(int refresh)
 		{
-			subjectBuilder.SetRefreshTime(refresh);
+			SubjectBuilder.SetRefreshTime(refresh);
 
-			var subject = subjectBuilder.Build();
+			var subject = SubjectBuilder.Build();
 			Assert.That(subject.RefreshTime, Is.EqualTo(refresh));
-		}
-
-		/// <summary>
-		/// Make this abstract class to be testable.
-		/// </summary>
-		internal class TestableRuleBase : AIRuleBase
-		{			
-
-			public override IBattleAction GenerateAction(IBattleEntity source, IBattleEntityManager bem)
-			{
-				return null; // ignored in tests
-			}
-
-			internal class Builder : AIRuleBase.BuilderBase<Builder>, IBuilder<TestableRuleBase>
-			{
-				private TestableRuleBase rule;
-				internal Builder() => Reset();
-
-				public Builder Reset()
-				{
-					rule = new TestableRuleBase();
-					ResetBase(rule);
-					return this;
-				}
-
-				public TestableRuleBase Build()
-				{
-					BuildBase();
-					return rule;
-				}
-			}
 		}
 	}
 }
