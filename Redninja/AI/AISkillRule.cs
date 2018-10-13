@@ -1,12 +1,10 @@
-﻿using Davfalcon.Revelator;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Davfalcon.Builders;
 using Redninja.Decisions;
 using Redninja.Skills;
 using Redninja.Targeting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Redninja.AI
 {
@@ -19,17 +17,17 @@ namespace Redninja.AI
 		// targeting who gets focused should be uniform for rule
 		private AITargetType TargetType { get; set; }
 		private List<IAITargetCondition> FilterConditions { get; } = new List<IAITargetCondition>();
-		private List<Tuple<IAITargetPriority, ICombatSkill>> SkillAssignments { get; } = new List<Tuple<IAITargetPriority, ICombatSkill>>();
+		private List<Tuple<IAITargetPriority, ISkill>> SkillAssignments { get; } = new List<Tuple<IAITargetPriority, ISkill>>();
 
 		public override IBattleAction GenerateAction(IBattleEntity source, IBattleEntityManager bem)
 		{
 			SkillSelectionMeta skillMeta = DecisionHelper.GetAvailableSkills(source);
 
 			// filter out what skills this rule uses
-			IEnumerable<ICombatSkill> availableSkills = GetAssignableSkills(skillMeta);
+			IEnumerable<ISkill> availableSkills = GetAssignableSkills(skillMeta);
 
 			// attempt to find targets for first valid skill
-			foreach (ICombatSkill skill in availableSkills)
+			foreach (ISkill skill in availableSkills)
 			{
 				// look for available targets
 				ISkillTargetingManager targetMeta = DecisionHelper.GetTargetingManager(source, bem, skill);
@@ -48,7 +46,7 @@ namespace Redninja.AI
 			return null;
 		}
 
-		internal IEnumerable<ICombatSkill> GetAssignableSkills(SkillSelectionMeta meta)
+		internal IEnumerable<ISkill> GetAssignableSkills(SkillSelectionMeta meta)
 			=> meta.Skills.Intersect(SkillAssignments.Select(x => x.Item2));
 
 		internal bool TryFindTarget(ISkillTargetingInfo meta, IBattleEntity source, IBattleEntityManager bem, out ISelectedTarget selectedTarget)
@@ -82,7 +80,7 @@ namespace Redninja.AI
 			// filter by filter conditions (exclude by finding first condition that fails)
 			leftoverTargets = leftoverTargets.Where(ex => FilterConditions.FirstOrDefault(cond => !cond.IsValid(ex)) == null);
 			return leftoverTargets;
-		}		
+		}
 
 		/// <summary>
 		/// Builder class for a rule.
@@ -130,7 +128,7 @@ namespace Redninja.AI
 			/// <param name="skill"></param>
 			/// <param name="priority"></param>
 			/// <returns></returns>
-			public Builder AddSkillAndPriority(ICombatSkill skill, IAITargetPriority priority)
+			public Builder AddSkillAndPriority(ISkill skill, IAITargetPriority priority)
 			{
 				rule.SkillAssignments.Add(Tuple.Create(priority, skill));
 				return this;
@@ -144,7 +142,7 @@ namespace Redninja.AI
 				BuildBase();
 
 				rule.TargetType = nullableType.Value;
-				
+
 				AISkillRule builtRule = this.rule;
 				Reset();
 				return builtRule;

@@ -1,39 +1,34 @@
-﻿using Davfalcon.Revelator;
-using Redninja.Decisions;
-using Redninja.Skills;
-using Redninja.Targeting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Davfalcon.Builders;
 
 namespace Redninja.AI
 {
 	public class AIRuleSet
 	{
 		// TODO add a default rule for standard attack to all rules, talk to rice about best course
-		private List<IAIRule> Rules { get; } = new List<IAIRule>();		
+		private List<IAIRule> Rules { get; } = new List<IAIRule>();
 
-		public IBattleAction ResolveAction(IBattleEntity source, IBattleEntityManager bem) 
+		public IBattleAction ResolveAction(IBattleEntity source, IBattleEntityManager bem)
 		{
 			// TODO filter by refresh time so we dont repick the same skill by refresh requirement
 			// find rules triggers
-			IEnumerable<IAIRule> validRules = Rules.Where(rule => rule.IsValidTriggerConditions(source, bem));				
+			IEnumerable<IAIRule> validRules = Rules.Where(rule => rule.IsValidTriggerConditions(source, bem));
 
 			// assign pool
 			WeightedPool<IAIRule> weightedPool = new WeightedPool<IAIRule>();
-			validRules.ToList().ForEach(x => weightedPool.Add(x, x.Weight));			
-			
+			validRules.ToList().ForEach(x => weightedPool.Add(x, x.Weight));
+
 			// cycle through rules until we find one we can assign
-			while(weightedPool.Count() > 0)
+			while (weightedPool.Count() > 0)
 			{
 				// pick weighted rule
 				IAIRule rule = weightedPool.Random();
 
 				IBattleAction action = rule.GenerateAction(source, bem);
-				
-				if(action != null)
+
+				if (action != null)
 				{
 					return action;
 				}
@@ -42,7 +37,7 @@ namespace Redninja.AI
 				weightedPool.Remove(rule);
 			}
 
-			throw new InvalidProgramException("We couldnt find any rules to use, we should have implemented attack for all!");
+			throw new InvalidOperationException("We couldnt find any rules to use, we should have implemented attack for all!");
 		}
 
 

@@ -1,12 +1,4 @@
-﻿using Davfalcon.Revelator;
-using Redninja.Decisions;
-using Redninja.Skills;
-using Redninja.Targeting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Davfalcon.Builders;
 
 namespace Redninja.AI
 {
@@ -16,7 +8,7 @@ namespace Redninja.AI
 	/// </summary>
 	public class AIMovementRule : AIRuleBase
 	{
-		
+
 		public override IBattleAction GenerateAction(IBattleEntity source, IBattleEntityManager bem)
 		{
 			// psuedo code for now
@@ -24,12 +16,12 @@ namespace Redninja.AI
 			// 2. Select position based on priority rule
 			return null;
 		}
-		
+
 
 		/// <summary>
 		/// Builder class for a rule.
 		/// </summary>
-		public class Builder : AIRuleBase.BuilderBase<Builder>, IBuilder<AIMovementRule>
+		public class Builder : BuilderBase<Builder>, IBuilder<AIMovementRule>
 		{
 			private AIMovementRule rule;
 
@@ -41,7 +33,7 @@ namespace Redninja.AI
 				ResetBase(rule);
 				return this;
 			}
-					
+
 
 			public AIMovementRule Build()
 			{

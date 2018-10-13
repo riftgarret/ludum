@@ -8,7 +8,7 @@ namespace Redninja
 	public interface IBattleView
 	{
 		event Action<IBattleEntity, IBattleAction> ActionSelected;
-		event Action<IBattleEntity, ICombatSkill> SkillSelected;
+		event Action<IBattleEntity, ISkill> SkillSelected;
 		event Action<ISelectedTarget> TargetSelected;
 		event Action TargetingCanceled;
 

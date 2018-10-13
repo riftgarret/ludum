@@ -5,7 +5,7 @@ namespace Redninja
 {
 	public interface IBattleViewCallbacks
 	{
-		void OnSkillSelected(IBattleEntity entity, ICombatSkill skill);
+		void OnSkillSelected(IBattleEntity entity, ISkill skill);
 		void OnTargetSelected(ISelectedTarget target);
 	}
 }

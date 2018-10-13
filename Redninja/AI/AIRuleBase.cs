@@ -1,12 +1,6 @@
-﻿using Davfalcon.Revelator;
-using Redninja.Decisions;
-using Redninja.Skills;
-using Redninja.Targeting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Redninja.AI
 {
@@ -33,21 +27,21 @@ namespace Redninja.AI
 				.FirstOrDefault(ex => !trigger.Item2.IsValid(ex)) != null) == null;
 		}
 
-		public abstract IBattleAction GenerateAction(IBattleEntity source, IBattleEntityManager bem); 				
+		public abstract IBattleAction GenerateAction(IBattleEntity source, IBattleEntityManager bem);
 
 		/// <summary>
 		/// Builder class for a rule.
 		/// </summary>
-		public abstract class BuilderBase<ParentBuilder> where ParentBuilder:BuilderBase<ParentBuilder>
+		public abstract class BuilderBase<ParentBuilder> where ParentBuilder : BuilderBase<ParentBuilder>
 		{
 			private AIRuleBase rule;
-			
+
 			internal ParentBuilder ResetBase(AIRuleBase rule)
 			{
 				this.rule = rule;
 				return this as ParentBuilder;
 			}
-			
+
 			/// <summary>
 			/// Trigger conditions pairs can be any target meating a condition.
 			/// </summary>

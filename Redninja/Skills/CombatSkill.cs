@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Davfalcon.Builders;
 using Davfalcon.Collections.Adapters;
 using Davfalcon.Revelator;
 using Redninja.Actions;
@@ -7,7 +8,7 @@ using Redninja.Targeting;
 
 namespace Redninja.Skills
 {
-	public class CombatSkill : ICombatSkill
+	public class CombatSkill : ISkill
 	{
 		public string Name { get; private set; }
 		public ActionTime Time { get; private set; }
@@ -21,7 +22,17 @@ namespace Redninja.Skills
 		public ManagedEnumStringList DamageTypes { get; } = new ManagedEnumStringList();
 		IEnumerable<Enum> IDamageSource.DamageTypes => DamageTypes.AsReadOnly();
 
-		public class Builder : BuilderBase<CombatSkill, ICombatSkill>
+		public IBattleAction GetAction(IBattleEntity entity, ISelectedTarget[] targets)
+		{
+			List<ISkillResolver> resolvers = new List<ISkillResolver>();
+			for (int i = 0; i < Targets.Count; i++)
+			{
+				resolvers.AddRange(Targets[i].GetSkillResolvers(targets[i]));
+			}
+			return new SkillAction(entity, this, resolvers);
+		}
+
+		public class Builder : BuilderBase<CombatSkill, ISkill, Builder>
 		{
 			private List<SkillTargetingSet> targets;
 
@@ -30,7 +41,7 @@ namespace Redninja.Skills
 				Reset();
 			}
 
-			public Builder Reset()
+			public override Builder Reset()
 			{
 				targets = new List<SkillTargetingSet>();
 				build = new CombatSkill()

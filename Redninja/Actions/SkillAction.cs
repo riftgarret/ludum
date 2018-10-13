@@ -3,23 +3,23 @@ using Redninja.Skills;
 
 namespace Redninja.Actions
 {
-	public class CombatSkillAction : BattleActionBase
+	public class SkillAction : BattleActionBase
 	{
 		private readonly IBattleEntity entity;
-		private readonly ICombatSkill skill;
-		private readonly IList<SkillResolver> resolvers;
+		private readonly ISkill skill;
+		private readonly IList<ISkillResolver> resolvers;
 
-		public CombatSkillAction(IBattleEntity entity, ICombatSkill skill, IEnumerable<SkillResolver> resolvers)
+		public SkillAction(IBattleEntity entity, ISkill skill, IEnumerable<ISkillResolver> resolvers)
 			: base(skill.Time)
 		{
 			this.skill = skill;
 			this.entity = entity;
-			this.resolvers = new List<SkillResolver>(resolvers);
+			this.resolvers = new List<ISkillResolver>(resolvers);
 		}
 
 		protected override void ExecuteAction(float timeDelta, float time)
 		{
-			foreach (SkillResolver r in resolvers)
+			foreach (ISkillResolver r in resolvers)
 			{
 				if (!r.Resolved && PhaseProgress >= r.ExecutionStart)
 				{

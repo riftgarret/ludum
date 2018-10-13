@@ -5,6 +5,6 @@
 		bool Resolved { get; }
 		float ExecutionStart { get; }
 
-		IBattleOperation Resolve(IBattleEntity entity, ICombatSkill skill);
+		IBattleOperation Resolve(IBattleEntity entity, ISkill skill);
 	}
 }

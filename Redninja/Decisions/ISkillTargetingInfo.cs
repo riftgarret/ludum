@@ -7,7 +7,7 @@ namespace Redninja.Decisions
 	public interface ISkillTargetingInfo
 	{
 		IBattleEntity Entity { get; }
-		ICombatSkill Skill { get; }
+		ISkill Skill { get; }
 		SkillTargetingSet TargetingSet { get; }
 		ITargetingRule TargetingRule { get; }
 		TargetType TargetType { get; }

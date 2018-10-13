@@ -17,7 +17,7 @@ namespace Redninja.Decisions
 		public static SkillSelectionMeta GetAvailableSkills(IBattleEntity entity)
 			=> new SkillSelectionMeta(entity, entity.Skills);
 
-		public static ISkillTargetingManager GetTargetingManager(IBattleEntity entity, IBattleEntityManager entityManager, ICombatSkill combatSkill)
+		public static ISkillTargetingManager GetTargetingManager(IBattleEntity entity, IBattleEntityManager entityManager, ISkill combatSkill)
 			=> new SkillTargetMeta(entity, combatSkill, entityManager);
 	}
 }

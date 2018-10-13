@@ -46,7 +46,7 @@ namespace Redninja.Decisions
 			ResumeIfDecided(entity);
 		}
 
-		private void OnSkillSelected(IBattleEntity entity, ICombatSkill skill)
+		private void OnSkillSelected(IBattleEntity entity, ISkill skill)
 		{
 			if (currentSkill != null) throw new InvalidOperationException("Targeting should be canceled before another skill can be selected.");
 

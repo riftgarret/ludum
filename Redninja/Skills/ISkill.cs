@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Davfalcon.Revelator;
 using Redninja.Actions;
+using Redninja.Targeting;
 
 namespace Redninja.Skills
 {
@@ -8,10 +9,12 @@ namespace Redninja.Skills
 	/// Implementation that should contain details of what the skill should do and
 	/// target scenario.
 	/// </summary>
-	public interface ICombatSkill : IDamageSource
+	public interface ISkill : IDamageSource
 	{
 		ActionTime Time { get; }
 
 		IReadOnlyList<SkillTargetingSet> Targets { get; }
+
+		IBattleAction GetAction(IBattleEntity entity, ISelectedTarget[] targets);
 	}
 }

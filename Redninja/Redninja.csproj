@@ -48,7 +48,7 @@
   <ItemGroup>
     <Compile Include="Actions\AttackAction.cs" />
     <Compile Include="Actions\BattleActionBase.cs" />
-    <Compile Include="Actions\CombatSkillAction.cs" />
+    <Compile Include="Actions\SkillAction.cs" />
     <Compile Include="Actions\MovementAction.cs" />
     <Compile Include="Actions\WaitAction.cs" />
     <Compile Include="AI\AIActionDecider.cs" />
@@ -99,12 +99,13 @@
     <Compile Include="IBattleEvent.cs" />
     <Compile Include="IBattleOperation.cs" />
     <Compile Include="IBattleView.cs" />
-    <Compile Include="Skills\BasicAttack.cs" />
+    <Compile Include="Skills\WeaponAttack.cs" />
     <Compile Include="Skills\CombatSkill.cs" />
     <Compile Include="Skills\ISkillResolver.cs" />
-    <Compile Include="Skills\CombatRound.cs" />
-    <Compile Include="Skills\SkillResolver.cs" />
+    <Compile Include="Skills\SkillOperationDefinition.cs" />
+    <Compile Include="Skills\SkillOperationResolver.cs" />
     <Compile Include="Skills\SkillTargetingSet.cs" />
+    <Compile Include="Skills\WeaponAttackResolver.cs" />
     <Compile Include="Targeting\ISelectedTarget.cs" />
     <Compile Include="Targeting\ITargetResolver.cs" />
     <Compile Include="Targeting\ITargetingRule.cs" />
@@ -118,7 +119,7 @@
     <Compile Include="Targeting\TargetType.cs" />
     <Compile Include="CombatStats.cs" />
     <Compile Include="Actions\ActionTime.cs" />
-    <Compile Include="Skills\ICombatSkill.cs" />
+    <Compile Include="Skills\ISkill.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Logging\RLog.cs" />
   </ItemGroup>
