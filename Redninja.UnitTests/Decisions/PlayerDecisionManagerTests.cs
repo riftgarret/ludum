@@ -1,15 +1,9 @@
-﻿using Davfalcon.Revelator;
-using Davfalcon.Revelator.Combat;
-using Ninject;
+﻿using Ninject;
 using NSubstitute;
 using NUnit.Framework;
-using Redninja.Actions;
-using Redninja.Decisions;
-using Redninja.Entities;
 using Redninja.Skills;
 using Redninja.Targeting;
 using System;
-using System.Collections.Generic;
 
 namespace Redninja.Decisions.UnitTests
 {
