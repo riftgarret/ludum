@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Davfalcon.Revelator;
+using Davfalcon.Builders;
 using Redninja.Targeting;
-using static Redninja.Skills.CombatRound;
+using static Redninja.Skills.SkillOperationDefinition;
 
 namespace Redninja.Skills
 {
 	public class SkillTargetingSet
 	{
 		public ITargetingRule TargetingRule { get; private set; }
-		public IEnumerable<CombatRound> Rounds { get; private set; }
+		public IEnumerable<SkillOperationDefinition> Rounds { get; private set; }
 
-		public IEnumerable<SkillResolver> GetSkillResolvers(ISelectedTarget target)
+		public IEnumerable<ISkillResolver> GetSkillResolvers(ISelectedTarget target)
 		{
 			if (TargetingRule.Type == TargetType.Pattern)
 			{
@@ -20,10 +20,15 @@ namespace Redninja.Skills
 			else return Rounds.Select(round => round.GetResolver(target));
 		}
 
-		public class Builder : BuilderBase<SkillTargetingSet>
+		public SkillTargetingSet(ITargetingRule targetingRule)
+		{
+			TargetingRule = targetingRule;
+		}
+
+		public class Builder : BuilderBase<SkillTargetingSet, Builder>
 		{
 			private readonly ITargetingRule targetingRule;
-			private List<CombatRound> rounds;
+			private List<SkillOperationDefinition> rounds;
 
 			public Builder(ITargetingRule targetingRule)
 			{
@@ -31,24 +36,23 @@ namespace Redninja.Skills
 				Reset();
 			}
 
-			public Builder Reset()
+			public override Builder Reset()
 			{
-				rounds = new List<CombatRound>();
-				build = new SkillTargetingSet()
+				rounds = new List<SkillOperationDefinition>();
+				build = new SkillTargetingSet(targetingRule)
 				{
-					TargetingRule = targetingRule,
 					Rounds = rounds.AsReadOnly()
 				};
 				return this;
 			}
 
 			public Builder AddCombatRound(float executionStart, OperationProvider getOperation)
-				=> AddCombatRound(new CombatRound(executionStart, getOperation));
+				=> AddCombatRound(new SkillOperationDefinition(executionStart, getOperation));
 
 			public Builder AddCombatRound(float executionStart, ITargetPattern pattern, OperationProvider getOperation)
-				=> AddCombatRound(new CombatRound(executionStart, pattern, getOperation));
+				=> AddCombatRound(new SkillOperationDefinition(executionStart, pattern, getOperation));
 
-			public Builder AddCombatRound(CombatRound round)
+			public Builder AddCombatRound(SkillOperationDefinition round)
 			{
 				rounds.Add(round);
 				return this;

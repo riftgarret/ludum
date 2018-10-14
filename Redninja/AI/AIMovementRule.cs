@@ -1,4 +1,4 @@
-﻿using Davfalcon.Revelator;
+﻿using Davfalcon.Builders;
 using Redninja.Decisions;
 
 namespace Redninja.AI
@@ -17,12 +17,12 @@ namespace Redninja.AI
 			// 2. Select position based on priority rule
 			return null;
 		}
-		
+
 
 		/// <summary>
 		/// Builder class for a rule.
 		/// </summary>
-		public class Builder : AIRuleBase.BuilderBase<Builder, AIMovementRule>, IBuilder<AIMovementRule>
+		public class Builder : BuilderBase<Builder, AIMovementRule>, IBuilder<AIMovementRule>
 		{
 			private AIMovementRule rule;
 

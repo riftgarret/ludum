@@ -6,6 +6,6 @@ namespace Redninja.Decisions
 	public interface IActionPhaseHelper
 	{
 		IBattleEntity Entity { get; }
-		IEnumerable<ICombatSkill> Skills { get; }
+		IEnumerable<ISkill> Skills { get; }
 	}
 }

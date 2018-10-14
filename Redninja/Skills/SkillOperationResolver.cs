@@ -3,21 +3,21 @@ using Redninja.Targeting;
 
 namespace Redninja.Skills
 {
-	public class SkillResolver : ISkillResolver
+	public class SkillOperationResolver : ISkillResolver
 	{
-		private readonly CombatRound definition;
+		private readonly SkillOperationDefinition definition;
 		private readonly ITargetResolver target;
 
 		public float ExecutionStart => definition.ExecutionStart;
 		public bool Resolved { get; private set; } = false;
 
-		public SkillResolver(CombatRound definition, ITargetResolver target)
+		public SkillOperationResolver(SkillOperationDefinition definition, ITargetResolver target)
 		{
 			this.definition = definition ?? throw new ArgumentNullException(nameof(definition));
 			this.target = target;
 		}
 
-		public IBattleOperation Resolve(IBattleEntity entity, ICombatSkill skill)
+		public IBattleOperation Resolve(IBattleEntity entity, ISkill skill)
 		{
 			Resolved = true;
 			return definition.GetOperation(entity, target, skill);

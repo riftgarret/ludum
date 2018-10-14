@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Davfalcon.Revelator;
+using Davfalcon.Builders;
 using Davfalcon.Randomization;
+using Davfalcon.Revelator;
+using Ninject;
 using Redninja.Actions;
 using Redninja.Decisions;
 using Redninja.Entities;
-using Redninja.Skills;
-using Redninja.Targeting;
-using Ninject;
 
 namespace Redninja
 {
@@ -34,7 +33,7 @@ namespace Redninja
 		private readonly ICombatExecutor combatExecutor;
 		private readonly IBattleEntityManager entityManager;
 		private readonly PlayerDecisionManager playerDecisionManager;
-		private readonly Queue<IBattleEntity> decisionQueue = new Queue<IBattleEntity>();		
+		private readonly Queue<IBattleEntity> decisionQueue = new Queue<IBattleEntity>();
 		// Maybe consider using a class from a library for performance?
 		private readonly SortedList<float, IBattleOperation> battleOpQueue = new SortedList<float, IBattleOperation>();
 
@@ -79,7 +78,7 @@ namespace Redninja
 			this.view = view;
 			this.clock = clock;
 
-			entityManager.DecisionRequired += OnActionRequired;			
+			entityManager.DecisionRequired += OnActionRequired;
 			combatExecutor.BattleEventOccurred += OnBattleEventOccurred;
 			combatExecutor.BattleEventOccurred += view.OnBattleEventOccurred;
 			playerDecisionManager.WaitingForDecision += WaitForDecision;

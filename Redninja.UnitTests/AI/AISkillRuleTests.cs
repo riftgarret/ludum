@@ -18,7 +18,7 @@ namespace Redninja.UnitTests.AI
 		private IActionPhaseHelper mActionHelper;
 
 		// need this to allow builder to complete but we set it to have no resolvement
-		private Tuple<ICombatSkill, IAITargetPriority> mInitialSkill;				
+		private Tuple<ISkill, IAITargetPriority> mInitialSkill;				
 
 		protected override AIRuleBase.BuilderBase<AISkillRule.Builder, AISkillRule> SubjectBuilder => subjectBuilder;
 
@@ -43,9 +43,9 @@ namespace Redninja.UnitTests.AI
 			return mFilterCondition;
 		}
 
-		private Tuple<ICombatSkill, IAITargetPriority> AddSkillPriority(IBattleEntity bestTarget)
+		private Tuple<ISkill, IAITargetPriority> AddSkillPriority(IBattleEntity bestTarget)
 		{
-			var mSkill = Substitute.For<ICombatSkill>();
+			var mSkill = Substitute.For<ISkill>();
 			var mPriority = Substitute.For<IAITargetPriority>();
 
 			mPriority.GetBestTarget(Arg.Any<IEnumerable<IBattleEntity>>()).Returns(bestTarget);
@@ -64,7 +64,7 @@ namespace Redninja.UnitTests.AI
 			// setup the skill
 			var skillMeta = AddSkillPriority(mSource);
 			var mSkill = skillMeta.Item1;
-			mActionHelper.Skills.Returns(new List<ICombatSkill>() { mSkill });
+			mActionHelper.Skills.Returns(new List<ISkill>() { mSkill });
 
 			// make sure the skill has target meta
 			var returnedAction = Substitute.For<IBattleAction>();			
@@ -91,7 +91,7 @@ namespace Redninja.UnitTests.AI
 			var skill2 = AddSkillPriority(null).Item1;
 			var skill3 = AddSkillPriority(null).Item1;
 
-			mActionHelper.Skills.Returns(new List<ICombatSkill>() { skill1, skill2 });
+			mActionHelper.Skills.Returns(new List<ISkill>() { skill1, skill2 });
 
 			var subject = subjectBuilder.Build();
 
@@ -122,8 +122,7 @@ namespace Redninja.UnitTests.AI
 			subjectBuilder.SetRuleTargetType(TargetTeam.Enemy);
 			var subject = SubjectBuilder.Build();
 
-			ISelectedTarget resultTarget = null;
-			var result = subject.TryFindTarget(mTargetHelper, mSource, mBem, out resultTarget);
+			var result = subject.TryFindTarget(mTargetHelper, mSource, mBem, out ISelectedTarget resultTarget);
 
 			Assert.That(result, Is.True);
 			mTargetHelper.Received().GetSelectedTarget(enemy1);
@@ -145,8 +144,7 @@ namespace Redninja.UnitTests.AI
 			subjectBuilder.SetRuleTargetType(TargetTeam.Enemy);
 			var subject = SubjectBuilder.Build();
 
-			ISelectedTarget resultTarget = null;
-			var result = subject.TryFindTarget(mTargetHelper, mSource, mBem, out resultTarget);
+			var result = subject.TryFindTarget(mTargetHelper, mSource, mBem, out ISelectedTarget resultTarget);
 
 			Assert.That(result, Is.False);			
 		}

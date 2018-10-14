@@ -11,6 +11,6 @@ namespace Redninja.Decisions
 		IBattleEntityManager BattleEntityManager { get; }
 
 		IActionPhaseHelper GetAvailableSkills(IBattleEntity entity);
-		ITargetPhaseHelper GetTargetingManager(IBattleEntity entity, ICombatSkill combatSkill);
+		ITargetPhaseHelper GetTargetingManager(IBattleEntity entity, ISkill skill);
 	}
 }

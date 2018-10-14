@@ -11,11 +11,11 @@ namespace Redninja.Decisions
 	public class SkillTargetMeta : ITargetPhaseHelper
 	{
 		private readonly IBattleEntityManager entityManager;
-		private readonly IEnumerable<SkillResolver>[] skillResolvers;
+		private readonly ISelectedTarget[] selectedTargets;
 		private int currentIndex = 0;
 
 		public IBattleEntity Entity { get; }
-		public ICombatSkill Skill { get; }
+		public ISkill Skill { get; }
 		public SkillTargetingSet TargetingSet => Skill.Targets[currentIndex];
 		public ITargetingRule TargetingRule => TargetingSet.TargetingRule;
 		public TargetType TargetType => TargetingRule.Type;
@@ -23,14 +23,14 @@ namespace Redninja.Decisions
 
 		public SkillTargetMeta(
 			IBattleEntity entity,
-			ICombatSkill skill,
+			ISkill skill,
 			IBattleEntityManager entityManager)
 		{
 			this.entityManager = entityManager;
 			Skill = skill;
 			Entity = entity;
 
-			skillResolvers = new IEnumerable<SkillResolver>[Skill.Targets.Count];
+			selectedTargets = new ISelectedTarget[Skill.Targets.Count];
 		}
 
 		public IEnumerable<IBattleEntity> GetTargetableEntities()
@@ -88,7 +88,7 @@ namespace Redninja.Decisions
 		/// </summary>
 		/// <param name="target"></param>
 		public void SelectTarget(ISelectedTarget target) {
-			skillResolvers[currentIndex] = TargetingSet.GetSkillResolvers(target);
+			selectedTargets[currentIndex] = target;
 			Next();
 		}
 
@@ -102,14 +102,13 @@ namespace Redninja.Decisions
 			if (currentIndex > 0)
 			{
 				currentIndex--;
-				skillResolvers[currentIndex] = null;
+				selectedTargets[currentIndex] = null;
 				return true;
 			}
 			else return false;
 		}
 
 		public IBattleAction GetAction()
-			=> new CombatSkillAction(Entity, Skill,
-				skillResolvers.Aggregate(new List<SkillResolver>() as IEnumerable<SkillResolver>, (accumulator, next) => accumulator.Union(next)));
+			=> Skill.GetAction(Entity, selectedTargets);
 	}
 }

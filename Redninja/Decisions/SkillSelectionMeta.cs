@@ -8,10 +8,10 @@ namespace Redninja.Decisions
 	/// </summary>
 	public class SkillSelectionMeta : IActionPhaseHelper
 	{
-		public IEnumerable<ICombatSkill> Skills { get; }
+		public IEnumerable<ISkill> Skills { get; }
 		public IBattleEntity Entity { get; }
 
-		public SkillSelectionMeta(IBattleEntity entity, IEnumerable<ICombatSkill> skills)
+		public SkillSelectionMeta(IBattleEntity entity, IEnumerable<ISkill> skills)
 		{
 			Skills = skills;
 			Entity = entity;

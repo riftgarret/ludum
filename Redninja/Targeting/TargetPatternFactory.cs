@@ -9,8 +9,10 @@ namespace Redninja.Targeting
 	/// </summary>
 	public class TargetPatternFactory
 	{
-		public static ITargetPattern CreateRowPattern() => new EvalfPattern((ar, ac, tr, tc) => tr == ar);
-		public static ITargetPattern CreateColumnPattern() => new EvalfPattern((ar, ac, tr, tc) => tc == ac);
+		public static ITargetPattern CreateRowPattern() => CreateRowPattern(0);
+		public static ITargetPattern CreateRowPattern(int offset) => new EvalfPattern((ar, ac, tr, tc) => tr == ar + offset);
+		public static ITargetPattern CreateColumnPattern() => CreateColumnPattern(0);
+		public static ITargetPattern CreateColumnPattern(int offset) => new EvalfPattern((ar, ac, tr, tc) => tc == ac);
 		public static ITargetPattern CreatePattern(params Coordinate[] tiles)
 		{
 			List<Coordinate> list = new List<Coordinate>(tiles);

@@ -26,6 +26,10 @@ namespace Redninja.Targeting
 			: this(TargetType.Pattern, team, targetPattern, condition)
 		{ }
 
+		public TargetingRule(ITargetPattern targetPattern, TargetTeam team)
+			: this(TargetType.Pattern, team, targetPattern, TargetConditions.None)
+		{ }
+
 		public TargetingRule(TargetTeam team, TargetCondition condition)
 			: this(TargetType.Entity, team, null, condition)
 		{ }

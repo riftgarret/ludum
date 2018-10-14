@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Davfalcon.Nodes;
 using Redninja.Actions;
 using Redninja.ConsoleDriver.Objects;
@@ -17,7 +16,7 @@ namespace Redninja.ConsoleDriver
 		private IBattleModel model;
 
 		public event Action<IBattleEntity, IBattleAction> ActionSelected;
-		public event Action<IBattleEntity, ICombatSkill> SkillSelected;
+		public event Action<IBattleEntity, ISkill> SkillSelected;
 		public event Action<ISelectedTarget> TargetSelected;
 		public event Action TargetingCanceled;
 
@@ -54,14 +53,13 @@ namespace Redninja.ConsoleDriver
 			switch (key)
 			{
 				case ConsoleKey.A:
-					if (model.EnemyEntities.Count() > 0)
-						action = new AttackAction(entity, model.EnemyEntities.First(), Weapons.Sword, 0.25f, 0.5f, 0.75f);
+					SkillSelected?.Invoke(entity, CombatSkills.TwoHandedAttack);
 					break;
 				case ConsoleKey.M:
 					action = new MovementAction(entity, entity.Position.Row + 1, entity.Position.Column + 1);
 					break;
 				case ConsoleKey.S:
-					SkillSelected?.Invoke(entity, CombatSkills.DemoTargetedSkill);
+					SkillSelected?.Invoke(entity, CombatSkills.PatternSkill);
 					break;
 				default:
 					action = new WaitAction(5);
@@ -98,7 +96,7 @@ namespace Redninja.ConsoleDriver
 			{
 				TargetSelected?.Invoke(targetingInfo.GetSelectedTarget(availableTargets[selected]));
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				TargetingCanceled?.Invoke();
 			}

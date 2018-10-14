@@ -16,17 +16,17 @@ namespace Redninja.AI
 		// targeting who gets focused should be uniform for rule
 		private TargetTeam TargetType { get; set; }
 		private List<IAITargetCondition> FilterConditions { get; } = new List<IAITargetCondition>();
-		private List<Tuple<IAITargetPriority, ICombatSkill>> SkillAssignments { get; } = new List<Tuple<IAITargetPriority, ICombatSkill>>();
+		private List<Tuple<IAITargetPriority, ISkill>> SkillAssignments { get; } = new List<Tuple<IAITargetPriority, ISkill>>();
 
 		public override IBattleAction GenerateAction(IBattleEntity source, IDecisionHelper decisionHelper)
 		{
 			IActionPhaseHelper skillMeta = decisionHelper.GetAvailableSkills(source);
 
 			// filter out what skills this rule uses
-			IEnumerable<ICombatSkill> availableSkills = GetAssignableSkills(skillMeta);
+			IEnumerable<ISkill> availableSkills = GetAssignableSkills(skillMeta);
 
 			// attempt to find targets for first valid skill
-			foreach (ICombatSkill skill in availableSkills)
+			foreach (ISkill skill in availableSkills)
 			{
 				// look for available targets
 				ITargetPhaseHelper targetMeta = decisionHelper.GetTargetingManager(source, skill);
@@ -45,7 +45,7 @@ namespace Redninja.AI
 			return null;
 		}
 
-		internal IEnumerable<ICombatSkill> GetAssignableSkills(IActionPhaseHelper meta)
+		internal IEnumerable<ISkill> GetAssignableSkills(IActionPhaseHelper meta)
 			=> meta.Skills.Intersect(SkillAssignments.Select(x => x.Item2));
 
 		internal bool TryFindTarget(ISkillTargetingInfo meta, IBattleEntity source, IBattleEntityManager bem, out ISelectedTarget selectedTarget)
@@ -127,7 +127,7 @@ namespace Redninja.AI
 			/// <param name="skill"></param>
 			/// <param name="priority"></param>
 			/// <returns></returns>
-			public Builder AddSkillAndPriority(ICombatSkill skill, IAITargetPriority priority)
+			public Builder AddSkillAndPriority(ISkill skill, IAITargetPriority priority)
 			{
 				rule.SkillAssignments.Add(Tuple.Create(priority, skill));
 				return this;
