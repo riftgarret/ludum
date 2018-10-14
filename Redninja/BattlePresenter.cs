@@ -116,6 +116,10 @@ namespace Redninja
 		public void Dispose()
 		{
 			kernel.Dispose();
+			foreach (IBattleEntity entity in entityManager.AllEntities)
+			{
+				entity.Dispose();
+			}
 		}
 
 		private void AddBattleEntity(IBattleEntity entity)
@@ -137,11 +141,11 @@ namespace Redninja
 			AddBattleEntity(entity);
 		}
 
-		public void AddCharacter(IBuilder<IUnit> builder, int row, int col)
-			=> AddCharacter(builder.Build(), row, col);
+		public void AddCharacter(Func<Unit.Builder, IBuilder<IUnit>> builderFunc, int row, int col)
+			=> AddCharacter(Unit.Build(builderFunc), row, col);
 
-		public void AddCharacter(IBuilder<IUnit> builder, IActionDecider actionDecider, int team, int row, int col)
-			=> AddCharacter(builder.Build(), actionDecider, team, row, col);
+		public void AddCharacter(Func<Unit.Builder, IBuilder<IUnit>> builderFunc, IActionDecider actionDecider, int team, int row, int col)
+			=> AddCharacter(Unit.Build(builderFunc), actionDecider, team, row, col);
 
 		/// <summary>
 		/// Update game clock. This drives the presenter.
