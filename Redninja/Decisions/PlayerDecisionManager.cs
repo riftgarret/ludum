@@ -5,12 +5,12 @@ using Redninja.Targeting;
 namespace Redninja.Decisions
 {
 	public class PlayerDecisionManager : IActionDecider
-	{
-		private readonly IBattleEntityManager entityManager;
+	{		
 		private readonly IBattleView view;
+		private readonly IDecisionHelper decisionHelper;
 
 		private IBattleEntity blockingEntity;
-		private ISkillTargetingManager currentSkill;
+		private ITargetPhaseHelper currentSkill;
 
 		bool IActionDecider.IsPlayer => true;
 
@@ -18,9 +18,9 @@ namespace Redninja.Decisions
 		public event Action<IBattleEntity> WaitingForDecision;
 		public event Action WaitResolved;
 
-		public PlayerDecisionManager(IBattleEntityManager entityManager, IBattleView view)
+		public PlayerDecisionManager(IBattleView view, IDecisionHelper decisionHelper)
 		{
-			this.entityManager = entityManager;
+			this.decisionHelper = decisionHelper;			
 			this.view = view;
 
 			view.ActionSelected += OnActionSelected;
@@ -50,7 +50,7 @@ namespace Redninja.Decisions
 		{
 			if (currentSkill != null) throw new InvalidOperationException("Targeting should be canceled before another skill can be selected.");
 
-			currentSkill = DecisionHelper.GetTargetingManager(entity, entityManager, skill);
+			currentSkill = decisionHelper.GetTargetingManager(entity, skill);
 			view.SetViewModeTargeting(currentSkill);
 		}
 

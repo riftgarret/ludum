@@ -1,18 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Redninja.AI
+﻿namespace Redninja.AI
 {
-	public enum AITargetType
-	{
-		Self,
-		Enemy,
-		Ally
-	}
-
 	public enum AIPriorityType
 	{
 		None,

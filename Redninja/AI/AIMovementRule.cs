@@ -1,4 +1,5 @@
 ﻿using Davfalcon.Builders;
+using Redninja.Decisions;
 
 namespace Redninja.AI
 {
@@ -8,8 +9,8 @@ namespace Redninja.AI
 	/// </summary>
 	public class AIMovementRule : AIRuleBase
 	{
-
-		public override IBattleAction GenerateAction(IBattleEntity source, IBattleEntityManager bem)
+		
+		public override IBattleAction GenerateAction(IBattleEntity source, IDecisionHelper decisionHelper)
 		{
 			// psuedo code for now
 			// 1. Find available tiles you can move to (cannot be occupied or have units currently moving there)
@@ -21,7 +22,7 @@ namespace Redninja.AI
 		/// <summary>
 		/// Builder class for a rule.
 		/// </summary>
-		public class Builder : BuilderBase<Builder>, IBuilder<AIMovementRule>
+		public class Builder : BuilderBase<Builder, AIMovementRule>, IBuilder<AIMovementRule>
 		{
 			private AIMovementRule rule;
 
@@ -33,9 +34,8 @@ namespace Redninja.AI
 				ResetBase(rule);
 				return this;
 			}
-
-
-			public AIMovementRule Build()
+					
+			public override AIMovementRule Build()
 			{
 				BuildBase();
 				AIMovementRule builtRule = this.rule;

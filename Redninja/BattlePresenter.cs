@@ -57,6 +57,7 @@ namespace Redninja
 			kernel.Bind<IBattleEntityManager>().To<BattleEntityManager>().InSingletonScope();
 			kernel.Bind<ICombatExecutor>().ToConstant(combatExecutor);
 			kernel.Bind<PlayerDecisionManager>().ToSelf().InSingletonScope();
+			kernel.Bind<IDecisionHelper>().To<DecisionHelper>().InSingletonScope();
 			kernel.Bind<IBattlePresenter>().To<BattlePresenter>().InSingletonScope();
 			kernel.Bind<IClock>().To<Clock>().InSingletonScope();
 			kernel.Bind<Clock>().ToSelf().InSingletonScope();

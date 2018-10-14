@@ -8,7 +8,7 @@ using Redninja.Targeting;
 
 namespace Redninja.Decisions
 {
-	public class SkillTargetMeta : ISkillTargetingManager
+	public class SkillTargetMeta : ITargetPhaseHelper
 	{
 		private readonly IBattleEntityManager entityManager;
 		private readonly ISelectedTarget[] selectedTargets;
