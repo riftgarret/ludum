@@ -34,6 +34,9 @@ namespace Redninja.Skills
 			return new SkillAction(entity, this, resolvers);
 		}
 
+		public static ISkill Build(Func<Builder, IBuilder<ISkill>> func)
+			=> func(new Builder()).Build();
+
 		public class Builder : BuilderBase<WeaponAttack, ISkill, Builder>
 		{
 			public Builder()

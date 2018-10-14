@@ -7,18 +7,16 @@ namespace Redninja.ConsoleDriver.Objects
 {
 	public static class CombatSkills
 	{
-		public static ISkill BasicAttack { get; } = new WeaponAttack.Builder()
+		public static ISkill BasicAttack { get; } = WeaponAttack.Build(b => b
 			.SetActionTime(2, 2, 2)
-			.AddWeapon(Weapons.Sword)
-			.Build();
+			.AddWeapon(Weapons.Sword));
 
-		public static ISkill TwoHandedAttack { get; } = new WeaponAttack.Builder()
+		public static ISkill TwoHandedAttack { get; } = WeaponAttack.Build(b => b
 			.SetActionTime(3, 2, 3)
 			.AddWeapon(Weapons.Shortsword)
-			.AddWeapon(Weapons.Dagger)
-			.Build();
+			.AddWeapon(Weapons.Dagger));
 
-		public static ISkill TargetedSkill { get; } = new CombatSkill.Builder()
+		public static ISkill TargetedSkill { get; } = CombatSkill.Build(b => b
 			.SetName("Targeted skill")
 			.SetActionTime(5, 10, 2)
 			.SetDamage(40)
@@ -28,10 +26,9 @@ namespace Redninja.ConsoleDriver.Objects
 				.AddCombatRound(0.2f, (e, t, s) => new DamageOperation(e, t, s))
 				.AddCombatRound(0.4f, (e, t, s) => new DamageOperation(e, t, s))
 				.AddCombatRound(0.8f, (e, t, s) => new DamageOperation(e, t, s))
-			)
-			.Build();
+			));
 
-		public static ISkill PatternSkill { get; } = new CombatSkill.Builder()
+		public static ISkill PatternSkill { get; } = CombatSkill.Build(b => b
 			.SetName("Pattern skill")
 			.SetActionTime(7, 5, 10)
 			.SetDamage(20)
@@ -43,7 +40,6 @@ namespace Redninja.ConsoleDriver.Objects
 				.AddCombatRound(0.55f, TargetPatternFactory.CreateRowPattern(1), (e, t, s) => new DamageOperation(e, t, s))
 				.AddCombatRound(0.75f, TargetPatternFactory.CreateRowPattern(2), (e, t, s) => new DamageOperation(e, t, s))
 				.AddCombatRound(0.8f, TargetPatternFactory.CreateRowPattern(2), (e, t, s) => new DamageOperation(e, t, s))
-			)
-			.Build();
+			));
 	}
 }
