@@ -1,20 +1,13 @@
-﻿using System;
+﻿using Redninja.Targeting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Redninja.AI
 {
-	internal class AIHelper
+	internal static class AIHelper
 	{
-		internal delegate int ExtractValue(IBattleEntity entity);
-
-		private AIHelper()
-		{
-
-		}
-
+		internal delegate int ExtractValue(IBattleEntity entity);	
 
 		/// <summary>
 		/// Filter total entities by AITargetType.
@@ -23,16 +16,18 @@ namespace Redninja.AI
 		/// <param name="source"></param>
 		/// <param name="bem"></param>
 		/// <returns></returns>
-		internal static IEnumerable<IBattleEntity> FilterByType(AITargetType type, IBattleEntity source, IBattleEntityManager bem)
+		internal static IEnumerable<IBattleEntity> FilterByType(TargetTeam type, IBattleEntity source, IBattleEntityManager bem)
 		{
 			switch (type)
 			{
-				case AITargetType.Ally:
+				case TargetTeam.Ally:
 					return bem.AllEntities.Where(x => x.Team == source.Team);
-				case AITargetType.Enemy:
+				case TargetTeam.Enemy:
 					return bem.AllEntities.Where(x => x.Team != source.Team);
-				case AITargetType.Self:
+				case TargetTeam.Self:
 					return new List<IBattleEntity>() { source };
+				case TargetTeam.Any:
+					return bem.AllEntities;
 				default:
 					throw new InvalidProgramException("Unexpected target type, should implement!");
 			}

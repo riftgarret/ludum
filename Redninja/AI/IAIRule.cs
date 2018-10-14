@@ -8,7 +8,7 @@ namespace Redninja.AI
 		string RuleName { get; }
 		int Weight { get; }
 
-		IBattleAction GenerateAction(IBattleEntity source, IBattleEntityManager bemskillMeta);
-		bool IsValidTriggerConditions(IBattleEntity source, IBattleEntityManager entityManager);
+		IBattleAction GenerateAction(IBattleEntity source, IDecisionHelper decisionHelper);
+		bool IsValidTriggerConditions(IBattleEntity source, IDecisionHelper decisionHelper);
 	}
 }

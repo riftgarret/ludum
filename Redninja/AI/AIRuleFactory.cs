@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Redninja.Targeting;
 
 namespace Redninja.AI
 {
-	public class AIRuleFactory
-	{
-		private AIRuleFactory() { }
-
+	public static class AIRuleFactory
+	{		
 		public static AISkillRule CreateAttackRule()
 			=> new AISkillRule.Builder()
 				.SetName("Attack")
-				.SetRuleTargetType(AITargetType.Enemy)
+				.SetRuleTargetType(TargetTeam.Enemy)
 				.SetWeight(1)				
 				.AddSkillAndPriority(null, AITargetPriorityFactory.NoPriority) // TODO
 				.Build();

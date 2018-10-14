@@ -1,15 +1,9 @@
-﻿using Davfalcon.Revelator;
-using Davfalcon.Revelator.Combat;
-using Ninject;
+﻿using Ninject;
 using NSubstitute;
 using NUnit.Framework;
-using Redninja.Actions;
-using Redninja.Decisions;
-using Redninja.Entities;
 using Redninja.Skills;
 using Redninja.Targeting;
 using System;
-using System.Collections.Generic;
 
 namespace Redninja.Decisions.UnitTests
 {
@@ -33,6 +27,7 @@ namespace Redninja.Decisions.UnitTests
 			kernel = new StandardKernel();
 			kernel.Bind<IBattleEntityManager>().ToConstant(mEntityManager);
 			kernel.Bind<IBattleView>().ToConstant(mBattleView);
+			kernel.Bind<IDecisionHelper>().ToConstant(Substitute.For<IDecisionHelper>());
 
 			subject = kernel.Get<PlayerDecisionManager>();
 		}

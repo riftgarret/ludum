@@ -38,6 +38,7 @@ namespace Redninja.UnitTests
 			kernel.Bind<ICombatExecutor>().ToConstant(mCombatExecutor);
 			kernel.Bind<IBattleEntityManager>().ToConstant(mEntityManager);
 			kernel.Bind<IBattleView>().ToConstant(mBattleView);
+			kernel.Bind<IDecisionHelper>().ToConstant(Substitute.For<IDecisionHelper>());
 			kernel.Bind<BattlePresenter.Clock>().ToConstant(clock);
 
 			subject = kernel.Get<BattlePresenter>();
