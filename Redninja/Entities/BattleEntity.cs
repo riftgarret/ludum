@@ -33,13 +33,17 @@ namespace Redninja.Entities
 
 		public event Action<IBattleEntity> DecisionRequired;
 
-		public BattleEntity(IUnit character, IActionDecider actionDecider, ICombatExecutor combatExecutor, ISkillProvider skillProvider)
+		public BattleEntity(IUnit character, IActionDecider actionDecider, ICombatExecutor combatExecutor)
 		{
 			this.combatExecutor = combatExecutor;
 
 			Character = character;
 			ActionDecider = actionDecider;
+		}
 
+		public BattleEntity(IUnit character, IActionDecider actionDecider, ICombatExecutor combatExecutor, ISkillProvider skillProvider)
+			: this(character, actionDecider, combatExecutor)
+		{
 			Attack = skillProvider.GetAttack(Character.Class, Character.Equipment.GetAllEquipmentForSlot(EquipmentType.Weapon).Select(e => e as IWeapon));
 			Skills = new List<ISkill>(skillProvider.GetSkills(Character.Class, Character.Level));
 		}
