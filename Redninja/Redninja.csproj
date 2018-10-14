@@ -102,6 +102,8 @@
     <Compile Include="IBattleEvent.cs" />
     <Compile Include="IBattleOperation.cs" />
     <Compile Include="IBattleView.cs" />
+    <Compile Include="Skills\ISkillProvider.cs" />
+    <Compile Include="Skills\IWeaponAttack.cs" />
     <Compile Include="Skills\WeaponAttack.cs" />
     <Compile Include="Skills\CombatSkill.cs" />
     <Compile Include="Skills\ISkillResolver.cs" />
