@@ -1,17 +1,17 @@
 using System;
-using System.Collections.Generic;
-using Davfalcon.Randomization;
+using System.Linq;
 using Davfalcon.Revelator;
-using Davfalcon.Revelator.Combat;
-using Redninja.Actions;
-using Redninja.Skills;
+using Redninja.Components.Actions;
+using Redninja.Components.Clock;
+using Redninja.Components.Combat;
+using Redninja.Components.Decisions;
 
 namespace Redninja.Entities
 {
 	/// <summary>
 	/// Battle entity. Main class that contains all current effects and state of this character in battle.
 	/// </summary>
-	public class BattleEntity : IBattleEntity
+	internal class BattleEntity : IBattleEntity
 	{
 		private IClock clock;
 		private readonly ICombatExecutor combatExecutor;
@@ -20,14 +20,14 @@ namespace Redninja.Entities
 
 		public int Team { get; set; }
 		public bool IsPlayerControlled => ActionDecider.IsPlayer;
-		public EntityPosition Position { get; private set; } = new EntityPosition(1);
-
-		public List<ISkill> Skills { get; } = new List<ISkill>();
+		public UnitPosition Position { get; private set; } = new UnitPosition(1);
 
 		// If we add an action queue here, this will point to the top instead
 		public IBattleAction CurrentAction { get; private set; }
-		public PhaseState Phase => CurrentAction?.Phase ?? PhaseState.Waiting;
-		public float PhasePercent => CurrentAction?.PhaseProgress ?? 0;
+		// Temporary until we implement INameable in IBattleAction
+		public string CurrentActionName => CurrentAction.GetType().ToString().Split('.').Last();
+		public ActionPhase Phase => CurrentAction?.Phase ?? ActionPhase.Waiting;
+		public float PhaseProgress => CurrentAction?.PhaseProgress ?? 0;
 
 		public IActionDecider ActionDecider { get; set; }
 
@@ -57,13 +57,13 @@ namespace Redninja.Entities
 		}
 
 		public void MovePosition(int row, int col)
-			=> Position = new EntityPosition(row, col, Position.Size);
+			=> Position = new UnitPosition(row, col, Position.Size);
 
 		private void OnTick(float timeDelta)
 		{
 			// Check for buff update interval, then update buffs/status effects
 
-			if (CurrentAction.Phase == PhaseState.Done)
+			if (CurrentAction.Phase == ActionPhase.Done)
 			{
 				DecisionRequired?.Invoke(this);
 				// If we add an action queue, pop the completed action off here
@@ -86,6 +86,12 @@ namespace Redninja.Entities
 			{
 				clock.Tick -= OnTick;
 				clock = null;
+			}
+
+			if (CurrentAction != null)
+			{
+				CurrentAction.Dispose();
+				CurrentAction = null;
 			}
 		}
 		#endregion

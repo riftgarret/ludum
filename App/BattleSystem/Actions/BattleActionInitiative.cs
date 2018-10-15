@@ -11,7 +11,7 @@ namespace App.BattleSystem.Actions
         public BattleActionInitiative(float initiativeTime)
         {
             recoverTime = initiativeTime;
-            SetPhase(PhaseState.RECOVER);
+            SetPhase(ActionPhase.RECOVER);
         }        
 
         protected override void ExecuteAction(float actionClock)

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading;
-using Davfalcon;
-using Davfalcon.Nodes;
-using Davfalcon.Revelator;
 using Davfalcon.Revelator.Borger;
 using Redninja.ConsoleDriver.Data;
 using Redninja.Events;
+using Redninja.Components.Combat;
+using Redninja.Presenter;
 
 namespace Redninja.ConsoleDriver
 {
@@ -26,27 +24,23 @@ namespace Redninja.ConsoleDriver
 				.AddVolatileStat(CombatStats.HP));
 
 			IBattlePresenter presenter = BattlePresenter.CreatePresenter(view, executor);
-			presenter.AddCharacter(
-				new Unit.Builder(StatsOperations.Default, LinkedStatsResolver.Default)
+			presenter.AddCharacter(b => b
 				.SetMainDetails("Unit 1")
 				.SetBaseStat(CombatStats.HP, 100)
 				.SetBaseStat(CombatStats.ATK, 50)
 				.SetBaseStat(CombatStats.DEF, 10),
 				0, 0);
-			presenter.AddCharacter(
-				new Unit.Builder()
+			presenter.AddCharacter(b => b
 				.SetMainDetails("Enemy 1")
 				.SetBaseStat(CombatStats.HP, 1000)
 				.SetBaseStat(CombatStats.DEF, 10),
 				new DummyAI(), 1, 0, 0);
-			presenter.AddCharacter(
-				new Unit.Builder()
+			presenter.AddCharacter(b => b
 				.SetMainDetails("Enemy 2")
 				.SetBaseStat(CombatStats.HP, 1000)
 				.SetBaseStat(CombatStats.DEF, 20),
 				new DummyAI(), 1, 1, 0);
-			presenter.AddCharacter(
-				new Unit.Builder()
+			presenter.AddCharacter(b => b
 				.SetMainDetails("Enemy 3")
 				.SetBaseStat(CombatStats.HP, 1000)
 				.SetBaseStat(CombatStats.DEF, 30),

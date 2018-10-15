@@ -1,12 +1,14 @@
-﻿using NSubstitute;
-using NUnit.Framework;
-using Redninja.AI;
-using Redninja.Decisions;
-using Redninja.Skills;
-using Redninja.Targeting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NSubstitute;
+using NUnit.Framework;
+using Redninja.Components.Actions;
+using Redninja.Components.Skills;
+using Redninja.Components.Targeting;
+using Redninja.Entities;
+using Redninja.Components.Decisions;
+using Redninja.Components.Decisions.AI;
 
 namespace Redninja.UnitTests.AI
 {
@@ -15,7 +17,7 @@ namespace Redninja.UnitTests.AI
 	{			
 		private AISkillRule.Builder subjectBuilder;
 
-		private IActionPhaseHelper mActionHelper;
+		private ISkillsComponent mActionHelper;
 
 		// need this to allow builder to complete but we set it to have no resolvement
 		private Tuple<ISkill, IAITargetPriority> mInitialSkill;				
@@ -29,26 +31,26 @@ namespace Redninja.UnitTests.AI
 			subjectBuilder.SetRuleTargetType(TargetTeam.Enemy);
 			mInitialSkill = AddSkillPriority(null); // required for builder			
 
-			mActionHelper = Substitute.For<IActionPhaseHelper>();
-			mDecisionHelper.GetAvailableSkills(Arg.Any<IBattleEntity>()).Returns(mActionHelper);
+			mActionHelper = Substitute.For<ISkillsComponent>();
+			mDecisionHelper.GetAvailableSkills(Arg.Any<IUnitModel>()).Returns(mActionHelper);
 
 			SetupBuilder();
 		}
 
-		private IAITargetCondition AddFilterCondition(bool isTrue, IBattleEntity onlyForTarget = null)
+		private IAITargetCondition AddFilterCondition(bool isTrue, IUnitModel onlyForTarget = null)
 		{
 			IAITargetCondition mFilterCondition = Substitute.For<IAITargetCondition>();
-			mFilterCondition.IsValid(onlyForTarget ?? Arg.Any<IBattleEntity>()).Returns(isTrue);
+			mFilterCondition.IsValid(onlyForTarget ?? Arg.Any<IUnitModel>()).Returns(isTrue);
 			subjectBuilder.AddFilterCondition(mFilterCondition);
 			return mFilterCondition;
 		}
 
-		private Tuple<ISkill, IAITargetPriority> AddSkillPriority(IBattleEntity bestTarget)
+		private Tuple<ISkill, IAITargetPriority> AddSkillPriority(IUnitModel bestTarget)
 		{
 			var mSkill = Substitute.For<ISkill>();
 			var mPriority = Substitute.For<IAITargetPriority>();
 
-			mPriority.GetBestTarget(Arg.Any<IEnumerable<IBattleEntity>>()).Returns(bestTarget);
+			mPriority.GetBestTarget(Arg.Any<IEnumerable<IUnitModel>>()).Returns(bestTarget);
 			subjectBuilder.AddSkillAndPriority(mSkill, mPriority);
 			
 			return Tuple.Create(mSkill, mPriority);
@@ -68,13 +70,13 @@ namespace Redninja.UnitTests.AI
 
 			// make sure the skill has target meta
 			var returnedAction = Substitute.For<IBattleAction>();			
-			var mTargetHelper = Substitute.For<ITargetPhaseHelper>();
+			var mTargetHelper = Substitute.For<ITargetingComponent>();
 			var mSelectedTarget = mTargetHelper.GetSelectedTarget(mSource);
 
 			mTargetHelper.TargetingRule.IsValidTarget(mSource, mSource).Returns(true);			
 			mTargetHelper.Ready.Returns(true);			
 			mTargetHelper.Skill.Returns(mSkill);
-			mDecisionHelper.GetTargetingManager(mSource, mSkill).Returns(mTargetHelper);
+			mDecisionHelper.GetTargetingComponent(mSource, mSkill).Returns(mTargetHelper);
 
 			var subject = subjectBuilder.Build();			
 
@@ -110,13 +112,13 @@ namespace Redninja.UnitTests.AI
 			var enemy2 = AddEntity(enemyTeam);
 			var condition = AddFilterCondition(true);
 			
-			condition.IsValid(Arg.Is<IBattleEntity>(x => x == enemy1 || x == enemy2)).Returns(true);			
+			condition.IsValid(Arg.Is<IUnitModel>(x => x == enemy1 || x == enemy2)).Returns(true);			
 
-			ITargetPhaseHelper mTargetHelper = Substitute.For<ITargetPhaseHelper>();
-			mTargetHelper.TargetingRule.IsValidTarget(Arg.Is<IBattleEntity>(x => x == enemy1 || x == enemy2), mSource).Returns(true);
+			ITargetingComponent mTargetHelper = Substitute.For<ITargetingComponent>();
+			mTargetHelper.TargetingRule.IsValidTarget(Arg.Is<IUnitModel>(x => x == enemy1 || x == enemy2), mSource).Returns(true);
 			mTargetHelper.Skill.Returns(mInitialSkill.Item1);
-			mInitialSkill.Item2.GetBestTarget(Arg.Any<IEnumerable<IBattleEntity>>())
-				.ReturnsForAnyArgs(x => x.Arg<IEnumerable<IBattleEntity>>()
+			mInitialSkill.Item2.GetBestTarget(Arg.Any<IEnumerable<IUnitModel>>())
+				.ReturnsForAnyArgs(x => x.Arg<IEnumerable<IUnitModel>>()
 				.First(e => e == enemy1));
 			
 			subjectBuilder.SetRuleTargetType(TargetTeam.Enemy);
@@ -135,10 +137,10 @@ namespace Redninja.UnitTests.AI
 			var enemy2 = AddEntity(enemyTeam);
 			var condition = AddFilterCondition(true);
 
-			condition.IsValid(Arg.Is<IBattleEntity>(x => x == enemy1 || x == enemy2)).Returns(true);
+			condition.IsValid(Arg.Is<IUnitModel>(x => x == enemy1 || x == enemy2)).Returns(true);
 
-			ITargetPhaseHelper mTargetHelper = Substitute.For<ITargetPhaseHelper>();
-			mTargetHelper.TargetingRule.IsValidTarget(Arg.Is<IBattleEntity>(x => x == enemy1 || x == enemy2), mSource).Returns(false);
+			ITargetingComponent mTargetHelper = Substitute.For<ITargetingComponent>();
+			mTargetHelper.TargetingRule.IsValidTarget(Arg.Is<IUnitModel>(x => x == enemy1 || x == enemy2), mSource).Returns(false);
 			mTargetHelper.Skill.Returns(mInitialSkill.Item1);
 
 			subjectBuilder.SetRuleTargetType(TargetTeam.Enemy);

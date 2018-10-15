@@ -33,16 +33,16 @@ namespace App.BattleSystem
             switch (battleEntity.Phase)
             {
                 // PREPARE -> animate 0 to 1 as completes
-                case PhaseState.PREPARE:
+                case ActionPhase.PREPARE:
                     return battleEntity.TurnPercent;
                 // EXECUTING -> stays at 1
-                case PhaseState.EXECUTE:
+                case ActionPhase.EXECUTE:
                     return 1f;
                 // RECOVER -> animate 1 to 0 as completes
-                case PhaseState.RECOVER:
+                case ActionPhase.RECOVER:
                     return 1f - battleEntity.TurnPercent;
                 // awaiting input, at 0 
-                case PhaseState.REQUIRES_INPUT:
+                case ActionPhase.REQUIRES_INPUT:
                 default:
                     return 0f;
             }

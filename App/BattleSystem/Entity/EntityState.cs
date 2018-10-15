@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace App.BattleSystem.Entity
 {
     // action phase
-    public enum PhaseState
+    public enum ActionPhase
     {
         REQUIRES_INPUT,
         PREPARE,

@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Davfalcon.Nodes;
-using Redninja.Actions;
+using Redninja.Components.Actions;
+using Redninja.Components.Skills;
+using Redninja.Components.Targeting;
 using Redninja.ConsoleDriver.Objects;
-using Redninja.Decisions;
+using Redninja.Entities;
 using Redninja.Events;
-using Redninja.Skills;
-using Redninja.Targeting;
+using Redninja.View;
 
 namespace Redninja.ConsoleDriver
 {
@@ -15,15 +16,18 @@ namespace Redninja.ConsoleDriver
 	{
 		private IBattleModel model;
 
-		public event Action<IBattleEntity, IBattleAction> ActionSelected;
-		public event Action<IBattleEntity, ISkill> SkillSelected;
+		public event Action<IUnitModel, IBattleAction> ActionSelected;
+		public event Action<IUnitModel, ISkill> SkillSelected;
 		public event Action<ISelectedTarget> TargetSelected;
 		public event Action TargetingCanceled;
+		public event Action<IUnitModel> MovementInitiated;
+		public event Action<Coordinate> MovementPathUpdated;
+		public event Action MovementConfirmed;
 
 		public void Draw()
 		{
 			Console.Clear();
-			foreach (IBattleEntity entity in model.AllEntities)
+			foreach (IUnitModel entity in model.Entities)
 			{
 				entity.Print();
 			}
@@ -42,7 +46,7 @@ namespace Redninja.ConsoleDriver
 			}
 		}
 
-		public void OnDecisionNeeded(IBattleEntity entity)
+		public void OnDecisionNeeded(IUnitModel entity)
 		{
 			Draw();
 			Console.WriteLine("Waiting for player input...");
@@ -79,12 +83,12 @@ namespace Redninja.ConsoleDriver
 			Draw();
 		}
 
-		public void SetViewModeTargeting(ISkillTargetingInfo targetingInfo)
+		public void SetViewMode(ITargetingView targetingInfo)
 		{
 			Draw();
-			List<IBattleEntity> availableTargets = new List<IBattleEntity>();
+			List<IUnitModel> availableTargets = new List<IUnitModel>();
 
-			foreach (IBattleEntity t in targetingInfo.GetTargetableEntities())
+			foreach (IUnitModel t in targetingInfo.GetTargetableEntities())
 			{
 				Console.WriteLine(t.Character.Name);
 				availableTargets.Add(t);
@@ -100,6 +104,11 @@ namespace Redninja.ConsoleDriver
 			{
 				TargetingCanceled?.Invoke();
 			}
+		}
+
+		public void SetViewMode(IMovementView movementState)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
