@@ -3,7 +3,7 @@
 	public class WaitAction : BattleActionBase
     {        
         public WaitAction(float time)
-			: base(0, 0, time)
+			: base("Wait", 0, 0, time)
         {
 		}
 

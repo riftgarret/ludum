@@ -1,21 +1,19 @@
 using System;
+using Davfalcon;
 using Redninja.Components.Clock;
 using Redninja.Components.Operations;
 
 namespace Redninja.Components.Actions
 {
-	public interface IBattleAction : IClockSynchronized
+	public interface IBattleAction : INameable, IClockSynchronized
     {
-		event Action<IBattleAction> ActionExecuting;
-		event Action<float, IBattleOperation> BattleOperationReady;
-
+		ActionTime Time { get; }
         ActionPhase Phase { get; }
 		float PhaseTime { get; }
         float PhaseProgress { get; }
 
-		float TimePrepare { get; }
-		float TimeExecute { get; }
-		float TimeRecover { get; }
+		event Action<IBattleAction> ActionExecuting;
+		event Action<float, IBattleOperation> BattleOperationReady;
 
 		void Start();
 		void Start(IClock clock);

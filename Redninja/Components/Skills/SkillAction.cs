@@ -10,7 +10,7 @@ namespace Redninja.Components.Skills
 		private readonly IList<ISkillResolver> resolvers;
 
 		public SkillAction(IUnitModel entity, ISkill skill, IEnumerable<ISkillResolver> resolvers)
-			: base(skill.Time)
+			: base(skill.Name, skill.Time)
 		{
 			this.skill = skill;
 			this.entity = entity;

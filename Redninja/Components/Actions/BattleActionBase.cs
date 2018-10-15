@@ -13,15 +13,13 @@ namespace Redninja.Components.Actions
 		private IClock clock;
 		private float phaseComplete;
 
+		public string Name { get; }
+		public ActionTime Time { get; }
+
 		public ActionPhase Phase { get; private set; }
 		public float PhaseStart { get; private set; }
 		public float PhaseTime => phaseComplete - PhaseStart;
 		public float PhaseProgress => PhaseTime == 0 ? 1f : Math.Min((clock.Time - PhaseStart) / PhaseTime, 1f);
-
-		public ActionTime ActionTime { get; }
-		public float TimePrepare => ActionTime.Prepare;
-		public float TimeExecute => ActionTime.Execute;
-		public float TimeRecover => ActionTime.Recover;
 
 		public event Action<IBattleAction> ActionExecuting;
 		public event Action<float, IBattleOperation> BattleOperationReady;
@@ -32,13 +30,14 @@ namespace Redninja.Components.Actions
 		{
 			BattleOperationReady?.Invoke(time, operation);
 		}
-		protected BattleActionBase(ActionTime actionTime)
+		protected BattleActionBase(string name, ActionTime actionTime)
 		{
-			ActionTime = actionTime;
+			Name = name;
+			Time = actionTime;
 		}
 
-		protected BattleActionBase(float prepare, float execute, float recover)
-			: this(new ActionTime(prepare, execute, recover)) { }
+		protected BattleActionBase(string name, float prepare, float execute, float recover)
+			: this(name, new ActionTime(prepare, execute, recover)) { }
 
 		protected float GetPhaseTimeAt(float percent)
 			=> PhaseStart + PhaseTime * percent;
@@ -57,13 +56,13 @@ namespace Redninja.Components.Actions
 				switch (newPhase)
 				{
 					case ActionPhase.Preparing:
-						phaseTime = TimePrepare;
+						phaseTime = Time.Prepare;
 						break;
 					case ActionPhase.Executing:
-						phaseTime = TimeExecute;
+						phaseTime = Time.Execute;
 						break;
 					case ActionPhase.Recovering:
-						phaseTime = TimeRecover;
+						phaseTime = Time.Recover;
 						break;
 					case ActionPhase.Done:
 						Dispose();
@@ -145,6 +144,6 @@ namespace Redninja.Components.Actions
 		#endregion
 
 		public override string ToString()
-			=> $"{GetType()}: {Phase} {(int)(PhaseProgress * 100)}%";
+			=> $"{Name}: {Phase} {(int)(PhaseProgress * 100)}%";
 	}
 }

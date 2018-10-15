@@ -19,5 +19,8 @@
 		//	}
 		//	else return base.Equals(obj);
 		//}
+
+		public override string ToString()
+			=> $"{Row}, {Column}";
 	}
 }
