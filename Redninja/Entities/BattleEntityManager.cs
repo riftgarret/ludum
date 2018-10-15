@@ -14,7 +14,7 @@ namespace Redninja.Entities
 		private HashSet<IBattleEntity> entityMap = new HashSet<IBattleEntity>();
 
 		public IEnumerable<IBattleEntity> Entities => entityMap;
-		IEnumerable<IEntityModel> IBattleModel.Entities => Entities;
+		IEnumerable<IUnitModel> IBattleModel.Entities => Entities;
 
 		public event Action<IBattleEntity> DecisionRequired;
 

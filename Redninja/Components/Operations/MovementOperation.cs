@@ -4,11 +4,11 @@ namespace Redninja.Components.Operations
 {
 	public class MovementOperation : BattleOperationBase
 	{
-		private readonly IEntityModel unit;
+		private readonly IUnitModel unit;
 		private readonly int row;
 		private readonly int col;
 
-		public MovementOperation(IEntityModel unit, int row, int col)
+		public MovementOperation(IUnitModel unit, int row, int col)
 		{
 			this.unit = unit;
 			this.row = row;

@@ -9,12 +9,12 @@ namespace Redninja.Components.Combat
 	{
 		event Action<IBattleEvent> BattleEventOccurred;
 
-		void InitializeEntity(IEntityModel entity);
-		void MoveEntity(IEntityModel entity, int newRow, int newCol);
-		void MoveEntity(IEntityModel entity, EntityPosition newPosition);
-		IDamageNode GetRawDamage(IEntityModel attacker, IDamageSource source);
-		IDefenseNode GetDamage(IEntityModel attacker, IEntityModel defender, IDamageSource source);
-		IDefenseNode GetDamage(IEntityModel defender, IDamageNode incomingDamage);
-		IDefenseNode DealDamage(IEntityModel attacker, IEntityModel defender, IDamageSource source);
+		void InitializeEntity(IUnitModel entity);
+		void MoveEntity(IUnitModel entity, int newRow, int newCol);
+		void MoveEntity(IUnitModel entity, UnitPosition newPosition);
+		IDamageNode GetRawDamage(IUnitModel attacker, IDamageSource source);
+		IDefenseNode GetDamage(IUnitModel attacker, IUnitModel defender, IDamageSource source);
+		IDefenseNode GetDamage(IUnitModel defender, IDamageNode incomingDamage);
+		IDefenseNode DealDamage(IUnitModel attacker, IUnitModel defender, IDamageSource source);
 	}
 }

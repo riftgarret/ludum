@@ -11,17 +11,17 @@ namespace Redninja.Entities.Decisions
 	/// </summary>
 	public class SkillSelectionMeta : ISkillsComponent
 	{
-		public IEntityModel Entity { get; }
+		public IUnitModel Entity { get; }
 		public IWeaponAttack Attack { get; }
 		public IEnumerable<ISkill> Skills { get; }
 
-		public SkillSelectionMeta(IEntityModel entity)
+		public SkillSelectionMeta(IUnitModel entity)
 		{
 			Entity = entity;
 		}
 
 		// SkillProvider needs to be implemented before we can use this
-		public SkillSelectionMeta(IEntityModel entity, ISkillProvider skillProvider)
+		public SkillSelectionMeta(IUnitModel entity, ISkillProvider skillProvider)
 			: this(entity)
 		{
 			Attack = skillProvider.GetAttack(entity.Character.Class, entity.Character.Equipment.GetAllEquipmentForSlot(EquipmentType.Weapon).Select(e => e as IWeapon));

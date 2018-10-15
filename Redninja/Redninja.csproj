@@ -72,7 +72,7 @@
     <Compile Include="Coordinate.cs" />
     <Compile Include="Entities\Decisions\ISkillsComponent.cs" />
     <Compile Include="Entities\Decisions\IDecisionHelper.cs" />
-    <Compile Include="IEntityModel.cs" />
+    <Compile Include="IUnitModel.cs" />
     <Compile Include="View\IMovementView.cs" />
     <Compile Include="Entities\Decisions\IMovementComponent.cs" />
     <Compile Include="View\ISkillsView.cs" />
@@ -95,7 +95,7 @@
     <Compile Include="Presenter\BattlePresenter.cs" />
     <Compile Include="Entities\BattleEntity.cs" />
     <Compile Include="Entities\BattleEntityManager.cs" />
-    <Compile Include="EntityPosition.cs" />
+    <Compile Include="UnitPosition.cs" />
     <Compile Include="Components\Clock\IClock.cs" />
     <Compile Include="Components\Clock\IClockSynchronized.cs" />
     <Compile Include="Components\Operations\BattleOperationBase.cs" />

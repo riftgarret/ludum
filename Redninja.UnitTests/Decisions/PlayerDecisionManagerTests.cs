@@ -77,10 +77,10 @@ namespace Redninja.Decisions.UnitTests
 		[Test]
 		public void OnTargetingCanceled_ViewModeDefault()
 		{
-			IEntityModel mEntity = Substitute.For<IEntityModel>();
+			IUnitModel mEntity = Substitute.For<IUnitModel>();
 			ISkill mSkill = Substitute.For<ISkill>();
 
-			mBattleView.SkillSelected += Raise.Event<Action<IEntityModel, ISkill>>(mEntity, mSkill);
+			mBattleView.SkillSelected += Raise.Event<Action<IUnitModel, ISkill>>(mEntity, mSkill);
 			mBattleView.TargetingCanceled += Raise.Event<Action>();
 
 			mBattleView.Received().SetViewModeDefault();
@@ -89,10 +89,10 @@ namespace Redninja.Decisions.UnitTests
 		[Test]
 		public void OnSkillSelected_ViewModeTargeting()
 		{
-			IEntityModel mEntity = Substitute.For<IEntityModel>();
+			IUnitModel mEntity = Substitute.For<IUnitModel>();
 			ISkill mSkill = Substitute.For<ISkill>();
 
-			mBattleView.SkillSelected += Raise.Event<Action<IEntityModel, ISkill>>(mEntity, mSkill);
+			mBattleView.SkillSelected += Raise.Event<Action<IUnitModel, ISkill>>(mEntity, mSkill);
 
 			mBattleView.Received().SetViewMode(Arg.Any<ITargetingView>());
 		}

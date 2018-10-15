@@ -18,7 +18,7 @@ namespace Redninja.Entities.Decisions.AI
 		/// <param name="bem"></param>
 		/// <param name="historyState"></param>
 		/// <returns></returns>
-		public IBattleAction ResolveAction(IEntityModel source, IDecisionHelper decisionHelper, IAIHistoryState historyState) 
+		public IBattleAction ResolveAction(IUnitModel source, IDecisionHelper decisionHelper, IAIHistoryState historyState) 
 		{
 			// DEBUG rule name -> in pool
 			var debugRuleMeta = new Dictionary<string, bool>();

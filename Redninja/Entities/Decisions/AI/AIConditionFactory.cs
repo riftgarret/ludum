@@ -10,7 +10,7 @@
 
 		public class SimpleAICondition : IAITargetCondition
 		{		
-			internal delegate bool OnCondition(IEntityModel entity);
+			internal delegate bool OnCondition(IUnitModel entity);
 
 			internal OnCondition conditionDelegate;
 
@@ -19,7 +19,7 @@
 				conditionDelegate = onCondition;
 			}
 
-			public bool IsValid(IEntityModel entity) => conditionDelegate(entity);
+			public bool IsValid(IUnitModel entity) => conditionDelegate(entity);
 		}
 	}
 }

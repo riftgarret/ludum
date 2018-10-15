@@ -6,7 +6,7 @@ namespace Redninja.View
 {
 	public interface ITargetingView
 	{
-		IEntityModel Entity { get; }
+		IUnitModel Entity { get; }
 
 		// View probably doesn't need all these, clean up later
 		ISkill Skill { get; }
@@ -15,10 +15,10 @@ namespace Redninja.View
 		TargetType TargetType { get; }
 		bool Ready { get; }
 
-		IEnumerable<IEntityModel> GetTargetableEntities();
-		bool IsValidTarget(IEntityModel targetEntity);
+		IEnumerable<IUnitModel> GetTargetableEntities();
+		bool IsValidTarget(IUnitModel targetEntity);
 		bool IsInPattern(int anchorRow, int anchorColumn, int targetRow, int targetColumn);
-		ISelectedTarget GetSelectedTarget(IEntityModel target);
+		ISelectedTarget GetSelectedTarget(IUnitModel target);
 		ISelectedTarget GetSelectedTarget(int team, Coordinate anchor);
 	}
 }

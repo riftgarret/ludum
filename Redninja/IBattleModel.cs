@@ -4,6 +4,6 @@ namespace Redninja
 {
 	public interface IBattleModel
 	{
-		IEnumerable<IEntityModel> Entities { get; }
+		IEnumerable<IUnitModel> Entities { get; }
 	}
 }

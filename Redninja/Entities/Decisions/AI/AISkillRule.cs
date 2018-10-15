@@ -18,7 +18,7 @@ namespace Redninja.Entities.Decisions.AI
 		private List<IAITargetCondition> FilterConditions { get; } = new List<IAITargetCondition>();
 		private List<Tuple<IAITargetPriority, ISkill>> SkillAssignments { get; } = new List<Tuple<IAITargetPriority, ISkill>>();
 
-		public override IBattleAction GenerateAction(IEntityModel source, IDecisionHelper decisionHelper)
+		public override IBattleAction GenerateAction(IUnitModel source, IDecisionHelper decisionHelper)
 		{
 			ISkillsComponent skillMeta = decisionHelper.GetAvailableSkills(source);
 
@@ -48,10 +48,10 @@ namespace Redninja.Entities.Decisions.AI
 		internal IEnumerable<ISkill> GetAssignableSkills(ISkillsComponent meta)
 			=> meta.Skills.Intersect(SkillAssignments.Select(x => x.Item2));
 
-		internal bool TryFindTarget(ITargetingComponent meta, IEntityModel source, IBattleEntityManager bem, out ISelectedTarget selectedTarget)
+		internal bool TryFindTarget(ITargetingComponent meta, IUnitModel source, IBattleEntityManager bem, out ISelectedTarget selectedTarget)
 		{
 			// filter targets
-			IEnumerable<IEntityModel> filteredTargets = FilterTargets(meta.TargetingRule, source, bem);
+			IEnumerable<IUnitModel> filteredTargets = FilterTargets(meta.TargetingRule, source, bem);
 
 			if (filteredTargets.Count() == 0)
 			{
@@ -61,17 +61,17 @@ namespace Redninja.Entities.Decisions.AI
 
 			// select best target
 			IAITargetPriority targetPriority = SkillAssignments.FirstOrDefault(x => x.Item2 == meta.Skill).Item1;
-			IEntityModel entityTarget = targetPriority.GetBestTarget(filteredTargets);
+			IUnitModel entityTarget = targetPriority.GetBestTarget(filteredTargets);
 
 			// convert into ISelectedTarget
 			selectedTarget = meta.GetSelectedTarget(entityTarget);
 			return true;
 		}
 
-		internal IEnumerable<IEntityModel> FilterTargets(ITargetingRule targetingRule, IEntityModel source, IBattleEntityManager bem)
+		internal IEnumerable<IUnitModel> FilterTargets(ITargetingRule targetingRule, IUnitModel source, IBattleEntityManager bem)
 		{
 			// first filter by TargetType
-			IEnumerable<IEntityModel> leftoverTargets = AIHelper.FilterByType(TargetType, source, bem);
+			IEnumerable<IUnitModel> leftoverTargets = AIHelper.FilterByType(TargetType, source, bem);
 
 			// filter by skill rule
 			leftoverTargets = leftoverTargets.Where(ex => targetingRule.IsValidTarget(ex, source));

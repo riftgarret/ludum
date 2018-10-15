@@ -43,7 +43,7 @@ namespace Redninja.Components.Targeting
 		/// </summary>
 		/// <returns><c>true</c> if this instance is valid target the specified entity; otherwise, <c>false</c>.</returns>
 		/// <param name="entity">Entity.</param>
-		public bool IsValidTarget(IEntityModel target, IEntityModel user)
+		public bool IsValidTarget(IUnitModel target, IUnitModel user)
 			=> condition(target, user);
 
 		public static ITargetingRule Any { get; } = new TargetingRule(TargetTeam.Any);

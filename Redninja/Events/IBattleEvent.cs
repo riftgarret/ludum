@@ -5,7 +5,7 @@ namespace Redninja.Events
 	/// </summary>
 	public interface IBattleEvent
 	{
-		IEntityModel Entity { get; }
+		IUnitModel Entity { get; }
     } 
 }
 

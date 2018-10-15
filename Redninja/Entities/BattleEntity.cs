@@ -19,7 +19,7 @@ namespace Redninja.Entities
 
 		public int Team { get; set; }
 		public bool IsPlayerControlled => ActionDecider.IsPlayer;
-		public EntityPosition Position { get; private set; } = new EntityPosition(1);
+		public UnitPosition Position { get; private set; } = new UnitPosition(1);
 
 		// If we add an action queue here, this will point to the top instead
 		public IBattleAction CurrentAction { get; private set; }
@@ -56,7 +56,7 @@ namespace Redninja.Entities
 		}
 
 		public void MovePosition(int row, int col)
-			=> Position = new EntityPosition(row, col, Position.Size);
+			=> Position = new UnitPosition(row, col, Position.Size);
 
 		private void OnTick(float timeDelta)
 		{

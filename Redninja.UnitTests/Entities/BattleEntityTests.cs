@@ -35,7 +35,7 @@ namespace Redninja.UnitTests.Entities
             int originalSize = subject.Position.Size;
             subject.MovePosition(expectedX, expectedY);
             Assert.That(subject.Position, 
-                Is.EqualTo(new EntityPosition(expectedX, expectedY, originalSize)));
+                Is.EqualTo(new UnitPosition(expectedX, expectedY, originalSize)));
         }
 
         [Test]

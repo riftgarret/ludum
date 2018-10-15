@@ -5,7 +5,7 @@ namespace Redninja.View
 {
 	public interface ISkillsView
 	{
-		IEntityModel Entity { get; }
+		IUnitModel Entity { get; }
 		IWeaponAttack Attack { get; }
 		IEnumerable<ISkill> Skills { get; }
 	}

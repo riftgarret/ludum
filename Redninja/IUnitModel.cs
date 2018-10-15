@@ -2,11 +2,11 @@
 
 namespace Redninja
 {
-	public interface IEntityModel
+	public interface IUnitModel
 	{
 		IUnit Character { get; }
 		int Team { get; set; }
-		EntityPosition Position { get; }
+		UnitPosition Position { get; }
 
 		string CurrentActionName { get; }
 		ActionPhase Phase { get; }

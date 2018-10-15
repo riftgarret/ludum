@@ -22,7 +22,7 @@ namespace Redninja.Entities.Decisions.AI
 		public int RefreshTime { get; private set; }
 
 
-		public bool IsValidTriggerConditions(IEntityModel source, IDecisionHelper decisionHelper)
+		public bool IsValidTriggerConditions(IUnitModel source, IDecisionHelper decisionHelper)
 		{
 			foreach(var trigger in TriggerConditions)
 			{
@@ -37,7 +37,7 @@ namespace Redninja.Entities.Decisions.AI
 			return true;			
 		}
 
-		public abstract IBattleAction GenerateAction(IEntityModel source, IDecisionHelper decisionHelper); 				
+		public abstract IBattleAction GenerateAction(IUnitModel source, IDecisionHelper decisionHelper); 				
 
 		/// <summary>
 		/// Builder class for a rule.

@@ -14,7 +14,7 @@ namespace Redninja.Entities.Decisions
 		private readonly ISelectedTarget[] selectedTargets;
 		private int currentIndex = 0;
 
-		public IEntityModel Entity { get; }
+		public IUnitModel Entity { get; }
 		public ISkill Skill { get; }
 		public SkillTargetingSet TargetingSet => Skill.Targets[currentIndex];
 		public ITargetingRule TargetingRule => TargetingSet.TargetingRule;
@@ -22,7 +22,7 @@ namespace Redninja.Entities.Decisions
 		public bool Ready => currentIndex >= Skill.Targets.Count;
 
 		public SkillTargetingComponent(
-			IEntityModel entity,
+			IUnitModel entity,
 			ISkill skill,
 			IBattleEntityManager entityManager)
 		{
@@ -33,7 +33,7 @@ namespace Redninja.Entities.Decisions
 			selectedTargets = new ISelectedTarget[Skill.Targets.Count];
 		}
 
-		public IEnumerable<IEntityModel> GetTargetableEntities()
+		public IEnumerable<IUnitModel> GetTargetableEntities()
 		{
 			switch (TargetingRule.Team)
 			{
@@ -42,7 +42,7 @@ namespace Redninja.Entities.Decisions
 				case TargetTeam.Enemy:
 					return entityManager.Entities.Where(e => e.Team != Entity.Team && IsValidTarget(e));
 				case TargetTeam.Self:
-					return IsValidTarget(Entity) ? new List<IEntityModel>() { Entity }.AsReadOnly() as IEnumerable<IEntityModel> : new EmptyEnumerable<IEntityModel>();
+					return IsValidTarget(Entity) ? new List<IUnitModel>() { Entity }.AsReadOnly() as IEnumerable<IUnitModel> : new EmptyEnumerable<IUnitModel>();
 				default: throw new InvalidOperationException();
 			}
 		}
@@ -52,7 +52,7 @@ namespace Redninja.Entities.Decisions
 		/// </summary>
 		/// <param name="targetEntity"></param>
 		/// <returns></returns>
-		public bool IsValidTarget(IEntityModel targetEntity)
+		public bool IsValidTarget(IUnitModel targetEntity)
 			=> TargetingRule.IsValidTarget(Entity, targetEntity);
 
 		/// <summary>
@@ -71,7 +71,7 @@ namespace Redninja.Entities.Decisions
 		/// </summary>
 		/// <param name="target"></param>
 		/// <returns></returns>
-		public ISelectedTarget GetSelectedTarget(IEntityModel target)
+		public ISelectedTarget GetSelectedTarget(IUnitModel target)
 			=> new SelectedTarget(TargetingRule, target);
 
 		/// <summary>

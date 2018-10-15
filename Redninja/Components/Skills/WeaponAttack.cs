@@ -21,7 +21,7 @@ namespace Redninja.Components.Skills
 		public Enum BonusDamageStat => weapons[0].BonusDamageStat;
 		public IEnumerable<Enum> DamageTypes => weapons[0].DamageTypes;
 
-		public IBattleAction GetAction(IEntityModel entity, ISelectedTarget[] targets)
+		public IBattleAction GetAction(IUnitModel entity, ISelectedTarget[] targets)
 		{
 			int n = weapons.Count;
 			float interval = 1f / n;

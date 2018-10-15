@@ -5,7 +5,7 @@ namespace Redninja.View
 {
 	public interface IMovementView
 	{
-		IEntityModel Entity { get; }
+		IUnitModel Entity { get; }
 		ActionTime Time { get; }
 		IEnumerable<Coordinate> CurrentPath { get; }
 

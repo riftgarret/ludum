@@ -4,7 +4,7 @@ using Redninja.Components.Clock;
 
 namespace Redninja.Entities
 {
-	public interface IBattleEntity : IEntityModel, IClockSynchronized
+	public interface IBattleEntity : IUnitModel, IClockSynchronized
 	{
 		bool IsPlayerControlled { get; }
 		IBattleAction CurrentAction { get; }

@@ -46,7 +46,7 @@ namespace Redninja.Entities.Decisions.Player
 		}
 
 		// Considering removing this so view doesn't generate actions
-		private void OnActionSelected(IEntityModel entity, IBattleAction action)
+		private void OnActionSelected(IUnitModel entity, IBattleAction action)
 		{
 			if (TargetingActive) throw new InvalidOperationException("An action should not be selected while a skill is currently being targeted.");
 
@@ -55,7 +55,7 @@ namespace Redninja.Entities.Decisions.Player
 		}
 
 		#region Movement
-		private void OnMovementInitiated(IEntityModel entity)
+		private void OnMovementInitiated(IUnitModel entity)
 		{
 			if (TargetingActive) throw new InvalidOperationException("Cannot initiate movement while another targeting state is already active.");
 
@@ -81,7 +81,7 @@ namespace Redninja.Entities.Decisions.Player
 		#endregion
 
 		#region Skill targeting
-		private void OnSkillSelected(IEntityModel entity, ISkill skill)
+		private void OnSkillSelected(IUnitModel entity, ISkill skill)
 		{
 			if (TargetingActive) throw new InvalidOperationException("Cannot initiate skill targeting while another targeting state is already active.");
 
@@ -128,7 +128,7 @@ namespace Redninja.Entities.Decisions.Player
 			view.OnDecisionNeeded(entity);
 		}
 
-		private void ResumeIfDecided(IEntityModel entity)
+		private void ResumeIfDecided(IUnitModel entity)
 		{
 			// do this check in case we allow selecting another unit's actions while one is blocking
 			if (entity == blockingEntity)

@@ -16,18 +16,18 @@ namespace Redninja.ConsoleDriver
 	{
 		private IBattleModel model;
 
-		public event Action<IEntityModel, IBattleAction> ActionSelected;
-		public event Action<IEntityModel, ISkill> SkillSelected;
+		public event Action<IUnitModel, IBattleAction> ActionSelected;
+		public event Action<IUnitModel, ISkill> SkillSelected;
 		public event Action<ISelectedTarget> TargetSelected;
 		public event Action TargetingCanceled;
-		public event Action<IEntityModel> MovementInitiated;
+		public event Action<IUnitModel> MovementInitiated;
 		public event Action<Coordinate> MovementPathUpdated;
 		public event Action MovementConfirmed;
 
 		public void Draw()
 		{
 			Console.Clear();
-			foreach (IEntityModel entity in model.Entities)
+			foreach (IUnitModel entity in model.Entities)
 			{
 				entity.Print();
 			}
@@ -46,7 +46,7 @@ namespace Redninja.ConsoleDriver
 			}
 		}
 
-		public void OnDecisionNeeded(IEntityModel entity)
+		public void OnDecisionNeeded(IUnitModel entity)
 		{
 			Draw();
 			Console.WriteLine("Waiting for player input...");
@@ -86,9 +86,9 @@ namespace Redninja.ConsoleDriver
 		public void SetViewMode(ITargetingView targetingInfo)
 		{
 			Draw();
-			List<IEntityModel> availableTargets = new List<IEntityModel>();
+			List<IUnitModel> availableTargets = new List<IUnitModel>();
 
-			foreach (IEntityModel t in targetingInfo.GetTargetableEntities())
+			foreach (IUnitModel t in targetingInfo.GetTargetableEntities())
 			{
 				Console.WriteLine(t.Character.Name);
 				availableTargets.Add(t);
