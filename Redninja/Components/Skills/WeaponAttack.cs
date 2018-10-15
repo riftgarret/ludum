@@ -49,8 +49,8 @@ namespace Redninja.Components.Skills
 				{
 					// Need to add weapon range later
 					Targets = new List<SkillTargetingSet>() { new SkillTargetingSet(new TargetingRule(TargetTeam.Enemy)) }.AsReadOnly(),
-					Weapons = build.weapons.AsReadOnly()
 				};
+				build.Weapons = build.weapons.AsReadOnly();
 				return Builder;
 			}
 

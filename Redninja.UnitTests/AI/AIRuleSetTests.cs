@@ -1,7 +1,8 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
-using Redninja.Decisions.AI;
-using Redninja.Decisions;
+using Redninja.Components.Actions;
+using Redninja.Components.Actions.Decisions;
+using Redninja.Components.Actions.Decisions.AI;
 
 namespace Redninja.UnitTests.AI
 {

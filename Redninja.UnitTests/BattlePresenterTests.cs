@@ -2,8 +2,9 @@
 using Ninject;
 using NSubstitute;
 using NUnit.Framework;
-using Redninja.Actions;
-using Redninja.Decisions;
+using Redninja.Components.Actions;
+using Redninja.Components.Actions.Decisions;
+using Redninja.Presenter;
 using Redninja.View;
 
 namespace Redninja.UnitTests

@@ -1,12 +1,13 @@
-﻿using NSubstitute;
-using NUnit.Framework;
-using Redninja.Decisions.AI;
-using Redninja.Decisions;
-using Redninja.Skills;
-using Redninja.Targeting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NSubstitute;
+using NUnit.Framework;
+using Redninja.Components.Actions;
+using Redninja.Components.Actions.Decisions;
+using Redninja.Components.Actions.Decisions.AI;
+using Redninja.Components.Skills;
+using Redninja.Components.Targeting;
 
 namespace Redninja.UnitTests.AI
 {

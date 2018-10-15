@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Redninja.Actions;
+using Redninja.Components.Actions;
 
 namespace Redninja.UnitTests.Actions
 {

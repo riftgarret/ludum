@@ -1,8 +1,7 @@
 ﻿using Davfalcon.Revelator;
-using Davfalcon.Revelator.Combat;
 using NSubstitute;
 using NUnit.Framework;
-using Redninja.Entities;
+using Redninja.Components.Actions;
 
 namespace Redninja.UnitTests.Entities
 {

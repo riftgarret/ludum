@@ -20,7 +20,7 @@ namespace Redninja.Components.Actions.Decisions.Player
 		public event Action<IBattleEntity> WaitingForDecision;
 		public event Action WaitResolved;
 
-		private bool TargetingActive => TargetingActive || currentMovement != null;
+		private bool TargetingActive => currentSkill != null || currentMovement != null;
 
 		public PlayerDecisionManager(IBattleView view, IDecisionHelper decisionHelper)
 		{

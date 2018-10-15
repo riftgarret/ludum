@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Davfalcon.Nodes;
-using Redninja.Actions;
+using Redninja.Components.Actions;
+using Redninja.Components.Skills;
+using Redninja.Components.Targeting;
 using Redninja.ConsoleDriver.Objects;
-using Redninja.Decisions;
 using Redninja.Events;
-using Redninja.Skills;
-using Redninja.Targeting;
+using Redninja.View;
 
 namespace Redninja.ConsoleDriver
 {
@@ -19,6 +19,9 @@ namespace Redninja.ConsoleDriver
 		public event Action<IBattleEntity, ISkill> SkillSelected;
 		public event Action<ISelectedTarget> TargetSelected;
 		public event Action TargetingCanceled;
+		public event Action<IBattleEntity> MovementInitiated;
+		public event Action<Coordinate> MovementPathUpdated;
+		public event Action MovementConfirmed;
 
 		public void Draw()
 		{
@@ -100,6 +103,11 @@ namespace Redninja.ConsoleDriver
 			{
 				TargetingCanceled?.Invoke();
 			}
+		}
+
+		public void SetViewMode(IMovementState movementState)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

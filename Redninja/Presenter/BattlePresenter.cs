@@ -57,7 +57,7 @@ namespace Redninja.Presenter
 		{
 			IKernel kernel = new StandardKernel();
 			kernel.Bind<IBattleView>().ToConstant(view);
-			kernel.Bind<IBattleEntityManager>().To<BattleEntityManager>().InSingletonScope();
+			kernel.Bind<IBattleEntityManager, IBattleModel>().To<BattleEntityManager>().InSingletonScope();
 			kernel.Bind<ICombatExecutor>().ToConstant(combatExecutor);
 			kernel.Bind<PlayerDecisionManager>().ToSelf().InSingletonScope();
 			kernel.Bind<IDecisionHelper>().To<DecisionHelper>().InSingletonScope();

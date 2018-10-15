@@ -1,7 +1,7 @@
 ﻿using Davfalcon.Revelator.Borger;
-using Redninja.Operations;
-using Redninja.Skills;
-using Redninja.Targeting;
+using Redninja.Components.Operations;
+using Redninja.Components.Skills;
+using Redninja.Components.Targeting;
 
 namespace Redninja.ConsoleDriver.Objects
 {

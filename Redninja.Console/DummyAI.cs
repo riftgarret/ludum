@@ -1,6 +1,6 @@
 ﻿using System;
 using Davfalcon.Randomization;
-using Redninja.Actions;
+using Redninja.Components.Actions;
 
 namespace Redninja.ConsoleDriver
 {
@@ -10,7 +10,7 @@ namespace Redninja.ConsoleDriver
 
 		public event Action<IBattleEntity, IBattleAction> ActionSelected;
 
-		public void ProcessNextAction(IBattleEntity entity, IBattleEntityManager entityManager)
+		public void ProcessNextAction(IBattleEntity entity, IBattleModel entityModel)
 		{
 			ActionSelected?.Invoke(entity, new WaitAction(new RandomInteger(1, 5).Get()));
 		}
