@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Davfalcon.Randomization;
+using System.Linq;
 using Davfalcon.Revelator;
-using Davfalcon.Revelator.Combat;
-using Redninja.Actions;
+using Davfalcon.Revelator.Borger;
 using Redninja.Skills;
 
 namespace Redninja.Entities
@@ -22,7 +21,8 @@ namespace Redninja.Entities
 		public bool IsPlayerControlled => ActionDecider.IsPlayer;
 		public EntityPosition Position { get; private set; } = new EntityPosition(1);
 
-		public List<ISkill> Skills { get; } = new List<ISkill>();
+		public IWeaponAttack Attack { get; }
+		public IEnumerable<ISkill> Skills { get; }
 
 		// If we add an action queue here, this will point to the top instead
 		public IBattleAction CurrentAction { get; private set; }
@@ -33,12 +33,15 @@ namespace Redninja.Entities
 
 		public event Action<IBattleEntity> DecisionRequired;
 
-		public BattleEntity(IUnit character, IActionDecider actionDecider, ICombatExecutor combatExecutor)
+		public BattleEntity(IUnit character, IActionDecider actionDecider, ICombatExecutor combatExecutor, ISkillProvider skillProvider)
 		{
 			this.combatExecutor = combatExecutor;
 
 			Character = character;
 			ActionDecider = actionDecider;
+
+			Attack = skillProvider.GetAttack(Character.Class, Character.Equipment.GetAllEquipmentForSlot(EquipmentType.Weapon).Select(e => e as IWeapon));
+			Skills = new List<ISkill>(skillProvider.GetSkills(Character.Class, Character.Level));
 		}
 
 		public void InitializeBattlePhase()
@@ -86,6 +89,12 @@ namespace Redninja.Entities
 			{
 				clock.Tick -= OnTick;
 				clock = null;
+			}
+
+			if (CurrentAction != null)
+			{
+				CurrentAction.Dispose();
+				CurrentAction = null;
 			}
 		}
 		#endregion

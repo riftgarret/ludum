@@ -5,22 +5,19 @@ namespace Redninja.ConsoleDriver.Objects
 {
 	public static class Weapons
 	{
-		public static IWeapon Sword { get; } = new Weapon.Builder(EquipmentType.Weapon, WeaponType.Sword)
+		public static IWeapon Sword { get; } = Weapon.Build(EquipmentType.Weapon, WeaponType.Sword, b => b
 			.SetName("Longsword")
 			.SetDamage(20)
-			.AddDamageType(DamageType.Physical)
-			.Build();
+			.AddDamageType(DamageType.Physical));
 
-		public static IWeapon Shortsword { get; } = new Weapon.Builder(EquipmentType.Weapon, WeaponType.Sword)
+		public static IWeapon Shortsword { get; } = Weapon.Build(EquipmentType.Weapon, WeaponType.Sword, b => b
 			.SetName("Shortsword")
 			.SetDamage(10)
-			.AddDamageType(DamageType.Physical)
-			.Build();
+			.AddDamageType(DamageType.Physical));
 
-		public static IWeapon Dagger { get; } = new Weapon.Builder(EquipmentType.Weapon, WeaponType.Dagger)
+		public static IWeapon Dagger { get; } = Weapon.Build(EquipmentType.Weapon, WeaponType.Dagger, b => b
 			.SetName("Dagger")
 			.SetDamage(5)
-			.AddDamageType(DamageType.Physical)
-			.Build();
+			.AddDamageType(DamageType.Physical));
 	}
 }

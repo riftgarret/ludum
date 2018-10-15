@@ -32,14 +32,14 @@ namespace Redninja.Skills
 			return new SkillAction(entity, this, resolvers);
 		}
 
+		public static ISkill Build(Func<Builder, IBuilder<ISkill>> func)
+			=> func(new Builder()).Build();
+
 		public class Builder : BuilderBase<CombatSkill, ISkill, Builder>
 		{
 			private List<SkillTargetingSet> targets;
 
-			public Builder()
-			{
-				Reset();
-			}
+			public Builder() => Reset();
 
 			public override Builder Reset()
 			{

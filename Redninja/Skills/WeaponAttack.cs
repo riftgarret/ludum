@@ -7,12 +7,13 @@ using Redninja.Targeting;
 
 namespace Redninja.Skills
 {
-	public class WeaponAttack : ISkill
+	public class WeaponAttack : ISkill, IWeaponAttack
 	{
 		private readonly List<IWeapon> weapons = new List<IWeapon>();
 
 		public string Name => "Basic attack";
 		public ActionTime Time { get; private set; }
+		public IEnumerable<IWeapon> Weapons { get; private set; }
 		public IReadOnlyList<SkillTargetingSet> Targets { get; private set; }
 
 		public int BaseDamage => weapons[0].BaseDamage;
@@ -34,6 +35,9 @@ namespace Redninja.Skills
 			return new SkillAction(entity, this, resolvers);
 		}
 
+		public static ISkill Build(Func<Builder, IBuilder<ISkill>> func)
+			=> func(new Builder()).Build();
+
 		public class Builder : BuilderBase<WeaponAttack, ISkill, Builder>
 		{
 			public Builder()
@@ -44,7 +48,8 @@ namespace Redninja.Skills
 				build = new WeaponAttack
 				{
 					// Need to add weapon range later
-					Targets = new List<SkillTargetingSet>() { new SkillTargetingSet(new TargetingRule(TargetTeam.Enemy)) }.AsReadOnly()
+					Targets = new List<SkillTargetingSet>() { new SkillTargetingSet(new TargetingRule(TargetTeam.Enemy)) }.AsReadOnly(),
+					Weapons = build.weapons.AsReadOnly()
 				};
 				return Builder;
 			}

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Davfalcon.Builders;
 using Redninja.Targeting;
@@ -25,12 +26,15 @@ namespace Redninja.Skills
 			TargetingRule = targetingRule;
 		}
 
+		public static SkillTargetingSet Build(ITargetingRule targetingRule, Func<Builder, IBuilder<SkillTargetingSet>> func)
+			=> func(new Builder(targetingRule)).Build();
+
 		public class Builder : BuilderBase<SkillTargetingSet, Builder>
 		{
 			private readonly ITargetingRule targetingRule;
 			private List<SkillOperationDefinition> rounds;
 
-			public Builder(ITargetingRule targetingRule)
+			internal Builder(ITargetingRule targetingRule)
 			{
 				this.targetingRule = targetingRule;
 				Reset();
