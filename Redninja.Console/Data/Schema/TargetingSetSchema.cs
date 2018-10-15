@@ -1,9 +1,6 @@
-﻿using Redninja.Targeting;
+﻿using Redninja.Components.Targeting;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Redninja.ConsoleDriver.Data.Schema
 {

@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Davfalcon.Revelator;
-using Redninja.AI;
+﻿using Davfalcon.Revelator;
+using Redninja.Components.Decisions.AI;
+using Redninja.Components.Skills;
 using Redninja.Data;
-using Redninja.Skills;
-using Newtonsoft.Json;
-using Redninja.ConsoleDriver.Data.Schema;
-using Redninja.Targeting;
-using Redninja.Logging;
 
 namespace Redninja.ConsoleDriver.Data
 {

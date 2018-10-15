@@ -1,8 +1,7 @@
 using Davfalcon.Revelator;
-using Redninja.AI;
+using Redninja.Components.Decisions.AI;
+using Redninja.Components.Skills;
 using Redninja.Data;
-using Redninja.Skills;
-using System;
 
 namespace Redninja
 {

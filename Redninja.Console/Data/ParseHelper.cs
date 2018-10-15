@@ -1,14 +1,12 @@
-﻿using Redninja.Actions;
+﻿using Redninja.Components.Actions;
+using Redninja.Components.Operations;
+using Redninja.Components.Targeting;
 using Redninja.Logging;
-using Redninja.Operations;
-using Redninja.Targeting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using static Redninja.Skills.SkillOperationDefinition;
+using static Redninja.Components.Skills.SkillOperationDefinition;
 
 namespace Redninja.ConsoleDriver.Data
 {

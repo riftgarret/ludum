@@ -34,7 +34,7 @@ namespace Redninja.Components.Skills
 			private readonly ITargetingRule targetingRule;
 			private List<SkillOperationDefinition> rounds;
 
-			internal Builder(ITargetingRule targetingRule)
+			public Builder(ITargetingRule targetingRule)
 			{
 				this.targetingRule = targetingRule;
 				Reset();

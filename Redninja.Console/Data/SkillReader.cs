@@ -1,13 +1,9 @@
 ﻿using Newtonsoft.Json;
+using Redninja.Components.Skills;
+using Redninja.Components.Targeting;
 using Redninja.ConsoleDriver.Data.Schema;
-using Redninja.Skills;
-using Redninja.Targeting;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Redninja.ConsoleDriver.Data
 {
