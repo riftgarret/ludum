@@ -51,7 +51,7 @@ namespace Redninja.Entities.Decisions.Player
 			if (TargetingActive) throw new InvalidOperationException("An action should not be selected while a skill is currently being targeted.");
 
 			ActionSelected?.Invoke(entity as IBattleEntity, action);
-			ResumeIfDecided(entity as IBattleEntity);
+			ResumeIfDecided(entity);
 		}
 
 		#region Movement
@@ -74,7 +74,7 @@ namespace Redninja.Entities.Decisions.Player
 		{
 			if (currentMovement == null) throw new InvalidOperationException("Movement is not currently active.");
 
-			ActionSelected?.Invoke(currentMovement.Entity, currentMovement.GetAction());
+			ActionSelected?.Invoke(currentMovement.Entity as IBattleEntity, currentMovement.GetAction());
 			ResumeIfDecided(currentMovement.Entity);
 			EndTargeting();
 		}
@@ -97,7 +97,7 @@ namespace Redninja.Entities.Decisions.Player
 
 			if (currentSkill.Ready)
 			{
-				ActionSelected?.Invoke(currentSkill.Entity, currentSkill.GetAction());
+				ActionSelected?.Invoke(currentSkill.Entity as IBattleEntity, currentSkill.GetAction());
 
 				ResumeIfDecided(currentSkill.Entity);
 				EndTargeting();
@@ -128,7 +128,7 @@ namespace Redninja.Entities.Decisions.Player
 			view.OnDecisionNeeded(entity);
 		}
 
-		private void ResumeIfDecided(IBattleEntity entity)
+		private void ResumeIfDecided(IEntityModel entity)
 		{
 			// do this check in case we allow selecting another unit's actions while one is blocking
 			if (entity == blockingEntity)

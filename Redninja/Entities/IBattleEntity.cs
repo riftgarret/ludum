@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using Redninja.Components.Actions;
 using Redninja.Components.Clock;
-using Redninja.Components.Skills;
 
 namespace Redninja.Entities
 {
@@ -11,7 +9,6 @@ namespace Redninja.Entities
 		bool IsPlayerControlled { get; }
 		IBattleAction CurrentAction { get; }
 		IActionDecider ActionDecider { get; set; }
-		IEnumerable<ISkill> Skills { get; }
 
 		event Action<IBattleEntity> DecisionRequired;
 

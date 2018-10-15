@@ -11,12 +11,12 @@ namespace Redninja.Entities.Decisions
 		private readonly IBattleEntityManager entityManager;
 		private readonly List<Coordinate> path = new List<Coordinate>();
 
-		public IBattleEntity Entity { get; }
+		public IEntityModel Entity { get; }
 		IEntityModel IMovementView.Entity => Entity;
 		public ActionTime Time => GetActionTime();
 		public IEnumerable<Coordinate> CurrentPath { get; }
 
-		public MovementComponent(IBattleEntity entity, IBattleEntityManager entityManager)
+		public MovementComponent(IEntityModel entity, IBattleEntityManager entityManager)
 		{
 			this.entityManager = entityManager;
 			Entity = entity;

@@ -15,7 +15,7 @@ namespace Redninja.Entities.Decisions
 		private readonly ISelectedTarget[] selectedTargets;
 		private int currentIndex = 0;
 
-		public IBattleEntity Entity { get; }
+		public IEntityModel Entity { get; }
 		IEntityModel ITargetingView.Entity => Entity;
 		public ISkill Skill { get; }
 		public SkillTargetingSet TargetingSet => Skill.Targets[currentIndex];
@@ -24,7 +24,7 @@ namespace Redninja.Entities.Decisions
 		public bool Ready => currentIndex >= Skill.Targets.Count;
 
 		public SkillTargetingComponent(
-			IBattleEntity entity,
+			IEntityModel entity,
 			ISkill skill,
 			IBattleEntityManager entityManager)
 		{
@@ -35,7 +35,7 @@ namespace Redninja.Entities.Decisions
 			selectedTargets = new ISelectedTarget[Skill.Targets.Count];
 		}
 
-		public IEnumerable<IBattleEntity> GetTargetableEntities()
+		public IEnumerable<IEntityModel> GetTargetableEntities()
 		{
 			switch (TargetingRule.Team)
 			{
@@ -44,7 +44,7 @@ namespace Redninja.Entities.Decisions
 				case TargetTeam.Enemy:
 					return entityManager.Entities.Where(e => e.Team != Entity.Team && IsValidTarget(e));
 				case TargetTeam.Self:
-					return IsValidTarget(Entity) ? new List<IBattleEntity>() { Entity }.AsReadOnly() as IEnumerable<IBattleEntity> : new EmptyEnumerable<IBattleEntity>();
+					return IsValidTarget(Entity) ? new List<IEntityModel>() { Entity }.AsReadOnly() as IEnumerable<IEntityModel> : new EmptyEnumerable<IEntityModel>();
 				default: throw new InvalidOperationException();
 			}
 		}

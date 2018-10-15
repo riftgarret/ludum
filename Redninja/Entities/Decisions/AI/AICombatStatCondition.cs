@@ -28,10 +28,10 @@ namespace Redninja.Entities.Decisions.AI
 			ConditionType = conditionType;
 		}
 
-		public bool IsValid(IBattleEntity entity)
+		public bool IsValid(IEntityModel entity)
 			=> AIHelper.EvaluateCondition(GetCombatStatValue(entity), Op, ConditionalValue);
 
-		private int GetCombatStatValue(IBattleEntity entity)
+		private int GetCombatStatValue(IEntityModel entity)
 		{
 			if (ConditionType == AIConditionType.CombatStatCurrent)
 			{

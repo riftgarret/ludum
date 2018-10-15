@@ -5,7 +5,7 @@ namespace Redninja.Entities.Decisions
 {
 	public interface IMovementComponent : IMovementView
 	{
-		new IBattleEntity Entity { get; }
+		new IEntityModel Entity { get; }
 		void AddPoint(Coordinate point);
 		bool Back();
 		IBattleAction GetAction();

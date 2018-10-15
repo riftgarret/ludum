@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Davfalcon.Revelator;
+using Davfalcon.Revelator.Borger;
 using Redninja.Components.Skills;
 
 namespace Redninja.Entities.Decisions
@@ -8,13 +11,21 @@ namespace Redninja.Entities.Decisions
 	/// </summary>
 	public class SkillSelectionMeta : IActionPhaseHelper
 	{
+		public IEntityModel Entity { get; }
 		public IEnumerable<ISkill> Skills { get; }
-		public IBattleEntity Entity { get; }
+		public IWeaponAttack Attack { get; }
 
-		public SkillSelectionMeta(IBattleEntity entity, IEnumerable<ISkill> skills)
+		public SkillSelectionMeta(IEntityModel entity)
 		{
-			Skills = skills;
 			Entity = entity;
+		}
+
+		// SkillProvider needs to be implemented before we can use this
+		public SkillSelectionMeta(IEntityModel entity, ISkillProvider skillProvider)
+			: this(entity)
+		{
+			Attack = skillProvider.GetAttack(entity.Character.Class, entity.Character.Equipment.GetAllEquipmentForSlot(EquipmentType.Weapon).Select(e => e as IWeapon));
+			Skills = new List<ISkill>(skillProvider.GetSkills(entity.Character.Class, entity.Character.Level));
 		}
 	}
 }

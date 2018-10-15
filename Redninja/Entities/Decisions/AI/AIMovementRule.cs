@@ -10,7 +10,7 @@ namespace Redninja.Entities.Decisions.AI
 	public class AIMovementRule : AIRuleBase
 	{
 		
-		public override IBattleAction GenerateAction(IBattleEntity source, IDecisionHelper decisionHelper)
+		public override IBattleAction GenerateAction(IEntityModel source, IDecisionHelper decisionHelper)
 		{
 			// psuedo code for now
 			// 1. Find available tiles you can move to (cannot be occupied or have units currently moving there)

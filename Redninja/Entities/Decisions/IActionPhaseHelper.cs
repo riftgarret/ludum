@@ -5,7 +5,7 @@ namespace Redninja.Entities.Decisions
 {
 	public interface IActionPhaseHelper
 	{
-		IBattleEntity Entity { get; }
+		IEntityModel Entity { get; }
 		IEnumerable<ISkill> Skills { get; }
 	}
 }
