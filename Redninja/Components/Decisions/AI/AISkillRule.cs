@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Redninja.Components.Targeting;
+using Redninja.Components.Actions;
 using Redninja.Components.Skills;
+using Redninja.Components.Targeting;
 using Redninja.View;
 
-namespace Redninja.Components.Actions.Decisions.AI
+namespace Redninja.Components.Decisions.AI
 {
 	/// <summary>
 	/// This represents a set of conditions that may be attached to a list of

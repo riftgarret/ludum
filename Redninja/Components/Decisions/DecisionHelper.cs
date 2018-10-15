@@ -1,6 +1,6 @@
 ﻿using Redninja.Components.Skills;
 
-namespace Redninja.Components.Actions.Decisions
+namespace Redninja.Components.Decisions
 {
 	/// <summary>
 	/// Decision Manager for selecting a skill and a target to convert into an action.

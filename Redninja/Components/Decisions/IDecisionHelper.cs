@@ -1,6 +1,6 @@
 ﻿using Redninja.Components.Skills;
 
-namespace Redninja.Components.Actions.Decisions
+namespace Redninja.Components.Decisions
 {
 	/// <summary>
 	/// This helper will provide instances that represent the state of processing the

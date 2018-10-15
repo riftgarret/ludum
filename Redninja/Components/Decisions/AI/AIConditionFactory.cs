@@ -1,4 +1,4 @@
-﻿namespace Redninja.Components.Actions.Decisions.AI
+﻿namespace Redninja.Components.Decisions.AI
 {
 	public class AIConditionFactory
 	{

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Redninja.Components.Skills;
+using Redninja.Components.Actions;
 
-namespace Redninja.Components.Actions
+namespace Redninja.Components.Skills
 {
 	public class SkillAction : BattleActionBase
 	{

@@ -1,7 +1,8 @@
-﻿using Redninja.Components.Targeting;
+﻿using Redninja.Components.Actions;
+using Redninja.Components.Targeting;
 using Redninja.View;
 
-namespace Redninja.Components.Actions.Decisions
+namespace Redninja.Components.Decisions
 {
 	public interface ITargetingComponent : ITargetingState
 	{

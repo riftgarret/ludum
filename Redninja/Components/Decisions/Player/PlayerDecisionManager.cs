@@ -1,9 +1,10 @@
 ﻿using System;
-using Redninja.Components.Targeting;
+using Redninja.Components.Actions;
 using Redninja.Components.Skills;
+using Redninja.Components.Targeting;
 using Redninja.View;
 
-namespace Redninja.Components.Actions.Decisions.Player
+namespace Redninja.Components.Decisions.Player
 {
 	public class PlayerDecisionManager : IActionDecider
 	{		

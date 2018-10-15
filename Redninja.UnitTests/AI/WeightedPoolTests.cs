@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Redninja.Components.Actions.Decisions.AI;
+using Redninja.Components.Decisions.AI;
 
 namespace Redninja.UnitTests.AI
 {

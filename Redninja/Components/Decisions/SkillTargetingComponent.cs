@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Davfalcon.Collections.Generic;
+using Redninja.Components.Actions;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 
-namespace Redninja.Components.Actions.Decisions
+namespace Redninja.Components.Decisions
 {
 	internal class SkillTargetingComponent : ITargetingComponent
 	{

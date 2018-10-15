@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Redninja.Components.Skills;
 
-namespace Redninja.Components.Actions.Decisions
+namespace Redninja.Components.Decisions
 {
 	public interface IActionPhaseHelper
 	{

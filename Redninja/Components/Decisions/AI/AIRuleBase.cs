@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Davfalcon.Builders;
+using Redninja.Components.Actions;
 using Redninja.Components.Targeting;
 
-namespace Redninja.Components.Actions.Decisions.AI
+namespace Redninja.Components.Decisions.AI
 {
 	/// <summary>
 	/// Base class for AI rule that contains all the similar parts.

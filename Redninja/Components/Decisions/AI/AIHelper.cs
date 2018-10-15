@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Redninja.Components.Targeting;
 
-namespace Redninja.Components.Actions.Decisions.AI
+namespace Redninja.Components.Decisions.AI
 {
 	internal static class AIHelper
 	{

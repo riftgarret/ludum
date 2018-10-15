@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Redninja.Components.Skills;
 
-namespace Redninja.Components.Actions.Decisions
+namespace Redninja.Components.Decisions
 {
 	/// <summary>
 	/// Result for requesting what available skills a entity can use.

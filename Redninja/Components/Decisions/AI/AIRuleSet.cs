@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Davfalcon.Builders;
+using Redninja.Components.Actions;
 using Redninja.Logging;
 
-namespace Redninja.Components.Actions.Decisions.AI
+namespace Redninja.Components.Decisions.AI
 {
 	public class AIRuleSet
 	{

@@ -1,4 +1,6 @@
-﻿namespace Redninja.Components.Actions.Decisions.AI
+﻿using Redninja.Components.Actions;
+
+namespace Redninja.Components.Decisions.AI
 {
 	public interface IAIRule
 	{

@@ -15,7 +15,6 @@ namespace Redninja.Components.Skills
 
 		IReadOnlyList<SkillTargetingSet> Targets { get; }
 
-		// Maybe we can move this back to somewhere in Decisions to remove dependency cycle
 		IBattleAction GetAction(IBattleEntity entity, ISelectedTarget[] targets);
 	}
 }

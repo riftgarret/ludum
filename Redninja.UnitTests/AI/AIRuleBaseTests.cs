@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
-using Redninja.Components.Actions.Decisions;
-using Redninja.Components.Actions.Decisions.AI;
+using Redninja.Components.Decisions;
+using Redninja.Components.Decisions.AI;
 using Redninja.Components.Targeting;
 
 namespace Redninja.UnitTests.AI

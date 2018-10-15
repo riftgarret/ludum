@@ -1,6 +1,7 @@
-﻿using Redninja.View;
+﻿using Redninja.Components.Actions;
+using Redninja.View;
 
-namespace Redninja.Components.Actions.Decisions
+namespace Redninja.Components.Decisions
 {
 	public interface IMovementComponent : IMovementState
 	{

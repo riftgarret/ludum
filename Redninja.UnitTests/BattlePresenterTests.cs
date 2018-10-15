@@ -3,7 +3,7 @@ using Ninject;
 using NSubstitute;
 using NUnit.Framework;
 using Redninja.Components.Actions;
-using Redninja.Components.Actions.Decisions;
+using Redninja.Components.Decisions;
 using Redninja.Presenter;
 using Redninja.View;
 

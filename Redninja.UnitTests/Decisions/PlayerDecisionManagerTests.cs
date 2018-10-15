@@ -2,8 +2,8 @@
 using Ninject;
 using NSubstitute;
 using NUnit.Framework;
-using Redninja.Components.Actions.Decisions;
-using Redninja.Components.Actions.Decisions.Player;
+using Redninja.Components.Decisions;
+using Redninja.Components.Decisions.Player;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 using Redninja.View;
