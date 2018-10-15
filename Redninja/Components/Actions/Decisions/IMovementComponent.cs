@@ -1,5 +1,4 @@
-﻿using Redninja.Components.Actions;
-using Redninja.View;
+﻿using Redninja.View;
 
 namespace Redninja.Components.Actions.Decisions
 {

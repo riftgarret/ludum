@@ -1,5 +1,4 @@
-﻿using Redninja.Components.Actions;
-using Redninja.Components.Targeting;
+﻿using Redninja.Components.Targeting;
 using Redninja.View;
 
 namespace Redninja.Components.Actions.Decisions
