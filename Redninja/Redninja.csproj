@@ -89,7 +89,6 @@
     <Compile Include="Entities\IActionDecider.cs" />
     <Compile Include="IBattleModel.cs" />
     <Compile Include="Presenter\IBattlePresenter.cs" />
-    <Compile Include="View\IBattleViewCallbacks.cs" />
     <Compile Include="Components\Combat\ICombatExecutor.cs" />
     <Compile Include="Components\Actions\IBattleAction.cs" />
     <Compile Include="Presenter\BattlePresenter.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Davfalcon.Revelator.Borger;
+using Redninja.Components.Combat;
 using Redninja.Presenter;
 
 namespace Redninja.ConsoleDriver
