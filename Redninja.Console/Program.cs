@@ -1,15 +1,21 @@
-﻿using System;
-using System.Threading;
-using Davfalcon.Revelator.Borger;
+﻿using Davfalcon.Revelator.Borger;
 using Redninja.Components.Combat;
+using Redninja.ConsoleDriver.Data;
 using Redninja.Presenter;
+using System;
+using System.Threading;
 
 namespace Redninja.ConsoleDriver
 {
 	class Program
 	{
+		private const string CONFIG_FILE_PATH = "Assets/Data/config.json";
+
 		static void Main(string[] args)
 		{
+			DataManager manager = new DataManager();
+			manager.Initialize(CONFIG_FILE_PATH);
+
 			ConsoleView view = new ConsoleView();
 
 			ICombatExecutor executor = new CombatExecutor(builder => builder

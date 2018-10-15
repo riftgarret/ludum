@@ -63,6 +63,12 @@ namespace Redninja.Components.Skills
 				return this;
 			}
 
+			public Builder SetActionTime(ActionTime actionTime)
+			{
+				build.Time = actionTime;
+				return this;
+			}
+
 			public Builder SetDamage(int baseDamage, Enum bonusDamageStat = null)
 			{
 				build.BaseDamage = baseDamage;
@@ -70,9 +76,21 @@ namespace Redninja.Components.Skills
 				return this;
 			}
 
+			public Builder SetCrit(int critMultiplier)
+			{
+				build.CritMultiplier = critMultiplier;
+				return this;
+			}
+
 			public Builder AddDamageType(Enum type)
 			{
 				build.DamageTypes.Add(type);
+				return this;
+			}
+
+			public Builder AddTargetingSet(SkillTargetingSet skillTargetingSet)
+			{
+				targets.Add(skillTargetingSet);
 				return this;
 			}
 
