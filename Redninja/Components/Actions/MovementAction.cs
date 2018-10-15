@@ -15,7 +15,7 @@ namespace Redninja.Components.Actions
 		}
 
 		public MovementAction(IUnitModel entity, int row, int col)
-			: base(3, 5, 3)
+			: base("Movement", 3, 5, 3)
 		{
 			this.entity = entity;
 			this.row = row;

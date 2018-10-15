@@ -14,7 +14,7 @@ namespace Redninja.Components.Actions
 		private readonly List<float> times;
 
 		public AttackAction(IUnitModel unit, IUnitModel target, IWeapon weapon, params float[] procTimes)
-			: base(2, 5, 5)
+			: base("Attack", 2, 5, 5)
 		{
 			this.unit = unit ?? throw new ArgumentNullException(nameof(unit));
 			this.target = target ?? throw new ArgumentNullException(nameof(target));
