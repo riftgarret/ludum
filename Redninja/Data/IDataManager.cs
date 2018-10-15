@@ -3,7 +3,7 @@ using Redninja.Components.Decisions.AI;
 using Redninja.Components.Skills;
 using Redninja.Data;
 
-namespace Redninja
+namespace Redninja.Data
 {
 	/// <summary>
 	/// Data structures that should deserialized into this data store to be 
@@ -22,6 +22,8 @@ namespace Redninja
 		IDataStore<IAITargetPriority> AITargetPriority { get; }
 
 		IDataStore<IUnit> NPCUnits { get; }
+
+		IDataStore<SkillTargetingSet> SkillTargetSets { get; }
 	}
 }
 

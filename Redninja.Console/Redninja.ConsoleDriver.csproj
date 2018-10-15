@@ -47,14 +47,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleView.cs" />
-    <Compile Include="Data\ConfigDataStore.cs" />
-    <Compile Include="Data\DataManager.cs" />
-    <Compile Include="Data\ParseConstants.cs" />
-    <Compile Include="Data\ParseHelper.cs" />
-    <Compile Include="Data\Schema\CombatSkillSchema.cs" />
-    <Compile Include="Data\Schema\SkillRootSchema.cs" />
-    <Compile Include="Data\Schema\TargetingSetSchema.cs" />
-    <Compile Include="Data\SkillReader.cs" />
     <Compile Include="DummyAI.cs" />
     <Compile Include="Objects\CombatSkills.cs" />
     <Compile Include="Objects\Weapons.cs" />
@@ -64,6 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Assets\Data\config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

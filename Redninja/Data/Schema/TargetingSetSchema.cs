@@ -2,10 +2,10 @@
 using System;
 using System.Collections.Generic;
 
-namespace Redninja.ConsoleDriver.Data.Schema
+namespace Redninja.Data.Schema
 {
 	[Serializable]
-	public class TargetingSetSchema : IDataSource
+	internal class TargetingSetSchema : IDataSource
 	{
 		public string DataId { get; set; }
 		//public string PatternId { get; set; }
@@ -16,7 +16,7 @@ namespace Redninja.ConsoleDriver.Data.Schema
 	}
 
 	[Serializable]
-	public class CombatRoundSchema
+	internal class CombatRoundSchema
 	{
 		public float ExecutionStart { get; set; }
 		public OperationEnum OperationEnum { get; set; }

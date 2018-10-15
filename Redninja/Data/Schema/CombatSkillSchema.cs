@@ -2,10 +2,10 @@
 using System;
 using System.Collections.Generic;
 
-namespace Redninja.ConsoleDriver.Data.Schema
+namespace Redninja.Data.Schema
 {
 	[Serializable]
-	public class CombatSkillSchema : IDataSource
+	internal class CombatSkillSchema : IDataSource
 	{
 		public string DataId { get; set; }
 		

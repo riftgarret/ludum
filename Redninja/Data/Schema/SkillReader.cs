@@ -1,30 +1,18 @@
-﻿using Newtonsoft.Json;
-using Redninja.Components.Skills;
+﻿using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
-using Redninja.ConsoleDriver.Data.Schema;
 using System.Collections.Generic;
-using System.IO;
 
-namespace Redninja.ConsoleDriver.Data
+namespace Redninja.Data.Schema
 {
-	/**
-	 * TODO: Put schema definition in here or on wiki?
-	 */
-	internal class SkillReader
-	{
-		private const string SKILLS_FILE = "Assets/Data/skills.json";
-
-		internal void ReadAll(ConfigDataStore<ISkill> skillStore, ConfigDataStore<SkillTargetingSet> targetStore)
-		{			
-
-			var json = File.ReadAllText(SKILLS_FILE);
-			var skillRoot = JsonConvert.DeserializeObject<SkillRootSchema>(json);
-
-			ReadTargets(targetStore, skillRoot.TargetSets);
-			ReadSkills(skillStore, targetStore, skillRoot.CombatSkills);
+	internal static class SkillReader
+	{		
+		internal static void ReadAll(SkillRootSchema skillRoot, IEditableDataManager manager)
+		{					
+			ReadTargets(manager.SkillTargetSets, skillRoot.TargetSets);
+			ReadSkills(manager.Skills, manager.SkillTargetSets, skillRoot.CombatSkills);
 		}
 
-		internal void ReadSkills(ConfigDataStore<ISkill> skillStore, ConfigDataStore<SkillTargetingSet> targetStore, List<CombatSkillSchema> skills)
+		internal static void ReadSkills(IEditableDataStore<ISkill> skillStore, IEditableDataStore<SkillTargetingSet> targetStore, List<CombatSkillSchema> skills)
 		{
 			foreach (var item in skills)
 			{
@@ -40,7 +28,7 @@ namespace Redninja.ConsoleDriver.Data
 			}
 		}
 
-		internal void ReadTargets(ConfigDataStore<SkillTargetingSet> targetStore, List<TargetingSetSchema> targets)
+		internal static void ReadTargets(IEditableDataStore<SkillTargetingSet> targetStore, List<TargetingSetSchema> targets)
 		{
 			foreach (var item in targets)
 			{

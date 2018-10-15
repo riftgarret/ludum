@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Redninja.ConsoleDriver.Data.Schema
+namespace Redninja.Data.Schema
 {
 	[Serializable]
-	public class SkillRootSchema
+	internal class SkillRootSchema
 	{
 		public List<CombatSkillSchema> CombatSkills { get; set; }
 

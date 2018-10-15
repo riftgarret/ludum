@@ -1,14 +1,16 @@
-﻿using Redninja.Components.Actions;
+﻿using Newtonsoft.Json;
+using Redninja.Components.Actions;
 using Redninja.Components.Operations;
 using Redninja.Components.Targeting;
 using Redninja.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using static Redninja.Components.Skills.SkillOperationDefinition;
 
-namespace Redninja.ConsoleDriver.Data
+namespace Redninja.Data.Schema
 {
 	internal static class ParseHelper
 	{
@@ -91,6 +93,18 @@ namespace Redninja.ConsoleDriver.Data
 				case OperationEnum.Damage:
 					return (e,t,s) => new DamageOperation(e,t,s);
 			}
+		}
+
+		/// <summary>
+		/// Read this file directly into this json node.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="filePath"></param>
+		/// <returns></returns>
+		internal static T ReadJson<T>(string filePath)
+		{
+			string json = File.ReadAllText(filePath);
+			return JsonConvert.DeserializeObject<T>(json);
 		}
 	}
 }
