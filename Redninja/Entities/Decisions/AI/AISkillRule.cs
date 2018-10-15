@@ -20,7 +20,7 @@ namespace Redninja.Entities.Decisions.AI
 
 		public override IBattleAction GenerateAction(IEntityModel source, IDecisionHelper decisionHelper)
 		{
-			IActionPhaseHelper skillMeta = decisionHelper.GetAvailableSkills(source);
+			ISkillsComponent skillMeta = decisionHelper.GetAvailableSkills(source);
 
 			// filter out what skills this rule uses
 			IEnumerable<ISkill> availableSkills = GetAssignableSkills(skillMeta);
@@ -45,7 +45,7 @@ namespace Redninja.Entities.Decisions.AI
 			return null;
 		}
 
-		internal IEnumerable<ISkill> GetAssignableSkills(IActionPhaseHelper meta)
+		internal IEnumerable<ISkill> GetAssignableSkills(ISkillsComponent meta)
 			=> meta.Skills.Intersect(SkillAssignments.Select(x => x.Item2));
 
 		internal bool TryFindTarget(ITargetingComponent meta, IEntityModel source, IBattleEntityManager bem, out ISelectedTarget selectedTarget)

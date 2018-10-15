@@ -17,7 +17,7 @@ namespace Redninja.UnitTests.AI
 	{			
 		private AISkillRule.Builder subjectBuilder;
 
-		private IActionPhaseHelper mActionHelper;
+		private ISkillsComponent mActionHelper;
 
 		// need this to allow builder to complete but we set it to have no resolvement
 		private Tuple<ISkill, IAITargetPriority> mInitialSkill;				
@@ -31,7 +31,7 @@ namespace Redninja.UnitTests.AI
 			subjectBuilder.SetRuleTargetType(TargetTeam.Enemy);
 			mInitialSkill = AddSkillPriority(null); // required for builder			
 
-			mActionHelper = Substitute.For<IActionPhaseHelper>();
+			mActionHelper = Substitute.For<ISkillsComponent>();
 			mDecisionHelper.GetAvailableSkills(Arg.Any<IEntityModel>()).Returns(mActionHelper);
 
 			SetupBuilder();

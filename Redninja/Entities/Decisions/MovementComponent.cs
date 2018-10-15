@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Redninja.Components.Actions;
-using Redninja.View;
 
 namespace Redninja.Entities.Decisions
 {
@@ -12,7 +11,6 @@ namespace Redninja.Entities.Decisions
 		private readonly List<Coordinate> path = new List<Coordinate>();
 
 		public IEntityModel Entity { get; }
-		IEntityModel IMovementView.Entity => Entity;
 		public ActionTime Time => GetActionTime();
 		public IEnumerable<Coordinate> CurrentPath { get; }
 

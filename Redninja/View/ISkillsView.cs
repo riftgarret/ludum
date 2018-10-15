@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Redninja.Components.Skills;
 
-namespace Redninja.Entities.Decisions
+namespace Redninja.View
 {
-	public interface IActionPhaseHelper
+	public interface ISkillsView
 	{
 		IEntityModel Entity { get; }
+		IWeaponAttack Attack { get; }
 		IEnumerable<ISkill> Skills { get; }
 	}
 }

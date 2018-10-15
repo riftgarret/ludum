@@ -9,11 +9,11 @@ namespace Redninja.Entities.Decisions
 	/// <summary>
 	/// Result for requesting what available skills a entity can use.
 	/// </summary>
-	public class SkillSelectionMeta : IActionPhaseHelper
+	public class SkillSelectionMeta : ISkillsComponent
 	{
 		public IEntityModel Entity { get; }
-		public IEnumerable<ISkill> Skills { get; }
 		public IWeaponAttack Attack { get; }
+		public IEnumerable<ISkill> Skills { get; }
 
 		public SkillSelectionMeta(IEntityModel entity)
 		{

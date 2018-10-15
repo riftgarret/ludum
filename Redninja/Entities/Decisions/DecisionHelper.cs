@@ -17,7 +17,7 @@ namespace Redninja.Entities.Decisions
 		public IMovementComponent GetMovementComponent(IEntityModel entity)
 			=> new MovementComponent(entity, EntityManager);
 
-		public IActionPhaseHelper GetAvailableSkills(IEntityModel entity)
+		public ISkillsComponent GetAvailableSkills(IEntityModel entity)
 			=> new SkillSelectionMeta(entity);
 
 		public ITargetingComponent GetTargetingComponent(IEntityModel entity, ISkill skill)

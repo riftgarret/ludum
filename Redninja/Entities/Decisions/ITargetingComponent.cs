@@ -6,7 +6,6 @@ namespace Redninja.Entities.Decisions
 {
 	public interface ITargetingComponent : ITargetingView
 	{
-		new IEntityModel Entity { get; }
 		void SelectTarget(ISelectedTarget target);
 		bool Back();
 		IBattleAction GetAction();

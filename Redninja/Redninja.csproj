@@ -70,11 +70,12 @@
     <Compile Include="Entities\Decisions\AI\IAITargetPriority.cs" />
     <Compile Include="Entities\Decisions\AI\WeightedPool.cs" />
     <Compile Include="Coordinate.cs" />
-    <Compile Include="Entities\Decisions\IActionPhaseHelper.cs" />
+    <Compile Include="Entities\Decisions\ISkillsComponent.cs" />
     <Compile Include="Entities\Decisions\IDecisionHelper.cs" />
     <Compile Include="IEntityModel.cs" />
     <Compile Include="View\IMovementView.cs" />
     <Compile Include="Entities\Decisions\IMovementComponent.cs" />
+    <Compile Include="View\ISkillsView.cs" />
     <Compile Include="View\ITargetingView.cs" />
     <Compile Include="Entities\Decisions\ITargetingComponent.cs" />
     <Compile Include="Entities\Decisions\MovementComponent.cs" />

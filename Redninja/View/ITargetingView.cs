@@ -7,6 +7,8 @@ namespace Redninja.View
 	public interface ITargetingView
 	{
 		IEntityModel Entity { get; }
+
+		// View probably doesn't need all these, clean up later
 		ISkill Skill { get; }
 		SkillTargetingSet TargetingSet { get; }
 		ITargetingRule TargetingRule { get; }

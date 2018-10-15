@@ -5,7 +5,6 @@ using Davfalcon.Collections.Generic;
 using Redninja.Components.Actions;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
-using Redninja.View;
 
 namespace Redninja.Entities.Decisions
 {
@@ -16,7 +15,6 @@ namespace Redninja.Entities.Decisions
 		private int currentIndex = 0;
 
 		public IEntityModel Entity { get; }
-		IEntityModel ITargetingView.Entity => Entity;
 		public ISkill Skill { get; }
 		public SkillTargetingSet TargetingSet => Skill.Targets[currentIndex];
 		public ITargetingRule TargetingRule => TargetingSet.TargetingRule;
@@ -48,8 +46,6 @@ namespace Redninja.Entities.Decisions
 				default: throw new InvalidOperationException();
 			}
 		}
-
-		IEnumerable<IEntityModel> ITargetingView.GetTargetableEntities() => GetTargetableEntities();
 
 		/// <summary>
 		/// Checks if the entity is targetable.
