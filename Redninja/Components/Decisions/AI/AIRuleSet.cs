@@ -4,7 +4,7 @@ using Davfalcon.Builders;
 using Redninja.Components.Actions;
 using Redninja.Logging;
 
-namespace Redninja.Entities.Decisions.AI
+namespace Redninja.Components.Decisions.AI
 {
 	public class AIRuleSet
 	{

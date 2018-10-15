@@ -7,10 +7,10 @@ using Ninject;
 using Redninja.Components.Actions;
 using Redninja.Components.Clock;
 using Redninja.Components.Combat;
+using Redninja.Components.Decisions;
+using Redninja.Components.Decisions.Player;
 using Redninja.Components.Operations;
 using Redninja.Entities;
-using Redninja.Entities.Decisions;
-using Redninja.Entities.Decisions.Player;
 using Redninja.Events;
 using Redninja.View;
 
@@ -177,10 +177,11 @@ namespace Redninja.Presenter
 		/// <summary>
 		/// Handles a new action selected for an <see cref="IBattleEntity"/>.
 		/// </summary>
-		private void OnActionSelected(IBattleEntity entity, IBattleAction action)
+		private void OnActionSelected(IUnitModel entity, IBattleAction action)
 		{
 			action.BattleOperationReady += OnBattleOperationReady;
-			entityManager.SetAction(entity, action);
+			// This cast should be safe as long as we control the implementations carefully
+			entityManager.SetAction(entity as IBattleEntity, action);
 		}
 
 		/// <summary>
@@ -208,7 +209,7 @@ namespace Redninja.Presenter
 		/// Pause the game execution to wait for a player decision.
 		/// </summary>
 		/// <param name="entity"></param>
-		private void WaitForDecision(IBattleEntity entity)
+		private void WaitForDecision(IUnitModel entity)
 		{
 			Pause();
 		}

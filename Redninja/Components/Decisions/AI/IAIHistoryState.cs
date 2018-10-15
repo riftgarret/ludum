@@ -1,7 +1,7 @@
 ﻿using Redninja.Components.Actions;
 using Redninja.Components.Clock;
 
-namespace Redninja.Entities.Decisions.AI
+namespace Redninja.Components.Decisions.AI
 {
 	/// <summary>
 	/// History state to be passed to IAIRuleSet in order to record and check each

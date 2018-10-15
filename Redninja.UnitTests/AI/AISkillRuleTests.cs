@@ -7,8 +7,8 @@ using Redninja.Components.Actions;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 using Redninja.Entities;
-using Redninja.Entities.Decisions;
-using Redninja.Entities.Decisions.AI;
+using Redninja.Components.Decisions;
+using Redninja.Components.Decisions.AI;
 
 namespace Redninja.UnitTests.AI
 {

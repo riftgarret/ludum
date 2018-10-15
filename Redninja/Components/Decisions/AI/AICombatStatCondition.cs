@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Redninja.Entities.Decisions.AI
+namespace Redninja.Components.Decisions.AI
 {
 	public class AICombatStatCondition : IAITargetCondition
 	{

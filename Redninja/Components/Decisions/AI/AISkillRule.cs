@@ -5,7 +5,7 @@ using Redninja.Components.Actions;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 
-namespace Redninja.Entities.Decisions.AI
+namespace Redninja.Components.Decisions.AI
 {
 	/// <summary>
 	/// This represents a set of conditions that may be attached to a list of
@@ -32,7 +32,7 @@ namespace Redninja.Entities.Decisions.AI
 				ITargetingComponent targetMeta = decisionHelper.GetTargetingComponent(source, skill);
 
 				// found!				
-				while (TryFindTarget(targetMeta, source, decisionHelper.EntityManager, out ISelectedTarget selectedTarget))
+				while (TryFindTarget(targetMeta, source, decisionHelper.BattleModel, out ISelectedTarget selectedTarget))
 				{
 					targetMeta.SelectTarget(selectedTarget);
 
@@ -48,7 +48,7 @@ namespace Redninja.Entities.Decisions.AI
 		internal IEnumerable<ISkill> GetAssignableSkills(ISkillsComponent meta)
 			=> meta.Skills.Intersect(SkillAssignments.Select(x => x.Item2));
 
-		internal bool TryFindTarget(ITargetingComponent meta, IUnitModel source, IBattleEntityManager bem, out ISelectedTarget selectedTarget)
+		internal bool TryFindTarget(ITargetingComponent meta, IUnitModel source, IBattleModel bem, out ISelectedTarget selectedTarget)
 		{
 			// filter targets
 			IEnumerable<IUnitModel> filteredTargets = FilterTargets(meta.TargetingRule, source, bem);
@@ -68,7 +68,7 @@ namespace Redninja.Entities.Decisions.AI
 			return true;
 		}
 
-		internal IEnumerable<IUnitModel> FilterTargets(ITargetingRule targetingRule, IUnitModel source, IBattleEntityManager bem)
+		internal IEnumerable<IUnitModel> FilterTargets(ITargetingRule targetingRule, IUnitModel source, IBattleModel bem)
 		{
 			// first filter by TargetType
 			IEnumerable<IUnitModel> leftoverTargets = AIHelper.FilterByType(TargetType, source, bem);

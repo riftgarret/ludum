@@ -6,7 +6,7 @@ using Redninja.Components.Actions;
 using Redninja.Components.Clock;
 using Redninja.Components.Combat;
 using Redninja.Entities;
-using Redninja.Entities.Decisions;
+using Redninja.Components.Decisions;
 using Redninja.Presenter;
 using Redninja.View;
 

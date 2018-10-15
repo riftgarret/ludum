@@ -4,7 +4,7 @@ using Davfalcon.Revelator;
 using Davfalcon.Revelator.Borger;
 using Redninja.Components.Skills;
 
-namespace Redninja.Entities.Decisions
+namespace Redninja.Components.Decisions
 {
 	/// <summary>
 	/// Result for requesting what available skills a entity can use.

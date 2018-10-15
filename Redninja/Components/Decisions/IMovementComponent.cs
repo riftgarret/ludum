@@ -1,7 +1,7 @@
 ﻿using Redninja.Components.Actions;
 using Redninja.View;
 
-namespace Redninja.Entities.Decisions
+namespace Redninja.Components.Decisions
 {
 	public interface IMovementComponent : IMovementView
 	{

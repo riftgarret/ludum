@@ -1,7 +1,7 @@
 ﻿using System;
 using Redninja.Components.Actions;
 
-namespace Redninja.Entities
+namespace Redninja.Components.Decisions
 {
 	public interface IActionDecider
 	{
@@ -10,8 +10,8 @@ namespace Redninja.Entities
 		/// </summary>
 		bool IsPlayer { get; }
 
-		event Action<IBattleEntity, IBattleAction> ActionSelected;
+		event Action<IUnitModel, IBattleAction> ActionSelected;
 
-		void ProcessNextAction(IBattleEntity entity, IBattleEntityManager entityManager);
+		void ProcessNextAction(IUnitModel entity, IBattleModel battleModel);
 	}
 }

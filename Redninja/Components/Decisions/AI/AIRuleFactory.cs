@@ -1,6 +1,6 @@
 ﻿using Redninja.Components.Targeting;
 
-namespace Redninja.Entities.Decisions.AI
+namespace Redninja.Components.Decisions.AI
 {
 	public static class AIRuleFactory
 	{		

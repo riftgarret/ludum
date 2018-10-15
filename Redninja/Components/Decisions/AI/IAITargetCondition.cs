@@ -1,4 +1,4 @@
-﻿namespace Redninja.Entities.Decisions.AI
+﻿namespace Redninja.Components.Decisions.AI
 {
 	public interface IAITargetCondition
 	{

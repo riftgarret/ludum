@@ -4,6 +4,7 @@ using Davfalcon.Revelator;
 using Redninja.Components.Actions;
 using Redninja.Components.Clock;
 using Redninja.Components.Combat;
+using Redninja.Components.Decisions;
 
 namespace Redninja.Entities
 {

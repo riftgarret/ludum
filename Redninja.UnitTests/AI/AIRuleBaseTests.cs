@@ -5,8 +5,8 @@ using NSubstitute;
 using NUnit.Framework;
 using Redninja.Components.Targeting;
 using Redninja.Entities;
-using Redninja.Entities.Decisions;
-using Redninja.Entities.Decisions.AI;
+using Redninja.Components.Decisions;
+using Redninja.Components.Decisions.AI;
 
 namespace Redninja.UnitTests.AI
 {
@@ -16,11 +16,11 @@ namespace Redninja.UnitTests.AI
 		where T : AIRuleBase
 	{
 		protected IDecisionHelper mDecisionHelper;
-		protected IBattleEntityManager mBem;
-		protected IBattleEntity mSource;
+		protected IBattleModel mBem;
+		protected IUnitModel mSource;
 		protected int sourceTeam;
 		protected int enemyTeam;
-		protected List<IBattleEntity> allEntities;			
+		protected List<IUnitModel> allEntities;			
 
 		protected abstract AIRuleBase.BuilderBase<B, T> SubjectBuilder { get; }		
 
@@ -30,14 +30,14 @@ namespace Redninja.UnitTests.AI
 			enemyTeam = 1;
 			sourceTeam = 2;
 
-			mBem = Substitute.For<IBattleEntityManager>();
-			mSource = Substitute.For<IBattleEntity>();
+			mBem = Substitute.For<IBattleModel>();
+			mSource = Substitute.For<IUnitModel>();
 			mSource.Team.Returns(sourceTeam);
 
 			mDecisionHelper = Substitute.For<IDecisionHelper>();
-			mDecisionHelper.EntityManager.Returns(mBem);
+			mDecisionHelper.BattleModel.Returns(mBem);
 
-			allEntities = new List<IBattleEntity>() { mSource };
+			allEntities = new List<IUnitModel>() { mSource };
 			mBem.Entities.Returns(allEntities);			
 		}
 
@@ -49,18 +49,18 @@ namespace Redninja.UnitTests.AI
 			SubjectBuilder.SetName("test");
 		}
 
-		protected IBattleEntity AddEntity(int teamId)
+		protected IUnitModel AddEntity(int teamId)
 		{
-			var mEntity = Substitute.For<IBattleEntity>();
+			var mEntity = Substitute.For<IUnitModel>();
 			mEntity.Team.Returns(teamId);
 			allEntities.Add(mEntity);
 			return mEntity;
 		}
 
-		protected IAITargetCondition AddMockCondition(TargetTeam target, bool isValid, IBattleEntity entityArg = null)
+		protected IAITargetCondition AddMockCondition(TargetTeam target, bool isValid, IUnitModel entityArg = null)
 		{			
 			IAITargetCondition mockCondition = Substitute.For<IAITargetCondition>();
-			mockCondition.IsValid(entityArg?? Arg.Any<IBattleEntity>()).Returns(isValid);
+			mockCondition.IsValid(entityArg?? Arg.Any<IUnitModel>()).Returns(isValid);
 			SubjectBuilder.AddTriggerCondition(target, mockCondition);
 			return mockCondition;
 		}
@@ -108,7 +108,7 @@ namespace Redninja.UnitTests.AI
 		[Test]
 		public void IsValidCondition_ChecksTarget([Values] TargetTeam target)
 		{
-			IEnumerable<IBattleEntity> entities;
+			IEnumerable<IUnitModel> entities;
 			switch(target)
 			{
 				case TargetTeam.Ally:
@@ -134,7 +134,7 @@ namespace Redninja.UnitTests.AI
 			var subject = SubjectBuilder.Build();
 			subject.IsValidTriggerConditions(mSource, mDecisionHelper);
 
-			mCondition.Received().IsValid(Arg.Is<IBattleEntity>(x => entities.Contains(x)));
+			mCondition.Received().IsValid(Arg.Is<IUnitModel>(x => entities.Contains(x)));
 		}
 
 		[TestCase(0)]

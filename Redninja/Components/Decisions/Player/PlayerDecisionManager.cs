@@ -4,21 +4,21 @@ using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 using Redninja.View;
 
-namespace Redninja.Entities.Decisions.Player
+namespace Redninja.Components.Decisions.Player
 {
 	public class PlayerDecisionManager : IActionDecider
 	{		
 		private readonly IBattleView view;
 		private readonly IDecisionHelper decisionHelper;
 
-		private IBattleEntity blockingEntity;
+		private IUnitModel blockingEntity;
 		private IMovementComponent currentMovement;
 		private ITargetingComponent currentSkill;
 
 		bool IActionDecider.IsPlayer => true;
 
-		public event Action<IBattleEntity, IBattleAction> ActionSelected;
-		public event Action<IBattleEntity> WaitingForDecision;
+		public event Action<IUnitModel, IBattleAction> ActionSelected;
+		public event Action<IUnitModel> WaitingForDecision;
 		public event Action WaitResolved;
 
 		private bool TargetingActive => currentSkill != null || currentMovement != null;
@@ -37,7 +37,7 @@ namespace Redninja.Entities.Decisions.Player
 			view.TargetingCanceled += OnTargetingCanceled;
 		}
 
-		public void ProcessNextAction(IBattleEntity entity, IBattleEntityManager entityManager)
+		public void ProcessNextAction(IUnitModel entity, IBattleModel battleModel)
 		{
 			// blockingEntity acts as a mutex to ensure presenter is only waiting on one unit at a time
 			if (blockingEntity != null) throw new InvalidOperationException("Another entity is already blocking game execution.");
@@ -50,7 +50,7 @@ namespace Redninja.Entities.Decisions.Player
 		{
 			if (TargetingActive) throw new InvalidOperationException("An action should not be selected while a skill is currently being targeted.");
 
-			ActionSelected?.Invoke(entity as IBattleEntity, action);
+			ActionSelected?.Invoke(entity, action);
 			ResumeIfDecided(entity);
 		}
 
@@ -59,7 +59,7 @@ namespace Redninja.Entities.Decisions.Player
 		{
 			if (TargetingActive) throw new InvalidOperationException("Cannot initiate movement while another targeting state is already active.");
 
-			currentMovement = decisionHelper.GetMovementComponent(entity as IBattleEntity);
+			currentMovement = decisionHelper.GetMovementComponent(entity);
 			view.SetViewMode(currentMovement);
 		}
 
@@ -74,7 +74,7 @@ namespace Redninja.Entities.Decisions.Player
 		{
 			if (currentMovement == null) throw new InvalidOperationException("Movement is not currently active.");
 
-			ActionSelected?.Invoke(currentMovement.Entity as IBattleEntity, currentMovement.GetAction());
+			ActionSelected?.Invoke(currentMovement.Entity, currentMovement.GetAction());
 			ResumeIfDecided(currentMovement.Entity);
 			EndTargeting();
 		}
@@ -85,7 +85,7 @@ namespace Redninja.Entities.Decisions.Player
 		{
 			if (TargetingActive) throw new InvalidOperationException("Cannot initiate skill targeting while another targeting state is already active.");
 
-			currentSkill = decisionHelper.GetTargetingComponent(entity as IBattleEntity, skill);
+			currentSkill = decisionHelper.GetTargetingComponent(entity, skill);
 			view.SetViewMode(currentSkill);
 		}
 
@@ -97,7 +97,7 @@ namespace Redninja.Entities.Decisions.Player
 
 			if (currentSkill.Ready)
 			{
-				ActionSelected?.Invoke(currentSkill.Entity as IBattleEntity, currentSkill.GetAction());
+				ActionSelected?.Invoke(currentSkill.Entity, currentSkill.GetAction());
 
 				ResumeIfDecided(currentSkill.Entity);
 				EndTargeting();
@@ -121,7 +121,7 @@ namespace Redninja.Entities.Decisions.Player
 			view.SetViewModeDefault();
 		}
 
-		private void WaitForDecision(IBattleEntity entity)
+		private void WaitForDecision(IUnitModel entity)
 		{
 			blockingEntity = entity;
 			WaitingForDecision?.Invoke(entity);

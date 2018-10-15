@@ -1,6 +1,6 @@
 ﻿using Redninja.Components.Skills;
 
-namespace Redninja.Entities.Decisions
+namespace Redninja.Components.Decisions
 {
 	/// <summary>
 	/// This helper will provide instances that represent the state of processing the
@@ -8,7 +8,7 @@ namespace Redninja.Entities.Decisions
 	/// </summary>
 	public interface IDecisionHelper
 	{
-		IBattleEntityManager EntityManager { get; }
+		IBattleModel BattleModel { get; }
 
 		IMovementComponent GetMovementComponent(IUnitModel entity);
 		ISkillsComponent GetAvailableSkills(IUnitModel entity);

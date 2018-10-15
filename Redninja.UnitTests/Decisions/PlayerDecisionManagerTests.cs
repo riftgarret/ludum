@@ -5,8 +5,8 @@ using NUnit.Framework;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 using Redninja.Entities;
-using Redninja.Entities.Decisions;
-using Redninja.Entities.Decisions.Player;
+using Redninja.Components.Decisions;
+using Redninja.Components.Decisions.Player;
 using Redninja.View;
 
 namespace Redninja.Decisions.UnitTests
@@ -45,8 +45,8 @@ namespace Redninja.Decisions.UnitTests
 		[Test]
 		public void ProcessNextAction_EventRaisedWaitingForDecision()
 		{
-			IBattleEntity mEntity = Substitute.For<IBattleEntity>();
-			IBattleEntity entity = null;
+			IUnitModel mEntity = Substitute.For<IUnitModel>();
+			IUnitModel entity = null;
 
 			subject.WaitingForDecision += e => entity = e;
 			subject.ProcessNextAction(mEntity, mEntityManager);
@@ -57,7 +57,7 @@ namespace Redninja.Decisions.UnitTests
 		[Test]
 		public void ProcessNextAction_ExceptionMultipleBlockingRequested()
 		{
-			IBattleEntity mEntity = Substitute.For<IBattleEntity>();
+			IUnitModel mEntity = Substitute.For<IUnitModel>();
 
 			subject.ProcessNextAction(mEntity, mEntityManager);
 
@@ -67,7 +67,7 @@ namespace Redninja.Decisions.UnitTests
 		[Test]
 		public void ProcessNextAction_ViewNotifiedWaitingForDecision()
 		{
-			IBattleEntity mEntity = Substitute.For<IBattleEntity>();
+			IUnitModel mEntity = Substitute.For<IUnitModel>();
 
 			subject.ProcessNextAction(mEntity, mEntityManager);
 

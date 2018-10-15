@@ -6,11 +6,11 @@ using Redninja.Components.Actions;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 
-namespace Redninja.Entities.Decisions
+namespace Redninja.Components.Decisions
 {
 	internal class SkillTargetingComponent : ITargetingComponent
 	{
-		private readonly IBattleEntityManager entityManager;
+		private readonly IBattleModel battleModel;
 		private readonly ISelectedTarget[] selectedTargets;
 		private int currentIndex = 0;
 
@@ -24,9 +24,9 @@ namespace Redninja.Entities.Decisions
 		public SkillTargetingComponent(
 			IUnitModel entity,
 			ISkill skill,
-			IBattleEntityManager entityManager)
+			IBattleModel battleModel)
 		{
-			this.entityManager = entityManager;
+			this.battleModel = battleModel;
 			Skill = skill;
 			Entity = entity;
 
@@ -38,9 +38,9 @@ namespace Redninja.Entities.Decisions
 			switch (TargetingRule.Team)
 			{
 				case TargetTeam.Ally:
-					return entityManager.Entities.Where(e => e.Team == Entity.Team && IsValidTarget(e));
+					return battleModel.Entities.Where(e => e.Team == Entity.Team && IsValidTarget(e));
 				case TargetTeam.Enemy:
-					return entityManager.Entities.Where(e => e.Team != Entity.Team && IsValidTarget(e));
+					return battleModel.Entities.Where(e => e.Team != Entity.Team && IsValidTarget(e));
 				case TargetTeam.Self:
 					return IsValidTarget(Entity) ? new List<IUnitModel>() { Entity }.AsReadOnly() as IEnumerable<IUnitModel> : new EmptyEnumerable<IUnitModel>();
 				default: throw new InvalidOperationException();

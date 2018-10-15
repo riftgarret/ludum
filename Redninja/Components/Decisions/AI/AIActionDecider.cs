@@ -1,7 +1,7 @@
 ﻿using System;
 using Redninja.Components.Actions;
 
-namespace Redninja.Entities.Decisions.AI
+namespace Redninja.Components.Decisions.AI
 {
 	public class AIActionDecider : IActionDecider
 	{
@@ -18,9 +18,9 @@ namespace Redninja.Entities.Decisions.AI
 			this.historyState = historyState;
 		}
 
-		public event Action<IBattleEntity, IBattleAction> ActionSelected;
+		public event Action<IUnitModel, IBattleAction> ActionSelected;
 
-		public void ProcessNextAction(IBattleEntity source, IBattleEntityManager entityManager)
+		public void ProcessNextAction(IUnitModel source, IBattleModel battleModel)
 		{
 			IBattleAction action = ruleSet.ResolveAction(source, decisionHelper, historyState);
 			ActionSelected?.Invoke(source, action);

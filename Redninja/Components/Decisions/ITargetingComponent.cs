@@ -2,7 +2,7 @@
 using Redninja.Components.Targeting;
 using Redninja.View;
 
-namespace Redninja.Entities.Decisions
+namespace Redninja.Components.Decisions
 {
 	public interface ITargetingComponent : ITargetingView
 	{

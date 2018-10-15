@@ -5,7 +5,7 @@ using Davfalcon.Builders;
 using Redninja.Components.Actions;
 using Redninja.Components.Targeting;
 
-namespace Redninja.Entities.Decisions.AI
+namespace Redninja.Components.Decisions.AI
 {
 	/// <summary>
 	/// Base class for AI rule that contains all the similar parts.
@@ -26,7 +26,7 @@ namespace Redninja.Entities.Decisions.AI
 		{
 			foreach(var trigger in TriggerConditions)
 			{
-				var validEntities = AIHelper.FilterByType(trigger.Item1, source, decisionHelper.EntityManager);
+				var validEntities = AIHelper.FilterByType(trigger.Item1, source, decisionHelper.BattleModel);
 
 				if (validEntities.Count() == 0) return false; // couldnt find any targets to test triggers
 

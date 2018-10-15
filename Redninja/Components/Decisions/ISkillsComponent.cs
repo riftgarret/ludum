@@ -1,6 +1,6 @@
 ﻿using Redninja.View;
 
-namespace Redninja.Entities.Decisions
+namespace Redninja.Components.Decisions
 {
 	public interface ISkillsComponent : ISkillsView
 	{

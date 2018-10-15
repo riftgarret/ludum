@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Redninja.Components.Targeting;
 
-namespace Redninja.Entities.Decisions.AI
+namespace Redninja.Components.Decisions.AI
 {
 	internal static class AIHelper
 	{
@@ -16,7 +16,7 @@ namespace Redninja.Entities.Decisions.AI
 		/// <param name="source"></param>
 		/// <param name="bem"></param>
 		/// <returns></returns>
-		internal static IEnumerable<IUnitModel> FilterByType(TargetTeam type, IUnitModel source, IBattleEntityManager bem)
+		internal static IEnumerable<IUnitModel> FilterByType(TargetTeam type, IUnitModel source, IBattleModel bem)
 		{
 			switch (type)
 			{

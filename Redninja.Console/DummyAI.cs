@@ -1,7 +1,7 @@
 ﻿using System;
 using Davfalcon.Randomization;
 using Redninja.Components.Actions;
-using Redninja.Entities;
+using Redninja.Components.Decisions;
 
 namespace Redninja.ConsoleDriver
 {
@@ -9,9 +9,9 @@ namespace Redninja.ConsoleDriver
 	{
 		public bool IsPlayer => false;
 
-		public event Action<IBattleEntity, IBattleAction> ActionSelected;
+		public event Action<IUnitModel, IBattleAction> ActionSelected;
 
-		public void ProcessNextAction(IBattleEntity entity, IBattleEntityManager entityManager)
+		public void ProcessNextAction(IUnitModel entity, IBattleModel battleModel)
 		{
 			ActionSelected?.Invoke(entity, new WaitAction(new RandomInteger(1, 5).Get()));
 		}

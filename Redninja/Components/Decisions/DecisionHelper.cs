@@ -1,26 +1,26 @@
 ﻿using Redninja.Components.Skills;
 
-namespace Redninja.Entities.Decisions
+namespace Redninja.Components.Decisions
 {
 	/// <summary>
 	/// Decision Manager for selecting a skill and a target to convert into an action.
 	/// </summary>
 	internal class DecisionHelper : IDecisionHelper
 	{
-		public DecisionHelper(IBattleEntityManager entityManager)
+		public DecisionHelper(IBattleModel battleModel)
 		{
-			EntityManager = entityManager;
+			BattleModel = battleModel;
 		}
 
-		public IBattleEntityManager EntityManager { get; }
+		public IBattleModel BattleModel { get; }
 
 		public IMovementComponent GetMovementComponent(IUnitModel entity)
-			=> new MovementComponent(entity, EntityManager);
+			=> new MovementComponent(entity, BattleModel);
 
 		public ISkillsComponent GetAvailableSkills(IUnitModel entity)
 			=> new SkillSelectionMeta(entity);
 
 		public ITargetingComponent GetTargetingComponent(IUnitModel entity, ISkill skill)
-			=> new SkillTargetingComponent(entity, skill, EntityManager);
+			=> new SkillTargetingComponent(entity, skill, BattleModel);
 	}
 }
