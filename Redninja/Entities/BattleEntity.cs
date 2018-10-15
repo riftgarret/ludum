@@ -4,6 +4,7 @@ using System.Linq;
 using Davfalcon.Revelator;
 using Davfalcon.Revelator.Borger;
 using Redninja.Components.Actions;
+using Redninja.Components.Clock;
 using Redninja.Components.Skills;
 
 namespace Redninja.Entities

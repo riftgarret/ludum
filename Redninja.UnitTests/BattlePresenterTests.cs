@@ -3,6 +3,7 @@ using Ninject;
 using NSubstitute;
 using NUnit.Framework;
 using Redninja.Components.Actions;
+using Redninja.Components.Clock;
 using Redninja.Entities;
 using Redninja.Entities.Decisions;
 using Redninja.Presenter;
@@ -17,7 +18,7 @@ namespace Redninja.UnitTests
 		private IBattleEntityManager mEntityManager;
 		private IBattleView mBattleView;
 		private IKernel kernel;
-		private BattlePresenter.Clock clock;
+		private Clock clock;
 
 		private BattlePresenter subject;
 
@@ -28,7 +29,7 @@ namespace Redninja.UnitTests
 			mCombatExecutor = Substitute.For<ICombatExecutor>();
 			mEntityManager = Substitute.For<IBattleEntityManager>();
 			mBattleView = Substitute.For<IBattleView>();
-			clock = new BattlePresenter.Clock();
+			clock = new Clock();
 
 			// setup DI
 			kernel = new StandardKernel();
@@ -36,7 +37,7 @@ namespace Redninja.UnitTests
 			kernel.Bind<IBattleEntityManager>().ToConstant(mEntityManager);
 			kernel.Bind<IBattleView>().ToConstant(mBattleView);
 			kernel.Bind<IDecisionHelper>().ToConstant(Substitute.For<IDecisionHelper>());
-			kernel.Bind<BattlePresenter.Clock>().ToConstant(clock);
+			kernel.Bind<Clock>().ToConstant(clock);
 
 			subject = kernel.Get<BattlePresenter>();
 		}

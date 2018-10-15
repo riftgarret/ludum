@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Redninja
+namespace Redninja.Components.Clock
 {
 	public interface IClockSynchronized : IDisposable
 	{

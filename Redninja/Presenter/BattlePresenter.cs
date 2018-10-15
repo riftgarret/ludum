@@ -5,12 +5,13 @@ using Davfalcon.Randomization;
 using Davfalcon.Revelator;
 using Ninject;
 using Redninja.Components.Actions;
+using Redninja.Components.Clock;
+using Redninja.Components.Operations;
+using Redninja.Entities;
 using Redninja.Entities.Decisions;
 using Redninja.Entities.Decisions.Player;
-using Redninja.Components.Operations;
 using Redninja.Events;
 using Redninja.View;
-using Redninja.Entities;
 
 namespace Redninja.Presenter
 {
@@ -20,17 +21,6 @@ namespace Redninja.Presenter
 	/// </summary>
 	public class BattlePresenter : IBattlePresenter
 	{
-		public class Clock : IClock
-		{
-			public float Time { get; private set; }
-			public event Action<float> Tick;
-			public void IncrementTime(float timeDelta)
-			{
-				Time += timeDelta;
-				Tick?.Invoke(timeDelta);
-			}
-		}
-
 		private Clock clock;
 		private readonly IKernel kernel;
 		private readonly IBattleView view;

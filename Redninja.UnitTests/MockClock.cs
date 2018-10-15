@@ -1,4 +1,5 @@
 ﻿using System;
+using Redninja.Components.Clock;
 
 namespace Redninja.UnitTests
 {

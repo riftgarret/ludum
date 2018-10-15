@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Components\Actions\AttackAction.cs" />
     <Compile Include="Components\Actions\BattleActionBase.cs" />
+    <Compile Include="Components\Clock\Clock.cs" />
     <Compile Include="Components\Skills\SkillAction.cs" />
     <Compile Include="Components\Actions\MovementAction.cs" />
     <Compile Include="Components\Actions\WaitAction.cs" />

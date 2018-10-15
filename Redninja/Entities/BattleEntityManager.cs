@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Redninja.Components.Actions;
+using Redninja.Components.Clock;
 using Redninja.Components.Targeting;
 
 namespace Redninja.Entities

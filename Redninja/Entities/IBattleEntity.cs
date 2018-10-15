@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Redninja.Components.Actions;
+using Redninja.Components.Clock;
 using Redninja.Components.Skills;
 
 namespace Redninja.Entities
