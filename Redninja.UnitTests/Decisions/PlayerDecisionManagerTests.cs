@@ -1,9 +1,13 @@
-﻿using Ninject;
+﻿using System;
+using Ninject;
 using NSubstitute;
 using NUnit.Framework;
-using Redninja.Skills;
-using Redninja.Targeting;
-using System;
+using Redninja.Components.Skills;
+using Redninja.Components.Targeting;
+using Redninja.Entities;
+using Redninja.Components.Decisions;
+using Redninja.Components.Decisions.Player;
+using Redninja.View;
 
 namespace Redninja.Decisions.UnitTests
 {
@@ -41,8 +45,8 @@ namespace Redninja.Decisions.UnitTests
 		[Test]
 		public void ProcessNextAction_EventRaisedWaitingForDecision()
 		{
-			IBattleEntity mEntity = Substitute.For<IBattleEntity>();
-			IBattleEntity entity = null;
+			IUnitModel mEntity = Substitute.For<IUnitModel>();
+			IUnitModel entity = null;
 
 			subject.WaitingForDecision += e => entity = e;
 			subject.ProcessNextAction(mEntity, mEntityManager);
@@ -53,7 +57,7 @@ namespace Redninja.Decisions.UnitTests
 		[Test]
 		public void ProcessNextAction_ExceptionMultipleBlockingRequested()
 		{
-			IBattleEntity mEntity = Substitute.For<IBattleEntity>();
+			IUnitModel mEntity = Substitute.For<IUnitModel>();
 
 			subject.ProcessNextAction(mEntity, mEntityManager);
 
@@ -63,7 +67,7 @@ namespace Redninja.Decisions.UnitTests
 		[Test]
 		public void ProcessNextAction_ViewNotifiedWaitingForDecision()
 		{
-			IBattleEntity mEntity = Substitute.For<IBattleEntity>();
+			IUnitModel mEntity = Substitute.For<IUnitModel>();
 
 			subject.ProcessNextAction(mEntity, mEntityManager);
 
@@ -73,10 +77,10 @@ namespace Redninja.Decisions.UnitTests
 		[Test]
 		public void OnTargetingCanceled_ViewModeDefault()
 		{
-			IBattleEntity mEntity = Substitute.For<IBattleEntity>();
+			IUnitModel mEntity = Substitute.For<IUnitModel>();
 			ISkill mSkill = Substitute.For<ISkill>();
 
-			mBattleView.SkillSelected += Raise.Event<Action<IBattleEntity, ISkill>>(mEntity, mSkill);
+			mBattleView.SkillSelected += Raise.Event<Action<IUnitModel, ISkill>>(mEntity, mSkill);
 			mBattleView.TargetingCanceled += Raise.Event<Action>();
 
 			mBattleView.Received().SetViewModeDefault();
@@ -85,12 +89,12 @@ namespace Redninja.Decisions.UnitTests
 		[Test]
 		public void OnSkillSelected_ViewModeTargeting()
 		{
-			IBattleEntity mEntity = Substitute.For<IBattleEntity>();
+			IUnitModel mEntity = Substitute.For<IUnitModel>();
 			ISkill mSkill = Substitute.For<ISkill>();
 
-			mBattleView.SkillSelected += Raise.Event<Action<IBattleEntity, ISkill>>(mEntity, mSkill);
+			mBattleView.SkillSelected += Raise.Event<Action<IUnitModel, ISkill>>(mEntity, mSkill);
 
-			mBattleView.Received().SetViewModeTargeting(Arg.Any<ISkillTargetingInfo>());
+			mBattleView.Received().SetViewMode(Arg.Any<ITargetingView>());
 		}
 
 		[Test]

@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Redninja.Actions;
+using Redninja.Components.Actions;
 
 namespace Redninja.UnitTests.Actions
 {
@@ -27,7 +27,7 @@ namespace Redninja.UnitTests.Actions
         [Test]
         public void TestSetAction_InitialValueIsPrepare()
         {            
-            Assert.That(subject.Phase, Is.EqualTo(PhaseState.Preparing));
+            Assert.That(subject.Phase, Is.EqualTo(ActionPhase.Preparing));
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace Redninja.UnitTests.Actions
         {
             InitSubject(prepare: prepareTime);
             clock.IncrementTime(prepareTime);
-            Assert.That(subject.Phase, Is.EqualTo(PhaseState.Executing));
+            Assert.That(subject.Phase, Is.EqualTo(ActionPhase.Executing));
             Assert.That(subject.PhaseProgress, Is.EqualTo(0f));
         }
 
@@ -56,7 +56,7 @@ namespace Redninja.UnitTests.Actions
             InitSubject(execute: executeTime);
             clock.IncrementTime(DEFAULT_TIME);
             clock.IncrementTime(executeTime);
-            Assert.That(subject.Phase, Is.EqualTo(PhaseState.Recovering));
+            Assert.That(subject.Phase, Is.EqualTo(ActionPhase.Recovering));
             Assert.That(subject.PhaseProgress, Is.EqualTo(0f));
         }
 
@@ -69,7 +69,7 @@ namespace Redninja.UnitTests.Actions
             clock.IncrementTime(DEFAULT_TIME);
             clock.IncrementTime(DEFAULT_TIME);
             clock.IncrementTime(recoveryTime);
-            Assert.That(subject.Phase, Is.EqualTo(PhaseState.Done));
+            Assert.That(subject.Phase, Is.EqualTo(ActionPhase.Done));
             Assert.That(subject.PhaseProgress, Is.EqualTo(1f));
         }
 

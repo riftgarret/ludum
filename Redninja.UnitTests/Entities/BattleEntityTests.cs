@@ -1,7 +1,9 @@
 ﻿using Davfalcon.Revelator;
-using Davfalcon.Revelator.Combat;
 using NSubstitute;
 using NUnit.Framework;
+using Redninja.Components.Actions;
+using Redninja.Components.Combat;
+using Redninja.Components.Decisions;
 using Redninja.Entities;
 
 namespace Redninja.UnitTests.Entities
@@ -34,7 +36,7 @@ namespace Redninja.UnitTests.Entities
             int originalSize = subject.Position.Size;
             subject.MovePosition(expectedX, expectedY);
             Assert.That(subject.Position, 
-                Is.EqualTo(new EntityPosition(expectedX, expectedY, originalSize)));
+                Is.EqualTo(new UnitPosition(expectedX, expectedY, originalSize)));
         }
 
         [Test]
@@ -65,7 +67,7 @@ namespace Redninja.UnitTests.Entities
         {
             IBattleAction mAction = Substitute.For<IBattleAction>();
             subject.SetAction(mAction);
-            mAction.Phase.Returns(PhaseState.Done);
+            mAction.Phase.Returns(ActionPhase.Done);
 
             bool triggered = false;
             subject.DecisionRequired += (x => triggered = true);

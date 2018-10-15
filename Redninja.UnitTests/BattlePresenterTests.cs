@@ -1,15 +1,14 @@
-﻿using Davfalcon.Revelator;
-using Davfalcon.Revelator.Combat;
+﻿using System.Collections.Generic;
 using Ninject;
 using NSubstitute;
 using NUnit.Framework;
-using Redninja.Actions;
-using Redninja.Decisions;
+using Redninja.Components.Actions;
+using Redninja.Components.Clock;
+using Redninja.Components.Combat;
 using Redninja.Entities;
-using Redninja.Skills;
-using Redninja.Targeting;
-using System;
-using System.Collections.Generic;
+using Redninja.Components.Decisions;
+using Redninja.Presenter;
+using Redninja.View;
 
 namespace Redninja.UnitTests
 {
@@ -20,7 +19,7 @@ namespace Redninja.UnitTests
 		private IBattleEntityManager mEntityManager;
 		private IBattleView mBattleView;
 		private IKernel kernel;
-		private BattlePresenter.Clock clock;
+		private Clock clock;
 
 		private BattlePresenter subject;
 
@@ -31,7 +30,7 @@ namespace Redninja.UnitTests
 			mCombatExecutor = Substitute.For<ICombatExecutor>();
 			mEntityManager = Substitute.For<IBattleEntityManager>();
 			mBattleView = Substitute.For<IBattleView>();
-			clock = new BattlePresenter.Clock();
+			clock = new Clock();
 
 			// setup DI
 			kernel = new StandardKernel();
@@ -39,7 +38,7 @@ namespace Redninja.UnitTests
 			kernel.Bind<IBattleEntityManager>().ToConstant(mEntityManager);
 			kernel.Bind<IBattleView>().ToConstant(mBattleView);
 			kernel.Bind<IDecisionHelper>().ToConstant(Substitute.For<IDecisionHelper>());
-			kernel.Bind<BattlePresenter.Clock>().ToConstant(clock);
+			kernel.Bind<Clock>().ToConstant(clock);
 
 			subject = kernel.Get<BattlePresenter>();
 		}
@@ -54,7 +53,7 @@ namespace Redninja.UnitTests
 		public void Initialization_EntityReceivedActionsWait()
 		{
 			IBattleEntity mEntity = Substitute.For<IBattleEntity>();
-			mEntityManager.AllEntities.Returns(new List<IBattleEntity>() { mEntity });
+			mEntityManager.Entities.Returns(new List<IBattleEntity>() { mEntity });
 
 			subject.Initialize();
 			subject.Start();

@@ -4,11 +4,11 @@ namespace Redninja.Events
 {
 	public class MovementEvent : IBattleEvent
 	{
-		public IBattleEntity Entity { get; }
-		public EntityPosition NewPosition { get; }
-		public EntityPosition OriginalPosition { get; }
+		public IUnitModel Entity { get; }
+		public UnitPosition NewPosition { get; }
+		public UnitPosition OriginalPosition { get; }
 
-		public MovementEvent(IBattleEntity entity, EntityPosition newPosition, EntityPosition originalPosition)
+		public MovementEvent(IUnitModel entity, UnitPosition newPosition, UnitPosition originalPosition)
 		{
 			Entity = entity ?? throw new ArgumentNullException(nameof(entity));
 			NewPosition = newPosition;
