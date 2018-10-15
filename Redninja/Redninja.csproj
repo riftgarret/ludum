@@ -81,7 +81,7 @@
     <Compile Include="Entities\Decisions\Player\PlayerDecisionManager.cs" />
     <Compile Include="Entities\Decisions\SkillSelectionMeta.cs" />
     <Compile Include="Entities\Decisions\SkillTargetingComponent.cs" />
-    <Compile Include="Entities\CombatExecutor.cs" />
+    <Compile Include="Components\Combat\CombatExecutor.cs" />
     <Compile Include="Entities\Decisions\DecisionHelper.cs" />
     <Compile Include="Events\DamageEvent.cs" />
     <Compile Include="Events\MovementEvent.cs" />
@@ -90,7 +90,7 @@
     <Compile Include="IBattleModel.cs" />
     <Compile Include="Presenter\IBattlePresenter.cs" />
     <Compile Include="View\IBattleViewCallbacks.cs" />
-    <Compile Include="Entities\ICombatExecutor.cs" />
+    <Compile Include="Components\Combat\ICombatExecutor.cs" />
     <Compile Include="Components\Actions\IBattleAction.cs" />
     <Compile Include="Presenter\BattlePresenter.cs" />
     <Compile Include="Entities\BattleEntity.cs" />

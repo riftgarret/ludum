@@ -2,6 +2,7 @@
 using NSubstitute;
 using NUnit.Framework;
 using Redninja.Components.Actions;
+using Redninja.Components.Combat;
 using Redninja.Entities;
 
 namespace Redninja.UnitTests.Entities

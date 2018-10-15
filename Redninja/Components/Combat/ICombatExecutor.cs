@@ -3,7 +3,7 @@ using Davfalcon.Revelator;
 using Davfalcon.Revelator.Combat;
 using Redninja.Events;
 
-namespace Redninja
+namespace Redninja.Components.Combat
 {
 	public interface ICombatExecutor
 	{

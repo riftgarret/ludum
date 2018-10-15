@@ -6,6 +6,7 @@ using Davfalcon.Revelator;
 using Ninject;
 using Redninja.Components.Actions;
 using Redninja.Components.Clock;
+using Redninja.Components.Combat;
 using Redninja.Components.Operations;
 using Redninja.Entities;
 using Redninja.Entities.Decisions;
