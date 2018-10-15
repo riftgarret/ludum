@@ -1,4 +1,4 @@
-﻿using Redninja.Skills;
+﻿using Redninja.Components.Skills;
 
 namespace Redninja.Components.Actions.Decisions
 {

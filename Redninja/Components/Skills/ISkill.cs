@@ -3,7 +3,7 @@ using Davfalcon.Revelator;
 using Redninja.Components.Actions;
 using Redninja.Components.Targeting;
 
-namespace Redninja.Skills
+namespace Redninja.Components.Skills
 {
 	/// <summary>
 	/// Implementation that should contain details of what the skill should do and

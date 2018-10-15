@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Redninja.Components.Targeting;
-using Redninja.Skills;
+using Redninja.Components.Skills;
 using Redninja.View;
 
 namespace Redninja.Components.Actions.Decisions.AI

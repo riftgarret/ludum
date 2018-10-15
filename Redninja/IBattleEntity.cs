@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using Davfalcon.Revelator;
 using Redninja.Components.Actions;
-using Redninja.Components.Actions.Decisions;
-using Redninja.Skills;
+using Redninja.Components.Skills;
 
 namespace Redninja
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Davfalcon.Collections.Generic;
-using Redninja.Skills;
+using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 
 namespace Redninja.Components.Actions.Decisions

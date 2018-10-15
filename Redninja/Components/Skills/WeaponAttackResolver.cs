@@ -3,7 +3,7 @@ using Davfalcon.Revelator;
 using Redninja.Components.Operations;
 using Redninja.Components.Targeting;
 
-namespace Redninja.Skills
+namespace Redninja.Components.Skills
 {
 	public class WeaponAttackResolver : ISkillResolver
 	{

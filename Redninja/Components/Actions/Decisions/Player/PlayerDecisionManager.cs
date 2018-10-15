@@ -1,6 +1,6 @@
 ﻿using System;
 using Redninja.Components.Targeting;
-using Redninja.Skills;
+using Redninja.Components.Skills;
 using Redninja.View;
 
 namespace Redninja.Components.Actions.Decisions.Player

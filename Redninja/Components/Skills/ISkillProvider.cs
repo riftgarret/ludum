@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Davfalcon.Revelator;
 
-namespace Redninja.Skills
+namespace Redninja.Components.Skills
 {
 	public interface ISkillProvider
 	{

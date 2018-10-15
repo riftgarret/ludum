@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Davfalcon.Builders;
 using Redninja.Components.Targeting;
-using static Redninja.Skills.SkillOperationDefinition;
+using static Redninja.Components.Skills.SkillOperationDefinition;
 
-namespace Redninja.Skills
+namespace Redninja.Components.Skills
 {
 	public class SkillTargetingSet
 	{

@@ -1,6 +1,6 @@
 ﻿using Redninja.Components.Operations;
 
-namespace Redninja.Skills
+namespace Redninja.Components.Skills
 {
 	public interface ISkillResolver
 	{

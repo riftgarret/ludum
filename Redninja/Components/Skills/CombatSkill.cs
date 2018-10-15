@@ -6,7 +6,7 @@ using Davfalcon.Revelator;
 using Redninja.Components.Actions;
 using Redninja.Components.Targeting;
 
-namespace Redninja.Skills
+namespace Redninja.Components.Skills
 {
 	public class CombatSkill : ISkill
 	{

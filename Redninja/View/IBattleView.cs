@@ -2,7 +2,7 @@
 using Redninja.Components.Actions;
 using Redninja.Components.Targeting;
 using Redninja.Events;
-using Redninja.Skills;
+using Redninja.Components.Skills;
 
 namespace Redninja.View
 {
