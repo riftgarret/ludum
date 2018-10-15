@@ -2,7 +2,7 @@
 
 namespace Redninja.Decisions
 {
-	public interface ITargetPhaseHelper : ISkillTargetingInfo
+	public interface ITargetingComponent : ITargetingState
 	{
 		void SelectTarget(ISelectedTarget target);
 		bool Back();

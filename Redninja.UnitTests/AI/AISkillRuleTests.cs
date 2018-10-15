@@ -68,13 +68,13 @@ namespace Redninja.UnitTests.AI
 
 			// make sure the skill has target meta
 			var returnedAction = Substitute.For<IBattleAction>();			
-			var mTargetHelper = Substitute.For<ITargetPhaseHelper>();
+			var mTargetHelper = Substitute.For<ITargetingComponent>();
 			var mSelectedTarget = mTargetHelper.GetSelectedTarget(mSource);
 
 			mTargetHelper.TargetingRule.IsValidTarget(mSource, mSource).Returns(true);			
 			mTargetHelper.Ready.Returns(true);			
 			mTargetHelper.Skill.Returns(mSkill);
-			mDecisionHelper.GetTargetingManager(mSource, mSkill).Returns(mTargetHelper);
+			mDecisionHelper.GetTargetingComponent(mSource, mSkill).Returns(mTargetHelper);
 
 			var subject = subjectBuilder.Build();			
 
@@ -112,7 +112,7 @@ namespace Redninja.UnitTests.AI
 			
 			condition.IsValid(Arg.Is<IBattleEntity>(x => x == enemy1 || x == enemy2)).Returns(true);			
 
-			ITargetPhaseHelper mTargetHelper = Substitute.For<ITargetPhaseHelper>();
+			ITargetingComponent mTargetHelper = Substitute.For<ITargetingComponent>();
 			mTargetHelper.TargetingRule.IsValidTarget(Arg.Is<IBattleEntity>(x => x == enemy1 || x == enemy2), mSource).Returns(true);
 			mTargetHelper.Skill.Returns(mInitialSkill.Item1);
 			mInitialSkill.Item2.GetBestTarget(Arg.Any<IEnumerable<IBattleEntity>>())
@@ -137,7 +137,7 @@ namespace Redninja.UnitTests.AI
 
 			condition.IsValid(Arg.Is<IBattleEntity>(x => x == enemy1 || x == enemy2)).Returns(true);
 
-			ITargetPhaseHelper mTargetHelper = Substitute.For<ITargetPhaseHelper>();
+			ITargetingComponent mTargetHelper = Substitute.For<ITargetingComponent>();
 			mTargetHelper.TargetingRule.IsValidTarget(Arg.Is<IBattleEntity>(x => x == enemy1 || x == enemy2), mSource).Returns(false);
 			mTargetHelper.Skill.Returns(mInitialSkill.Item1);
 

@@ -4,7 +4,7 @@ using Redninja.Targeting;
 
 namespace Redninja.Decisions
 {
-	public interface ISkillTargetingInfo
+	public interface ITargetingState
 	{
 		IBattleEntity Entity { get; }
 		ISkill Skill { get; }

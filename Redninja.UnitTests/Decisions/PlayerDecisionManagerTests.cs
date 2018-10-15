@@ -90,7 +90,7 @@ namespace Redninja.Decisions.UnitTests
 
 			mBattleView.SkillSelected += Raise.Event<Action<IBattleEntity, ISkill>>(mEntity, mSkill);
 
-			mBattleView.Received().SetViewModeTargeting(Arg.Any<ISkillTargetingInfo>());
+			mBattleView.Received().SetViewMode(Arg.Any<ITargetingState>());
 		}
 
 		[Test]

@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Davfalcon.Collections.Generic;
-using Redninja.Actions;
 using Redninja.Skills;
 using Redninja.Targeting;
 
 namespace Redninja.Decisions
 {
-	public class SkillTargetMeta : ITargetPhaseHelper
+	internal class SkillTargetingComponent : ITargetingComponent
 	{
 		private readonly IBattleEntityManager entityManager;
 		private readonly ISelectedTarget[] selectedTargets;
@@ -21,7 +20,7 @@ namespace Redninja.Decisions
 		public TargetType TargetType => TargetingRule.Type;
 		public bool Ready => currentIndex >= Skill.Targets.Count;
 
-		public SkillTargetMeta(
+		public SkillTargetingComponent(
 			IBattleEntity entity,
 			ISkill skill,
 			IBattleEntityManager entityManager)

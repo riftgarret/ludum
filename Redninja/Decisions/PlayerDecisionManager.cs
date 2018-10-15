@@ -10,7 +10,8 @@ namespace Redninja.Decisions
 		private readonly IDecisionHelper decisionHelper;
 
 		private IBattleEntity blockingEntity;
-		private ITargetPhaseHelper currentSkill;
+		private IMovementComponent currentMovement;
+		private ITargetingComponent currentSkill;
 
 		bool IActionDecider.IsPlayer => true;
 
@@ -18,12 +19,17 @@ namespace Redninja.Decisions
 		public event Action<IBattleEntity> WaitingForDecision;
 		public event Action WaitResolved;
 
+		private bool TargetingActive => TargetingActive || currentMovement != null;
+
 		public PlayerDecisionManager(IBattleView view, IDecisionHelper decisionHelper)
 		{
 			this.decisionHelper = decisionHelper;			
 			this.view = view;
 
 			view.ActionSelected += OnActionSelected;
+			view.MovementInitiated += OnMovementInitiated;
+			view.MovementPathUpdated += OnMovementPathUpdated;
+			view.MovementConfirmed += OnMovementConfirmed;
 			view.SkillSelected += OnSkillSelected;
 			view.TargetSelected += OnTargetSelected;
 			view.TargetingCanceled += OnTargetingCanceled;
@@ -37,42 +43,70 @@ namespace Redninja.Decisions
 			WaitForDecision(entity);
 		}
 
+		// Considering removing this so view doesn't generate actions
 		private void OnActionSelected(IBattleEntity entity, IBattleAction action)
 		{
-			if (currentSkill != null) throw new InvalidOperationException("An action should not be selected while a skill is currently being targeted.");
+			if (TargetingActive) throw new InvalidOperationException("An action should not be selected while a skill is currently being targeted.");
 
 			ActionSelected?.Invoke(entity, action);
 
 			ResumeIfDecided(entity);
 		}
 
+		#region Movement
+		private void OnMovementInitiated(IBattleEntity entity)
+		{
+			if (TargetingActive) throw new InvalidOperationException("Cannot initiate movement while another targeting state is already active.");
+
+			currentMovement = decisionHelper.GetMovementComponent(entity);
+			view.SetViewMode(currentMovement);
+		}
+
+		private void OnMovementPathUpdated(Coordinate point)
+		{
+			if (currentMovement == null) throw new InvalidOperationException("Movement is not currently active.");
+
+			currentMovement.AddPoint(point);
+		}
+
+		private void OnMovementConfirmed()
+		{
+			if (currentMovement == null) throw new InvalidOperationException("Movement is not currently active.");
+
+			ActionSelected?.Invoke(currentMovement.Entity, currentMovement.GetAction());
+			ResumeIfDecided(currentMovement.Entity);
+			EndTargeting();
+		}
+		#endregion
+
+		#region Skill targeting
 		private void OnSkillSelected(IBattleEntity entity, ISkill skill)
 		{
-			if (currentSkill != null) throw new InvalidOperationException("Targeting should be canceled before another skill can be selected.");
+			if (TargetingActive) throw new InvalidOperationException("Cannot initiate skill targeting while another targeting state is already active.");
 
-			currentSkill = decisionHelper.GetTargetingManager(entity, skill);
-			view.SetViewModeTargeting(currentSkill);
+			currentSkill = decisionHelper.GetTargetingComponent(entity, skill);
+			view.SetViewMode(currentSkill);
 		}
 
 		private void OnTargetSelected(ISelectedTarget target)
 		{
-			if (currentSkill == null) throw new InvalidOperationException("A target should not be selected while a skill has not been selected.");
+			if (currentSkill == null) throw new InvalidOperationException("Skill targeting is not active.");
 
 			currentSkill.SelectTarget(target);
 
 			if (currentSkill.Ready)
 			{
-				IBattleAction battleAction = currentSkill.GetAction();
-				ActionSelected?.Invoke(currentSkill.Entity, battleAction);
+				ActionSelected?.Invoke(currentSkill.Entity, currentSkill.GetAction());
 
 				ResumeIfDecided(currentSkill.Entity);
 				EndTargeting();
 			}
 		}
+		#endregion
 
 		private void OnTargetingCanceled()
 		{
-			if (currentSkill == null) throw new InvalidOperationException("Targeting should not be canceled while a skill has not been selected.");
+			if (!TargetingActive) throw new InvalidOperationException("Nothing to cancel.");
 
 			if (!currentSkill.Back())
 			{

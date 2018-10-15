@@ -71,11 +71,14 @@
     <Compile Include="Coordinate.cs" />
     <Compile Include="Decisions\IActionPhaseHelper.cs" />
     <Compile Include="Decisions\IDecisionHelper.cs" />
-    <Compile Include="Decisions\ISkillTargetingInfo.cs" />
-    <Compile Include="Decisions\ITargetPhaseHelper.cs" />
+    <Compile Include="Decisions\IMovementState.cs" />
+    <Compile Include="Decisions\IMovementComponent.cs" />
+    <Compile Include="Decisions\ITargetingState.cs" />
+    <Compile Include="Decisions\ITargetingComponent.cs" />
+    <Compile Include="Decisions\MovementComponent.cs" />
     <Compile Include="Decisions\PlayerDecisionManager.cs" />
     <Compile Include="Decisions\SkillSelectionMeta.cs" />
-    <Compile Include="Decisions\SkillTargetMeta.cs" />
+    <Compile Include="Decisions\SkillTargetingComponent.cs" />
     <Compile Include="CombatExecutor.cs" />
     <Compile Include="Decisions\DecisionHelper.cs" />
     <Compile Include="Events\DamageEvent.cs" />

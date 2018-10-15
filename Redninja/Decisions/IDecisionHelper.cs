@@ -10,7 +10,8 @@ namespace Redninja.Decisions
 	{
 		IBattleEntityManager BattleEntityManager { get; }
 
+		IMovementComponent GetMovementComponent(IBattleEntity entity);
 		IActionPhaseHelper GetAvailableSkills(IBattleEntity entity);
-		ITargetPhaseHelper GetTargetingManager(IBattleEntity entity, ISkill skill);
+		ITargetingComponent GetTargetingComponent(IBattleEntity entity, ISkill skill);
 	}
 }

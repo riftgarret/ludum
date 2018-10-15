@@ -79,7 +79,7 @@ namespace Redninja.ConsoleDriver
 			Draw();
 		}
 
-		public void SetViewModeTargeting(ISkillTargetingInfo targetingInfo)
+		public void SetViewMode(ITargetingState targetingInfo)
 		{
 			Draw();
 			List<IBattleEntity> availableTargets = new List<IBattleEntity>();

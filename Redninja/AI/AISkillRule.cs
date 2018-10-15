@@ -29,7 +29,7 @@ namespace Redninja.AI
 			foreach (ISkill skill in availableSkills)
 			{
 				// look for available targets
-				ITargetPhaseHelper targetMeta = decisionHelper.GetTargetingManager(source, skill);
+				ITargetingComponent targetMeta = decisionHelper.GetTargetingComponent(source, skill);
 
 				// found!				
 				while (TryFindTarget(targetMeta, source, decisionHelper.BattleEntityManager, out ISelectedTarget selectedTarget))
@@ -48,7 +48,7 @@ namespace Redninja.AI
 		internal IEnumerable<ISkill> GetAssignableSkills(IActionPhaseHelper meta)
 			=> meta.Skills.Intersect(SkillAssignments.Select(x => x.Item2));
 
-		internal bool TryFindTarget(ISkillTargetingInfo meta, IBattleEntity source, IBattleEntityManager bem, out ISelectedTarget selectedTarget)
+		internal bool TryFindTarget(ITargetingState meta, IBattleEntity source, IBattleEntityManager bem, out ISelectedTarget selectedTarget)
 		{
 			// filter targets
 			IEnumerable<IBattleEntity> filteredTargets = FilterTargets(meta.TargetingRule, source, bem);
