@@ -1,4 +1,4 @@
-﻿namespace Redninja.AI
+﻿namespace Redninja.Decisions.AI
 {
 	public enum AIPriorityType
 	{

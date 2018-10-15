@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Redninja.AI
+namespace Redninja.Decisions.AI
 {
 	public interface IAITargetCondition
 	{

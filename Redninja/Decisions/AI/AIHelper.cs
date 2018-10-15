@@ -1,9 +1,9 @@
-﻿using Redninja.Targeting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Redninja.Targeting;
 
-namespace Redninja.AI
+namespace Redninja.Decisions.AI
 {
 	internal static class AIHelper
 	{

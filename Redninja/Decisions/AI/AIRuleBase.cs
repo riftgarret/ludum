@@ -1,12 +1,10 @@
-﻿using Davfalcon.Builders;
-using Davfalcon.Revelator;
-using Redninja.Decisions;
-using Redninja.Targeting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Davfalcon.Builders;
+using Redninja.Targeting;
 
-namespace Redninja.AI
+namespace Redninja.Decisions.AI
 {
 	/// <summary>
 	/// Base class for AI rule that contains all the similar parts.

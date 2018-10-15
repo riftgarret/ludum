@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Redninja.AI
+namespace Redninja.Decisions.AI
 {
 	public class AICombatStatPriority : IAITargetPriority
 	{

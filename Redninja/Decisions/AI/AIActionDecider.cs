@@ -1,7 +1,6 @@
-﻿using Redninja.Decisions;
-using System;
+﻿using System;
 
-namespace Redninja.AI
+namespace Redninja.Decisions.AI
 {
 	public class AIActionDecider : IActionDecider
 	{

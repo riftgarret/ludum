@@ -1,11 +1,9 @@
-﻿using Davfalcon.Builders;
-using Davfalcon.Revelator;
-using Redninja.Decisions;
-using Redninja.Logging;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Davfalcon.Builders;
+using Redninja.Logging;
 
-namespace Redninja.AI
+namespace Redninja.Decisions.AI
 {
 	public class AIRuleSet
 	{

@@ -1,6 +1,6 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
-using Redninja.AI;
+using Redninja.Decisions.AI;
 using Redninja.Decisions;
 using Redninja.Skills;
 using Redninja.Targeting;

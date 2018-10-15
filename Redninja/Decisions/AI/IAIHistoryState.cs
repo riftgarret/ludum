@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Redninja.AI
+﻿namespace Redninja.Decisions.AI
 {
 	/// <summary>
 	/// History state to be passed to IAIRuleSet in order to record and check each

@@ -1,7 +1,6 @@
 ﻿using Davfalcon.Builders;
-using Redninja.Decisions;
 
-namespace Redninja.AI
+namespace Redninja.Decisions.AI
 {
 	/// <summary>
 	/// This represents a set of conditions that may be attached to a list of

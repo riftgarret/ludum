@@ -1,6 +1,4 @@
-﻿using Redninja.Decisions;
-
-namespace Redninja.AI
+﻿namespace Redninja.Decisions.AI
 {
 	public interface IAIRule
 	{

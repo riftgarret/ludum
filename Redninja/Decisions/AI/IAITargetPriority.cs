@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Redninja.AI
+namespace Redninja.Decisions.AI
 {
 	public interface IAITargetPriority
 	{				
