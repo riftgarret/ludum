@@ -28,8 +28,10 @@ namespace Redninja.Entities
 
 		// If we add an action queue here, this will point to the top instead
 		public IBattleAction CurrentAction { get; private set; }
+		// Temporary until we implement INameable in IBattleAction
+		public string CurrentActionName => CurrentAction.GetType().ToString().Split('.').Last();
 		public ActionPhase Phase => CurrentAction?.Phase ?? ActionPhase.Waiting;
-		public float PhasePercent => CurrentAction?.PhaseProgress ?? 0;
+		public float PhaseProgress => CurrentAction?.PhaseProgress ?? 0;
 
 		public IActionDecider ActionDecider { get; set; }
 

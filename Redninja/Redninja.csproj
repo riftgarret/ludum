@@ -101,7 +101,7 @@
     <Compile Include="Components\Operations\BattleOperationBase.cs" />
     <Compile Include="Components\Operations\DamageOperation.cs" />
     <Compile Include="Components\Operations\MovementOperation.cs" />
-    <Compile Include="Components\Actions\ActionPhase.cs" />
+    <Compile Include="ActionPhase.cs" />
     <Compile Include="Entities\IBattleEntity.cs" />
     <Compile Include="Entities\IBattleEntityManager.cs" />
     <Compile Include="Events\IBattleEvent.cs" />

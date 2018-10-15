@@ -6,6 +6,7 @@ using Redninja.Components.Actions;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 using Redninja.ConsoleDriver.Objects;
+using Redninja.Entities;
 using Redninja.Events;
 using Redninja.View;
 
@@ -26,7 +27,7 @@ namespace Redninja.ConsoleDriver
 		public void Draw()
 		{
 			Console.Clear();
-			foreach (IBattleEntity entity in model.AllEntities)
+			foreach (IEntityModel entity in model.Entities)
 			{
 				entity.Print();
 			}

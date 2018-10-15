@@ -10,8 +10,6 @@ namespace Redninja.Entities
 	{
 		bool IsPlayerControlled { get; }
 		IBattleAction CurrentAction { get; }
-		ActionPhase Phase { get; }
-		float PhasePercent { get; }
 		IActionDecider ActionDecider { get; set; }
 		IEnumerable<ISkill> Skills { get; }
 

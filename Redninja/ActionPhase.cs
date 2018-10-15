@@ -1,4 +1,4 @@
-﻿namespace Redninja.Components.Actions
+﻿namespace Redninja
 {
 	public enum ActionPhase
     {
