@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,6 +47,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleView.cs" />
+    <Compile Include="Data\ConfigDataStore.cs" />
+    <Compile Include="Data\DataManager.cs" />
+    <Compile Include="Data\ParseConstants.cs" />
+    <Compile Include="Data\ParseHelper.cs" />
+    <Compile Include="Data\Schema\CombatSkillSchema.cs" />
+    <Compile Include="Data\Schema\SkillRootSchema.cs" />
+    <Compile Include="Data\Schema\TargetingSetSchema.cs" />
+    <Compile Include="Data\SkillReader.cs" />
     <Compile Include="DummyAI.cs" />
     <Compile Include="Objects\CombatSkills.cs" />
     <Compile Include="Objects\Weapons.cs" />
@@ -53,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Redninja\Redninja.csproj">
@@ -67,6 +79,12 @@
       <Project>{1fcb4578-21b8-4db5-b560-c87beeb7fd2e}</Project>
       <Name>Davfalcon</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Assets\Data\skills.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

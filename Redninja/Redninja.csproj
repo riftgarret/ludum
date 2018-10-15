@@ -69,6 +69,8 @@
     <Compile Include="AI\IAITargetPriority.cs" />
     <Compile Include="AI\WeightedPool.cs" />
     <Compile Include="Coordinate.cs" />
+    <Compile Include="Data\IDataSource.cs" />
+    <Compile Include="Data\IDataStore.cs" />
     <Compile Include="Decisions\IActionPhaseHelper.cs" />
     <Compile Include="Decisions\IDecisionHelper.cs" />
     <Compile Include="Decisions\ISkillTargetingInfo.cs" />
@@ -82,6 +84,7 @@
     <Compile Include="Events\MovementEvent.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="IActionDecider.cs" />
+    <Compile Include="IDataManager.cs" />
     <Compile Include="IBattleModel.cs" />
     <Compile Include="IBattlePresenter.cs" />
     <Compile Include="IBattleViewCallbacks.cs" />

@@ -5,6 +5,7 @@ using Davfalcon;
 using Davfalcon.Nodes;
 using Davfalcon.Revelator;
 using Davfalcon.Revelator.Borger;
+using Redninja.ConsoleDriver.Data;
 using Redninja.Events;
 
 namespace Redninja.ConsoleDriver
@@ -13,6 +14,9 @@ namespace Redninja.ConsoleDriver
 	{
 		static void Main(string[] args)
 		{
+			DataManager manager = new DataManager();
+			manager.Initialize();
+
 			ConsoleView view = new ConsoleView();
 
 			ICombatExecutor executor = new CombatExecutor(builder => builder
