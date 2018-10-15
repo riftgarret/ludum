@@ -2,21 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using Redninja.Components.Actions;
+using Redninja.View;
 
 namespace Redninja.Entities.Decisions
 {
 	internal class MovementComponent : IMovementComponent
 	{
-		private readonly IBattleModel battleModel;
+		private readonly IBattleEntityManager entityManager;
 		private readonly List<Coordinate> path = new List<Coordinate>();
 
 		public IBattleEntity Entity { get; }
+		IEntityModel IMovementView.Entity => Entity;
 		public ActionTime Time => GetActionTime();
 		public IEnumerable<Coordinate> CurrentPath { get; }
 
 		public MovementComponent(IBattleEntity entity, IBattleEntityManager entityManager)
 		{
-			this.battleModel = entityManager;
+			this.entityManager = entityManager;
 			Entity = entity;
 			CurrentPath = path.AsReadOnly();
 		}
@@ -34,7 +36,7 @@ namespace Redninja.Entities.Decisions
 		}
 
 		public bool IsValidMovement(Coordinate point)
-			=> !battleModel.Entities.Select(e => (Coordinate)e.Position).Contains(point);
+			=> !entityManager.Entities.Select(e => (Coordinate)e.Position).Contains(point);
 
 		public void AddPoint(Coordinate point)
 		{

@@ -16,11 +16,11 @@ namespace Redninja.ConsoleDriver
 	{
 		private IBattleModel model;
 
-		public event Action<IBattleEntity, IBattleAction> ActionSelected;
-		public event Action<IBattleEntity, ISkill> SkillSelected;
+		public event Action<IEntityModel, IBattleAction> ActionSelected;
+		public event Action<IEntityModel, ISkill> SkillSelected;
 		public event Action<ISelectedTarget> TargetSelected;
 		public event Action TargetingCanceled;
-		public event Action<IBattleEntity> MovementInitiated;
+		public event Action<IEntityModel> MovementInitiated;
 		public event Action<Coordinate> MovementPathUpdated;
 		public event Action MovementConfirmed;
 
@@ -46,7 +46,7 @@ namespace Redninja.ConsoleDriver
 			}
 		}
 
-		public void OnDecisionNeeded(IBattleEntity entity)
+		public void OnDecisionNeeded(IEntityModel entity)
 		{
 			Draw();
 			Console.WriteLine("Waiting for player input...");
@@ -83,12 +83,12 @@ namespace Redninja.ConsoleDriver
 			Draw();
 		}
 
-		public void SetViewMode(ITargetingState targetingInfo)
+		public void SetViewMode(ITargetingView targetingInfo)
 		{
 			Draw();
-			List<IBattleEntity> availableTargets = new List<IBattleEntity>();
+			List<IEntityModel> availableTargets = new List<IEntityModel>();
 
-			foreach (IBattleEntity t in targetingInfo.GetTargetableEntities())
+			foreach (IEntityModel t in targetingInfo.GetTargetableEntities())
 			{
 				Console.WriteLine(t.Character.Name);
 				availableTargets.Add(t);
@@ -106,7 +106,7 @@ namespace Redninja.ConsoleDriver
 			}
 		}
 
-		public void SetViewMode(IMovementState movementState)
+		public void SetViewMode(IMovementView movementState)
 		{
 			throw new NotImplementedException();
 		}

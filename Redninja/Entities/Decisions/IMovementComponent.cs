@@ -3,8 +3,9 @@ using Redninja.View;
 
 namespace Redninja.Entities.Decisions
 {
-	public interface IMovementComponent : IMovementState
+	public interface IMovementComponent : IMovementView
 	{
+		new IBattleEntity Entity { get; }
 		void AddPoint(Coordinate point);
 		bool Back();
 		IBattleAction GetAction();

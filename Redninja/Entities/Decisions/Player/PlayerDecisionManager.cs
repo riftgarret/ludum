@@ -46,21 +46,20 @@ namespace Redninja.Entities.Decisions.Player
 		}
 
 		// Considering removing this so view doesn't generate actions
-		private void OnActionSelected(IBattleEntity entity, IBattleAction action)
+		private void OnActionSelected(IEntityModel entity, IBattleAction action)
 		{
 			if (TargetingActive) throw new InvalidOperationException("An action should not be selected while a skill is currently being targeted.");
 
-			ActionSelected?.Invoke(entity, action);
-
-			ResumeIfDecided(entity);
+			ActionSelected?.Invoke(entity as IBattleEntity, action);
+			ResumeIfDecided(entity as IBattleEntity);
 		}
 
 		#region Movement
-		private void OnMovementInitiated(IBattleEntity entity)
+		private void OnMovementInitiated(IEntityModel entity)
 		{
 			if (TargetingActive) throw new InvalidOperationException("Cannot initiate movement while another targeting state is already active.");
 
-			currentMovement = decisionHelper.GetMovementComponent(entity);
+			currentMovement = decisionHelper.GetMovementComponent(entity as IBattleEntity);
 			view.SetViewMode(currentMovement);
 		}
 
@@ -82,11 +81,11 @@ namespace Redninja.Entities.Decisions.Player
 		#endregion
 
 		#region Skill targeting
-		private void OnSkillSelected(IBattleEntity entity, ISkill skill)
+		private void OnSkillSelected(IEntityModel entity, ISkill skill)
 		{
 			if (TargetingActive) throw new InvalidOperationException("Cannot initiate skill targeting while another targeting state is already active.");
 
-			currentSkill = decisionHelper.GetTargetingComponent(entity, skill);
+			currentSkill = decisionHelper.GetTargetingComponent(entity as IBattleEntity, skill);
 			view.SetViewMode(currentSkill);
 		}
 

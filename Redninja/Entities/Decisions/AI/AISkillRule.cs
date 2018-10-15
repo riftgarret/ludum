@@ -4,7 +4,6 @@ using System.Linq;
 using Redninja.Components.Actions;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
-using Redninja.View;
 
 namespace Redninja.Entities.Decisions.AI
 {
@@ -49,7 +48,7 @@ namespace Redninja.Entities.Decisions.AI
 		internal IEnumerable<ISkill> GetAssignableSkills(IActionPhaseHelper meta)
 			=> meta.Skills.Intersect(SkillAssignments.Select(x => x.Item2));
 
-		internal bool TryFindTarget(ITargetingState meta, IBattleEntity source, IBattleEntityManager bem, out ISelectedTarget selectedTarget)
+		internal bool TryFindTarget(ITargetingComponent meta, IBattleEntity source, IBattleEntityManager bem, out ISelectedTarget selectedTarget)
 		{
 			// filter targets
 			IEnumerable<IBattleEntity> filteredTargets = FilterTargets(meta.TargetingRule, source, bem);

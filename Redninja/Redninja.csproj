@@ -73,9 +73,9 @@
     <Compile Include="Entities\Decisions\IActionPhaseHelper.cs" />
     <Compile Include="Entities\Decisions\IDecisionHelper.cs" />
     <Compile Include="IEntityModel.cs" />
-    <Compile Include="View\IMovementState.cs" />
+    <Compile Include="View\IMovementView.cs" />
     <Compile Include="Entities\Decisions\IMovementComponent.cs" />
-    <Compile Include="View\ITargetingState.cs" />
+    <Compile Include="View\ITargetingView.cs" />
     <Compile Include="Entities\Decisions\ITargetingComponent.cs" />
     <Compile Include="Entities\Decisions\MovementComponent.cs" />
     <Compile Include="Entities\Decisions\Player\PlayerDecisionManager.cs" />
