@@ -22,7 +22,7 @@ namespace Redninja.Components.Skills
 		public ManagedEnumStringList DamageTypes { get; } = new ManagedEnumStringList();
 		IEnumerable<Enum> IDamageSource.DamageTypes => DamageTypes.AsReadOnly();
 
-		public IBattleAction GetAction(IBattleEntity entity, ISelectedTarget[] targets)
+		public IBattleAction GetAction(IEntityModel entity, ISelectedTarget[] targets)
 		{
 			List<ISkillResolver> resolvers = new List<ISkillResolver>();
 			for (int i = 0; i < Targets.Count; i++)

@@ -2,6 +2,6 @@
 {
 	public abstract class BattleOperationBase : IBattleOperation
 	{
-		public abstract void Execute(IBattleEntityManager entityManager, ICombatExecutor combatExecutor);
+		public abstract void Execute(IBattleModel battleModel, ICombatExecutor combatExecutor);
 	}
 }

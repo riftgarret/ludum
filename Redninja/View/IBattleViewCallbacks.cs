@@ -1,5 +1,6 @@
 ﻿using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
+using Redninja.Entities;
 
 namespace Redninja.View
 {

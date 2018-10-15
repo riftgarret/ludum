@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
-using Redninja.Components.Decisions;
-using Redninja.Components.Decisions.AI;
 using Redninja.Components.Targeting;
+using Redninja.Entities;
+using Redninja.Entities.Decisions;
+using Redninja.Entities.Decisions.AI;
 
 namespace Redninja.UnitTests.AI
 {
@@ -15,7 +16,7 @@ namespace Redninja.UnitTests.AI
 		where T : AIRuleBase
 	{
 		protected IDecisionHelper mDecisionHelper;
-		protected IBattleModel mBem;
+		protected IBattleEntityManager mBem;
 		protected IBattleEntity mSource;
 		protected int sourceTeam;
 		protected int enemyTeam;
@@ -29,15 +30,15 @@ namespace Redninja.UnitTests.AI
 			enemyTeam = 1;
 			sourceTeam = 2;
 
-			mBem = Substitute.For<IBattleModel>();
+			mBem = Substitute.For<IBattleEntityManager>();
 			mSource = Substitute.For<IBattleEntity>();
 			mSource.Team.Returns(sourceTeam);
 
 			mDecisionHelper = Substitute.For<IDecisionHelper>();
-			mDecisionHelper.EntityModel.Returns(mBem);
+			mDecisionHelper.EntityManager.Returns(mBem);
 
 			allEntities = new List<IBattleEntity>() { mSource };
-			mBem.AllEntities.Returns(allEntities);			
+			mBem.Entities.Returns(allEntities);			
 		}
 
 		// due to base class being called [SetUp] first before derived class, the

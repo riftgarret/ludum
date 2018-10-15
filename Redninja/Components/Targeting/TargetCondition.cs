@@ -1,6 +1,6 @@
 ﻿namespace Redninja.Components.Targeting
 {
-	public delegate bool TargetCondition(IBattleEntity target, IBattleEntity user);
+	public delegate bool TargetCondition(IEntityModel target, IEntityModel user);
 
 	public static class TargetConditions
 	{

@@ -8,12 +8,12 @@ namespace Redninja.Components.Actions
 {
 	public class AttackAction : BattleActionBase
 	{
-		private readonly IBattleEntity unit;
-		private readonly IBattleEntity target;
+		private readonly IEntityModel unit;
+		private readonly IEntityModel target;
 		private readonly IWeapon weapon;
 		private readonly List<float> times;
 
-		public AttackAction(IBattleEntity unit, IBattleEntity target, IWeapon weapon, params float[] procTimes)
+		public AttackAction(IEntityModel unit, IEntityModel target, IWeapon weapon, params float[] procTimes)
 			: base(2, 5, 5)
 		{
 			this.unit = unit ?? throw new ArgumentNullException(nameof(unit));

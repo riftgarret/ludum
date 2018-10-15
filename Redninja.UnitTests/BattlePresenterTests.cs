@@ -3,7 +3,8 @@ using Ninject;
 using NSubstitute;
 using NUnit.Framework;
 using Redninja.Components.Actions;
-using Redninja.Components.Decisions;
+using Redninja.Entities;
+using Redninja.Entities.Decisions;
 using Redninja.Presenter;
 using Redninja.View;
 
@@ -50,7 +51,7 @@ namespace Redninja.UnitTests
 		public void Initialization_EntityReceivedActionsWait()
 		{
 			IBattleEntity mEntity = Substitute.For<IBattleEntity>();
-			mEntityManager.AllEntities.Returns(new List<IBattleEntity>() { mEntity });
+			mEntityManager.Entities.Returns(new List<IBattleEntity>() { mEntity });
 
 			subject.Initialize();
 			subject.Start();

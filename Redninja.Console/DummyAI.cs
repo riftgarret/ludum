@@ -10,7 +10,7 @@ namespace Redninja.ConsoleDriver
 
 		public event Action<IBattleEntity, IBattleAction> ActionSelected;
 
-		public void ProcessNextAction(IBattleEntity entity, IBattleModel entityModel)
+		public void ProcessNextAction(IBattleEntity entity, IBattleModel battleModel)
 		{
 			ActionSelected?.Invoke(entity, new WaitAction(new RandomInteger(1, 5).Get()));
 		}

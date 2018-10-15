@@ -4,10 +4,11 @@ using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
 using Redninja.Components.Actions;
-using Redninja.Components.Decisions;
-using Redninja.Components.Decisions.AI;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
+using Redninja.Entities;
+using Redninja.Entities.Decisions;
+using Redninja.Entities.Decisions.AI;
 
 namespace Redninja.UnitTests.AI
 {

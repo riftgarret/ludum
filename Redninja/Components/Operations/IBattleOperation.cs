@@ -2,6 +2,6 @@
 {
 	public interface IBattleOperation
 	{
-		void Execute(IBattleEntityManager manager, ICombatExecutor combatExecutor);
+		void Execute(IBattleModel battleModel, ICombatExecutor combatExecutor);
 	}
 }

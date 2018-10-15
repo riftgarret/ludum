@@ -6,7 +6,7 @@ namespace Redninja.Components.Skills
 {
 	public class SkillOperationDefinition
 	{
-		public delegate IBattleOperation OperationProvider(IBattleEntity entity, ITargetResolver target, ISkill skill);
+		public delegate IBattleOperation OperationProvider(IEntityModel entity, ITargetResolver target, ISkill skill);
 
 		public float ExecutionStart { get; }
 		public ITargetPattern Pattern { get; }

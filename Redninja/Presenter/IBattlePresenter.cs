@@ -1,7 +1,7 @@
 ﻿using System;
 using Davfalcon.Builders;
 using Davfalcon.Revelator;
-using Redninja.Components.Actions;
+using Redninja.Entities;
 
 namespace Redninja.Presenter
 {

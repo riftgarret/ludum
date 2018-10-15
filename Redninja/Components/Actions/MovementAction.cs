@@ -4,7 +4,7 @@ namespace Redninja.Components.Actions
 {
 	public class MovementAction : BattleActionBase
 	{
-		private readonly IBattleEntity entity;
+		private readonly IEntityModel entity;
 		private readonly int row;
 		private readonly int col;
 
@@ -14,7 +14,7 @@ namespace Redninja.Components.Actions
 				SendBattleOperation(GetPhaseTimeAt(0), new MovementOperation(entity, row, col));
 		}
 
-		public MovementAction(IBattleEntity entity, int row, int col)
+		public MovementAction(IEntityModel entity, int row, int col)
 			: base(3, 5, 3)
 		{
 			this.entity = entity;

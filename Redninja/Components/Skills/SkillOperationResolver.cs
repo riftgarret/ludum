@@ -18,7 +18,7 @@ namespace Redninja.Components.Skills
 			this.target = target;
 		}
 
-		public IBattleOperation Resolve(IBattleEntity entity, ISkill skill)
+		public IBattleOperation Resolve(IEntityModel entity, ISkill skill)
 		{
 			Resolved = true;
 			return definition.GetOperation(entity, target, skill);

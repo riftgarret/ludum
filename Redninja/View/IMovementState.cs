@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Redninja.Components.Actions;
+using Redninja.Entities;
 
 namespace Redninja.View
 {

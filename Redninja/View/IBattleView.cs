@@ -1,8 +1,9 @@
 ﻿using System;
 using Redninja.Components.Actions;
-using Redninja.Components.Targeting;
-using Redninja.Events;
 using Redninja.Components.Skills;
+using Redninja.Components.Targeting;
+using Redninja.Entities;
+using Redninja.Events;
 
 namespace Redninja.View
 {

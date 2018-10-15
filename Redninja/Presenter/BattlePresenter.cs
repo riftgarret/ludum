@@ -5,11 +5,12 @@ using Davfalcon.Randomization;
 using Davfalcon.Revelator;
 using Ninject;
 using Redninja.Components.Actions;
-using Redninja.Components.Decisions;
-using Redninja.Components.Decisions.Player;
+using Redninja.Entities.Decisions;
+using Redninja.Entities.Decisions.Player;
 using Redninja.Components.Operations;
 using Redninja.Events;
 using Redninja.View;
+using Redninja.Entities;
 
 namespace Redninja.Presenter
 {
@@ -100,7 +101,7 @@ namespace Redninja.Presenter
 
 			// this value is temp until we assign an initiative per character
 
-			foreach (IBattleEntity entity in entityManager.AllEntities)
+			foreach (IBattleEntity entity in entityManager.Entities)
 			{
 				OnActionSelected(entity, new WaitAction(new RandomInteger(1, 10).Get()));
 			}
@@ -119,7 +120,7 @@ namespace Redninja.Presenter
 		public void Dispose()
 		{
 			kernel.Dispose();
-			foreach (IBattleEntity entity in entityManager.AllEntities)
+			foreach (IBattleEntity entity in entityManager.Entities)
 			{
 				entity.Dispose();
 			}
