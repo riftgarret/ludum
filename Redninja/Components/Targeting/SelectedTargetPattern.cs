@@ -25,6 +25,9 @@ namespace Redninja.Components.Targeting
 		}
 
 		public IEnumerable<IEntityModel> GetValidTargets(IEntityModel user, IBattleModel battleModel)
-			=> battleModel.GetEntitiesInPattern(Anchor, Pattern).Where(e => e.Team == Team && Rule.IsValidTarget(user, e));
+			=> battleModel.Entities.Where(e =>
+				Pattern.ContainsLocation(Anchor, e.Position) &&
+				e.Team == Team &&
+				Rule.IsValidTarget(user, e));
 	}
 }
