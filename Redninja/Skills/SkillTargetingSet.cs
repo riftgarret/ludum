@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Davfalcon.Builders;
-using Redninja.Targeting;
+using Redninja.Components.Targeting;
 using static Redninja.Skills.SkillOperationDefinition;
 
 namespace Redninja.Skills

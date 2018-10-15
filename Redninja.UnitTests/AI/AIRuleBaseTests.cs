@@ -15,7 +15,7 @@ namespace Redninja.UnitTests.AI
 		where T : AIRuleBase
 	{
 		protected IDecisionHelper mDecisionHelper;
-		protected IBattleEntityManager mBem;
+		protected IBattleModel mBem;
 		protected IBattleEntity mSource;
 		protected int sourceTeam;
 		protected int enemyTeam;
@@ -29,12 +29,12 @@ namespace Redninja.UnitTests.AI
 			enemyTeam = 1;
 			sourceTeam = 2;
 
-			mBem = Substitute.For<IBattleEntityManager>();
+			mBem = Substitute.For<IBattleModel>();
 			mSource = Substitute.For<IBattleEntity>();
 			mSource.Team.Returns(sourceTeam);
 
 			mDecisionHelper = Substitute.For<IDecisionHelper>();
-			mDecisionHelper.BattleEntityManager.Returns(mBem);
+			mDecisionHelper.EntityModel.Returns(mBem);
 
 			allEntities = new List<IBattleEntity>() { mSource };
 			mBem.AllEntities.Returns(allEntities);			

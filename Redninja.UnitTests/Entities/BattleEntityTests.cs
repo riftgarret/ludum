@@ -65,7 +65,7 @@ namespace Redninja.UnitTests.Entities
         {
             IBattleAction mAction = Substitute.For<IBattleAction>();
             subject.SetAction(mAction);
-            mAction.Phase.Returns(PhaseState.Done);
+            mAction.Phase.Returns(ActionPhase.Done);
 
             bool triggered = false;
             subject.DecisionRequired += (x => triggered = true);

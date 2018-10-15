@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Redninja.Targeting;
+using Redninja.Components.Actions;
+using Redninja.Components.Targeting;
 
-namespace Redninja.Entities
+namespace Redninja
 {
-	public class BattleEntityManager : IBattleEntityManager
+	internal class BattleEntityManager : IBattleEntityManager
 	{
 		// TEMP for now
 		private Tuple<int, int> GridSize { get; } = Tuple.Create(3, 3);

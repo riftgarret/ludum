@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Davfalcon.Revelator;
+using Redninja.Components.Actions;
+using Redninja.Components.Actions.Decisions;
 using Redninja.Skills;
 
 namespace Redninja
@@ -12,7 +14,7 @@ namespace Redninja
 		bool IsPlayerControlled { get; }
 		EntityPosition Position { get; }
 		IBattleAction CurrentAction { get; }
-		PhaseState Phase { get; }
+		ActionPhase Phase { get; }
 		float PhasePercent { get; }
 		IActionDecider ActionDecider { get; set; }
 		IEnumerable<ISkill> Skills { get; }

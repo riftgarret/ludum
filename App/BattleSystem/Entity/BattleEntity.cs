@@ -24,7 +24,7 @@ namespace App.BattleSystem.Entity
         public OnExecuteOperation OnExecuteOperationDelegate { get; set; }
 
         // turn phase
-        public PhaseState Phase => Action.Phase;
+        public ActionPhase Phase => Action.Phase;
 
         public float TurnPercent => Action.PhasePercent;
 
@@ -110,7 +110,7 @@ namespace App.BattleSystem.Entity
             Action.IncrementGameClock(gameClockDelta);
             statusEffectManager.OnTimeIncrement(gameClockDelta);
 
-            if (Action.Phase == PhaseState.RECOVER && Action.PhaseComplete >= 1f)
+            if (Action.Phase == ActionPhase.RECOVER && Action.PhaseComplete >= 1f)
             {
                 OnDecisionRequiredDelegate?.Invoke(this);
             }           

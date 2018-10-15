@@ -1,4 +1,6 @@
-﻿namespace Redninja.Skills
+﻿using Redninja.Components.Operations;
+
+namespace Redninja.Skills
 {
 	public interface ISkillResolver
 	{

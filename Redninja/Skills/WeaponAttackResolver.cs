@@ -1,7 +1,7 @@
 ﻿using System;
 using Davfalcon.Revelator;
-using Redninja.Operations;
-using Redninja.Targeting;
+using Redninja.Components.Operations;
+using Redninja.Components.Targeting;
 
 namespace Redninja.Skills
 {

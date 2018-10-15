@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Redninja.Targeting;
+using Redninja.Components.Targeting;
 
 namespace Redninja
 {

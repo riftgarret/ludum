@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using Davfalcon.Revelator;
 using Davfalcon.Revelator.Borger;
+using Redninja.Components.Actions;
 using Redninja.Skills;
 
-namespace Redninja.Entities
+namespace Redninja
 {
 	/// <summary>
 	/// Battle entity. Main class that contains all current effects and state of this character in battle.
 	/// </summary>
-	public class BattleEntity : IBattleEntity
+	internal class BattleEntity : IBattleEntity
 	{
 		private IClock clock;
 		private readonly ICombatExecutor combatExecutor;
@@ -26,7 +27,7 @@ namespace Redninja.Entities
 
 		// If we add an action queue here, this will point to the top instead
 		public IBattleAction CurrentAction { get; private set; }
-		public PhaseState Phase => CurrentAction?.Phase ?? PhaseState.Waiting;
+		public ActionPhase Phase => CurrentAction?.Phase ?? ActionPhase.Waiting;
 		public float PhasePercent => CurrentAction?.PhaseProgress ?? 0;
 
 		public IActionDecider ActionDecider { get; set; }
@@ -70,7 +71,7 @@ namespace Redninja.Entities
 		{
 			// Check for buff update interval, then update buffs/status effects
 
-			if (CurrentAction.Phase == PhaseState.Done)
+			if (CurrentAction.Phase == ActionPhase.Done)
 			{
 				DecisionRequired?.Invoke(this);
 				// If we add an action queue, pop the completed action off here

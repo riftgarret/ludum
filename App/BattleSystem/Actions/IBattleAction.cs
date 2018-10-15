@@ -17,7 +17,7 @@ namespace App.BattleSystem.Actions
         float PhaseClock { get; }
         float PhaseComplete { get; }
         float PhasePercent { get; }
-        PhaseState Phase { get; }
+        ActionPhase Phase { get; }
 
         /// <summary>
         /// When this action has triggered. This can happen multiple times during

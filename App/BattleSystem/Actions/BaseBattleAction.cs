@@ -18,7 +18,7 @@ namespace App.BattleSystem.Actions
         public float PhaseClock { get; private set; }
         public float PhaseComplete { get; private set; }
         public float PhasePercent => PhaseComplete == 0 ? 1f : Mathf.Min(PhaseClock / PhaseComplete, 1f);
-        public PhaseState Phase { private set; get; }
+        public ActionPhase Phase { private set; get; }
 
         public ExecuteCombatOperation ExecuteCombatOperationDelegate { get; set; }
 
@@ -32,19 +32,19 @@ namespace App.BattleSystem.Actions
         /// Sets the phase. Reset all state variables
         /// </summary>
         /// <param name="phase">Phase.</param>
-        protected void SetPhase(PhaseState newPhase)
+        protected void SetPhase(ActionPhase newPhase)
         {
             PhaseClock = 0;
             this.Phase = newPhase;
             switch (newPhase)
             {
-                case PhaseState.PREPARE:
+                case ActionPhase.PREPARE:
                     PhaseComplete = TimePrepare;
                     break;
-                case PhaseState.EXECUTE:
+                case ActionPhase.EXECUTE:
                     PhaseComplete = TimeAction;
                     break;
-                case PhaseState.RECOVER:
+                case ActionPhase.RECOVER:
                     PhaseComplete = TimeRecover;
                     break;
             }
@@ -57,13 +57,13 @@ namespace App.BattleSystem.Actions
         {
             switch (Phase)
             {
-                case PhaseState.PREPARE:
-                    SetPhase(PhaseState.EXECUTE);
+                case ActionPhase.PREPARE:
+                    SetPhase(ActionPhase.EXECUTE);
                     break;
-                case PhaseState.EXECUTE:
-                    SetPhase(PhaseState.RECOVER);
+                case ActionPhase.EXECUTE:
+                    SetPhase(ActionPhase.RECOVER);
                     break;
-                case PhaseState.RECOVER:
+                case ActionPhase.RECOVER:
                     // dont do anything, stay in this state
                     break;
             }
@@ -71,13 +71,13 @@ namespace App.BattleSystem.Actions
         }
 
         /// <summary>
-        /// Increment Game states. This can update the current PhaseState or even trigger
+        /// Increment Game states. This can update the current ActionPhase or even trigger
         /// the OnStartActionExecution delegate.
         /// </summary>
         /// <param name="gameClockDelta">Game clock delta.</param>
         public void IncrementGameClock(float gameClockDelta)
         {
-            if (Phase == PhaseState.RECOVER && PhasePercent >= 1f)
+            if (Phase == ActionPhase.RECOVER && PhasePercent >= 1f)
             {
                 return;
             }
@@ -85,7 +85,7 @@ namespace App.BattleSystem.Actions
 
             PhaseClock += gameClockDelta;
 
-            if (Phase == PhaseState.EXECUTE)
+            if (Phase == ActionPhase.EXECUTE)
             {
                 ExecuteAction(PhasePercent);
             }

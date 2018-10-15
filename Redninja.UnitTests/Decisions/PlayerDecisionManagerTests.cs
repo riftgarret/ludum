@@ -1,9 +1,11 @@
-﻿using Ninject;
+﻿using System;
+using Ninject;
 using NSubstitute;
 using NUnit.Framework;
+using Redninja.Decisions.Player;
 using Redninja.Skills;
 using Redninja.Targeting;
-using System;
+using Redninja.View;
 
 namespace Redninja.Decisions.UnitTests
 {

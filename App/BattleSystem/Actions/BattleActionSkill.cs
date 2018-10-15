@@ -28,7 +28,7 @@ namespace App.BattleSystem.Actions
             this.targetResolver = targetResolver;
             this.combatRoundIndex = 0;
             this.combatRoundCount = skill.CombatRounds.Length;
-            SetPhase(PhaseState.PREPARE);
+            SetPhase(ActionPhase.PREPARE);
         }
 
         /// <summary>

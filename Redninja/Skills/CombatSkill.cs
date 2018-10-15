@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Davfalcon.Builders;
 using Davfalcon.Collections.Adapters;
 using Davfalcon.Revelator;
-using Redninja.Actions;
-using Redninja.Targeting;
+using Redninja.Components.Actions;
+using Redninja.Components.Targeting;
 
 namespace Redninja.Skills
 {

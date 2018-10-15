@@ -1,5 +1,6 @@
 ﻿using System;
-using Redninja.Targeting;
+using Redninja.Components.Operations;
+using Redninja.Components.Targeting;
 
 namespace Redninja.Skills
 {

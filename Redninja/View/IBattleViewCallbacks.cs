@@ -1,0 +1,12 @@
+﻿using Redninja.Skills;
+using Redninja.Components.Targeting;
+
+namespace Redninja.View
+{
+	// This interface probably isn't needed anymore, converted to view events
+	public interface IBattleViewCallbacks
+	{
+		void OnSkillSelected(IBattleEntity entity, ISkill skill);
+		void OnTargetSelected(ISelectedTarget target);
+	}
+}
