@@ -4,7 +4,7 @@ using Redninja.Components.Operations;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 
-namespace Redninja.Data.Schema.UnitTests
+namespace Redninja.Data.Schema.Readers.UnitTests
 {
 	[TestFixture]
 	public class ParseHelperTests

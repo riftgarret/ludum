@@ -68,7 +68,7 @@
     <Compile Include="Components\Decisions\AI\AIRuleSetTests.cs" />
     <Compile Include="Components\Decisions\AI\WeightedPoolTests.cs" />
     <Compile Include="Presenter\BattlePresenterTests.cs" />
-    <Compile Include="Data\Schema\ParseHelperTests.cs" />
+    <Compile Include="Data\ParseHelperTests.cs" />
     <Compile Include="Components\Decisions\PlayerDecisionManagerTests.cs" />
     <Compile Include="Entities\BattleEntityTests.cs" />
     <Compile Include="MockClock.cs" />

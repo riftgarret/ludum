@@ -49,6 +49,7 @@
     <Compile Include="ConsoleView.cs" />
     <Compile Include="DummyAI.cs" />
     <Compile Include="Objects\CombatSkills.cs" />
+    <Compile Include="Objects\ObjectLoader.cs" />
     <Compile Include="Objects\Weapons.cs" />
     <Compile Include="Output.cs" />
     <Compile Include="Program.cs" />
