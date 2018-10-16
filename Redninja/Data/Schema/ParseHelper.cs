@@ -20,16 +20,18 @@ namespace Redninja.Data.Schema
 		/// <returns></returns>
 		public static ITargetPattern ParsePattern(string patternText)
 		{
+			if (patternText == null) throw new InvalidOperationException("Cannot parse null pattern");
+
 			switch (patternText.ToLower())
 			{
 				case "single":
 					return TargetPatternFactory.CreatePattern(new Coordinate(0, 0));
-					// etc
+
 			}
 
 			if (patternText.StartsWith("("))
 			{
-				Match match = Regex.Match(patternText, @"\((?<row>\d),(\s*)(?<col>\d)\)");
+				Match match = Regex.Match(patternText, @"\((?<row>\d)(\s*),(\s*)(?<col>\d)\)");
 				List<Coordinate> patternCoordinates = new List<Coordinate>();
 				while (match.Success)
 				{
@@ -47,8 +49,7 @@ namespace Redninja.Data.Schema
 			}
 
 			RLog.D("ParsePattern", $"Failed to find a match: {patternText}");
-
-			return TargetPatternFactory.CreatePattern(new Coordinate(0, 0));
+			throw new FormatException($"Failed to find a match: {patternText}");			
 		}
 
 		/// <summary>
@@ -58,7 +59,8 @@ namespace Redninja.Data.Schema
 		/// <returns></returns>
 		public static ActionTime ParseActionTime(List<float> time)
 		{
-			if(time.Count() != 3)
+			if (time == null) throw new InvalidOperationException("Cannot ParseActionTime with null reference");
+			if (time.Count() != 3)
 			{
 				throw new FormatException("Invalid action time, needs to be exactly 3 floats");
 			}
