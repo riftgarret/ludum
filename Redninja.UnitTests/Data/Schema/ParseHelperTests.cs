@@ -76,8 +76,6 @@ namespace Redninja.Data.Schema.UnitTests
 					yield return new TestCaseData("(1,0), (1,1)", TargetPatternFactory.CreatePattern(new Coordinate(1, 0), new Coordinate(1,1)));
 					yield return new TestCaseData("(1,0), (1,1) (2,1)", TargetPatternFactory.CreatePattern(new Coordinate(1, 0), new Coordinate(1, 1), new Coordinate(2, 1)));
 					yield return new TestCaseData("(1 , 2)", TargetPatternFactory.CreatePattern(new Coordinate(1, 2)));
-
-
 				}
 			}
 		}
