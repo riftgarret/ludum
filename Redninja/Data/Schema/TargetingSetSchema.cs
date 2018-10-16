@@ -8,7 +8,7 @@ namespace Redninja.Data.Schema
 	internal class TargetingSetSchema : IDataSource
 	{
 		public string DataId { get; set; }
-		//public string PatternId { get; set; }
+		public string Pattern { get; set; }
 		public TargetTeam TargetTeam { get; set; }
 		public TargetType TargetType { get; set; }
 		public string TargetConditionName { get; set; }
