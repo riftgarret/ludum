@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Redninja.Data;
 
 namespace Redninja.ConsoleDriver.Objects
@@ -12,7 +13,7 @@ namespace Redninja.ConsoleDriver.Objects
 
 		public void Load(IEditableDataManager manager)
 		{
-			foreach (var p in type.GetProperties())
+			foreach (PropertyInfo p in type.GetProperties())
 			{
 				if (p.PropertyType == typeof(T))
 				{
