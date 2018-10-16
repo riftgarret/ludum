@@ -1,9 +1,12 @@
-﻿using Davfalcon.Revelator.Borger;
-using Redninja.Components.Combat;
-using Redninja.ConsoleDriver.Data;
-using Redninja.Presenter;
-using System;
+﻿using System;
 using System.Threading;
+using Davfalcon.Revelator;
+using Davfalcon.Revelator.Borger;
+using Redninja.Components.Combat;
+using Redninja.Components.Skills;
+using Redninja.ConsoleDriver.Objects;
+using Redninja.Data;
+using Redninja.Presenter;
 
 namespace Redninja.ConsoleDriver
 {
@@ -14,7 +17,11 @@ namespace Redninja.ConsoleDriver
 		static void Main(string[] args)
 		{
 			DataManager manager = new DataManager();
-			manager.Initialize(CONFIG_FILE_PATH);
+			manager.LoadJson(CONFIG_FILE_PATH);
+
+			// This serves no purpose, it's just here to prove it works
+			manager.Load(new ObjectLoader<ISkill>(typeof(CombatSkills)));
+			manager.Load(new ObjectLoader<IWeapon>(typeof(Weapons)));
 
 			ConsoleView view = new ConsoleView();
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Davfalcon.Builders;
 using Redninja.Components.Targeting;
-using static Redninja.Components.Skills.SkillOperationDefinition;
 
 namespace Redninja.Components.Skills
 {

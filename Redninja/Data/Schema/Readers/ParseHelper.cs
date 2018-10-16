@@ -9,7 +9,7 @@ using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 using Redninja.Logging;
 
-namespace Redninja.Data.Schema
+namespace Redninja.Data.Schema.Readers
 {
 	internal static class ParseHelper
 	{

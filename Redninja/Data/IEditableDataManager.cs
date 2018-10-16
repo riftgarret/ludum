@@ -8,7 +8,7 @@ namespace Redninja.Data
 	/// Data structures that should deserialized into this data store to be 
 	/// pulled together later when needed.
 	/// </summary>
-	internal interface IEditableDataManager
+	public interface IEditableDataManager
 	{
 		IEditableDataStore<ISkill> Skills { get; }
 
@@ -23,6 +23,8 @@ namespace Redninja.Data
 		IEditableDataStore<IUnit> NPCUnits { get; }
 
 		IEditableDataStore<SkillTargetingSet> SkillTargetSets { get; }
+
+		IEditableDataStore<T> GetDataStore<T>();
 	}
 }
 

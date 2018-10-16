@@ -5,7 +5,6 @@ namespace Redninja.Components.Skills
 {
 	public class SkillOperationDefinition
 	{
-
 		public float ExecutionStart { get; }
 		public ITargetPattern Pattern { get; }
 		public OperationProvider GetOperation { get; }

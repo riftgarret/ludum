@@ -103,7 +103,7 @@ namespace Redninja.Components.Actions.UnitTests
         private class TestableBaseBattleActionImpl : BattleActionBase
         {
             internal TestableBaseBattleActionImpl(float prepare, float execute, float recover)
-                : base(prepare, execute, recover)
+                : base("", prepare, execute, recover)
             {
 
             }

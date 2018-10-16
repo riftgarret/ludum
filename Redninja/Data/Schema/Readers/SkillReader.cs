@@ -2,7 +2,7 @@
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 
-namespace Redninja.Data.Schema
+namespace Redninja.Data.Schema.Readers
 {
 	internal static class SkillReader
 	{		

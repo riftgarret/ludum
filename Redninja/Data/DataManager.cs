@@ -1,66 +1,45 @@
-﻿using Davfalcon.Revelator;
+﻿using System;
+using System.Collections.Generic;
+using Davfalcon.Revelator;
 using Redninja.Components.Decisions.AI;
 using Redninja.Components.Skills;
-using Redninja.Data;
-using Redninja.Data.Schema;
+using Redninja.Data.Schema.Readers;
 
-namespace Redninja.ConsoleDriver.Data
+namespace Redninja.Data
 {
-	public class DataManager : IDataManager
-	{		
-		private DataStore<ISkill> skills = new DataStore<ISkill>();
-		public IDataStore<ISkill> Skills => skills;
+	public class DataManager : IDataManager, IEditableDataManager
+	{
+		private readonly Dictionary<Type, object> dataTypeLookup = new Dictionary<Type, object>();
 
-		private DataStore<IAIRule> aiRules = new DataStore<IAIRule>();
-		public IDataStore<IAIRule> AIRules => aiRules;
-
-		private DataStore<AIRuleSet> aiBehavior = new DataStore<AIRuleSet>();
-		public IDataStore<AIRuleSet> AIBehavior => aiBehavior;
-
-		private DataStore<IAITargetCondition> aiTargetCondition = new DataStore<IAITargetCondition>();
-		public IDataStore<IAITargetCondition> AITargetCondition => aiTargetCondition;
-
-		private DataStore<IAITargetPriority> aiTargetPriority = new DataStore<IAITargetPriority>();
-		public IDataStore<IAITargetPriority> AITargetPriority => aiTargetPriority;
-
-		private DataStore<IUnit> npcUnits = new DataStore<IUnit>();
-		public IDataStore<IUnit> NPCUnits => npcUnits;
-
-		private DataStore<SkillTargetingSet> skillTargetSets = new DataStore<SkillTargetingSet>();
-		public IDataStore<SkillTargetingSet> SkillTargetSets => skillTargetSets;
-
-		public void Initialize(string configPath)
-		{			
-			DataReader.Read(AsWritable(), configPath);
-		}		
-
-		private IEditableDataManager AsWritable()
+		private DataStore<T> GetDataStore<T>()
 		{
-			return new EditableManager(this);
-		}
-
-		private class EditableManager : IEditableDataManager
-		{
-			private DataManager inner;
-
-			internal EditableManager(DataManager innerManager)
+			Type type = typeof(T);
+			if (!dataTypeLookup.ContainsKey(type))
 			{
-				this.inner = innerManager;
+				dataTypeLookup[type] = new DataStore<T>();
 			}
-
-			public IEditableDataStore<ISkill> Skills => inner.skills;
-
-			public IEditableDataStore<IAIRule> AIRules => inner.aiRules;
-
-			public IEditableDataStore<AIRuleSet> AIBehavior => inner.aiBehavior;
-
-			public IEditableDataStore<IAITargetCondition> AITargetCondition => inner.aiTargetCondition;
-
-			public IEditableDataStore<IAITargetPriority> AITargetPriority => inner.aiTargetPriority;
-
-			public IEditableDataStore<IUnit> NPCUnits => inner.npcUnits;
-
-			public IEditableDataStore<SkillTargetingSet> SkillTargetSets => inner.skillTargetSets;
+			return dataTypeLookup[type] as DataStore<T>;
 		}
+
+		public IDataStore<ISkill> Skills => GetDataStore<ISkill>();
+		public IDataStore<IAIRule> AIRules => GetDataStore<IAIRule>();
+		public IDataStore<AIRuleSet> AIBehavior => GetDataStore<AIRuleSet>();
+		public IDataStore<IAITargetCondition> AITargetCondition => GetDataStore<IAITargetCondition>();
+		public IDataStore<IAITargetPriority> AITargetPriority => GetDataStore<IAITargetPriority>();
+		public IDataStore<IUnit> NPCUnits => GetDataStore<IUnit>();
+		public IDataStore<SkillTargetingSet> SkillTargetSets => GetDataStore<SkillTargetingSet>();
+
+		IEditableDataStore<ISkill> IEditableDataManager.Skills => GetDataStore<ISkill>();
+		IEditableDataStore<IAIRule> IEditableDataManager.AIRules => GetDataStore<IAIRule>();
+		IEditableDataStore<AIRuleSet> IEditableDataManager.AIBehavior => GetDataStore<AIRuleSet>();
+		IEditableDataStore<IAITargetCondition> IEditableDataManager.AITargetCondition => GetDataStore<IAITargetCondition>();
+		IEditableDataStore<IAITargetPriority> IEditableDataManager.AITargetPriority => GetDataStore<IAITargetPriority>();
+		IEditableDataStore<IUnit> IEditableDataManager.NPCUnits => GetDataStore<IUnit>();
+		IEditableDataStore<SkillTargetingSet> IEditableDataManager.SkillTargetSets => GetDataStore<SkillTargetingSet>();
+
+		IEditableDataStore<T> IEditableDataManager.GetDataStore<T>() => GetDataStore<T>();
+
+		public void LoadJson(string configPath) => new JsonSchemaLoader(configPath).Read(this);
+		public void Load(IDataLoader reader) => reader.Load(this);
 	}
 }
