@@ -6,13 +6,13 @@ namespace Redninja.Data.Schema
 {
 	internal static class SkillReader
 	{		
-		internal static void ReadAll(SkillRootSchema skillRoot, IEditableDataManager manager)
+		public static void ReadAll(SkillRootSchema skillRoot, IEditableDataManager manager)
 		{					
 			ReadTargets(manager.SkillTargetSets, skillRoot.TargetSets);
 			ReadSkills(manager.Skills, manager.SkillTargetSets, skillRoot.CombatSkills);
 		}
 
-		internal static void ReadSkills(IEditableDataStore<ISkill> skillStore, IEditableDataStore<SkillTargetingSet> targetStore, List<CombatSkillSchema> skills)
+		public static void ReadSkills(IEditableDataStore<ISkill> skillStore, IEditableDataStore<SkillTargetingSet> targetStore, List<CombatSkillSchema> skills)
 		{
 			foreach (var item in skills)
 			{
@@ -28,7 +28,7 @@ namespace Redninja.Data.Schema
 			}
 		}
 
-		internal static void ReadTargets(IEditableDataStore<SkillTargetingSet> targetStore, List<TargetingSetSchema> targets)
+		public static void ReadTargets(IEditableDataStore<SkillTargetingSet> targetStore, List<TargetingSetSchema> targets)
 		{
 			foreach (var item in targets)
 			{

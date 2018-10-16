@@ -1,6 +1,6 @@
-﻿using Redninja.Components.Targeting;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Redninja.Components.Targeting;
 
 namespace Redninja.Data.Schema
 {

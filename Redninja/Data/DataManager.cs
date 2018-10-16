@@ -11,22 +11,22 @@ namespace Redninja.ConsoleDriver.Data
 		private DataStore<ISkill> skills = new DataStore<ISkill>();
 		public IDataStore<ISkill> Skills => skills;
 
-		public DataStore<IAIRule> aiRules = new DataStore<IAIRule>();
+		private DataStore<IAIRule> aiRules = new DataStore<IAIRule>();
 		public IDataStore<IAIRule> AIRules => aiRules;
 
-		public DataStore<AIRuleSet> aiBehavior = new DataStore<AIRuleSet>();
+		private DataStore<AIRuleSet> aiBehavior = new DataStore<AIRuleSet>();
 		public IDataStore<AIRuleSet> AIBehavior => aiBehavior;
 
-		public DataStore<IAITargetCondition> aiTargetCondition = new DataStore<IAITargetCondition>();
+		private DataStore<IAITargetCondition> aiTargetCondition = new DataStore<IAITargetCondition>();
 		public IDataStore<IAITargetCondition> AITargetCondition => aiTargetCondition;
 
-		public DataStore<IAITargetPriority> aiTargetPriority = new DataStore<IAITargetPriority>();
+		private DataStore<IAITargetPriority> aiTargetPriority = new DataStore<IAITargetPriority>();
 		public IDataStore<IAITargetPriority> AITargetPriority => aiTargetPriority;
 
-		public DataStore<IUnit> npcUnits = new DataStore<IUnit>();
+		private DataStore<IUnit> npcUnits = new DataStore<IUnit>();
 		public IDataStore<IUnit> NPCUnits => npcUnits;
 
-		public DataStore<SkillTargetingSet> skillTargetSets = new DataStore<SkillTargetingSet>();
+		private DataStore<SkillTargetingSet> skillTargetSets = new DataStore<SkillTargetingSet>();
 		public IDataStore<SkillTargetingSet> SkillTargetSets => skillTargetSets;
 
 		public void Initialize(string configPath)

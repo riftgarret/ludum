@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Redninja.Components.Actions;
-using Redninja.Components.Operations;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 using Redninja.Logging;
