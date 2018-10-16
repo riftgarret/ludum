@@ -1,12 +1,10 @@
 ﻿using System;
-using Redninja.Components.Operations;
 using Redninja.Components.Targeting;
 
 namespace Redninja.Components.Skills
 {
 	public class SkillOperationDefinition
 	{
-		public delegate IBattleOperation OperationProvider(IUnitModel entity, ITargetResolver target, ISkill skill);
 
 		public float ExecutionStart { get; }
 		public ITargetPattern Pattern { get; }

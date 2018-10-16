@@ -1,6 +1,6 @@
-﻿using Redninja.Components.Skills;
+﻿using System.Collections.Generic;
+using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
-using System.Collections.Generic;
 
 namespace Redninja.Data.Schema
 {
@@ -33,7 +33,7 @@ namespace Redninja.Data.Schema
 			foreach (var item in targets)
 			{
 				// note: Other constructor not visibile, should figure out how to determine whcih to use.
-				var rule = new TargetingRule(item.TargetTeam, ParseHelper.ParseTargetCondition(item.TargetConditionEnum));
+				var rule = new TargetingRule(item.TargetTeam, ParseHelper.ParseTargetCondition(item.TargetConditionName));
 
 				var builder = new SkillTargetingSet.Builder(rule);
 				foreach (var combatRound in item.CombatRounds)
@@ -41,7 +41,7 @@ namespace Redninja.Data.Schema
 					builder.AddCombatRound(
 						combatRound.ExecutionStart,
 						ParseHelper.ParsePattern(combatRound.Pattern),
-						ParseHelper.ParseOperation(combatRound.OperationEnum));
+						ParseHelper.ParseOperationProvider(combatRound.OperationProviderName));
 				}
 
 				targetStore[item.DataId] = builder.Build();
