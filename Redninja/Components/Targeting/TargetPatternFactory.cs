@@ -12,7 +12,7 @@ namespace Redninja.Components.Targeting
 		public static ITargetPattern CreateRowPattern() => CreateRowPattern(0);
 		public static ITargetPattern CreateRowPattern(int offset) => new EvalfPattern((ar, ac, tr, tc) => tr == ar + offset);
 		public static ITargetPattern CreateColumnPattern() => CreateColumnPattern(0);
-		public static ITargetPattern CreateColumnPattern(int offset) => new EvalfPattern((ar, ac, tr, tc) => tc == ac);
+		public static ITargetPattern CreateColumnPattern(int offset) => new EvalfPattern((ar, ac, tr, tc) => tc == ac + offset);
 		public static ITargetPattern CreatePattern(params Coordinate[] tiles)
 		{
 			List<Coordinate> list = new List<Coordinate>(tiles);
@@ -36,6 +36,24 @@ namespace Redninja.Components.Targeting
 
 			public bool ContainsLocation(Coordinate anchor, Coordinate target)
 				=> ContainsLocation(anchor.Row, anchor.Column, target.Row, target.Column);
+
+			public override bool Equals(object obj)
+			{
+				var pattern = obj as EvalfPattern;
+				// compare by running over a 5x5 grid on the anchor point of 0
+				for(int row=-2; row <= 2; row++)
+				{
+					for (int col = -2; col <= 2; col++)
+					{
+						if(pattern.ContainsLocation(0, 0, row, col) != ContainsLocation(0, 0, row, col))
+						{
+							return false;
+						}
+					}
+				}
+
+				return true;
+			}
 		}
 	}
 }
