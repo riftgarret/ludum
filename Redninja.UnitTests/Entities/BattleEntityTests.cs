@@ -4,9 +4,8 @@ using NUnit.Framework;
 using Redninja.Components.Actions;
 using Redninja.Components.Combat;
 using Redninja.Components.Decisions;
-using Redninja.Entities;
 
-namespace Redninja.UnitTests.Entities
+namespace Redninja.Entities.UnitTests
 {
 	[TestFixture]
     public class BattleEntityTests

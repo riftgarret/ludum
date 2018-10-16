@@ -62,13 +62,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actions\BattleActionBaseTests.cs" />
-    <Compile Include="AI\AISkillRuleTests.cs" />
-    <Compile Include="AI\AIRuleBaseTests.cs" />
-    <Compile Include="AI\AIRuleSetTests.cs" />
-    <Compile Include="AI\WeightedPoolTests.cs" />
-    <Compile Include="BattlePresenterTests.cs" />
-    <Compile Include="Decisions\PlayerDecisionManagerTests.cs" />
+    <Compile Include="Components\Actions\BattleActionBaseTests.cs" />
+    <Compile Include="Components\Decisions\AI\AISkillRuleTests.cs" />
+    <Compile Include="Components\Decisions\AI\AIRuleBaseTests.cs" />
+    <Compile Include="Components\Decisions\AI\AIRuleSetTests.cs" />
+    <Compile Include="Components\Decisions\AI\WeightedPoolTests.cs" />
+    <Compile Include="Presenter\BattlePresenterTests.cs" />
+    <Compile Include="Data\Schema\ParseHelperTests.cs" />
+    <Compile Include="Components\Decisions\PlayerDecisionManagerTests.cs" />
     <Compile Include="Entities\BattleEntityTests.cs" />
     <Compile Include="MockClock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -4,13 +4,12 @@ using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
 using Redninja.Components.Actions;
-using Redninja.Components.Skills;
-using Redninja.Components.Targeting;
-using Redninja.Entities;
 using Redninja.Components.Decisions;
 using Redninja.Components.Decisions.AI;
+using Redninja.Components.Skills;
+using Redninja.Components.Targeting;
 
-namespace Redninja.UnitTests.AI
+namespace Redninja.Components.Decisions.AI.UnitTests
 {
 	[TestFixture]
 	public class AISkillRuleTests : AIRuleBaseTests<AISkillRule.Builder, AISkillRule>
