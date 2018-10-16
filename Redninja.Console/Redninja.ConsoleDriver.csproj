@@ -83,4 +83,9 @@
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties Assets_4Data_4skills_1json__JSONSchema="..\..\..\Redninja\json\skills-schema.json" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

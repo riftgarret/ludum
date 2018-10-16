@@ -1,39 +1,35 @@
 ﻿{
-    "combatSkills": [
-        {
-            "dataId": "prototype_001",
-            "name": "skill",
-            "time": [ 3, 1, 2 ],
-            "targetSetIds": [ "prototype_001" ],
-            "baseDamage": 10,
-            "critMultiplier": 20,
-            "bonsDamageStat": "ATK",
-            "damageTypes": [ "Physical" ]
-        }
-    ],
+  "combatSkills": [
+    {
+      "dataId": "prototype_001",
+      "name": "skill",
+      "time": [ 3, 1, 2 ],
+      "targetSetIds": [ "prototype_001" ],
+      "baseDamage": 10,
+      "critMultiplier": 20,
+      "bonusDamageStat": "ATK",
+      "damageTypes": [ "Physical" ]
+    }
+  ],
 
-    "targetSets": [
+  "targetSets": [
+    {
+      "dataId": "prototype_001",
+      "pattern": "(0,0)(0,1)",
+      "targetType": "Pattern",
+      "targetConditionName": "None",
+      "combatRounds": [
         {
-            "dataId": "prototype_001",
-            //"patternId": "TODO",
-            "targetType": "Pattern",
-            "targetConditionName": "None",
-            "combatRounds": [
-                {
-                    "executionStart": 0.25,
-                    "operationProviderName": "Damage",
-                    "pattern": "(0,0)"
-                },
-                {
-                    "executionStart": 0.25,
-                    "operationProviderName": "Damage",
-                    "pattern": "(1,0)"
-                }
-            ]
+          "executionStart": 0.25,
+          "operationProviderName": "Damage",
+          "pattern": "(0,0)"
+        },
+        {
+          "executionStart": 0.25,
+          "operationProviderName": "Damage",
+          "pattern": "(1,0)"
         }
-    ]
+      ]
+    }
+  ]
 }
-        
-           
-        
-        

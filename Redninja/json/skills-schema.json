@@ -1,0 +1,139 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Schema for defining skills",
+  "type": "object",
+  "definitions": {
+    "dataId": {
+      "type": "string",
+      "description": "Data resource identifier",
+      "default": "",
+      "examples": [
+        "skill_001"
+      ]
+    },
+    "combatStat": {
+      "type": "string" //temporary until we define the enums
+    },
+    "damageType": {
+      "type": "string"
+    },
+    "targetPattern": {
+      "type": "string",
+      "pattern": "^(single|row|column|((\\(\\d+,\\d+\\))+))$"
+    }
+  },
+  "required": [
+    "combatSkills",
+    "targetSets"
+  ],
+  "properties": {
+    "combatSkills": {
+      "type": "array",
+      "description": "Skill definitions",
+      "items": {
+        "type": "object",
+        "required": [
+          "dataId",
+          "name",
+          "time",
+          "targetSetIds"
+        ],
+        "properties": {
+          "dataId": { "$ref": "#/definitions/dataId" },
+          "name": {
+            "type": "string",
+            "description": "Skill name",
+            "default": ""
+          },
+          "time": {
+            "type": "array",
+            "description": "Action time definition [prepare, execute, recover]",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "type": "number",
+              "title": "Phase time",
+              "default": 0
+            }
+          },
+          "targetSetIds": {
+            "type": "array",
+            "description": "Targeting set identifiers",
+            "items": { "$ref": "#/definitions/dataId" }
+          },
+          "baseDamage": {
+            "type": "integer",
+            "description": "Base skill damage",
+            "default": 0
+          },
+          "critMultiplier": {
+            "type": "integer",
+            "description": "Critical hit damage multiplier",
+            "default": 1
+          },
+          "bonusDamageStat": {
+            "description": "Additive bonus damage stat",
+            "allOf": [ { "$ref": "#/definitions/combatStat" } ]
+          },
+          "damageTypes": {
+            "type": "array",
+            "description": "Damage types",
+            "items": {
+              "$ref": "#/definitions/damageType"
+            }
+          }
+        }
+      }
+    },
+    "targetSets": {
+      "type": "array",
+      "description": "Targeting phase definitions, specifying a targeting rule and combat operations to be executed with it",
+      "items": {
+        "type": "object",
+        "required": [
+          "dataId",
+          "targetType",
+          "combatRounds"
+        ],
+        "properties": {
+          "dataId": { "$ref": "#/definitions/dataId" },
+          "targetType": {
+            "type": "string",
+            "enum": [ "Entity", "Pattern" ],
+            "description": "The type of targeting to use",
+            "default": "Entity"
+          },
+          "pattern": {
+            "description": "The pattern for the targeting phase",
+            "allOf": [ { "$ref": "#/definitions/targetPattern" } ]
+          },
+          "combatRounds": {
+            "type": "array",
+            "description": "Skill operation definitions",
+            "items": {
+              "type": "object",
+              "required": [
+                "executionStart",
+                "operationProviderName"
+              ],
+              "properties": {
+                "executionStart": {
+                  "type": "number",
+                  "description": "The phase percent to execute the operation"
+                },
+                "operationProviderName": {
+                  "type": "string",
+                  "description": "The name of the battle operation provider"
+                },
+                "pattern": {
+                  "description": "The pattern used to execute the operation",
+                  "allOf": [ { "$ref": "#/definitions/targetPattern" } ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

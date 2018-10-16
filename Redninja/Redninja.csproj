@@ -163,6 +163,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="json\skills-schema.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

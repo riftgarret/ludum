@@ -31,7 +31,7 @@ namespace Redninja.Data.Schema.Readers
 
 			if (patternText.StartsWith("("))
 			{
-				Match match = Regex.Match(patternText, @"\((?<row>\d)(\s*),(\s*)(?<col>\d)\)");
+				Match match = Regex.Match(patternText, @"\((?<row>\d+)(\s*),(\s*)(?<col>\d+)\)");
 				List<Coordinate> patternCoordinates = new List<Coordinate>();
 				while (match.Success)
 				{
