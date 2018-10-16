@@ -1,6 +1,6 @@
-﻿using Davfalcon.Revelator.Borger;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Davfalcon.Revelator.Borger;
 
 namespace Redninja.Data.Schema
 {

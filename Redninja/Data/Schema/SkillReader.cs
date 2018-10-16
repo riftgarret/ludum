@@ -1,18 +1,18 @@
-﻿using Redninja.Components.Skills;
+﻿using System.Collections.Generic;
+using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
-using System.Collections.Generic;
 
 namespace Redninja.Data.Schema
 {
 	internal static class SkillReader
 	{		
-		internal static void ReadAll(SkillRootSchema skillRoot, IEditableDataManager manager)
+		public static void ReadAll(SkillRootSchema skillRoot, IEditableDataManager manager)
 		{					
 			ReadTargets(manager.SkillTargetSets, skillRoot.TargetSets);
 			ReadSkills(manager.Skills, manager.SkillTargetSets, skillRoot.CombatSkills);
 		}
 
-		internal static void ReadSkills(IEditableDataStore<ISkill> skillStore, IEditableDataStore<SkillTargetingSet> targetStore, List<CombatSkillSchema> skills)
+		public static void ReadSkills(IEditableDataStore<ISkill> skillStore, IEditableDataStore<SkillTargetingSet> targetStore, List<CombatSkillSchema> skills)
 		{
 			foreach (var item in skills)
 			{
@@ -28,12 +28,12 @@ namespace Redninja.Data.Schema
 			}
 		}
 
-		internal static void ReadTargets(IEditableDataStore<SkillTargetingSet> targetStore, List<TargetingSetSchema> targets)
+		public static void ReadTargets(IEditableDataStore<SkillTargetingSet> targetStore, List<TargetingSetSchema> targets)
 		{
 			foreach (var item in targets)
 			{
 				// note: Other constructor not visibile, should figure out how to determine whcih to use.
-				var rule = new TargetingRule(item.TargetTeam, ParseHelper.ParseTargetCondition(item.TargetConditionEnum));
+				var rule = new TargetingRule(item.TargetTeam, ParseHelper.ParseTargetCondition(item.TargetConditionName));
 
 				var builder = new SkillTargetingSet.Builder(rule);
 				foreach (var combatRound in item.CombatRounds)
@@ -41,7 +41,7 @@ namespace Redninja.Data.Schema
 					builder.AddCombatRound(
 						combatRound.ExecutionStart,
 						ParseHelper.ParsePattern(combatRound.Pattern),
-						ParseHelper.ParseOperation(combatRound.OperationEnum));
+						ParseHelper.ParseOperationProvider(combatRound.OperationProviderName));
 				}
 
 				targetStore[item.DataId] = builder.Build();

@@ -1,14 +1,13 @@
-﻿using Newtonsoft.Json;
-using Redninja.Components.Actions;
-using Redninja.Components.Operations;
-using Redninja.Components.Targeting;
-using Redninja.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using static Redninja.Components.Skills.SkillOperationDefinition;
+using Newtonsoft.Json;
+using Redninja.Components.Actions;
+using Redninja.Components.Skills;
+using Redninja.Components.Targeting;
+using Redninja.Logging;
 
 namespace Redninja.Data.Schema
 {
@@ -19,7 +18,7 @@ namespace Redninja.Data.Schema
 		/// </summary>
 		/// <param name="patternText"></param>
 		/// <returns></returns>
-		internal static ITargetPattern ParsePattern(string patternText)
+		public static ITargetPattern ParsePattern(string patternText)
 		{
 			switch (patternText.ToLower())
 			{
@@ -57,7 +56,7 @@ namespace Redninja.Data.Schema
 		/// </summary>
 		/// <param name="time"></param>
 		/// <returns></returns>
-		internal static ActionTime ParseActionTime(List<float> time)
+		public static ActionTime ParseActionTime(List<float> time)
 		{
 			if(time.Count() != 3)
 			{
@@ -70,30 +69,13 @@ namespace Redninja.Data.Schema
 		/// <summary>
 		/// Convert enum to instance.
 		/// </summary>
-		/// <param name="tce"></param>
+		/// <param name="targetCondition"></param>
 		/// <returns></returns>
-		internal static TargetCondition ParseTargetCondition(TargetConditionEnum tce)
-		{
-			switch(tce)
-			{
-				case TargetConditionEnum.MustBeAlive:
-					return TargetConditions.MustBeAlive;
+		public static TargetCondition ParseTargetCondition(string targetConditionName)
+			=> (TargetCondition)typeof(TargetConditions).GetProperty(targetConditionName).GetValue(null);
 
-				case TargetConditionEnum.None:
-				default:
-					return TargetConditions.None;
-			}
-		}
-
-		internal static OperationProvider ParseOperation(OperationEnum op)
-		{
-			switch(op)
-			{
-				default:
-				case OperationEnum.Damage:
-					return (e,t,s) => new DamageOperation(e,t,s);
-			}
-		}
+		public static OperationProvider ParseOperationProvider(string operationProviderName)
+			=> (OperationProvider)typeof(OperationProviders).GetProperty(operationProviderName).GetValue(null);
 
 		/// <summary>
 		/// Read this file directly into this json node.
@@ -101,7 +83,7 @@ namespace Redninja.Data.Schema
 		/// <typeparam name="T"></typeparam>
 		/// <param name="filePath"></param>
 		/// <returns></returns>
-		internal static T ReadJson<T>(string filePath)
+		public static T ReadJson<T>(string filePath)
 		{
 			string json = File.ReadAllText(filePath);
 			return JsonConvert.DeserializeObject<T>(json);

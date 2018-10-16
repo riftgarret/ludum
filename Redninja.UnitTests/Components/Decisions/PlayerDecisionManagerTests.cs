@@ -2,14 +2,13 @@
 using Ninject;
 using NSubstitute;
 using NUnit.Framework;
+using Redninja.Components.Decisions.Player;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 using Redninja.Entities;
-using Redninja.Components.Decisions;
-using Redninja.Components.Decisions.Player;
 using Redninja.View;
 
-namespace Redninja.Decisions.UnitTests
+namespace Redninja.Components.Decisions.UnitTests
 {
 	[TestFixture]
 	public class PlayerDecisionManagerTests

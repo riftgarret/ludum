@@ -17,16 +17,16 @@
             "dataId": "prototype_001",
             //"patternId": "TODO",
             "targetType": "Pattern",
-            "targetConditionEnum": "None",
+            "targetConditionName": "None",
             "combatRounds": [
                 {
                     "executionStart": 0.25,
-                    "operationEnum": "Damage",
+                    "operationProviderName": "Damage",
                     "pattern": "(0,0)"
                 },
                 {
                     "executionStart": 0.25,
-                    "operationEnum": "Damage",
+                    "operationProviderName": "Damage",
                     "pattern": "(1,0)"
                 }
             ]

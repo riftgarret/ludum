@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
-using Redninja.Components.Actions;
 
-namespace Redninja.UnitTests.Actions
+namespace Redninja.Components.Actions.UnitTests
 {
 	[TestFixture]
     public class BattleActionBaseTests

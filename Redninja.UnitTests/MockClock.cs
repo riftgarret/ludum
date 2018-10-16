@@ -1,7 +1,7 @@
 ﻿using System;
 using Redninja.Components.Clock;
 
-namespace Redninja.UnitTests
+namespace Redninja
 {
 	public class MockClock : IClock
     {

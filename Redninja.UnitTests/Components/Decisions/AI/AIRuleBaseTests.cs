@@ -4,11 +4,8 @@ using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
 using Redninja.Components.Targeting;
-using Redninja.Entities;
-using Redninja.Components.Decisions;
-using Redninja.Components.Decisions.AI;
 
-namespace Redninja.UnitTests.AI
+namespace Redninja.Components.Decisions.AI.UnitTests
 {
 	[TestFixture]
 	public abstract class AIRuleBaseTests<B, T> 

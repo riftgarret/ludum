@@ -52,6 +52,7 @@
     <Compile Include="Components\Actions\AttackAction.cs" />
     <Compile Include="Components\Actions\BattleActionBase.cs" />
     <Compile Include="Components\Clock\Clock.cs" />
+    <Compile Include="Components\Skills\OperationProvider.cs" />
     <Compile Include="Components\Skills\SkillAction.cs" />
     <Compile Include="Components\Actions\MovementAction.cs" />
     <Compile Include="Components\Actions\WaitAction.cs" />
@@ -82,7 +83,6 @@
     <Compile Include="Data\Schema\CombatSkillSchema.cs" />
     <Compile Include="Data\Schema\ConfigSchema.cs" />
     <Compile Include="Data\Schema\DataReader.cs" />
-    <Compile Include="Data\Schema\ParseConstants.cs" />
     <Compile Include="Data\Schema\ParseHelper.cs" />
     <Compile Include="Data\Schema\SkillReader.cs" />
     <Compile Include="Data\Schema\SkillRootSchema.cs" />

@@ -5,12 +5,11 @@ using NUnit.Framework;
 using Redninja.Components.Actions;
 using Redninja.Components.Clock;
 using Redninja.Components.Combat;
-using Redninja.Entities;
 using Redninja.Components.Decisions;
-using Redninja.Presenter;
+using Redninja.Entities;
 using Redninja.View;
 
-namespace Redninja.UnitTests
+namespace Redninja.Presenter.UnitTests
 {
 	[TestFixture]
 	public class BattlePresenterTests

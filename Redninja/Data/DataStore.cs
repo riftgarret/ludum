@@ -2,7 +2,7 @@
 
 namespace Redninja.Data
 {
-	public class DataStore<T> : IEditableDataStore<T>
+	internal class DataStore<T> : IEditableDataStore<T>
 	{
 		private readonly Dictionary<string, T> dict = new Dictionary<string, T>();
 

@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
-using Redninja.Components.Decisions.AI;
 
-namespace Redninja.UnitTests.AI
+namespace Redninja.Components.Decisions.AI.UnitTests
 {
 	[TestFixture]
 	public class WeightedPoolTests

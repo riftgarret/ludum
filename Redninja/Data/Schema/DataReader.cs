@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Redninja.Data.Schema
+﻿namespace Redninja.Data.Schema
 {
-	public static class DataReader
+	internal static class DataReader
 	{
 		public static void Read(IEditableDataManager manager, string configPath)
 		{

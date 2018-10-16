@@ -1,6 +1,6 @@
-﻿using Redninja.Components.Targeting;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Redninja.Components.Targeting;
 
 namespace Redninja.Data.Schema
 {
@@ -11,7 +11,7 @@ namespace Redninja.Data.Schema
 		//public string PatternId { get; set; }
 		public TargetTeam TargetTeam { get; set; }
 		public TargetType TargetType { get; set; }
-		public TargetConditionEnum TargetConditionEnum { get; set; }
+		public string TargetConditionName { get; set; }
 		public List<CombatRoundSchema> CombatRounds { get; set; }
 	}
 
@@ -19,7 +19,7 @@ namespace Redninja.Data.Schema
 	internal class CombatRoundSchema
 	{
 		public float ExecutionStart { get; set; }
-		public OperationEnum OperationEnum { get; set; }
+		public string OperationProviderName { get; set; }
 		public string Pattern { get; set; }
 	}
 
