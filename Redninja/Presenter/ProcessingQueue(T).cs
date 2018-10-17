@@ -16,7 +16,10 @@ namespace Redninja.Presenter
 
 		public void ProcessWhile(Func<bool> checkCondition)
 		{
-			while (checkCondition() && queue.Count > 0) func(queue.Dequeue());
+			while (checkCondition() && queue.Count > 0)
+			{
+				func(queue.Dequeue());
+			}
 		}
 	}
 }

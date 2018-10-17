@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Redninja.Components.Actions;
 using Redninja.Components.Clock;
 
 namespace Redninja.Entities
@@ -11,9 +10,8 @@ namespace Redninja.Entities
 
 		event Action<IBattleEntity> DecisionRequired;
 
-		void AddBattleEntity(IBattleEntity entity, IClock clock);
-		void RemoveBattleEntity(IBattleEntity entity);
-		void SetAction(IBattleEntity entity, IBattleAction action);
+		void AddEntity(IBattleEntity entity, IClock clock);
+		void RemoveEntity(IBattleEntity entity);
 		void InitializeBattlePhase();
 	}
 }

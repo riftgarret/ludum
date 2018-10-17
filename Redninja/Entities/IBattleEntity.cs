@@ -9,11 +9,13 @@ namespace Redninja.Entities
 	{
 		bool IsPlayerControlled { get; }
 		IBattleAction CurrentAction { get; }
-		IActionDecider ActionDecider { get; set; }
+		IActionDecider ActionDecider { get; }
 
+		event Action<IBattleEntity, IBattleAction> ActionSet;
 		event Action<IBattleEntity> DecisionRequired;
 
 		void InitializeBattlePhase();
+		void MovePosition(int row, int col);
 		void SetAction(IBattleAction action);
 	}
 }

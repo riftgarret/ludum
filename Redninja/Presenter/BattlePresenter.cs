@@ -90,13 +90,6 @@ namespace Redninja.Presenter
 		public void Initialize()
 		{
 			entityManager.InitializeBattlePhase();
-
-			// this value is temp until we assign an initiative per character
-
-			foreach (IBattleEntity entity in entityManager.Entities)
-			{
-				OnActionSelected(entity, new WaitAction(new RandomInteger(1, 10).Get()));
-			}
 		}
 
 		public void Start()
@@ -128,8 +121,8 @@ namespace Redninja.Presenter
 				Team = team
 			};
 			entity.MovePosition(row, col);
-			entity.ActionDecider.ActionSelected += OnActionSelected;
-			entityManager.AddBattleEntity(entity, clock);
+			entity.ActionSet += (e, action) => action.BattleOperationReady += battleOpQueue.Enqueue;
+			entityManager.AddEntity(entity, clock);
 		}
 
 		public void AddCharacter(Func<Unit.Builder, IBuilder<IUnit>> builderFunc, int row, int col)
@@ -154,18 +147,6 @@ namespace Redninja.Presenter
 
 			// Process any pending decisions until we need to wait for one
 			decisionQueue.ProcessWhile(() => TimeActive);
-		}
-		#endregion
-
-		#region Decision processing
-		/// <summary>
-		/// Handles a new action selected for an <see cref="IBattleEntity"/>.
-		/// </summary>
-		private void OnActionSelected(IUnitModel entity, IBattleAction action)
-		{
-			action.BattleOperationReady += battleOpQueue.Enqueue;
-			// This cast should be safe as long as we control the implementations carefully
-			entityManager.SetAction(entity as IBattleEntity, action);
 		}
 		#endregion
 	}

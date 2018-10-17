@@ -1,5 +1,5 @@
 using System;
-using System.Linq;
+using Davfalcon.Randomization;
 using Davfalcon.Revelator;
 using Redninja.Components.Actions;
 using Redninja.Components.Clock;
@@ -28,21 +28,35 @@ namespace Redninja.Entities
 		public ActionPhase Phase => CurrentAction?.Phase ?? ActionPhase.Waiting;
 		public float PhaseProgress => CurrentAction?.PhaseProgress ?? 0;
 
-		public IActionDecider ActionDecider { get; set; }
+		public IActionDecider ActionDecider { get; }
 
+		public event Action<IBattleEntity, IBattleAction> ActionSet;
 		public event Action<IBattleEntity> DecisionRequired;
 
 		public BattleEntity(IUnit character, IActionDecider actionDecider, ICombatExecutor combatExecutor)
 		{
 			this.combatExecutor = combatExecutor;
+			combatExecutor.EntityMoving += OnEntityMoving;
 
 			Character = character;
 			ActionDecider = actionDecider;
+			ActionDecider.ActionSelected += OnActionSelected;
+		}
+
+		private void OnEntityMoving(IUnitModel entity, Coordinate c)
+		{
+			if (entity == this) MovePosition(c.Row, c.Column);
+		}
+
+		private void OnActionSelected(IUnitModel entity, IBattleAction action)
+		{
+			if (entity == this) SetAction(action);
 		}
 
 		public void InitializeBattlePhase()
 		{
 			combatExecutor.InitializeEntity(this);
+			SetAction(new WaitAction(new RandomInteger(1, 10).Get()));
 		}
 
 		public void SetAction(IBattleAction action)
@@ -52,6 +66,7 @@ namespace Redninja.Entities
 
 			CurrentAction = action;
 			CurrentAction.SetClock(clock);
+			ActionSet?.Invoke(this, action);
 			CurrentAction.Start();
 		}
 
@@ -69,30 +84,35 @@ namespace Redninja.Entities
 			}
 		}
 
-		#region Clock binding
 		public void SetClock(IClock clock)
 		{
-			// Check to unbind from previous clock just in case
-			Dispose();
+			UnsetClock();
 
 			this.clock = clock;
 			clock.Tick += OnTick;
 		}
 
-		public void Dispose()
+		private void UnsetClock()
 		{
 			if (clock != null)
 			{
 				clock.Tick -= OnTick;
 				clock = null;
 			}
+		}
+
+		public void Dispose()
+		{
+			UnsetClock();
 
 			if (CurrentAction != null)
 			{
 				CurrentAction.Dispose();
 				CurrentAction = null;
 			}
+
+			combatExecutor.EntityMoving -= OnEntityMoving;
+			ActionDecider.ActionSelected -= OnActionSelected;
 		}
-		#endregion
 	}
 }
