@@ -59,19 +59,15 @@ namespace Redninja.Presenter
 			return kernel.Get<IBattlePresenter>();
 		}
 
-		public BattlePresenter(ICombatExecutor combatExecutor,
-			IBattleEntityManager entityManager,
-			PlayerDecisionManager playerDecisionManager,
-			IBattleView view,
-			IKernel kernel,
-			Clock clock)
+		public BattlePresenter(IKernel kernel)
 		{
 			this.kernel = kernel;
-			this.combatExecutor = combatExecutor;
-			this.entityManager = entityManager;
-			this.playerDecisionManager = playerDecisionManager;
-			this.view = view;
-			this.clock = clock;
+
+			combatExecutor = kernel.Get<ICombatExecutor>();
+			entityManager = kernel.Get<IBattleEntityManager>();
+			playerDecisionManager = kernel.Get<PlayerDecisionManager>();
+			view = kernel.Get<IBattleView>();
+			clock = kernel.Get<Clock>();
 
 			entityManager.DecisionRequired += OnActionRequired;
 			combatExecutor.BattleEventOccurred += OnBattleEventOccurred;

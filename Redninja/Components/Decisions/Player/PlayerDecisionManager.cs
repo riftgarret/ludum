@@ -6,7 +6,7 @@ using Redninja.View;
 
 namespace Redninja.Components.Decisions.Player
 {
-	public class PlayerDecisionManager : IActionDecider
+	internal class PlayerDecisionManager : IActionDecider
 	{		
 		private readonly IBattleView view;
 		private readonly IDecisionHelper decisionHelper;
