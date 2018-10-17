@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Redninja.Components.Actions;
 using Redninja.Components.Clock;
 
 namespace Redninja.Entities
@@ -15,15 +16,14 @@ namespace Redninja.Entities
 		public IEnumerable<IBattleEntity> Entities => entityMap;
 		IEnumerable<IUnitModel> IBattleModel.Entities => Entities;
 
-		public event Action<IBattleEntity> DecisionRequired;
-
-		private void OnEntityDecisionRequired(IBattleEntity entity)
-			=> DecisionRequired?.Invoke(entity);
+		public event Action<IBattleEntity> ActionNeeded;
+		public event Action<IBattleEntity, IBattleAction> ActionSet;
 
 		public void AddEntity(IBattleEntity entity, IClock clock)
 		{
 			entity.SetClock(clock);
-			entity.DecisionRequired += OnEntityDecisionRequired;
+			entity.ActionNeeded += ActionNeeded;
+			entity.ActionSet += ActionSet;
 			entityMap.Add(entity);
 		}
 

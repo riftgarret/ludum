@@ -31,7 +31,7 @@ namespace Redninja.Entities
 		public IActionDecider ActionDecider { get; }
 
 		public event Action<IBattleEntity, IBattleAction> ActionSet;
-		public event Action<IBattleEntity> DecisionRequired;
+		public event Action<IBattleEntity> ActionNeeded;
 
 		public BattleEntity(IUnit character, IActionDecider actionDecider, ICombatExecutor combatExecutor)
 		{
@@ -79,7 +79,7 @@ namespace Redninja.Entities
 
 			if (CurrentAction.Phase == ActionPhase.Done)
 			{
-				DecisionRequired?.Invoke(this);
+				ActionNeeded?.Invoke(this);
 				// If we add an action queue, pop the completed action off here
 			}
 		}

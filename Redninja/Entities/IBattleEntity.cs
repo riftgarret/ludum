@@ -12,7 +12,7 @@ namespace Redninja.Entities
 		IActionDecider ActionDecider { get; }
 
 		event Action<IBattleEntity, IBattleAction> ActionSet;
-		event Action<IBattleEntity> DecisionRequired;
+		event Action<IBattleEntity> ActionNeeded;
 
 		void InitializeBattlePhase();
 		void MovePosition(int row, int col);

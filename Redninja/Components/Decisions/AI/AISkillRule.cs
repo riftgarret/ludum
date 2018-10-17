@@ -20,7 +20,7 @@ namespace Redninja.Components.Decisions.AI
 
 		public override IBattleAction GenerateAction(IUnitModel source, IDecisionHelper decisionHelper)
 		{
-			ISkillsComponent skillMeta = decisionHelper.GetAvailableSkills(source);
+			IActionsContext skillMeta = decisionHelper.GetActionsContext(source);
 
 			// filter out what skills this rule uses
 			IEnumerable<ISkill> availableSkills = GetAssignableSkills(skillMeta);
@@ -29,7 +29,7 @@ namespace Redninja.Components.Decisions.AI
 			foreach (ISkill skill in availableSkills)
 			{
 				// look for available targets
-				ITargetingComponent targetMeta = decisionHelper.GetTargetingComponent(source, skill);
+				ITargetingContext targetMeta = decisionHelper.GetTargetingContext(source, skill);
 
 				// found!				
 				while (TryFindTarget(targetMeta, source, decisionHelper.BattleModel, out ISelectedTarget selectedTarget))
@@ -45,10 +45,10 @@ namespace Redninja.Components.Decisions.AI
 			return null;
 		}
 
-		internal IEnumerable<ISkill> GetAssignableSkills(ISkillsComponent meta)
+		internal IEnumerable<ISkill> GetAssignableSkills(IActionsContext meta)
 			=> meta.Skills.Intersect(SkillAssignments.Select(x => x.Item2));
 
-		internal bool TryFindTarget(ITargetingComponent meta, IUnitModel source, IBattleModel bem, out ISelectedTarget selectedTarget)
+		internal bool TryFindTarget(ITargetingContext meta, IUnitModel source, IBattleModel bem, out ISelectedTarget selectedTarget)
 		{
 			// filter targets
 			IEnumerable<IUnitModel> filteredTargets = FilterTargets(meta.TargetingRule, source, bem);

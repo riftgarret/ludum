@@ -10,6 +10,8 @@ using Redninja.Components.Combat;
 using Redninja.Components.Decisions;
 using Redninja.Components.Decisions.Player;
 using Redninja.Components.Operations;
+using Redninja.Components.Skills;
+using Redninja.Components.Targeting;
 using Redninja.Entities;
 using Redninja.Events;
 using Redninja.View;
@@ -20,7 +22,7 @@ namespace Redninja.Presenter
 	/// Main logic that flows through this scene is handled by this presenter in a MVP relationship.
 	/// Where this is the presenter, other components generated will represent the views.  
 	/// </summary>
-	public class BattlePresenter : IBattlePresenter
+	public class BattlePresenter : IBattlePresenter, IBaseCallbacks, ISkillsCallbacks, IMovementCallbacks, ITargetingCallbacks
 	{
 		private readonly Clock clock;
 		private readonly IKernel kernel;
@@ -74,13 +76,26 @@ namespace Redninja.Presenter
 			battleOpQueue = new PriorityProcessingQueue<float, IBattleOperation>(op =>
 				op.Execute(entityManager, combatExecutor));
 
-			entityManager.DecisionRequired += decisionQueue.Enqueue;
-			combatExecutor.BattleEventOccurred += e => BattleEventOccurred?.Invoke(e);
+			BindEvents();
+			InitializeView();
+		}
+
+		private void BindEvents()
+		{
+			entityManager.ActionNeeded += decisionQueue.Enqueue;
+			entityManager.ActionSet += (e, action) => action.BattleOperationReady += battleOpQueue.Enqueue;
+			combatExecutor.BattleEventOccurred += BattleEventOccurred;
 			combatExecutor.BattleEventOccurred += view.OnBattleEventOccurred;
 			playerDecisionManager.WaitingForDecision += e => Pause();
+			playerDecisionManager.WaitingForDecision += view.OnDecisionNeeded;
 			playerDecisionManager.WaitResolved += Start;
+			playerDecisionManager.WaitResolved += view.Resume;
+		}
 
+		private void InitializeView()
+		{
 			view.SetBattleModel(entityManager);
+			view.SetViewMode(this);
 		}
 
 		#region Setup and control
@@ -121,7 +136,6 @@ namespace Redninja.Presenter
 				Team = team
 			};
 			entity.MovePosition(row, col);
-			entity.ActionSet += (e, action) => action.BattleOperationReady += battleOpQueue.Enqueue;
 			entityManager.AddEntity(entity, clock);
 		}
 
@@ -148,6 +162,82 @@ namespace Redninja.Presenter
 			// Process any pending decisions until we need to wait for one
 			decisionQueue.ProcessWhile(() => TimeActive);
 		}
+		#endregion
+
+		#region View callbacks
+		void IBaseCallbacks.SelectUnit(IUnitModel entity)
+		{
+			playerDecisionManager.SetEntityContext(entity);
+			view.SetViewMode(playerDecisionManager.ActionsContext, this);
+		}
+
+		#region Action selection
+		void ISkillsCallbacks.InitiateMovement(IUnitModel entity)
+		{
+			playerDecisionManager.SetMovementContext(entity);
+			view.SetViewMode(playerDecisionManager.MovementContext, this);
+		}
+
+		void ISkillsCallbacks.SelectSkill(IUnitModel entity, ISkill skill)
+		{
+			playerDecisionManager.SetTargetingContext(entity, skill);
+			view.SetViewMode(playerDecisionManager.TargetingContext, this);
+		}
+
+		void ISkillsCallbacks.Wait(IUnitModel entity)
+		{
+			playerDecisionManager.Resolve(entity, new WaitAction(5));
+			view.SetViewMode(this);
+		}
+
+		void ISkillsCallbacks.Cancel()
+		{
+			playerDecisionManager.ExitContext();
+			view.SetViewMode(this);
+		}
+		#endregion
+
+		#region Movement
+		void IMovementCallbacks.UpdatePath(Coordinate point)
+		{
+			playerDecisionManager.MovementContext.AddPoint(point);
+			// Should we set view after intermediate steps?
+		}
+
+		void IMovementCallbacks.Confirm()
+		{
+			playerDecisionManager.Resolve();
+			view.SetViewMode(this);
+		}
+
+		void IMovementCallbacks.Cancel()
+		{
+			playerDecisionManager.ExitContext();
+			view.SetViewMode(playerDecisionManager.ActionsContext, this);
+		}
+		#endregion
+
+		#region Targeting
+		void ITargetingCallbacks.SelectTarget(ISelectedTarget target)
+		{
+			playerDecisionManager.TargetingContext.SelectTarget(target);
+
+			if (playerDecisionManager.TargetingContext.Ready)
+			{
+				playerDecisionManager.Resolve();
+				view.SetViewMode(this);
+			}
+		}
+
+		void ITargetingCallbacks.Cancel()
+		{
+			if (!playerDecisionManager.TargetingContext.Back())
+			{
+				playerDecisionManager.ExitContext();
+				view.SetViewMode(playerDecisionManager.ActionsContext, this);
+			}
+		}
+		#endregion
 		#endregion
 	}
 }

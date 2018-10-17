@@ -16,7 +16,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 	{			
 		private AISkillRule.Builder subjectBuilder;
 
-		private ISkillsComponent mActionHelper;
+		private IActionsContext mActionHelper;
 
 		// need this to allow builder to complete but we set it to have no resolvement
 		private Tuple<ISkill, IAITargetPriority> mInitialSkill;				
@@ -30,8 +30,8 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			subjectBuilder.SetRuleTargetType(TargetTeam.Enemy);
 			mInitialSkill = AddSkillPriority(null); // required for builder			
 
-			mActionHelper = Substitute.For<ISkillsComponent>();
-			mDecisionHelper.GetAvailableSkills(Arg.Any<IUnitModel>()).Returns(mActionHelper);
+			mActionHelper = Substitute.For<IActionsContext>();
+			mDecisionHelper.GetActionsContext(Arg.Any<IUnitModel>()).Returns(mActionHelper);
 
 			SetupBuilder();
 		}
@@ -69,13 +69,13 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 
 			// make sure the skill has target meta
 			var returnedAction = Substitute.For<IBattleAction>();			
-			var mTargetHelper = Substitute.For<ITargetingComponent>();
+			var mTargetHelper = Substitute.For<ITargetingContext>();
 			var mSelectedTarget = mTargetHelper.GetSelectedTarget(mSource);
 
 			mTargetHelper.TargetingRule.IsValidTarget(mSource, mSource).Returns(true);			
 			mTargetHelper.Ready.Returns(true);			
 			mTargetHelper.Skill.Returns(mSkill);
-			mDecisionHelper.GetTargetingComponent(mSource, mSkill).Returns(mTargetHelper);
+			mDecisionHelper.GetTargetingContext(mSource, mSkill).Returns(mTargetHelper);
 
 			var subject = subjectBuilder.Build();			
 
@@ -113,7 +113,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			
 			condition.IsValid(Arg.Is<IUnitModel>(x => x == enemy1 || x == enemy2)).Returns(true);			
 
-			ITargetingComponent mTargetHelper = Substitute.For<ITargetingComponent>();
+			ITargetingContext mTargetHelper = Substitute.For<ITargetingContext>();
 			mTargetHelper.TargetingRule.IsValidTarget(Arg.Is<IUnitModel>(x => x == enemy1 || x == enemy2), mSource).Returns(true);
 			mTargetHelper.Skill.Returns(mInitialSkill.Item1);
 			mInitialSkill.Item2.GetBestTarget(Arg.Any<IEnumerable<IUnitModel>>())
@@ -138,7 +138,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 
 			condition.IsValid(Arg.Is<IUnitModel>(x => x == enemy1 || x == enemy2)).Returns(true);
 
-			ITargetingComponent mTargetHelper = Substitute.For<ITargetingComponent>();
+			ITargetingContext mTargetHelper = Substitute.For<ITargetingContext>();
 			mTargetHelper.TargetingRule.IsValidTarget(Arg.Is<IUnitModel>(x => x == enemy1 || x == enemy2), mSource).Returns(false);
 			mTargetHelper.Skill.Returns(mInitialSkill.Item1);
 

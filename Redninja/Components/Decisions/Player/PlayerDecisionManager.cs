@@ -1,19 +1,19 @@
 ﻿using System;
+using System.Collections;
 using Redninja.Components.Actions;
 using Redninja.Components.Skills;
-using Redninja.Components.Targeting;
-using Redninja.View;
 
 namespace Redninja.Components.Decisions.Player
 {
 	internal class PlayerDecisionManager : IActionDecider
-	{		
-		private readonly IBattleView view;
+	{
+		private readonly Stack contextStack = new Stack();
 		private readonly IDecisionHelper decisionHelper;
 
 		private IUnitModel blockingEntity;
-		private IMovementComponent currentMovement;
-		private ITargetingComponent currentSkill;
+		public IActionsContext ActionsContext => contextStack.Peek() as IActionsContext;
+		public IMovementContext MovementContext => contextStack.Peek() as IMovementContext;
+		public ITargetingContext TargetingContext => contextStack.Peek() as ITargetingContext;
 
 		bool IActionDecider.IsPlayer => true;
 
@@ -21,21 +21,15 @@ namespace Redninja.Components.Decisions.Player
 		public event Action<IUnitModel> WaitingForDecision;
 		public event Action WaitResolved;
 
-		private bool TargetingActive => currentSkill != null || currentMovement != null;
+		private T GetComponent<T>() where T : class => contextStack.Peek() as T;
 
-		public PlayerDecisionManager(IBattleView view, IDecisionHelper decisionHelper)
+		public PlayerDecisionManager(IDecisionHelper decisionHelper)
 		{
-			this.decisionHelper = decisionHelper;			
-			this.view = view;
-
-			view.ActionSelected += OnActionSelected;
-			view.MovementInitiated += OnMovementInitiated;
-			view.MovementPathUpdated += OnMovementPathUpdated;
-			view.MovementConfirmed += OnMovementConfirmed;
-			view.SkillSelected += OnSkillSelected;
-			view.TargetSelected += OnTargetSelected;
-			view.TargetingCanceled += OnTargetingCanceled;
+			this.decisionHelper = decisionHelper;
 		}
+
+		private InvalidOperationException StateException()
+			=> new InvalidOperationException($"Invalid action for the current context of {contextStack.Peek().GetType()},");
 
 		public void ProcessNextAction(IUnitModel entity, IBattleModel battleModel)
 		{
@@ -45,87 +39,53 @@ namespace Redninja.Components.Decisions.Player
 			WaitForDecision(entity);
 		}
 
-		// Considering removing this so view doesn't generate actions
-		private void OnActionSelected(IUnitModel entity, IBattleAction action)
+		public void SetEntityContext(IUnitModel entity)
 		{
-			if (TargetingActive) throw new InvalidOperationException("An action should not be selected while a skill is currently being targeted.");
+			if (contextStack.Count > 0) throw StateException();
 
+			contextStack.Push(decisionHelper.GetActionsContext(entity));
+		}
+
+		public void SetMovementContext(IUnitModel entity)
+		{
+			if (contextStack.Count > 1) throw StateException();
+
+			contextStack.Push(decisionHelper.GetMovementContext(entity));
+		}
+
+		public void SetTargetingContext(IUnitModel entity, ISkill skill)
+		{
+			if (contextStack.Count > 1) throw StateException();
+
+			contextStack.Push(decisionHelper.GetTargetingContext(entity, skill));
+		}
+
+		public void Resolve(IUnitModel entity, IBattleAction action)
+		{
 			ActionSelected?.Invoke(entity, action);
 			ResumeIfDecided(entity);
+			contextStack.Clear();
 		}
 
-		#region Movement
-		private void OnMovementInitiated(IUnitModel entity)
+		public void Resolve()
 		{
-			if (TargetingActive) throw new InvalidOperationException("Cannot initiate movement while another targeting state is already active.");
+			if (!(contextStack.Peek() is IActionProvider)) throw StateException();
 
-			currentMovement = decisionHelper.GetMovementComponent(entity);
-			view.SetViewMode(currentMovement);
+			IActionProvider actionProvider = contextStack.Pop() as IActionProvider;
+			Resolve(actionProvider.Entity, actionProvider.GetAction());
 		}
 
-		private void OnMovementPathUpdated(Coordinate point)
+		public void ExitContext()
 		{
-			if (currentMovement == null) throw new InvalidOperationException("Movement is not currently active.");
+			if (contextStack.Count == 0) throw new InvalidOperationException("No context to exit.");
 
-			currentMovement.AddPoint(point);
-		}
-
-		private void OnMovementConfirmed()
-		{
-			if (currentMovement == null) throw new InvalidOperationException("Movement is not currently active.");
-
-			ActionSelected?.Invoke(currentMovement.Entity, currentMovement.GetAction());
-			ResumeIfDecided(currentMovement.Entity);
-			EndTargeting();
-		}
-		#endregion
-
-		#region Skill targeting
-		private void OnSkillSelected(IUnitModel entity, ISkill skill)
-		{
-			if (TargetingActive) throw new InvalidOperationException("Cannot initiate skill targeting while another targeting state is already active.");
-
-			currentSkill = decisionHelper.GetTargetingComponent(entity, skill);
-			view.SetViewMode(currentSkill);
-		}
-
-		private void OnTargetSelected(ISelectedTarget target)
-		{
-			if (currentSkill == null) throw new InvalidOperationException("Skill targeting is not active.");
-
-			currentSkill.SelectTarget(target);
-
-			if (currentSkill.Ready)
-			{
-				ActionSelected?.Invoke(currentSkill.Entity, currentSkill.GetAction());
-
-				ResumeIfDecided(currentSkill.Entity);
-				EndTargeting();
-			}
-		}
-		#endregion
-
-		private void OnTargetingCanceled()
-		{
-			if (!TargetingActive) throw new InvalidOperationException("Nothing to cancel.");
-
-			if (!currentSkill.Back())
-			{
-				EndTargeting();
-			}
-		}
-
-		private void EndTargeting()
-		{
-			currentSkill = null;
-			view.SetViewModeDefault();
+			contextStack.Pop();
 		}
 
 		private void WaitForDecision(IUnitModel entity)
 		{
 			blockingEntity = entity;
 			WaitingForDecision?.Invoke(entity);
-			view.OnDecisionNeeded(entity);
 		}
 
 		private void ResumeIfDecided(IUnitModel entity)

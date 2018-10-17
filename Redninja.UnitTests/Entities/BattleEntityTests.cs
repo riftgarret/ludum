@@ -69,7 +69,7 @@ namespace Redninja.Entities.UnitTests
             mAction.Phase.Returns(ActionPhase.Done);
 
             bool triggered = false;
-            subject.DecisionRequired += (x => triggered = true);
+            subject.ActionNeeded += (x => triggered = true);
 
             clock.IncrementTime(1);
 
