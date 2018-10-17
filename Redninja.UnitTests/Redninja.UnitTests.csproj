@@ -70,6 +70,7 @@
     <Compile Include="Components\Decisions\AI\AIRuleBaseTests.cs" />
     <Compile Include="Components\Decisions\AI\AIRuleSetTests.cs" />
     <Compile Include="Components\Decisions\AI\WeightedPoolTests.cs" />
+    <Compile Include="Components\Utils\TextUtilsTests.cs" />
     <Compile Include="Presenter\BattlePresenterTests.cs" />
     <Compile Include="Data\ParseHelperTests.cs" />
     <Compile Include="Components\Decisions\PlayerDecisionManagerTests.cs" />

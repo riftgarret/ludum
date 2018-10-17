@@ -73,7 +73,9 @@
     <Compile Include="Components\Decisions\AI\IAITargetCondition.cs" />
     <Compile Include="Components\Decisions\AI\IAITargetPriority.cs" />
     <Compile Include="Components\Decisions\AI\WeightedPool.cs" />
+    <Compile Include="Components\Utils\TextUtils.cs" />
     <Compile Include="Coordinate.cs" />
+    <Compile Include="Data\Encounter.cs" />
     <Compile Include="Data\IDataLoader.cs" />
     <Compile Include="Data\IEditableDataManager.cs" />
     <Compile Include="Data\IEditableDataStore.cs" />
@@ -81,8 +83,11 @@
     <Compile Include="Data\DataManager.cs" />
     <Compile Include="Data\IDataSource.cs" />
     <Compile Include="Data\IDataStore.cs" />
+    <Compile Include="Data\Schema\CharacterSchema.cs" />
     <Compile Include="Data\Schema\CombatSkillSchema.cs" />
     <Compile Include="Data\Schema\ConfigSchema.cs" />
+    <Compile Include="Data\Schema\EncounterSchema.cs" />
+    <Compile Include="Data\Schema\Readers\CharacterReader.cs" />
     <Compile Include="Data\Schema\Readers\JsonSchemaLoader.cs" />
     <Compile Include="Data\Schema\Readers\ParseHelper.cs" />
     <Compile Include="Data\Schema\Readers\SkillReader.cs" />
