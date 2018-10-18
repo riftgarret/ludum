@@ -12,7 +12,7 @@ namespace Redninja.Events
 		public INode Damage { get; }
 		public IEnumerable<StatChange> StatChanges { get; }
 
-		public DamageEvent(IUnitModel entity, INode damage, IEnumerable<StatChange> statChanges)
+		internal DamageEvent(IUnitModel entity, INode damage, IEnumerable<StatChange> statChanges)
 		{
 			Entity = entity ?? throw new ArgumentNullException(nameof(entity));
 			Damage = damage ?? throw new ArgumentNullException(nameof(damage));

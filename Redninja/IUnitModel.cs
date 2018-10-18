@@ -11,7 +11,5 @@ namespace Redninja
 		string CurrentActionName { get; }
 		ActionPhase Phase { get; }
 		float PhaseProgress { get; }
-
-		void MovePosition(int row, int col);
 	}
 }

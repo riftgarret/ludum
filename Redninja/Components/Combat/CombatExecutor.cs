@@ -10,6 +10,7 @@ namespace Redninja.Components.Combat
 	{
 		private readonly ICombatNodeResolver resolver;
 
+		public event Action<IUnitModel, Coordinate> EntityMoving;
 		public event Action<IBattleEvent> BattleEventOccurred;
 
 		public CombatExecutor(ICombatNodeResolver combatResolver)
@@ -33,7 +34,7 @@ namespace Redninja.Components.Combat
 		public void MoveEntity(IUnitModel entity, int newRow, int newCol)
 		{
 			UnitPosition originalPosition = entity.Position;
-			entity.MovePosition(newRow, newCol);
+			EntityMoving.Invoke(entity, new Coordinate(newRow, newCol));
 			BattleEventOccurred?.Invoke(new MovementEvent(entity, entity.Position, originalPosition));
 		}
 

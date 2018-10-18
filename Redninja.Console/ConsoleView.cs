@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 using Davfalcon.Nodes;
-using Redninja.Components.Actions;
-using Redninja.Components.Skills;
-using Redninja.Components.Targeting;
+using Redninja.Components.Decisions;
 using Redninja.ConsoleDriver.Objects;
-using Redninja.Entities;
 using Redninja.Events;
 using Redninja.View;
 
@@ -14,28 +12,156 @@ namespace Redninja.ConsoleDriver
 {
 	public class ConsoleView : IBattleView
 	{
+		private readonly Mutex mutex = new Mutex();
 		private IBattleModel model;
+		private IUnitModel waiting;
 
-		public event Action<IUnitModel, IBattleAction> ActionSelected;
-		public event Action<IUnitModel, ISkill> SkillSelected;
-		public event Action<ISelectedTarget> TargetSelected;
-		public event Action TargetingCanceled;
-		public event Action<IUnitModel> MovementInitiated;
-		public event Action<Coordinate> MovementPathUpdated;
-		public event Action MovementConfirmed;
+		private Action checkActionNeeded;
+		private Action drawUnitActions;
+		private Action drawTargeting;
 
 		public void Draw()
 		{
+			mutex.WaitOne();
 			Console.Clear();
 			foreach (IUnitModel entity in model.Entities)
 			{
 				entity.Print();
 			}
+
+			if (waiting != null)
+			{
+			}
+
+			checkActionNeeded?.Invoke();
+			drawUnitActions?.Invoke();
+			drawTargeting?.Invoke();
+			mutex.ReleaseMutex();
+		}
+
+		private void Safe(Action func)
+		{
+			mutex.WaitOne();
+			func();
+			mutex.ReleaseMutex();
+		}
+
+		public void SetBattleModel(IBattleModel model)
+		{
+			this.model = model;
+		}
+
+		public void OnDecisionNeeded(IUnitModel entity)
+		{
+			Debug.WriteLine("Waiting for player input...");
+
+			Safe(() => waiting = entity);
+		}
+
+		public void Resume()
+		{
+			Debug.WriteLine("Resuming execution.");
+
+			Safe(() => waiting = null);
+		}
+
+		public void SetViewMode(IBaseCallbacks callbacks)
+		{
+			Debug.WriteLine("Entering default view state.");
+
+			Safe(() =>
+			{
+				checkActionNeeded = () =>
+				{
+					if (waiting != null)
+						callbacks.SelectUnit(waiting);
+				};
+				drawUnitActions = null;
+				drawTargeting = null;
+			});
+		}
+
+		public void SetViewMode(IActionsView actionsContext, ISkillsCallbacks callbacks)
+		{
+			Debug.WriteLine("Entering action selection view state.");
+
+			IUnitModel entity = actionsContext.Entity;
+			Safe(() =>
+			{
+				checkActionNeeded = null;
+				drawUnitActions = () =>
+				{
+					Console.WriteLine($"Select an action for {entity.Character.Name}...");
+				};
+				drawTargeting = null;
+			});
+
+			new Thread(() =>
+			{
+				ConsoleKey key = Console.ReadKey().Key;
+				switch (key)
+				{
+					case ConsoleKey.A:
+						callbacks.SelectSkill(entity, CombatSkills.TwoHandedAttack);
+						break;
+					case ConsoleKey.M:
+						callbacks.InitiateMovement(entity);
+						break;
+					case ConsoleKey.S:
+						callbacks.SelectSkill(entity, CombatSkills.PatternSkill);
+						break;
+					default:
+						callbacks.Wait(entity);
+						break;
+				}
+			}).Start();
+		}
+
+		public void SetViewMode(IMovementView movementContext, IMovementCallbacks callbacks)
+		{
+			Debug.WriteLine("Entering movement view state.");
+
+			throw new NotImplementedException();
+		}
+
+		public void SetViewMode(ITargetingView targetingContext, ITargetingCallbacks callbacks)
+		{
+			Debug.WriteLine("Entering targeting view state.");
+
+			List<IUnitModel> availableTargets = new List<IUnitModel>(targetingContext.GetTargetableEntities());
+			Safe(() =>
+			{
+				checkActionNeeded = null;
+				drawUnitActions = null;
+				drawTargeting = () =>
+				{
+
+					foreach (IUnitModel t in availableTargets)
+					{
+						Console.WriteLine(t.Character.Name);
+					}
+
+					Console.WriteLine("Select target...");
+				};
+			});
+
+			new Thread(() =>
+			{
+				try
+				{
+					int selected = Convert.ToInt32(Console.ReadKey().KeyChar.ToString()) - 1;
+					callbacks.SelectTarget(targetingContext.GetSelectedTarget(availableTargets[selected]));
+				}
+				catch (Exception)
+				{
+					callbacks.Cancel();
+				}
+			}).Start();
 		}
 
 		public void OnBattleEventOccurred(IBattleEvent battleEvent)
 		{
-			Debug.WriteLine("Battle event occured");
+			Debug.WriteLine("Battle event occurred.");
 			if (battleEvent is MovementEvent me)
 			{
 				Debug.WriteLine($"{me.Entity.Character.Name} moved to ({me.NewPosition.Row},{me.NewPosition.Column})");
@@ -44,71 +170,6 @@ namespace Redninja.ConsoleDriver
 			{
 				Debug.Write(de.Damage.ToStringRecursive());
 			}
-		}
-
-		public void OnDecisionNeeded(IUnitModel entity)
-		{
-			Draw();
-			Console.WriteLine("Waiting for player input...");
-			ConsoleKey key = Console.ReadKey().Key;
-
-			IBattleAction action = null;
-
-			switch (key)
-			{
-				case ConsoleKey.A:
-					SkillSelected?.Invoke(entity, CombatSkills.TwoHandedAttack);
-					break;
-				case ConsoleKey.M:
-					action = new MovementAction(entity, entity.Position.Row + 1, entity.Position.Column + 1);
-					break;
-				case ConsoleKey.S:
-					SkillSelected?.Invoke(entity, CombatSkills.PatternSkill);
-					break;
-				default:
-					action = new WaitAction(5);
-					break;
-			}
-
-			if (action != null) ActionSelected?.Invoke(entity, action);
-		}
-
-		public void SetBattleModel(IBattleModel model)
-		{
-			this.model = model;
-		}
-
-		public void SetViewModeDefault()
-		{
-			Draw();
-		}
-
-		public void SetViewMode(ITargetingView targetingInfo)
-		{
-			Draw();
-			List<IUnitModel> availableTargets = new List<IUnitModel>();
-
-			foreach (IUnitModel t in targetingInfo.GetTargetableEntities())
-			{
-				Console.WriteLine(t.Character.Name);
-				availableTargets.Add(t);
-			}
-
-			Console.WriteLine("Select target...");
-			int selected = Convert.ToInt32(Console.ReadLine()) - 1;
-			try
-			{
-				TargetSelected?.Invoke(targetingInfo.GetSelectedTarget(availableTargets[selected]));
-			}
-			catch (Exception)
-			{
-				TargetingCanceled?.Invoke();
-			}
-		}
-
-		public void SetViewMode(IMovementView movementState)
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

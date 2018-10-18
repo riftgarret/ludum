@@ -9,8 +9,6 @@ namespace Redninja.Components.Decisions.AI
 		private readonly IAIHistoryState historyState;
 		private readonly IDecisionHelper decisionHelper;
 
-		public bool IsPlayer => false;
-
 		public AIActionDecider(AIRuleSet ruleSet, IAIHistoryState historyState, IDecisionHelper decisionHelper)
 		{
 			this.decisionHelper = decisionHelper;

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Redninja.Components.Skills;
 
-namespace Redninja.View
+namespace Redninja.Components.Decisions
 {
-	public interface ISkillsView
+	public interface IActionsView
 	{
 		IUnitModel Entity { get; }
 		IWeaponAttack Attack { get; }

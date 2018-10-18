@@ -2,7 +2,7 @@
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 
-namespace Redninja.View
+namespace Redninja.Components.Decisions
 {
 	public interface ITargetingView
 	{

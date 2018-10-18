@@ -7,8 +7,6 @@ namespace Redninja.ConsoleDriver
 {
 	public class DummyAI : IActionDecider
 	{
-		public bool IsPlayer => false;
-
 		public event Action<IUnitModel, IBattleAction> ActionSelected;
 
 		public void ProcessNextAction(IUnitModel entity, IBattleModel battleModel)
