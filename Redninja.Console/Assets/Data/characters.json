@@ -1,0 +1,14 @@
+﻿[
+	{
+		"dataId": "goblin",
+		"name": "Harry Goblin",
+		"level": 1,
+		"class": "berserker",
+		"stats": {
+			"ATK": 20,
+			"DEF": 10,
+			"HP": 100,
+			"Resource": 80
+		}
+	}
+]
