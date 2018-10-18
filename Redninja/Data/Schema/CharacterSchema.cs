@@ -11,6 +11,8 @@ namespace Redninja.Data.Schema
 	{
 		public string DataId { get; set; }
 		public string Name { get; set; }
+		public int Level { get; set; }
+		public string Class { get; set; }
 		public Dictionary<CombatStats, int> Stats { get; set; }		
 		// equipment?
 		// class?

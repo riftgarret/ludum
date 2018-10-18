@@ -1,15 +1,28 @@
 ﻿using System.Collections.Generic;
+using Davfalcon.Revelator;
+using Redninja.Components.Decisions.AI;
 
 namespace Redninja.Data.Schema.Readers
 {
 	internal static class CharacterReader
-	{
-		public static void ReadCharacters(List<CharacterSchema> characters, IEditableDataManager manager)
+	{		
+		public static void ReadRoot(List<CharacterSchema> characters, IEditableDataManager manager)
 		{
-			foreach(CharacterSchema ch in characters)
+			foreach(CharacterSchema cs in characters)
 			{
-				//Unit.Builder builder = new Unit.Builder(); // nope doesnt work..
-				// TODO need someway to create characters..
+				IUnit unit = Unit.Build(b =>
+				{
+					b.SetMainDetails(cs.Name, cs.Class, cs.Level);
+
+					foreach (var item in cs.Stats)
+					{
+						b.SetBaseStat(item.Key, item.Value);
+					}
+
+					return b;
+				});
+
+				manager.NPCUnits[cs.DataId] = unit;
 			}
 		}
 	}
