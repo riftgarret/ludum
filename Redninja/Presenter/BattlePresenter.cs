@@ -77,7 +77,8 @@ namespace Redninja.Presenter
 				op.Execute(entityManager, combatExecutor));
 
 			BindEvents();
-			InitializeView();
+
+			view.SetBattleModel(entityManager);
 		}
 
 		private void BindEvents()
@@ -92,12 +93,6 @@ namespace Redninja.Presenter
 			playerDecisionManager.WaitResolved += view.Resume;
 		}
 
-		private void InitializeView()
-		{
-			view.SetBattleModel(entityManager);
-			view.SetViewMode(this);
-		}
-
 		#region Setup and control
 		/// <summary>
 		/// Initialize presenter to load up views and prepare for lifecycle calls.
@@ -105,6 +100,7 @@ namespace Redninja.Presenter
 		public void Initialize()
 		{
 			entityManager.InitializeBattlePhase();
+			view.SetViewMode(this);
 		}
 
 		public void Start()
