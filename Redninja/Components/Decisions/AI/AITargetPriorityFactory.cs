@@ -8,9 +8,7 @@ namespace Redninja.Components.Decisions.AI
 		private AITargetPriorityFactory() { }
 
 		// maybe randomize this
-		public static IAITargetPriority NoPriority => As(entities => entities.First());
-
-
+		public static IAITargetPriority Any { get; } = As(entities => entities.First());
 
 		private static IAITargetPriority As(SimplePriorityEvaluator.BestTarget bestTarget) => new SimplePriorityEvaluator(bestTarget);
 

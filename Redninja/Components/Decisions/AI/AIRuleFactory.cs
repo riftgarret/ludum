@@ -9,7 +9,7 @@ namespace Redninja.Components.Decisions.AI
 				.SetName("Attack")
 				.SetRuleTargetType(TargetTeam.Enemy)
 				.SetWeight(1)				
-				.AddSkillAndPriority(null, AITargetPriorityFactory.NoPriority) // TODO
+				.AddSkillAndPriority(null, AITargetPriorityFactory.Any) // TODO
 				.Build();
 		
 	}

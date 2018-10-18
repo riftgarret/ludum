@@ -4,7 +4,14 @@
 	{
 		private AIConditionFactory() { }
 
-		public static IAITargetCondition AlwaysTrue => As(ex => true);
+		public static IAITargetCondition AlwaysTrue { get; } = As(ex => true);
+
+		public static IAITargetCondition CreateCombatStatCondition(
+			int conditionalValue,
+			CombatStats combatStat,
+			AIValueConditionOperator op,
+			AIConditionType conditionType)
+			=> new AICombatStatCondition(conditionalValue, combatStat, op, conditionType);
 
 		private static IAITargetCondition As(SimpleAICondition.OnCondition condition) => new SimpleAICondition(condition);		
 
