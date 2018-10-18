@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "definitions": {
+    "dataId": {
+      "type": "string",
+      "description": "Data resource identifier",
+      "default": "",
+      "examples": [
+        "skill_001"
+      ]
+    },
+    "statName": {
+      "type": "string" //temporary until we define the enums
+    },
+    "damageType": {
+      "type": "string"
+    },
+    "statBlock": {
+      "type": "object",
+      "properties": {
+        "ATK": {
+          "type": "integer"
+        },
+        "DEF": {
+          "type": "integer"
+        },
+        "HP": {
+          "type": "integer"
+        },
+        "Resource": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

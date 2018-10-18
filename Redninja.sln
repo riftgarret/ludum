@@ -17,10 +17,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redninja.UnitTests", "Redni
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{3B717152-77D9-4109-8F4E-4A1C9576679C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7FD0B3B9-4D58-440E-B202-7077FF6BDB3A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{92089FDF-5209-4DE4-BA4C-59E685099488}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		nuget.config = nuget.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "json", "json", "{1B4CDA8C-BCED-47D7-B9C0-1E17789BFFA4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "schemas", "schemas", "{26D14381-BE52-4F72-B607-D19D05E69D0D}"
+	ProjectSection(SolutionItems) = preProject
+		json\schemas\characters-schema.json = json\schemas\characters-schema.json
+		json\schemas\encounters-schema.json = json\schemas\encounters-schema.json
+		json\schemas\global-defs.json = json\schemas\global-defs.json
+		json\schemas\skills-schema.json = json\schemas\skills-schema.json
 	EndProjectSection
 EndProject
 Global
@@ -58,6 +68,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{07F10121-23EC-4EBB-93B9-6B99E77E8B75} = {3B717152-77D9-4109-8F4E-4A1C9576679C}
 		{C6FF7814-11C5-4856-902B-9717E9C3A743} = {3B717152-77D9-4109-8F4E-4A1C9576679C}
+		{26D14381-BE52-4F72-B607-D19D05E69D0D} = {1B4CDA8C-BCED-47D7-B9C0-1E17789BFFA4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5D4A79B7-9746-4A6C-ABFE-58D19EF1BC1B}

@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Schema for defining characters",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "dataId",
+      "name",
+      "level",
+      "class",
+      "stats"
+    ],
+    "properties": {
+      "dataId": { "$ref": "global-defs.json#/definitions/dataId" },
+      "name": {
+        "type": "string",
+        "description": "Character name"
+      },
+      "level": {
+        "type": "integer",
+        "description": "Character level"
+      },
+      "class": {
+        "type": "string",
+        "description": "Character class"
+      },
+      "stats": {
+        "description": "Base stats",
+        "allOf": [ { "$ref": "global-defs.json#/definitions/statBlock" } ]
+      }
+    }
+  }
+}
