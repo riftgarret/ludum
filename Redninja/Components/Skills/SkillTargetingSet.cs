@@ -42,11 +42,11 @@ namespace Redninja.Components.Skills
 			public override Builder Reset()
 			{
 				rounds = new List<SkillOperationDefinition>();
-				build = new SkillTargetingSet(targetingRule)
+				SkillTargetingSet s = new SkillTargetingSet(targetingRule)
 				{
 					Rounds = rounds.AsReadOnly()
 				};
-				return this;
+				return Reset(s);
 			}
 
 			public Builder AddCombatRound(float executionStart, OperationProvider getOperation)
@@ -55,11 +55,7 @@ namespace Redninja.Components.Skills
 			public Builder AddCombatRound(float executionStart, ITargetPattern pattern, OperationProvider getOperation)
 				=> AddCombatRound(new SkillOperationDefinition(executionStart, pattern, getOperation));
 
-			public Builder AddCombatRound(SkillOperationDefinition round)
-			{
-				rounds.Add(round);
-				return this;
-			}
+			public Builder AddCombatRound(SkillOperationDefinition round) => Self(s => rounds.Add(round));
 		}
 	}
 }

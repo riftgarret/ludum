@@ -5,15 +5,15 @@ using Redninja.Components.Clock;
 
 namespace Redninja.Entities
 {
-	public interface IBattleEntityManager : IBattleModel
+	internal interface IBattleEntityManager : IBattleModel
 	{
 		new IEnumerable<IBattleEntity> Entities { get; }
 
-		event Action<IBattleEntity> DecisionRequired;
+		event Action<IBattleEntity> ActionNeeded;
+		event Action<IBattleEntity, IBattleAction> ActionSet;
 
-		void AddBattleEntity(IBattleEntity entity, IClock clock);
-		void RemoveBattleEntity(IBattleEntity entity);
-		void SetAction(IBattleEntity entity, IBattleAction action);
+		void AddEntity(IBattleEntity entity, IClock clock);
+		void RemoveEntity(IBattleEntity entity);
 		void InitializeBattlePhase();
 	}
 }

@@ -14,13 +14,13 @@ namespace Redninja.Components.Decisions
 
 		public IBattleModel BattleModel { get; }
 
-		public IMovementComponent GetMovementComponent(IUnitModel entity)
-			=> new MovementComponent(entity, BattleModel);
+		public IActionsContext GetActionsContext(IUnitModel entity)
+			=> new SkillSelectionContext(entity);
 
-		public ISkillsComponent GetAvailableSkills(IUnitModel entity)
-			=> new SkillSelectionMeta(entity);
+		public IMovementContext GetMovementContext(IUnitModel entity)
+			=> new MovementContext(entity, BattleModel);
 
-		public ITargetingComponent GetTargetingComponent(IUnitModel entity, ISkill skill)
-			=> new SkillTargetingComponent(entity, skill, BattleModel);
+		public ITargetingContext GetTargetingContext(IUnitModel entity, ISkill skill)
+			=> new SkillTargetingContext(entity, skill, BattleModel);
 	}
 }

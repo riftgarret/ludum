@@ -16,7 +16,6 @@ namespace Redninja.Components.Actions
 		event Action<float, IBattleOperation> BattleOperationReady;
 
 		void Start();
-		void Start(IClock clock);
 	}
 }
 

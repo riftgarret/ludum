@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using Davfalcon.Builders;
-using Davfalcon.Randomization;
 using Davfalcon.Revelator;
 using Ninject;
 using Redninja.Components.Actions;
@@ -10,6 +8,8 @@ using Redninja.Components.Combat;
 using Redninja.Components.Decisions;
 using Redninja.Components.Decisions.Player;
 using Redninja.Components.Operations;
+using Redninja.Components.Skills;
+using Redninja.Components.Targeting;
 using Redninja.Entities;
 using Redninja.Events;
 using Redninja.View;
@@ -20,17 +20,16 @@ namespace Redninja.Presenter
 	/// Main logic that flows through this scene is handled by this presenter in a MVP relationship.
 	/// Where this is the presenter, other components generated will represent the views.  
 	/// </summary>
-	public class BattlePresenter : IBattlePresenter
+	public class BattlePresenter : IBattlePresenter, IBaseCallbacks, ISkillsCallbacks, IMovementCallbacks, ITargetingCallbacks
 	{
-		private Clock clock;
+		private readonly Clock clock;
 		private readonly IKernel kernel;
 		private readonly IBattleView view;
 		private readonly ICombatExecutor combatExecutor;
 		private readonly IBattleEntityManager entityManager;
 		private readonly PlayerDecisionManager playerDecisionManager;
-		private readonly Queue<IBattleEntity> decisionQueue = new Queue<IBattleEntity>();
-		// Maybe consider using a class from a library for performance?
-		private readonly SortedList<float, IBattleOperation> battleOpQueue = new SortedList<float, IBattleOperation>();
+		private readonly ProcessingQueue<IBattleEntity> decisionQueue;
+		private readonly PriorityProcessingQueue<float, IBattleOperation> battleOpQueue;
 
 		public event Action<IBattleEvent> BattleEventOccurred;
 
@@ -43,7 +42,7 @@ namespace Redninja.Presenter
 		/// Check if time should be active. This can be false due to the game state being
 		/// over or that the user needs to select a skill.
 		/// </summary>
-		public bool IsTimeActive => State == GameState.Active;
+		public bool TimeActive => State == GameState.Active;
 
 		public static IBattlePresenter CreatePresenter(IBattleView view, ICombatExecutor combatExecutor)
 		{
@@ -59,27 +58,37 @@ namespace Redninja.Presenter
 			return kernel.Get<IBattlePresenter>();
 		}
 
-		public BattlePresenter(ICombatExecutor combatExecutor,
-			IBattleEntityManager entityManager,
-			PlayerDecisionManager playerDecisionManager,
-			IBattleView view,
-			IKernel kernel,
-			Clock clock)
+		public BattlePresenter(IKernel kernel)
 		{
 			this.kernel = kernel;
-			this.combatExecutor = combatExecutor;
-			this.entityManager = entityManager;
-			this.playerDecisionManager = playerDecisionManager;
-			this.view = view;
-			this.clock = clock;
 
-			entityManager.DecisionRequired += OnActionRequired;
-			combatExecutor.BattleEventOccurred += OnBattleEventOccurred;
-			combatExecutor.BattleEventOccurred += view.OnBattleEventOccurred;
-			playerDecisionManager.WaitingForDecision += WaitForDecision;
-			playerDecisionManager.WaitResolved += Start;
+			combatExecutor = kernel.Get<ICombatExecutor>();
+			entityManager = kernel.Get<IBattleEntityManager>();
+			playerDecisionManager = kernel.Get<PlayerDecisionManager>();
+			view = kernel.Get<IBattleView>();
+			clock = kernel.Get<Clock>();
+
+			decisionQueue = new ProcessingQueue<IBattleEntity>(entity =>
+				entity.ActionDecider.ProcessNextAction(entity, entityManager));
+
+			battleOpQueue = new PriorityProcessingQueue<float, IBattleOperation>(op =>
+				op.Execute(entityManager, combatExecutor));
+
+			BindEvents();
 
 			view.SetBattleModel(entityManager);
+		}
+
+		private void BindEvents()
+		{
+			entityManager.ActionNeeded += decisionQueue.Enqueue;
+			entityManager.ActionSet += (e, action) => action.BattleOperationReady += battleOpQueue.Enqueue;
+			combatExecutor.BattleEventOccurred += BattleEventOccurred;
+			combatExecutor.BattleEventOccurred += view.OnBattleEventOccurred;
+			playerDecisionManager.WaitingForDecision += e => Pause();
+			playerDecisionManager.WaitingForDecision += view.OnDecisionNeeded;
+			playerDecisionManager.WaitResolved += Start;
+			playerDecisionManager.WaitResolved += view.Resume;
 		}
 
 		#region Setup and control
@@ -89,13 +98,7 @@ namespace Redninja.Presenter
 		public void Initialize()
 		{
 			entityManager.InitializeBattlePhase();
-
-			// this value is temp until we assign an initiative per character
-
-			foreach (IBattleEntity entity in entityManager.Entities)
-			{
-				OnActionSelected(entity, new WaitAction(new RandomInteger(1, 10).Get()));
-			}
+			view.SetViewMode(this);
 		}
 
 		public void Start()
@@ -117,12 +120,6 @@ namespace Redninja.Presenter
 			}
 		}
 
-		private void AddBattleEntity(IBattleEntity entity)
-		{
-			entity.ActionDecider.ActionSelected += OnActionSelected;
-			entityManager.AddBattleEntity(entity, clock);
-		}
-
 		public void AddCharacter(IUnit character, int row, int col)
 			=> AddCharacter(character, playerDecisionManager, 0, row, col);
 
@@ -133,7 +130,7 @@ namespace Redninja.Presenter
 				Team = team
 			};
 			entity.MovePosition(row, col);
-			AddBattleEntity(entity);
+			entityManager.AddEntity(entity, clock);
 		}
 
 		public void AddCharacter(Func<Unit.Builder, IBuilder<IUnit>> builderFunc, int row, int col)
@@ -147,104 +144,94 @@ namespace Redninja.Presenter
 		/// </summary>
 		public void IncrementGameClock(float timeDelta)
 		{
-			if (IsTimeActive)
+			if (TimeActive)
 			{
 				// This will cause actions to trigger
 				clock.IncrementTime(timeDelta);
 			}
 
 			// The queue contains operations that already triggered, so we always want to process this
-			ProcessBattleOperationQueue();
+			battleOpQueue.Process();
 
-			// This function contains a time check
-			ProcessDecisionQueue();
+			// Process any pending decisions until we need to wait for one
+			decisionQueue.ProcessWhile(() => TimeActive);
 		}
 		#endregion
 
-		#region Decision processing
-		/// <summary>
-		/// Enqueues an <see cref="IBattleEntity"/> that is waiting for a decision.
-		/// </summary>
-		private void OnActionRequired(IBattleEntity entity)
+		#region View callbacks
+		void IBaseCallbacks.SelectUnit(IUnitModel entity)
 		{
-			// Is this dupe check necessary?
-			if (!decisionQueue.Contains(entity))
-			{
-				decisionQueue.Enqueue(entity);
-			}
+			playerDecisionManager.SetEntityContext(entity);
+			view.SetViewMode(playerDecisionManager.ActionsContext, this);
 		}
 
-		/// <summary>
-		/// Handles a new action selected for an <see cref="IBattleEntity"/>.
-		/// </summary>
-		private void OnActionSelected(IUnitModel entity, IBattleAction action)
+		#region Action selection
+		void ISkillsCallbacks.InitiateMovement(IUnitModel entity)
 		{
-			action.BattleOperationReady += OnBattleOperationReady;
-			// This cast should be safe as long as we control the implementations carefully
-			entityManager.SetAction(entity as IBattleEntity, action);
+			playerDecisionManager.SetMovementContext(entity);
+			view.SetViewMode(playerDecisionManager.MovementContext, this);
 		}
 
-		/// <summary>
-		/// Requests the next action for the <see cref="IBattleEntity"/>.
-		/// </summary>
-		private void ProcessDecision(IBattleEntity entity)
+		void ISkillsCallbacks.SelectSkill(IUnitModel entity, ISkill skill)
 		{
-			entity.ActionDecider.ProcessNextAction(entity, entityManager);
+			playerDecisionManager.SetTargetingContext(entity, skill);
+			view.SetViewMode(playerDecisionManager.TargetingContext, this);
 		}
 
-		/// <summary>
-		/// Process entities waiting for a decision.
-		/// </summary>
-		public void ProcessDecisionQueue()
+		void ISkillsCallbacks.Wait(IUnitModel entity)
 		{
-			// A waiting player character should pause the game so we don't want to keep processing decisions
-			while (IsTimeActive && decisionQueue.Count > 0)
-			{
-				IBattleEntity entity = decisionQueue.Dequeue();
-				ProcessDecision(entity);
-			}
+			playerDecisionManager.Resolve(entity, new WaitAction(5));
+			view.SetViewMode(this);
 		}
 
-		/// <summary>
-		/// Pause the game execution to wait for a player decision.
-		/// </summary>
-		/// <param name="entity"></param>
-		private void WaitForDecision(IUnitModel entity)
+		void ISkillsCallbacks.Cancel()
 		{
-			Pause();
+			playerDecisionManager.ExitContext();
+			view.SetViewMode(this);
 		}
 		#endregion
 
-		#region Battle operations
-		/// <summary>
-		/// Enqueues an <see cref="IBattleOperation"/> for processing.
-		/// </summary>
-		/// <param name="startTime"></param>
-		/// <param name="operation"></param>
-		private void OnBattleOperationReady(float startTime, IBattleOperation operation)
+		#region Movement
+		void IMovementCallbacks.UpdatePath(Coordinate point)
 		{
-			battleOpQueue.Add(startTime, operation);
+			playerDecisionManager.MovementContext.AddPoint(point);
+			// Should we set view after intermediate steps?
 		}
 
-		/// <summary>
-		/// Processes the event queue.
-		/// </summary>
-		public void ProcessBattleOperationQueue()
+		void IMovementCallbacks.Confirm()
 		{
-			while (battleOpQueue.Count > 0)
-			{
-				IBattleOperation op = battleOpQueue.Values[0];
-				battleOpQueue.RemoveAt(0);
+			playerDecisionManager.Resolve();
+			view.SetViewMode(this);
+		}
 
-				op.Execute(entityManager, combatExecutor);
+		void IMovementCallbacks.Cancel()
+		{
+			playerDecisionManager.ExitContext();
+			view.SetViewMode(playerDecisionManager.ActionsContext, this);
+		}
+		#endregion
+
+		#region Targeting
+		void ITargetingCallbacks.SelectTarget(ISelectedTarget target)
+		{
+			playerDecisionManager.TargetingContext.SelectTarget(target);
+
+			if (playerDecisionManager.TargetingContext.Ready)
+			{
+				playerDecisionManager.Resolve();
+				view.SetViewMode(this);
 			}
 		}
 
-		// This is not needed right now, but may be useful to implement other functionality that responds to battle events
-		private void OnBattleEventOccurred(IBattleEvent battleEvent)
+		void ITargetingCallbacks.Cancel()
 		{
-			BattleEventOccurred?.Invoke(battleEvent);
+			if (!playerDecisionManager.TargetingContext.Back())
+			{
+				playerDecisionManager.ExitContext();
+				view.SetViewMode(playerDecisionManager.ActionsContext, this);
+			}
 		}
+		#endregion
 		#endregion
 	}
 }

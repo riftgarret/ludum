@@ -8,7 +8,7 @@ namespace Redninja.Events
 		public UnitPosition NewPosition { get; }
 		public UnitPosition OriginalPosition { get; }
 
-		public MovementEvent(IUnitModel entity, UnitPosition newPosition, UnitPosition originalPosition)
+		internal MovementEvent(IUnitModel entity, UnitPosition newPosition, UnitPosition originalPosition)
 		{
 			Entity = entity ?? throw new ArgumentNullException(nameof(entity));
 			NewPosition = newPosition;

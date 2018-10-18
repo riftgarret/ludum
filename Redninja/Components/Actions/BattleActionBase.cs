@@ -118,12 +118,6 @@ namespace Redninja.Components.Actions
 		}
 
 		#region Clock binding
-		public void Start(IClock clock)
-		{
-			SetClock(clock);
-			Start();
-		}
-
 		public void SetClock(IClock clock)
 		{
 			// Check to unbind from previous clock just in case

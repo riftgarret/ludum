@@ -47,18 +47,5 @@ namespace Redninja.Presenter.UnitTests
 		{
 			kernel.Dispose();
 		}
-
-		[Test]
-		public void Initialization_EntityReceivedActionsWait()
-		{
-			IBattleEntity mEntity = Substitute.For<IBattleEntity>();
-			mEntityManager.Entities.Returns(new List<IBattleEntity>() { mEntity });
-
-			subject.Initialize();
-			subject.Start();
-
-			mEntityManager.Received().SetAction(mEntity, Arg.Any<WaitAction>());
-			Assert.That(subject.State, Is.EqualTo(GameState.Active));
-		}
 	}
 }

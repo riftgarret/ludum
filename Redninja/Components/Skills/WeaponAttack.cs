@@ -45,26 +45,18 @@ namespace Redninja.Components.Skills
 
 			public override Builder Reset()
 			{
-				build = new WeaponAttack
+				WeaponAttack w = new WeaponAttack
 				{
 					// Need to add weapon range later
 					Targets = new List<SkillTargetingSet>() { new SkillTargetingSet(new TargetingRule(TargetTeam.Enemy)) }.AsReadOnly(),
 				};
-				build.Weapons = build.weapons.AsReadOnly();
-				return Builder;
+				w.Weapons = w.weapons.AsReadOnly();
+				return Reset(w);
 			}
 
-			public Builder SetActionTime(int prepare, int execute, int recover)
-			{
-				build.Time = new ActionTime(prepare, execute, recover);
-				return this;
-			}
+			public Builder SetActionTime(int prepare, int execute, int recover) => Self(w => w.Time = new ActionTime(prepare, execute, recover));
 
-			public Builder AddWeapon(IWeapon weapon)
-			{
-				build.weapons.Add(weapon);
-				return Builder;
-			}
+			public Builder AddWeapon(IWeapon weapon) => Self(w => w.weapons.Add(weapon));
 		}
 	}
 }

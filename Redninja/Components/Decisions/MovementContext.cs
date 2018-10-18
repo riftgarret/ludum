@@ -5,7 +5,7 @@ using Redninja.Components.Actions;
 
 namespace Redninja.Components.Decisions
 {
-	internal class MovementComponent : IMovementComponent
+	internal class MovementContext : IMovementContext
 	{
 		private readonly IBattleModel battleModel;
 		private readonly List<Coordinate> path = new List<Coordinate>();
@@ -14,7 +14,7 @@ namespace Redninja.Components.Decisions
 		public ActionTime Time => GetActionTime();
 		public IEnumerable<Coordinate> CurrentPath { get; }
 
-		public MovementComponent(IUnitModel entity, IBattleModel battleModel)
+		public MovementContext(IUnitModel entity, IBattleModel battleModel)
 		{
 			this.battleModel = battleModel;
 			Entity = entity;

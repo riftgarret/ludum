@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Redninja.Components.Actions;
 
-namespace Redninja.View
+namespace Redninja.Components.Decisions
 {
 	public interface IMovementView
 	{

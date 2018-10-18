@@ -3,8 +3,6 @@ using Ninject;
 using NSubstitute;
 using NUnit.Framework;
 using Redninja.Components.Decisions.Player;
-using Redninja.Components.Skills;
-using Redninja.Components.Targeting;
 using Redninja.Entities;
 using Redninja.View;
 
@@ -61,47 +59,6 @@ namespace Redninja.Components.Decisions.UnitTests
 			subject.ProcessNextAction(mEntity, mEntityManager);
 
 			Assert.Throws<InvalidOperationException>(() => subject.ProcessNextAction(mEntity, mEntityManager));
-		}
-
-		[Test]
-		public void ProcessNextAction_ViewNotifiedWaitingForDecision()
-		{
-			IUnitModel mEntity = Substitute.For<IUnitModel>();
-
-			subject.ProcessNextAction(mEntity, mEntityManager);
-
-			mBattleView.Received().OnDecisionNeeded(mEntity);
-		}
-
-		[Test]
-		public void OnTargetingCanceled_ViewModeDefault()
-		{
-			IUnitModel mEntity = Substitute.For<IUnitModel>();
-			ISkill mSkill = Substitute.For<ISkill>();
-
-			mBattleView.SkillSelected += Raise.Event<Action<IUnitModel, ISkill>>(mEntity, mSkill);
-			mBattleView.TargetingCanceled += Raise.Event<Action>();
-
-			mBattleView.Received().SetViewModeDefault();
-		}
-
-		[Test]
-		public void OnSkillSelected_ViewModeTargeting()
-		{
-			IUnitModel mEntity = Substitute.For<IUnitModel>();
-			ISkill mSkill = Substitute.For<ISkill>();
-
-			mBattleView.SkillSelected += Raise.Event<Action<IUnitModel, ISkill>>(mEntity, mSkill);
-
-			mBattleView.Received().SetViewMode(Arg.Any<ITargetingView>());
-		}
-
-		[Test]
-		public void OnTargetSelected_ExceptionNoSkillSelected()
-		{
-			ISelectedTarget mTarget = Substitute.For<ISelectedTarget>();
-
-			Assert.Throws<InvalidOperationException>(() => mBattleView.TargetSelected += Raise.Event<Action<ISelectedTarget>>(mTarget));
 		}
 	}
 }

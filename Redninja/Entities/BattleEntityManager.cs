@@ -16,19 +16,18 @@ namespace Redninja.Entities
 		public IEnumerable<IBattleEntity> Entities => entityMap;
 		IEnumerable<IUnitModel> IBattleModel.Entities => Entities;
 
-		public event Action<IBattleEntity> DecisionRequired;
+		public event Action<IBattleEntity> ActionNeeded;
+		public event Action<IBattleEntity, IBattleAction> ActionSet;
 
-		private void OnEntityDecisionRequired(IBattleEntity entity)
-			=> DecisionRequired?.Invoke(entity);
-
-		public void AddBattleEntity(IBattleEntity entity, IClock clock)
+		public void AddEntity(IBattleEntity entity, IClock clock)
 		{
 			entity.SetClock(clock);
-			entity.DecisionRequired += OnEntityDecisionRequired;
+			entity.ActionNeeded += ActionNeeded;
+			entity.ActionSet += ActionSet;
 			entityMap.Add(entity);
 		}
 
-		public void RemoveBattleEntity(IBattleEntity entity)
+		public void RemoveEntity(IBattleEntity entity)
 		{
 			entity.Dispose();
 			entityMap.Remove(entity);
@@ -38,13 +37,5 @@ namespace Redninja.Entities
 		/// Initialize the battle phase, this sets the initial 'Initiative action' 
 		/// </summary>
 		public void InitializeBattlePhase() => Entities.ToList().ForEach(unit => unit.InitializeBattlePhase());
-
-		/// <summary>
-		/// Set the action for this entity.
-		/// </summary>
-		/// <param name="entity"></param>
-		/// <param name="action"></param>
-		public void SetAction(IBattleEntity entity, IBattleAction action)
-			=> entity.SetAction(action);
 	}
 }

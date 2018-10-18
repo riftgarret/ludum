@@ -8,7 +8,7 @@ using Redninja.Components.Targeting;
 
 namespace Redninja.Components.Decisions
 {
-	internal class SkillTargetingComponent : ITargetingComponent
+	internal class SkillTargetingContext : ITargetingContext
 	{
 		private readonly IBattleModel battleModel;
 		private readonly ISelectedTarget[] selectedTargets;
@@ -21,7 +21,7 @@ namespace Redninja.Components.Decisions
 		public TargetType TargetType => TargetingRule.Type;
 		public bool Ready => currentIndex >= Skill.Targets.Count;
 
-		public SkillTargetingComponent(
+		public SkillTargetingContext(
 			IUnitModel entity,
 			ISkill skill,
 			IBattleModel battleModel)
