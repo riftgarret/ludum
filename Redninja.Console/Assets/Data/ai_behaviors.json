@@ -1,0 +1,15 @@
+﻿[
+  {
+    "dataid": "goblin_priest",
+    "ruleIds": [
+      "attack_enemy",
+      "heal_self"
+    ]
+  },
+  {
+    "dataid": "goblin_warrior",
+    "ruleIds": [
+      "attack_enemy"      
+    ]
+  }
+]

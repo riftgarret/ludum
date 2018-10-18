@@ -17,7 +17,7 @@ namespace Redninja.Components.Decisions.AI
 			AIValueConditionOperator op, 
 			AIConditionType conditionType)
 		{
-			if(conditionType != AIConditionType.CombatStatCurrent || conditionType != AIConditionType.CombatStatPercent)
+			if(conditionType != AIConditionType.CombatStatCurrent && conditionType != AIConditionType.CombatStatPercent)
 			{
 				throw new InvalidOperationException("Cannot intantiate AICombatStatCondition without proper type");
 			}
@@ -41,6 +41,16 @@ namespace Redninja.Components.Decisions.AI
 			{
 				return (100 * entity.Character.VolatileStats[CombatStat]) / entity.Character.Stats[CombatStat];
 			}
+		}
+
+		public override bool Equals(object obj)
+		{
+			var condition = obj as AICombatStatCondition;
+			return condition != null &&
+				   ConditionalValue == condition.ConditionalValue &&
+				   CombatStat == condition.CombatStat &&
+				   Op == condition.Op &&
+				   ConditionType == condition.ConditionType;
 		}
 	}
 }

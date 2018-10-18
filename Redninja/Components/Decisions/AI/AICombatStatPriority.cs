@@ -42,5 +42,15 @@ namespace Redninja.Components.Decisions.AI
 				return (100 * entity.Character.VolatileStats[CombatStat]) / entity.Character.Stats[CombatStat];
 			}
 		}
+
+		public override bool Equals(object obj)
+		{
+			var priority = obj as AICombatStatPriority;
+			return priority != null &&
+				   ConditionalValue == priority.ConditionalValue &&
+				   CombatStat == priority.CombatStat &&
+				   Qualifier == priority.Qualifier &&
+				   PriorityType == priority.PriorityType;
+		}
 	}
 }

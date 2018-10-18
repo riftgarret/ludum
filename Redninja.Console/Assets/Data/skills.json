@@ -1,7 +1,7 @@
 ﻿{
   "combatSkills": [
     {
-      "dataId": "prototype_001",
+      "dataId": "attack",
       "name": "skill",
       "time": [ 3, 1, 2 ],
       "targetSetIds": [ "prototype_001" ],
@@ -9,6 +9,16 @@
       "critMultiplier": 20,
       "bonusDamageStat": "ATK",
       "damageTypes": [ "Physical" ]
+    },
+    {
+      "dataId": "heal_self",
+      "name": "Ejaculate",
+      "time": [ 2, 1, 3 ],
+      "targetSetIds": [ "self_only" ],
+      "baseDamage": -30,
+      "critMultiplier": 1,
+      "bonusDamageStat": "ATK",
+      "damageTypes": ["Physical"]
     }
   ],
 
@@ -28,6 +38,19 @@
           "executionStart": 0.25,
           "operationProviderName": "Damage",
           "pattern": "(1,0)"
+        }
+      ]
+    },
+    {
+      "dataId": "self_only",
+      "pattern": "(0,0)",
+      "targetType": "Entity",
+      "targetConditionName": "None",
+      "combatRounds": [
+        {
+          "executionStart": 1,
+          "operationProviderName": "Damage",
+          "pattern": "(0,0)"
         }
       ]
     }

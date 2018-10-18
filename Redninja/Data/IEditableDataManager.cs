@@ -24,7 +24,9 @@ namespace Redninja.Data
 
 		IEditableDataStore<SkillTargetingSet> SkillTargetSets { get; }
 
-		IEditableDataStore<T> GetDataStore<T>();
+		IEditableDataStore<Encounter> Encounters { get; }
+
+		IEditableDataStore<T> GetDataStore<T>();		
 	}
 }
 

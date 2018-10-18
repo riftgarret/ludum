@@ -22,7 +22,9 @@
 	public enum AIValueConditionOperator
 	{
 		LT,
+		LTE,
 		GT,
+		GTE,
 		EQ
 	}
 

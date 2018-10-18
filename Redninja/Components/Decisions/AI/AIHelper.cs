@@ -46,8 +46,12 @@ namespace Redninja.Components.Decisions.AI
 			{				
 				case AIValueConditionOperator.LT:
 					return left < right;
+				case AIValueConditionOperator.LTE:
+					return left <= right;
 				case AIValueConditionOperator.GT:
 					return left > right;
+				case AIValueConditionOperator.GTE:
+					return left >= right;
 				case AIValueConditionOperator.EQ:
 				default:
 					return left == right;
