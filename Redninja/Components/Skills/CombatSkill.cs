@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Davfalcon.Builders;
 using Davfalcon.Collections.Adapters;
 using Davfalcon.Revelator;
+using Davfalcon.Serialization;
 using Redninja.Components.Actions;
 using Redninja.Components.Targeting;
 
@@ -44,61 +46,25 @@ namespace Redninja.Components.Skills
 			public override Builder Reset()
 			{
 				targets = new List<SkillTargetingSet>();
-				build = new CombatSkill()
+				CombatSkill skill = new CombatSkill()
 				{
 					Targets = targets.AsReadOnly()
 				};
-				return this;
+				return Reset(skill);
 			}
 
-			public Builder SetName(string name)
-			{
-				build.Name = name;
-				return this;
-			}
-
-			public Builder SetActionTime(int prepare, int execute, int recover)
-			{
-				build.Time = new ActionTime(prepare, execute, recover);
-				return this;
-			}
-
-			public Builder SetActionTime(ActionTime actionTime)
-			{
-				build.Time = actionTime;
-				return this;
-			}
-
-			public Builder SetDamage(int baseDamage, Enum bonusDamageStat = null)
-			{
-				build.BaseDamage = baseDamage;
-				build.BonusDamageStat = bonusDamageStat;
-				return this;
-			}
-
-			public Builder SetCrit(int critMultiplier)
-			{
-				build.CritMultiplier = critMultiplier;
-				return this;
-			}
-
-			public Builder AddDamageType(Enum type)
-			{
-				build.DamageTypes.Add(type);
-				return this;
-			}
-
-			public Builder AddTargetingSet(SkillTargetingSet skillTargetingSet)
-			{
-				targets.Add(skillTargetingSet);
-				return this;
-			}
-
+			public Builder SetName(string name) => Self(s => s.Name = name);
+			public Builder SetActionTime(int prepare, int execute, int recover) => Self(s => s.Time = new ActionTime(prepare, execute, recover));
+			public Builder SetActionTime(ActionTime actionTime) => Self(s => s.Time = actionTime);
+			public Builder SetDamage(int baseDamage) => Self(w => w.BaseDamage = baseDamage);
+			public Builder SetBonusDamageStat(Enum stat) => Self(w => w.BonusDamageStat = stat);
+			public Builder AddDamageType(Enum type) => Self(w => w.DamageTypes.Add(type));
+			public Builder AddDamageTypes(IEnumerable<Enum> types) => Self(w => w.DamageTypes.AddRange(types.Select(t => new EnumString(t))));
+			public Builder SetCritMultiplier(int crit) => Self(w => w.CritMultiplier = crit);
+			public Builder AddTargetingSet(SkillTargetingSet skillTargetingSet) => Self(s => targets.Add(skillTargetingSet));
 			public Builder AddTargetingSet(ITargetingRule targetingRule, Func<SkillTargetingSet.Builder, SkillTargetingSet.Builder> builderFunc)
-			{
-				targets.Add(builderFunc(new SkillTargetingSet.Builder(targetingRule)).Build());
-				return this;
-			}
+				=> Self(s => targets.Add(builderFunc(new SkillTargetingSet.Builder(targetingRule)).Build()));
+			public Builder AddTargetingSets(IEnumerable<SkillTargetingSet> skillTargetingSets) => Self(s => targets.AddRange(skillTargetingSets));
 		}
 	}
 }
