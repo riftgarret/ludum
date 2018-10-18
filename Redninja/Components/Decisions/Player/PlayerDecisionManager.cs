@@ -15,8 +15,6 @@ namespace Redninja.Components.Decisions.Player
 		public IMovementContext MovementContext => contextStack.Peek() as IMovementContext;
 		public ITargetingContext TargetingContext => contextStack.Peek() as ITargetingContext;
 
-		bool IActionDecider.IsPlayer => true;
-
 		public event Action<IUnitModel, IBattleAction> ActionSelected;
 		public event Action<IUnitModel> WaitingForDecision;
 		public event Action WaitResolved;

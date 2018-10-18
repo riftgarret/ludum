@@ -19,7 +19,6 @@ namespace Redninja.Entities
 		public IUnit Character { get; }
 
 		public int Team { get; set; }
-		public bool IsPlayerControlled => ActionDecider.IsPlayer;
 		public UnitPosition Position { get; private set; } = new UnitPosition(1);
 
 		// If we add an action queue here, this will point to the top instead

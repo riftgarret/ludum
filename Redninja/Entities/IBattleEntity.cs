@@ -7,7 +7,6 @@ namespace Redninja.Entities
 {
 	internal interface IBattleEntity : IUnitModel, IClockSynchronized
 	{
-		bool IsPlayerControlled { get; }
 		IBattleAction CurrentAction { get; }
 		IActionDecider ActionDecider { get; }
 
