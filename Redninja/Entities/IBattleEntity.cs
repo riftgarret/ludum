@@ -5,7 +5,7 @@ using Redninja.Components.Decisions;
 
 namespace Redninja.Entities
 {
-	public interface IBattleEntity : IUnitModel, IClockSynchronized
+	internal interface IBattleEntity : IUnitModel, IClockSynchronized
 	{
 		bool IsPlayerControlled { get; }
 		IBattleAction CurrentAction { get; }

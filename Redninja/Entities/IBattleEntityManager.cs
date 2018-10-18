@@ -5,7 +5,7 @@ using Redninja.Components.Clock;
 
 namespace Redninja.Entities
 {
-	public interface IBattleEntityManager : IBattleModel
+	internal interface IBattleEntityManager : IBattleModel
 	{
 		new IEnumerable<IBattleEntity> Entities { get; }
 
