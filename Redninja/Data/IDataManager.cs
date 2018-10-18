@@ -23,6 +23,8 @@ namespace Redninja.Data
 		IDataStore<IUnit> NPCUnits { get; }
 
 		IDataStore<SkillTargetingSet> SkillTargetSets { get; }
+
+		IDataStore<Encounter> Encounters { get; }
 	}
 }
 

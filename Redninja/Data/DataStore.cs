@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Redninja.Data
 {
@@ -8,8 +9,16 @@ namespace Redninja.Data
 
 		public T this[string key]
 		{
-			get => dict[key];
-			set => dict[key] = value;
+			get
+			{
+				if (!dict.ContainsKey(key)) throw new InvalidOperationException($"Missing key detected: '{key}' in dataStore:{typeof(T)}");
+				return dict[key];
+			}
+			set
+			{
+				if (dict.ContainsKey(key)) throw new InvalidOperationException($"Duplicate key detected: '{key}' in dataStore:{typeof(T)}");
+				dict[key] = value;
+			}
 		}
 	}
 }
