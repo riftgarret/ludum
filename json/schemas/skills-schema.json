@@ -3,20 +3,6 @@
   "title": "Schema for defining skills",
   "type": "object",
   "definitions": {
-    "dataId": {
-      "type": "string",
-      "description": "Data resource identifier",
-      "default": "",
-      "examples": [
-        "skill_001"
-      ]
-    },
-    "combatStat": {
-      "type": "string" //temporary until we define the enums
-    },
-    "damageType": {
-      "type": "string"
-    },
     "targetPattern": {
       "type": "string",
       "pattern": "^(single|row|column|((\\(\\d+,\\d+\\))+))$"
@@ -39,7 +25,7 @@
           "targetSetIds"
         ],
         "properties": {
-          "dataId": { "$ref": "#/definitions/dataId" },
+          "dataId": { "$ref": "global-defs.json#/definitions/dataId" },
           "name": {
             "type": "string",
             "description": "Skill name",
@@ -59,7 +45,7 @@
           "targetSetIds": {
             "type": "array",
             "description": "Targeting set identifiers",
-            "items": { "$ref": "#/definitions/dataId" }
+            "items": { "$ref": "global-defs.json#/definitions/dataId" }
           },
           "baseDamage": {
             "type": "integer",
@@ -73,13 +59,13 @@
           },
           "bonusDamageStat": {
             "description": "Additive bonus damage stat",
-            "allOf": [ { "$ref": "#/definitions/combatStat" } ]
+            "allOf": [ { "$ref": "global-defs.json#/definitions/statName" } ]
           },
           "damageTypes": {
             "type": "array",
             "description": "Damage types",
             "items": {
-              "$ref": "#/definitions/damageType"
+              "$ref": "global-defs.json#/definitions/damageType"
             }
           }
         }
@@ -96,7 +82,7 @@
           "combatRounds"
         ],
         "properties": {
-          "dataId": { "$ref": "#/definitions/dataId" },
+          "dataId": { "$ref": "global-defs.json#/definitions/dataId" },
           "targetType": {
             "type": "string",
             "enum": [ "Entity", "Pattern" ],

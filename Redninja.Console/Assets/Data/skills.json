@@ -18,7 +18,7 @@
       "baseDamage": -30,
       "critMultiplier": 1,
       "bonusDamageStat": "ATK",
-      "damageTypes": ["Physical"]
+      "damageTypes": [ "Physical" ]
     }
   ],
 

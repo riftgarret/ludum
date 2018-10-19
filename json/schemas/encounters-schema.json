@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Schema for defining encounters",
+  "definitions": {
+    "coordinate": {
+      "type": "string",
+      "pattern": "\\d+,\\d+"
+    }
+  },
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "dataId",
+      "enemyGridSize",
+      "playerGridSize",
+      "enemies"
+    ],
+    "properties": {
+      "dataId": { "$ref": "global-defs.json#/definitions/dataId" },
+      "enemyGridSize": {
+        "description": "Enemy grid dimensions",
+        "allOf": [ { "$ref": "#/definitions/coordinate" } ]
+      },
+      "playerGridSize": {
+        "description": "Player grid dimensions",
+        "allOf": [ { "$ref": "#/definitions/coordinate" } ]
+      },
+      "enemies": {
+        "description": "Enemy units",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "characterId",
+            "aibehaviorid",
+            "position"
+          ],
+          "properties": {
+            "characterId": {
+              "description": "Character resource identifier",
+              "allOf": [ { "$ref": "global-defs.json#/definitions/dataId" } ]
+            },
+            "aibehaviorid": {
+              "description": "AI behavior resource identifier",
+              "allOf": [ { "$ref": "global-defs.json#/definitions/dataId" } ]
+            },
+            "position": {
+              "description": "Unit grid position",
+              "allOf": [ { "$ref": "#/definitions/coordinate" } ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
