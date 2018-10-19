@@ -13,12 +13,12 @@ namespace Redninja.Components.Decisions.AI
 
 		public AIPriorityType PriorityType { get; }
 
-		public AICombatStatPriority(int conditionalValue, 
-			CombatStats combatStat, 
-			AITargetingPriorityQualifier qualifier, 
+		public AICombatStatPriority(int conditionalValue,
+			CombatStats combatStat,
+			AITargetingPriorityQualifier qualifier,
 			AIPriorityType priorityType)
 		{
-			if(priorityType != AIPriorityType.CombatStatCurrent || priorityType != AIPriorityType.CombatStatPercent)
+			if (priorityType != AIPriorityType.CombatStatCurrent || priorityType != AIPriorityType.CombatStatPercent)
 			{
 				throw new InvalidOperationException("Can only instantiate this with CombatStatType");
 			}
@@ -34,23 +34,23 @@ namespace Redninja.Components.Decisions.AI
 
 		private int GetCombatStatValue(IUnitModel entity)
 		{
-			if(PriorityType == AIPriorityType.CombatStatCurrent)
+			if (PriorityType == AIPriorityType.CombatStatCurrent)
 			{
 				return entity.Character.VolatileStats[CombatStat];
-			} else
+			}
+			else
 			{
 				return (100 * entity.Character.VolatileStats[CombatStat]) / entity.Character.Stats[CombatStat];
 			}
 		}
 
 		public override bool Equals(object obj)
-		{
-			var priority = obj as AICombatStatPriority;
-			return priority != null &&
-				   ConditionalValue == priority.ConditionalValue &&
-				   CombatStat == priority.CombatStat &&
-				   Qualifier == priority.Qualifier &&
-				   PriorityType == priority.PriorityType;
-		}
+			=> obj is AICombatStatPriority priority &&
+				ConditionalValue == priority.ConditionalValue &&
+				CombatStat == priority.CombatStat &&
+				Qualifier == priority.Qualifier &&
+				PriorityType == priority.PriorityType;
+
+		public override int GetHashCode() => $"{CombatStat}{Qualifier}{ConditionalValue}{PriorityType}".GetHashCode();
 	}
 }
