@@ -11,6 +11,7 @@ namespace Redninja.Components.Combat
 		event Action<IBattleEvent> BattleEventOccurred;
 
 		void InitializeEntity(IUnitModel entity);
+		void CleanupEntity(IUnitModel entity);
 		void MoveEntity(IUnitModel entity, int newRow, int newCol);
 		void MoveEntity(IUnitModel entity, UnitPosition newPosition);
 		IDamageNode GetRawDamage(IUnitModel attacker, IDamageSource source);

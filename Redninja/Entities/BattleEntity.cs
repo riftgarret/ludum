@@ -110,6 +110,7 @@ namespace Redninja.Entities
 				CurrentAction = null;
 			}
 
+			combatExecutor.CleanupEntity(this);
 			combatExecutor.EntityMoving -= OnEntityMoving;
 			ActionDecider.ActionSelected -= OnActionSelected;
 		}
