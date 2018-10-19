@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
-using Redninja.Components.Utils;
 
-namespace Redninja.UnitTests.Components.Utils
+namespace Redninja.Components.Utils.UnitTests
 {
 	[TestFixture]
 	public class TextUtilsTests

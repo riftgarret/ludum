@@ -34,7 +34,7 @@ namespace Redninja.Components.Decisions.AI
 		public int Count() => items.Count();		
 
 		// for testing
-		public T FixedValue(double value) => Select(Math.Min(1, Math.Max(0, value)));
+		internal T FixedValue(double value) => Select(Math.Min(1, Math.Max(0, value)));
 
 		public T Random() => Select(random.NextDouble());		
 
