@@ -52,7 +52,7 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 					99, CombatStats.ATK, AIValueConditionOperator.LT, AIConditionType.CombatStatPercent));
 			}
 		}
-					
+
 		[Test, TestCaseSource("ParseAITargetConditionTestCases")]
 		public void ParseAITargetCondition(string text, IAITargetCondition expected)
 		{

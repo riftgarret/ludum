@@ -4,26 +4,22 @@ using System.Collections.Generic;
 namespace Redninja.Components.Decisions.AI
 {
 	public class AICombatStatPriority : IAITargetPriority
-	{
-		public int ConditionalValue { get; }
-
+	{		
 		public CombatStats CombatStat { get; }
 
 		public AITargetingPriorityQualifier Qualifier { get; }
 
 		public AIPriorityType PriorityType { get; }
 
-		public AICombatStatPriority(int conditionalValue, 
-			CombatStats combatStat, 
-			AITargetingPriorityQualifier qualifier, 
+		public AICombatStatPriority(CombatStats combatStat,
+			AITargetingPriorityQualifier qualifier,
 			AIPriorityType priorityType)
 		{
-			if(priorityType != AIPriorityType.CombatStatCurrent || priorityType != AIPriorityType.CombatStatPercent)
+			if(priorityType != AIPriorityType.CombatStatCurrent && priorityType != AIPriorityType.CombatStatPercent)
 			{
 				throw new InvalidOperationException("Can only instantiate this with CombatStatType");
 			}
-
-			ConditionalValue = conditionalValue;
+	
 			CombatStat = combatStat;
 			Qualifier = qualifier;
 			PriorityType = priorityType;
@@ -47,7 +43,6 @@ namespace Redninja.Components.Decisions.AI
 		{
 			var priority = obj as AICombatStatPriority;
 			return priority != null &&
-				   ConditionalValue == priority.ConditionalValue &&
 				   CombatStat == priority.CombatStat &&
 				   Qualifier == priority.Qualifier &&
 				   PriorityType == priority.PriorityType;
