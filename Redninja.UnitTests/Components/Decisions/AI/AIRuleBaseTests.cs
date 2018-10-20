@@ -11,32 +11,9 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 	public abstract class AIRuleBaseTests<B, T> 
 		where B : AIRuleBase.BuilderBase<B, T>
 		where T : AIRuleBase
-	{
-		protected IDecisionHelper mDecisionHelper;
-		protected IBattleModel mBem;
-		protected IUnitModel mSource;
-		protected int sourceTeam;
-		protected int enemyTeam;
-		protected List<IUnitModel> allEntities;			
+	{		
 
 		protected abstract AIRuleBase.BuilderBase<B, T> SubjectBuilder { get; }		
-
-		[SetUp]
-		public void BaseSetup()
-		{
-			enemyTeam = 1;
-			sourceTeam = 2;
-
-			mBem = Substitute.For<IBattleModel>();
-			mSource = Substitute.For<IUnitModel>();
-			mSource.Team.Returns(sourceTeam);
-
-			mDecisionHelper = Substitute.For<IDecisionHelper>();
-			mDecisionHelper.BattleModel.Returns(mBem);
-
-			allEntities = new List<IUnitModel>() { mSource };
-			mBem.Entities.Returns(allEntities);			
-		}
 
 		// due to base class being called [SetUp] first before derived class, the
 		// derived class must call SetupBuilder after its initialized its Builder property.

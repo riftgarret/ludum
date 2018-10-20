@@ -31,7 +31,6 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			mInitialSkill = AddSkillPriority(null); // required for builder			
 
 			mActionHelper = Substitute.For<IActionsContext>();
-			mDecisionHelper.GetActionsContext(Arg.Any<IUnitModel>()).Returns(mActionHelper);
 
 			SetupBuilder();
 		}
