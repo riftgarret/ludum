@@ -14,9 +14,9 @@ namespace Redninja.Components.Decisions.AI
 		}
 
 		public void AddEntry(IAIRule rule, IBattleAction resolvedAction)
-			=> skillTimeUsed[rule] = battleModel.Clock.Time;
+			=> skillTimeUsed[rule] = battleModel.Time;
 
 		public bool IsRuleReady(IAIRule rule)
-			=> !skillTimeUsed.ContainsKey(rule) || battleModel.Clock.Time - skillTimeUsed[rule] > rule.RefreshTime;
+			=> !skillTimeUsed.ContainsKey(rule) || battleModel.Time - skillTimeUsed[rule] > rule.RefreshTime;
 	}
 }
