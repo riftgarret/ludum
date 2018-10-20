@@ -26,10 +26,8 @@ namespace Redninja.Components.Combat
 			: this(builderFunc(new CombatResolver.Builder()))
 		{ }
 
-		public void InitializeEntity(IUnitModel entity)
-		{
-			resolver.Initialize(entity.Character);
-		}
+		public void InitializeEntity(IUnitModel entity) => resolver.Initialize(entity.Character);
+		public void CleanupEntity(IUnitModel entity) => resolver.Cleanup(entity.Character);
 
 		public void MoveEntity(IUnitModel entity, int newRow, int newCol)
 		{

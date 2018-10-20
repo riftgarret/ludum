@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Davfalcon", "rpglibrary\Dav
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Davfalcon.Revelator", "rpglibrary\Davfalcon.Revelator\Davfalcon.Revelator.csproj", "{3F1FA461-A8B2-4B6D-8C39-050069CE2A66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "App\App.csproj", "{3295384F-5222-4AAA-92B8-B86D81DDE225}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redninja.ConsoleDriver", "Redninja.Console\Redninja.ConsoleDriver.csproj", "{07F10121-23EC-4EBB-93B9-6B99E77E8B75}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redninja.UnitTests", "Redninja.UnitTests\Redninja.UnitTests.csproj", "{C6FF7814-11C5-4856-902B-9717E9C3A743}"
@@ -23,15 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{92089F
 		nuget.config = nuget.config
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "json", "json", "{1B4CDA8C-BCED-47D7-B9C0-1E17789BFFA4}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "schemas", "schemas", "{26D14381-BE52-4F72-B607-D19D05E69D0D}"
-	ProjectSection(SolutionItems) = preProject
-		json\schemas\characters-schema.json = json\schemas\characters-schema.json
-		json\schemas\encounters-schema.json = json\schemas\encounters-schema.json
-		json\schemas\global-defs.json = json\schemas\global-defs.json
-		json\schemas\skills-schema.json = json\schemas\skills-schema.json
-	EndProjectSection
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "json", "json\json.njsproj", "{FE216358-70BC-4A7A-A9AC-65CF417CFB26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,8 +41,6 @@ Global
 		{3F1FA461-A8B2-4B6D-8C39-050069CE2A66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F1FA461-A8B2-4B6D-8C39-050069CE2A66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F1FA461-A8B2-4B6D-8C39-050069CE2A66}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3295384F-5222-4AAA-92B8-B86D81DDE225}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3295384F-5222-4AAA-92B8-B86D81DDE225}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07F10121-23EC-4EBB-93B9-6B99E77E8B75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{07F10121-23EC-4EBB-93B9-6B99E77E8B75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07F10121-23EC-4EBB-93B9-6B99E77E8B75}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -61,6 +49,8 @@ Global
 		{C6FF7814-11C5-4856-902B-9717E9C3A743}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6FF7814-11C5-4856-902B-9717E9C3A743}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6FF7814-11C5-4856-902B-9717E9C3A743}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE216358-70BC-4A7A-A9AC-65CF417CFB26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE216358-70BC-4A7A-A9AC-65CF417CFB26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,7 +58,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{07F10121-23EC-4EBB-93B9-6B99E77E8B75} = {3B717152-77D9-4109-8F4E-4A1C9576679C}
 		{C6FF7814-11C5-4856-902B-9717E9C3A743} = {3B717152-77D9-4109-8F4E-4A1C9576679C}
-		{26D14381-BE52-4F72-B607-D19D05E69D0D} = {1B4CDA8C-BCED-47D7-B9C0-1E17789BFFA4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5D4A79B7-9746-4A6C-ABFE-58D19EF1BC1B}
