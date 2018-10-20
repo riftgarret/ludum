@@ -13,32 +13,14 @@ namespace Redninja.Components.Decisions.AI
 	public abstract class AIRuleBase : IAIRule
 	{
 		// trigger conditions can rely on different targets
-		private List<Tuple<TargetTeam, IAITargetCondition>> TriggerConditions { get; } = new List<Tuple<TargetTeam, IAITargetCondition>>();
+		public List<Tuple<TargetTeam, IAITargetCondition>> TriggerConditions { get; } = new List<Tuple<TargetTeam, IAITargetCondition>>();
 
 		public string RuleName { get; private set; } = "Unnamed Rule";
 
 		public int Weight { get; private set; }
 
 		public int RefreshTime { get; private set; }
-
-
-		public bool IsValidTriggerConditions(IUnitModel source, IDecisionHelper decisionHelper)
-		{
-			foreach(var trigger in TriggerConditions)
-			{
-				var validEntities = AIHelper.FilterByType(trigger.Item1, source, decisionHelper.BattleModel);
-
-				if (validEntities.Count() == 0) return false; // couldnt find any targets to test triggers
-
-				bool foundValid = null != validEntities.FirstOrDefault(ex => trigger.Item2.IsValid(ex));
-
-				if (!foundValid) return false;
-			}
-			return true;			
-		}
-
-		public abstract IBattleAction GenerateAction(IUnitModel source, IDecisionHelper decisionHelper); 				
-
+		
 		/// <summary>
 		/// Builder class for a rule.
 		/// </summary>

@@ -3,24 +3,25 @@ using Redninja.Components.Actions;
 
 namespace Redninja.Components.Decisions.AI
 {
-	public class AIActionDecider : IActionDecider
+	internal class AIActionDecider : IActionDecider
 	{
-		private readonly AIRuleSet ruleSet;
-		private readonly IAIHistoryState historyState;
+		private readonly AIBehavior behavior;		
 		private readonly IDecisionHelper decisionHelper;
+		private AIExecutor aiExecutor; // lazy init
 
-		public AIActionDecider(AIRuleSet ruleSet, IAIHistoryState historyState, IDecisionHelper decisionHelper)
+		public AIActionDecider(AIBehavior behavior, IDecisionHelper decisionHelper)
 		{
 			this.decisionHelper = decisionHelper;
-			this.ruleSet = ruleSet;
-			this.historyState = historyState;
+			this.behavior = behavior;				
 		}
 
 		public event Action<IUnitModel, IBattleAction> ActionSelected;
 
 		public void ProcessNextAction(IUnitModel source, IBattleModel battleModel)
 		{
-			IBattleAction action = ruleSet.ResolveAction(source, decisionHelper, historyState);
+			if (aiExecutor == null) aiExecutor = new AIExecutor(source, behavior, decisionHelper, new AIHistoryState(battleModel));
+
+			IBattleAction action = aiExecutor.ResolveAction();
 			ActionSelected?.Invoke(source, action);
 		}
 	}

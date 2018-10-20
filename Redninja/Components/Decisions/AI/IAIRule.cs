@@ -1,4 +1,6 @@
-﻿using Redninja.Components.Actions;
+﻿using System;
+using System.Collections.Generic;
+using Redninja.Components.Targeting;
 
 namespace Redninja.Components.Decisions.AI
 {
@@ -8,7 +10,6 @@ namespace Redninja.Components.Decisions.AI
 		string RuleName { get; }
 		int Weight { get; }
 
-		IBattleAction GenerateAction(IUnitModel source, IDecisionHelper decisionHelper);
-		bool IsValidTriggerConditions(IUnitModel source, IDecisionHelper decisionHelper);
+		List<Tuple<TargetTeam, IAITargetCondition>> TriggerConditions { get; }
 	}
 }

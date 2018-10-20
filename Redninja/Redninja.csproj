@@ -52,6 +52,9 @@
     <Compile Include="Components\Actions\AttackAction.cs" />
     <Compile Include="Components\Actions\BattleActionBase.cs" />
     <Compile Include="Components\Clock\Clock.cs" />
+    <Compile Include="Components\Decisions\AI\AIExecutor.cs" />
+    <Compile Include="Components\Decisions\AI\AIHistoryState.cs" />
+    <Compile Include="Components\Decisions\AI\IAISkillRule.cs" />
     <Compile Include="Components\Decisions\IActionProvider.cs" />
     <Compile Include="Components\Skills\OperationProvider.cs" />
     <Compile Include="Components\Skills\SkillAction.cs" />
@@ -67,7 +70,7 @@
     <Compile Include="Components\Decisions\AI\AIMovementRule.cs" />
     <Compile Include="Components\Decisions\AI\AISkillRule.cs" />
     <Compile Include="Components\Decisions\AI\AIRuleFactory.cs" />
-    <Compile Include="Components\Decisions\AI\AIRuleSet.cs" />
+    <Compile Include="Components\Decisions\AI\AIBehavior.cs" />
     <Compile Include="Components\Decisions\AI\AITargetPriorityFactory.cs" />
     <Compile Include="Components\Decisions\AI\IAIHistoryState.cs" />
     <Compile Include="Components\Decisions\AI\IAIRule.cs" />

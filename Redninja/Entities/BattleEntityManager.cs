@@ -19,8 +19,16 @@ namespace Redninja.Entities
 		public event Action<IBattleEntity> ActionNeeded;
 		public event Action<IBattleEntity, IBattleAction> ActionSet;
 
-		public void AddEntity(IBattleEntity entity, IClock clock)
+		public IClock Clock { get; }
+
+		public BattleEntityManager(IClock clock)
 		{
+			// TODO Rice take care of this properly lol
+			Clock = clock;
+		}
+
+		public void AddEntity(IBattleEntity entity, IClock clock)
+		{			
 			entity.SetClock(clock);
 			entity.ActionNeeded += ActionNeeded;
 			entity.ActionSet += ActionSet;
