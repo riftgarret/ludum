@@ -48,13 +48,12 @@ namespace Redninja.Presenter
 		{
 			IKernel kernel = new StandardKernel();
 			kernel.Bind<IBattleView>().ToConstant(view);
-			kernel.Bind<IBattleEntityManager, IBattleModel>().To<BattleEntityManager>().InSingletonScope();
 			kernel.Bind<ICombatExecutor>().ToConstant(combatExecutor);
+			kernel.Bind<IClock, Clock>().To<Clock>().InSingletonScope();
+			kernel.Bind<IBattleEntityManager, IBattleModel>().To<BattleEntityManager>().InSingletonScope();
 			kernel.Bind<PlayerDecisionManager>().ToSelf().InSingletonScope();
 			kernel.Bind<IDecisionHelper>().To<DecisionHelper>().InSingletonScope();
 			kernel.Bind<IBattlePresenter>().To<BattlePresenter>().InSingletonScope();
-			kernel.Bind<IClock>().To<Clock>().InSingletonScope();
-			kernel.Bind<Clock>().ToSelf().InSingletonScope();
 			return kernel.Get<IBattlePresenter>();
 		}
 
@@ -111,15 +110,6 @@ namespace Redninja.Presenter
 			State = GameState.Paused;
 		}
 
-		public void Dispose()
-		{
-			kernel.Dispose();
-			foreach (IBattleEntity entity in entityManager.Entities)
-			{
-				entity.Dispose();
-			}
-		}
-
 		public void AddCharacter(IUnit character, int row, int col)
 			=> AddCharacter(character, playerDecisionManager, 0, row, col);
 
@@ -130,7 +120,7 @@ namespace Redninja.Presenter
 				Team = team
 			};
 			entity.MovePosition(row, col);
-			entityManager.AddEntity(entity, clock);
+			entityManager.AddEntity(entity);
 		}
 
 		public void AddCharacter(Func<Unit.Builder, IBuilder<IUnit>> builderFunc, int row, int col)
@@ -155,6 +145,12 @@ namespace Redninja.Presenter
 
 			// Process any pending decisions until we need to wait for one
 			decisionQueue.ProcessWhile(() => TimeActive);
+		}
+
+		public void Dispose()
+		{
+			entityManager.Dispose();
+			kernel.Dispose();
 		}
 		#endregion
 

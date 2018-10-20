@@ -5,7 +5,8 @@ namespace Redninja
 {
 	public interface IBattleModel
 	{
+		float Time { get; }
 		IEnumerable<IUnitModel> Entities { get; }
-		IClock Clock { get; }
+		Coordinate GetGridSizeForTeam(int team);
 	}
 }

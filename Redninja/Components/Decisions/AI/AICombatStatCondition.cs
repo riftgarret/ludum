@@ -12,12 +12,12 @@ namespace Redninja.Components.Decisions.AI
 
 		public AIConditionType ConditionType { get; }
 
-		public AICombatStatCondition(int conditionalValue, 
-			CombatStats combatStat, 
-			AIValueConditionOperator op, 
+		public AICombatStatCondition(int conditionalValue,
+			CombatStats combatStat,
+			AIValueConditionOperator op,
 			AIConditionType conditionType)
 		{
-			if(conditionType != AIConditionType.CombatStatCurrent && conditionType != AIConditionType.CombatStatPercent)
+			if (conditionType != AIConditionType.CombatStatCurrent && conditionType != AIConditionType.CombatStatPercent)
 			{
 				throw new InvalidOperationException("Cannot intantiate AICombatStatCondition without proper type");
 			}
@@ -44,13 +44,12 @@ namespace Redninja.Components.Decisions.AI
 		}
 
 		public override bool Equals(object obj)
-		{
-			var condition = obj as AICombatStatCondition;
-			return condition != null &&
-				   ConditionalValue == condition.ConditionalValue &&
-				   CombatStat == condition.CombatStat &&
-				   Op == condition.Op &&
-				   ConditionType == condition.ConditionType;
-		}
+			=> obj is AICombatStatCondition condition &&
+				ConditionalValue == condition.ConditionalValue &&
+				CombatStat == condition.CombatStat &&
+				Op == condition.Op &&
+				ConditionType == condition.ConditionType;
+
+		public override int GetHashCode() => $"{CombatStat}{Op}{ConditionalValue}{ConditionType}".GetHashCode();
 	}
 }

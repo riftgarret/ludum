@@ -8,10 +8,11 @@ namespace Redninja.Entities
 {
 	internal class BattleEntityManager : IBattleEntityManager
 	{
-		// TEMP for now
-		private Tuple<int, int> GridSize { get; } = Tuple.Create(3, 3);
+		private IClock clock;
+		private readonly Dictionary<int, Coordinate> grids = new Dictionary<int, Coordinate>();
+		private readonly HashSet<IBattleEntity> entityMap = new HashSet<IBattleEntity>();
 
-		private HashSet<IBattleEntity> entityMap = new HashSet<IBattleEntity>();
+		public float Time => clock.Time;
 
 		public IEnumerable<IBattleEntity> Entities => entityMap;
 		IEnumerable<IUnitModel> IBattleModel.Entities => Entities;
@@ -19,15 +20,16 @@ namespace Redninja.Entities
 		public event Action<IBattleEntity> ActionNeeded;
 		public event Action<IBattleEntity, IBattleAction> ActionSet;
 
-		public IClock Clock { get; }
-
 		public BattleEntityManager(IClock clock)
 		{
-			// TODO Rice take care of this properly lol
-			Clock = clock;
+			SetClock(clock);
 		}
 
-		public void AddEntity(IBattleEntity entity, IClock clock)
+		public Coordinate GetGridSizeForTeam(int team) => grids[team];
+
+		public void AddGrid(int team, Coordinate size) => grids[team] = size;
+
+		public void AddEntity(IBattleEntity entity)
 		{			
 			entity.SetClock(clock);
 			entity.ActionNeeded += ActionNeeded;
@@ -45,5 +47,23 @@ namespace Redninja.Entities
 		/// Initialize the battle phase, this sets the initial 'Initiative action' 
 		/// </summary>
 		public void InitializeBattlePhase() => Entities.ToList().ForEach(unit => unit.InitializeBattlePhase());
+
+		public void SetClock(IClock clock)
+		{
+			this.clock = clock;
+		}
+
+		public void Dispose()
+		{
+			if (clock != null)
+			{
+				clock = null;
+			}
+
+			foreach (IBattleEntity entity in Entities)
+			{
+				entity.Dispose();
+			}
+		}
 	}
 }

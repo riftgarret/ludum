@@ -2,7 +2,7 @@
 
 namespace Redninja.Components.Clock
 {
-	public class Clock : IClock
+	internal class Clock : IClock
 	{
 		public float Time { get; private set; }
 		public event Action<float> Tick;
