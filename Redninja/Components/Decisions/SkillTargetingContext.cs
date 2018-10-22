@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Davfalcon.Collections.Generic;
 using Redninja.Components.Actions;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
@@ -42,7 +41,7 @@ namespace Redninja.Components.Decisions
 				case TargetTeam.Enemy:
 					return battleModel.Entities.Where(e => e.Team != Entity.Team && IsValidTarget(e));
 				case TargetTeam.Self:
-					return IsValidTarget(Entity) ? new List<IUnitModel>() { Entity }.AsReadOnly() as IEnumerable<IUnitModel> : new EmptyEnumerable<IUnitModel>();
+					return IsValidTarget(Entity) ? Enumerable.Repeat(Entity, 1) : Enumerable.Empty<IUnitModel>();
 				default: throw new InvalidOperationException();
 			}
 		}
