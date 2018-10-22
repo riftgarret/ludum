@@ -29,7 +29,7 @@ namespace Redninja.Components.Decisions.AI
 				case TargetTeam.Any:
 					return bem.Entities;
 				default:
-					throw new InvalidProgramException("Unexpected target type, should implement!");
+					throw new InvalidOperationException("Unexpected target type, should implement!");
 			}
 		}
 
