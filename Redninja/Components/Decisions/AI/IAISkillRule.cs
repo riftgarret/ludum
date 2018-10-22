@@ -7,8 +7,8 @@ namespace Redninja.Components.Decisions.AI
 {
 	public interface IAISkillRule
 	{
-		List<IAITargetCondition> FilterConditions { get; }
-		List<Tuple<IAITargetPriority, ISkill>> SkillAssignments { get; }
+		IEnumerable<IAITargetCondition> FilterConditions { get; }
+		IEnumerable<Tuple<IAITargetPriority, ISkill>> SkillAssignments { get; }
 		TargetTeam TargetType { get; }
 	}
 }

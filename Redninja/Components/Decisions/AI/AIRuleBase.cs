@@ -13,7 +13,8 @@ namespace Redninja.Components.Decisions.AI
 	public abstract class AIRuleBase : IAIRule
 	{
 		// trigger conditions can rely on different targets
-		public List<Tuple<TargetTeam, IAITargetCondition>> TriggerConditions { get; } = new List<Tuple<TargetTeam, IAITargetCondition>>();
+		private List<Tuple<TargetTeam, IAITargetCondition>> triggerConditions = new List<Tuple<TargetTeam, IAITargetCondition>>();
+		public IEnumerable<Tuple<TargetTeam, IAITargetCondition>> TriggerConditions => triggerConditions;
 
 		public string RuleName { get; private set; } = "Unnamed Rule";
 
@@ -44,7 +45,7 @@ namespace Redninja.Components.Decisions.AI
 			/// <returns></returns>
 			public ParentBuilder AddTriggerCondition(TargetTeam type, IAITargetCondition condition)
 			{
-				rule.TriggerConditions.Add(Tuple.Create(type, condition));
+				rule.triggerConditions.Add(Tuple.Create(type, condition));
 				return this as ParentBuilder;
 			}
 

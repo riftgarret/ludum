@@ -15,8 +15,10 @@ namespace Redninja.Components.Decisions.AI
 	{
 		// targeting who gets focused should be uniform for rule
 		public TargetTeam TargetType { get; private set; }
-		public List<IAITargetCondition> FilterConditions { get; } = new List<IAITargetCondition>();
-		public List<Tuple<IAITargetPriority, ISkill>> SkillAssignments { get; } = new List<Tuple<IAITargetPriority, ISkill>>();				
+		private List<IAITargetCondition> filterConditions = new List<IAITargetCondition>();
+		public IEnumerable<IAITargetCondition> FilterConditions => filterConditions;
+		public List<Tuple<IAITargetPriority, ISkill>> skillAssignments = new List<Tuple<IAITargetPriority, ISkill>>();
+		public IEnumerable<Tuple<IAITargetPriority, ISkill>> SkillAssignments => skillAssignments;
 
 		/// <summary>
 		/// Builder class for a rule.
@@ -54,7 +56,7 @@ namespace Redninja.Components.Decisions.AI
 			/// <returns></returns>
 			public Builder AddFilterCondition(IAITargetCondition condition)
 			{
-				rule.FilterConditions.Add(condition);
+				rule.filterConditions.Add(condition);
 				return this;
 			}
 
@@ -66,7 +68,7 @@ namespace Redninja.Components.Decisions.AI
 			/// <returns></returns>
 			public Builder AddSkillAndPriority(ISkill skill, IAITargetPriority priority)
 			{
-				rule.SkillAssignments.Add(Tuple.Create(priority, skill));
+				rule.skillAssignments.Add(Tuple.Create(priority, skill));
 				return this;
 			}
 

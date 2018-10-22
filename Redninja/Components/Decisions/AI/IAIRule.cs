@@ -10,6 +10,6 @@ namespace Redninja.Components.Decisions.AI
 		string RuleName { get; }
 		int Weight { get; }
 
-		List<Tuple<TargetTeam, IAITargetCondition>> TriggerConditions { get; }
+		IEnumerable<Tuple<TargetTeam, IAITargetCondition>> TriggerConditions { get; }
 	}
 }
