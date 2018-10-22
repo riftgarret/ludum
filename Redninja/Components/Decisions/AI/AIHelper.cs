@@ -25,7 +25,7 @@ namespace Redninja.Components.Decisions.AI
 				case TargetTeam.Enemy:
 					return bem.Entities.Where(x => x.Team != source.Team);
 				case TargetTeam.Self:
-					return Enumerable.Repeat(source, 1);
+					return Enumerable.Repeat(source, 1);					
 				case TargetTeam.Any:
 					return bem.Entities;
 				default:

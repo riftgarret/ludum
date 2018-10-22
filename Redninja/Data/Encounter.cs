@@ -19,7 +19,7 @@ namespace Redninja.Data
 			public string DisplayName { get; internal set; }
 			public IUnit Character { get; internal set; }// or IUnitModel?
 			public Coordinate InitialPosition { get; internal set; }
-			public AIRuleSet AiBehavior { get; internal set; }
+			public AIBehavior AiBehavior { get; internal set; }
 		}
 
 		public class Builder : IBuilder<Encounter>
@@ -47,7 +47,7 @@ namespace Redninja.Data
 			public Builder SetPlayerGridSize(Coordinate coordinate)
 				=> Apply(e => e.PlayerGridSize = coordinate);
 
-			public Builder AddEnemy(IUnit enemy, Coordinate initPosition, AIRuleSet behavior)
+			public Builder AddEnemy(IUnit enemy, Coordinate initPosition, AIBehavior behavior)
 				=> Apply(e => e.EnemyMetas.Add(new EnemyMeta()
 				{
 					Character = enemy,
