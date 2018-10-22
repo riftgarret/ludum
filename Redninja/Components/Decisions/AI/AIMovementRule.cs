@@ -9,16 +9,7 @@ namespace Redninja.Components.Decisions.AI
 	/// </summary>
 	public class AIMovementRule : AIRuleBase
 	{
-		
-		public override IBattleAction GenerateAction(IUnitModel source, IDecisionHelper decisionHelper)
-		{
-			// psuedo code for now
-			// 1. Find available tiles you can move to (cannot be occupied or have units currently moving there)
-			// 2. Select position based on priority rule
-			return null;
-		}
-
-
+					
 		/// <summary>
 		/// Builder class for a rule.
 		/// </summary>
