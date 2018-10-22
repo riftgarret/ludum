@@ -3,12 +3,12 @@ using Redninja.Components.Actions;
 
 namespace Redninja.Components.Decisions.AI
 {
-	internal class AIHistoryState : IAIHistoryState
+	internal class AIRuleTracker : IAIRuleTracker
 	{
 		private Dictionary<IAIRule, float> skillTimeUsed = new Dictionary<IAIRule, float>();
 		private IBattleModel battleModel;
 
-		public AIHistoryState(IBattleModel battleModel)
+		public AIRuleTracker(IBattleModel battleModel)
 		{
 			this.battleModel = battleModel;
 		}

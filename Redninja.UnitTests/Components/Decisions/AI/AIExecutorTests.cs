@@ -15,7 +15,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 	{
 		private IDecisionHelper mDecisionHelper;
 		private IBattleEntity mSource;
-		private IAIHistoryState mHistory;
+		private IAIRuleTracker mHistory;
 		private IBattleModel mBattleModel;
 		private AIBehavior behavior;
 
@@ -30,7 +30,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			ruleCounter = 0;
 			behavior = new AIBehavior();
 			mSource = Substitute.For<IBattleEntity>();
-			mHistory = Substitute.For<IAIHistoryState>();
+			mHistory = Substitute.For<IAIRuleTracker>();
 			mDecisionHelper = Substitute.For<IDecisionHelper>();
 			mBattleModel = mDecisionHelper.BattleModel;
 			allEntities = new List<IUnitModel>() { mSource };

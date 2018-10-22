@@ -6,7 +6,7 @@ namespace Redninja.Components.Decisions.AI
 	/// History state to be passed to IAIRuleSet in order to record and check each
 	/// transaction.
 	/// </summary>
-	public interface IAIHistoryState 
+	public interface IAIRuleTracker 
 	{
 		void AddEntry(IAIRule rule, IBattleAction resolvedAction);
 		bool IsRuleReady(IAIRule rule);

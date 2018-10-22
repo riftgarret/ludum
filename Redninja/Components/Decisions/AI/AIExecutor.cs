@@ -15,7 +15,7 @@ namespace Redninja.Components.Decisions.AI
 	internal class AIExecutor
 	{
 		private readonly AIBehavior behavior;
-		private readonly IAIHistoryState history;
+		private readonly IAIRuleTracker history;
 		private readonly IUnitModel source;
 		private readonly IDecisionHelper decisionHelper;
 		private readonly IBattleModel battleModel;
@@ -23,7 +23,7 @@ namespace Redninja.Components.Decisions.AI
 		public AIExecutor(IUnitModel source, 
 			AIBehavior behavior, 
 			IDecisionHelper decisionHelper, 
-			IAIHistoryState historyState)
+			IAIRuleTracker historyState)
 		{
 			this.behavior = behavior;
 			this.source = source;
@@ -93,9 +93,7 @@ namespace Redninja.Components.Decisions.AI
 		{
 			foreach (var trigger in rule.TriggerConditions)
 			{
-				var validEntities = FilterByType(trigger.Item1);
-
-				if (validEntities.Count() == 0) return false; // couldnt find any targets to test triggers
+				var validEntities = FilterByType(trigger.Item1);				
 
 				bool foundValid = null != validEntities.FirstOrDefault(ex => trigger.Item2.IsValid(ex));
 

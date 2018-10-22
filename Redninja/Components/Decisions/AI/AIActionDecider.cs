@@ -19,7 +19,7 @@ namespace Redninja.Components.Decisions.AI
 
 		public void ProcessNextAction(IUnitModel source, IBattleModel battleModel)
 		{
-			if (aiExecutor == null) aiExecutor = new AIExecutor(source, behavior, decisionHelper, new AIHistoryState(battleModel));
+			if (aiExecutor == null) aiExecutor = new AIExecutor(source, behavior, decisionHelper, new AIRuleTracker(battleModel));
 
 			IBattleAction action = aiExecutor.ResolveAction();
 			ActionSelected?.Invoke(source, action);
