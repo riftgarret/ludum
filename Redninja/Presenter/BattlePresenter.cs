@@ -1,6 +1,7 @@
 ﻿using System;
 using Davfalcon.Builders;
 using Davfalcon.Revelator;
+using Davfalcon.Revelator.Combat;
 using Ninject;
 using Redninja.Components.Actions;
 using Redninja.Components.Clock;
@@ -20,7 +21,8 @@ namespace Redninja.Presenter
 	/// Main logic that flows through this scene is handled by this presenter in a MVP relationship.
 	/// Where this is the presenter, other components generated will represent the views.  
 	/// </summary>
-	public class BattlePresenter : IBattlePresenter, IBaseCallbacks, ISkillsCallbacks, IMovementCallbacks, ITargetingCallbacks
+	public class BattlePresenter : IBattlePresenter, IPresenterConfiguration,
+		IBaseCallbacks, ISkillsCallbacks, IMovementCallbacks, ITargetingCallbacks
 	{
 		private readonly Clock clock;
 		private readonly IKernel kernel;
@@ -44,7 +46,10 @@ namespace Redninja.Presenter
 		/// </summary>
 		public bool TimeActive => State == GameState.Active;
 
-		public static IBattlePresenter CreatePresenter(IBattleView view, ICombatExecutor combatExecutor)
+		public static IBattlePresenter CreatePresenter(IBattleView view, Func<CombatResolver.Builder, CombatResolver.Builder> combatRules)
+			=> CreatePresenter(view, new CombatExecutor(combatRules));
+
+		private static IBattlePresenter CreatePresenter(IBattleView view, ICombatExecutor combatExecutor)
 		{
 			IKernel kernel = new StandardKernel();
 			kernel.Bind<IBattleView>().ToConstant(view);
@@ -90,25 +95,9 @@ namespace Redninja.Presenter
 			playerDecisionManager.WaitResolved += view.Resume;
 		}
 
-		#region Setup and control
-		/// <summary>
-		/// Initialize presenter to load up views and prepare for lifecycle calls.
-		/// </summary>
-		public void Initialize()
-		{
-			entityManager.InitializeBattlePhase();
-			view.SetViewMode(this);
-		}
-
-		public void Start()
-		{
-			State = GameState.Active;
-		}
-
-		public void Pause()
-		{
-			State = GameState.Paused;
-		}
+		#region Configuration
+		public void Configure(Action<IPresenterConfiguration> configFunc)
+			=> configFunc(this);
 
 		public void AddCharacter(IUnit character, int row, int col)
 			=> AddCharacter(character, playerDecisionManager, 0, row, col);
@@ -128,6 +117,30 @@ namespace Redninja.Presenter
 
 		public void AddCharacter(Func<Unit.Builder, IBuilder<IUnit>> builderFunc, IActionDecider actionDecider, int team, int row, int col)
 			=> AddCharacter(Unit.Build(builderFunc), actionDecider, team, row, col);
+
+		public void SetTeamGrid(int team, Coordinate gridSize)
+			=> entityManager.AddGrid(team, gridSize);
+		#endregion
+
+		#region Control
+		/// <summary>
+		/// Initialize presenter to load up views and prepare for lifecycle calls.
+		/// </summary>
+		public void Initialize()
+		{
+			entityManager.InitializeBattlePhase();
+			view.SetViewMode(this);
+		}
+
+		public void Start()
+		{
+			State = GameState.Active;
+		}
+
+		public void Pause()
+		{
+			State = GameState.Paused;
+		}
 
 		/// <summary>
 		/// Update game clock. This drives the presenter.

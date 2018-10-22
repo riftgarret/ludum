@@ -4,7 +4,7 @@ using Redninja.Components.Targeting;
 
 namespace Redninja.Components.Skills
 {
-	public class SkillOperationResolver : ISkillResolver
+	internal class SkillOperationResolver : ISkillResolver
 	{
 		private readonly SkillOperationDefinition definition;
 		private readonly ITargetResolver target;

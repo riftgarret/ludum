@@ -107,6 +107,7 @@
     <Compile Include="Components\Decisions\IActionsContext.cs" />
     <Compile Include="Components\Decisions\IDecisionHelper.cs" />
     <Compile Include="IUnitModel.cs" />
+    <Compile Include="Presenter\IPresenterConfiguration.cs" />
     <Compile Include="Presenter\PriorityProcessingQueue%28T%29.cs" />
     <Compile Include="Presenter\ProcessingQueue%28T%29.cs" />
     <Compile Include="Components\Decisions\IMovementView.cs" />
