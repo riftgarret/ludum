@@ -2,10 +2,8 @@
 using System.Threading;
 using Davfalcon.Revelator;
 using Davfalcon.Revelator.Borger;
-using Redninja.Components.Combat;
 using Redninja.Components.Skills;
 using Redninja.ConsoleDriver.Objects;
-using Redninja.Data;
 using Redninja.Presenter;
 
 namespace Redninja.ConsoleDriver
@@ -16,28 +14,30 @@ namespace Redninja.ConsoleDriver
 
 		static void Main(string[] args)
 		{
-			DataManager manager = new DataManager();
-			manager.LoadJson(CONFIG_FILE_PATH);
-
-			// This serves no purpose, it's just here to prove it works
-			manager.Load(new ObjectLoader<ISkill>(typeof(CombatSkills)));
-			manager.Load(new ObjectLoader<IWeapon>(typeof(Weapons)));
-
 			ConsoleView view = new ConsoleView();
 
-			IBattlePresenter presenter = BattlePresenter.CreatePresenter(view, builder => builder
-				.AddDamageScaling(DamageType.Physical, CombatStats.ATK)
-				.AddDamageResist(DamageType.Physical, CombatStats.DEF)
-				.SetDefaultDamageResource(CombatStats.HP)
-				.AddVolatileStat(CombatStats.HP));
+			IBattlePresenter presenter = BattlePresenter.CreatePresenter(
+				view,
+				builder => builder
+					.AddDamageScaling(DamageType.Physical, CombatStats.ATK)
+					.AddDamageResist(DamageType.Physical, CombatStats.DEF)
+					.SetDefaultDamageResource(CombatStats.HP)
+					.AddVolatileStat(CombatStats.HP));
 
 			presenter.Configure(config =>
 			{
+				// This serves no purpose, it's just here to prove it works
+				config.LoadData(new ObjectLoader<ISkill>(typeof(CombatSkills)));
+				config.LoadData(new ObjectLoader<IWeapon>(typeof(Weapons)));
+				config.LoadJsonData(CONFIG_FILE_PATH);
+
 				config.AddCharacter(b => b
-					.SetMainDetails("Unit 1")
+					.SetMainDetails("Unit 1", "warrior")
 					.SetBaseStat(CombatStats.HP, 100)
 					.SetBaseStat(CombatStats.ATK, 50)
-					.SetBaseStat(CombatStats.DEF, 10),
+					.SetBaseStat(CombatStats.DEF, 10)
+					.AddEquipmentSlot(EquipmentType.Weapon)
+					.AddEquipment(Weapons.Sword),
 					0, 0);
 				config.AddCharacter(b => b
 					.SetMainDetails("Enemy 1")

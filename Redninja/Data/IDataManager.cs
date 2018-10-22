@@ -1,6 +1,7 @@
 using Davfalcon.Revelator;
 using Redninja.Components.Decisions.AI;
 using Redninja.Components.Skills;
+using Redninja.System;
 
 namespace Redninja.Data
 {
@@ -25,6 +26,8 @@ namespace Redninja.Data
 		IDataStore<SkillTargetingSet> SkillTargetSets { get; }
 
 		IDataStore<Encounter> Encounters { get; }
+
+		IDataStore<IClassProvider> Classes { get; }
 	}
 }
 

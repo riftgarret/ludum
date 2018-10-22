@@ -10,7 +10,7 @@ namespace Redninja.Data.Schema.Readers
 		{
 			if (String.IsNullOrWhiteSpace(configPath))
 			{
-				throw new System.ArgumentException("Config path must be specified.", nameof(configPath));
+				throw new ArgumentException("Config path must be specified.", nameof(configPath));
 			}
 
 			this.configPath = configPath;
@@ -18,8 +18,10 @@ namespace Redninja.Data.Schema.Readers
 
 		public void Read(IEditableDataManager manager)
 		{
+			// These will need to be loaded in the correct order for dependencies
 			ConfigSchema config = ParseHelper.ReadJson<ConfigSchema>(configPath);
 			SkillReader.ReadRoot(ParseHelper.ReadJson<SkillRootSchema>(config.SkillsPath), manager);
+			ClassReader.ReadRoot(ParseHelper.ReadJson<ClassesRootSchema>(config.ClassesPath), manager.Classes, manager.Skills);
 			AIRuleReader.ReadRoot(ParseHelper.ReadJson<AIRulesRootSchema>(config.AIRulesPath), manager);
 			AIBehaviorReader.ReadRoot(ParseHelper.ReadJson<AIRuleSetRootSchema>(config.AIBehaviorsPath), manager);
 			CharacterReader.ReadRoot(ParseHelper.ReadJson<CharactersRootSchema>(config.CharactersPath), manager);

@@ -1,4 +1,5 @@
 ﻿using Redninja.Components.Skills;
+using Redninja.System;
 
 namespace Redninja.Components.Decisions
 {
@@ -7,15 +8,17 @@ namespace Redninja.Components.Decisions
 	/// </summary>
 	internal class DecisionHelper : IDecisionHelper
 	{
-		public DecisionHelper(IBattleModel battleModel)
+		public IBattleModel BattleModel { get; }
+		public ISystemProvider Provider { get; }
+
+		public DecisionHelper(IBattleModel battleModel, ISystemProvider provider)
 		{
 			BattleModel = battleModel;
+			Provider = provider;
 		}
 
-		public IBattleModel BattleModel { get; }
-
 		public IActionsContext GetActionsContext(IUnitModel entity)
-			=> new SkillSelectionContext(entity);
+			=> new SkillSelectionContext(entity, Provider.GetClass(entity.Character.Class).GetSkillProvider(entity.Character.Level));
 
 		public IMovementContext GetMovementContext(IUnitModel entity)
 			=> new MovementContext(entity, BattleModel);

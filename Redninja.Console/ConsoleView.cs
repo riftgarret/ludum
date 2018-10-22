@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using Davfalcon.Nodes;
 using Redninja.Components.Decisions;
+using Redninja.Components.Skills;
 using Redninja.ConsoleDriver.Objects;
 using Redninja.Events;
 using Redninja.View;
@@ -91,6 +93,12 @@ namespace Redninja.ConsoleDriver
 				checkActionNeeded = null;
 				drawUnitActions = () =>
 				{
+					Console.WriteLine($"Attack ({String.Join(", ", actionsContext.Attack.Weapons.Select(w => w.Name))})");
+					Console.WriteLine("Skills:");
+					foreach (ISkill skill in actionsContext.Skills)
+					{
+						Console.WriteLine(skill.Name);
+					}
 					Console.WriteLine($"Select an action for {entity.Character.Name}...");
 				};
 				drawTargeting = null;
@@ -102,13 +110,16 @@ namespace Redninja.ConsoleDriver
 				switch (key)
 				{
 					case ConsoleKey.A:
-						callbacks.SelectSkill(entity, CombatSkills.TwoHandedAttack);
+						callbacks.SelectSkill(entity, actionsContext.Attack);
 						break;
 					case ConsoleKey.M:
 						callbacks.InitiateMovement(entity);
 						break;
-					case ConsoleKey.S:
-						callbacks.SelectSkill(entity, CombatSkills.PatternSkill);
+					case ConsoleKey.Q:
+						callbacks.SelectSkill(entity, actionsContext.Skills.ElementAt(0));
+						break;
+					case ConsoleKey.W:
+						callbacks.SelectSkill(entity, actionsContext.Skills.ElementAt(1));
 						break;
 					default:
 						callbacks.Wait(entity);
@@ -135,7 +146,6 @@ namespace Redninja.ConsoleDriver
 				drawUnitActions = null;
 				drawTargeting = () =>
 				{
-
 					foreach (IUnitModel t in availableTargets)
 					{
 						Console.WriteLine(t.Character.Name);

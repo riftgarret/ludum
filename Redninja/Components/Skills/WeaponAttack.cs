@@ -7,7 +7,7 @@ using Redninja.Components.Targeting;
 
 namespace Redninja.Components.Skills
 {
-	public class WeaponAttack : ISkill, IWeaponAttack
+	public class WeaponAttack : IWeaponAttack
 	{
 		private readonly List<IWeapon> weapons = new List<IWeapon>();
 
@@ -35,10 +35,10 @@ namespace Redninja.Components.Skills
 			return new SkillAction(entity, this, resolvers);
 		}
 
-		public static ISkill Build(Func<Builder, IBuilder<ISkill>> func)
+		public static IWeaponAttack Build(Func<Builder, IBuilder<IWeaponAttack>> func)
 			=> func(new Builder()).Build();
 
-		public class Builder : BuilderBase<WeaponAttack, ISkill, Builder>
+		public class Builder : BuilderBase<WeaponAttack, IWeaponAttack, Builder>
 		{
 			public Builder()
 				=> Reset();
@@ -54,9 +54,11 @@ namespace Redninja.Components.Skills
 				return Reset(w);
 			}
 
-			public Builder SetActionTime(int prepare, int execute, int recover) => Self(w => w.Time = new ActionTime(prepare, execute, recover));
+			public Builder SetActionTime(int prepare, int execute, int recover) => SetActionTime(new ActionTime(prepare, execute, recover));
+			public Builder SetActionTime(ActionTime attackTime) => Self(w => w.Time = attackTime);
 
 			public Builder AddWeapon(IWeapon weapon) => Self(w => w.weapons.Add(weapon));
+			public Builder AddWeapons(IEnumerable<IWeapon> weapons) => Self(w => w.weapons.AddRange(weapons));
 		}
 	}
 }

@@ -3,5 +3,6 @@
   "aiRulesPath": "Assets/Data/ai_rules.json",
   "aiBehaviorsPath": "Assets/Data/ai_behaviors.json",
   "charactersPath": "Assets/Data/characters.json",
-  "encountersPath": "Assets/Data/encounters.json"  
+  "encountersPath": "Assets/Data/encounters.json",
+  "classesPath": "Assets/Data/classes.json"
 }

@@ -78,6 +78,13 @@
     <Compile Include="Coordinate.cs" />
     <Compile Include="Data\Encounter.cs" />
     <Compile Include="Data\IDataLoader.cs" />
+    <Compile Include="Data\Schema\ClassesRootSchema.cs" />
+    <Compile Include="Data\Schema\ClassSchema.cs" />
+    <Compile Include="Data\Schema\ClassSkillSchema.cs" />
+    <Compile Include="Data\Schema\Readers\ClassReader.cs" />
+    <Compile Include="System\ClassProvider.cs" />
+    <Compile Include="System\IClassProvider.cs" />
+    <Compile Include="System\ISystemProvider.cs" />
     <Compile Include="Data\IEditableDataManager.cs" />
     <Compile Include="Data\IEditableDataStore.cs" />
     <Compile Include="Data\DataStore.cs" />
@@ -132,6 +139,7 @@
     <Compile Include="Presenter\BattlePresenter.cs" />
     <Compile Include="Entities\BattleEntity.cs" />
     <Compile Include="Entities\BattleEntityManager.cs" />
+    <Compile Include="System\SystemProvider.cs" />
     <Compile Include="UnitPosition.cs" />
     <Compile Include="Components\Clock\IClock.cs" />
     <Compile Include="Components\Clock\IClockSynchronized.cs" />

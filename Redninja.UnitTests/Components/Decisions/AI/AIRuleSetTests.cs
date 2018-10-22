@@ -7,7 +7,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 {
 	[TestFixture]
 	public class AIRuleSetTests
-	{		
+	{
 		private IDecisionHelper mDecisionHelper;
 		private IBattleEntity mSource;
 		private IAIHistoryState mHistory;
@@ -15,12 +15,13 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 
 		[SetUp]
 		public void Setup()
-		{			
+		{
+			mDecisionHelper = Substitute.For<IDecisionHelper>();
 			mSource = Substitute.For<IBattleEntity>();
 			mHistory = Substitute.For<IAIHistoryState>();
 			builder = new AIRuleSet.Builder();
 		}
-		
+
 		private IAIRule CreateMockRule(int weight, bool isValidTrigger, bool willBuildAction)
 		{
 			IAIRule rule = Substitute.For<IAIRule>();
@@ -40,9 +41,9 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 		[TestCase(true, true, true, false, false, false, true, true)]
 		public void ResolveAction_FindsAction(params bool[] validBuildPairs)
 		{
-			for (int i= 0; i < validBuildPairs.Length; i+=2) 
+			for (int i = 0; i < validBuildPairs.Length; i += 2)
 			{
-				builder.AddRule(CreateMockRule(1, validBuildPairs[i], validBuildPairs[i+1]));
+				builder.AddRule(CreateMockRule(1, validBuildPairs[i], validBuildPairs[i + 1]));
 			}
 
 			mHistory.IsRuleReady(Arg.Any<IAIRule>()).Returns(true);
@@ -58,7 +59,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 		[TestCase(false, true, false, false, true, false, false, false)]
 		[TestCase(true, false, true, false, false, false)]
 		public void ResolveAction_FailsReturnsNoAction(params bool[] validBuildPairs)
-		{			
+		{
 			for (int i = 0; i < validBuildPairs.Length; i += 2)
 			{
 				builder.AddRule(CreateMockRule(1, validBuildPairs[i], validBuildPairs[i + 1]));

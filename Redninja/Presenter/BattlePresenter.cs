@@ -11,8 +11,10 @@ using Redninja.Components.Decisions.Player;
 using Redninja.Components.Operations;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
+using Redninja.Data;
 using Redninja.Entities;
 using Redninja.Events;
+using Redninja.System;
 using Redninja.View;
 
 namespace Redninja.Presenter
@@ -24,8 +26,9 @@ namespace Redninja.Presenter
 	public class BattlePresenter : IBattlePresenter, IPresenterConfiguration,
 		IBaseCallbacks, ISkillsCallbacks, IMovementCallbacks, ITargetingCallbacks
 	{
-		private readonly Clock clock;
 		private readonly IKernel kernel;
+		private readonly DataManager dataManager;
+		private readonly Clock clock;
 		private readonly IBattleView view;
 		private readonly ICombatExecutor combatExecutor;
 		private readonly IBattleEntityManager entityManager;
@@ -54,6 +57,8 @@ namespace Redninja.Presenter
 			IKernel kernel = new StandardKernel();
 			kernel.Bind<IBattleView>().ToConstant(view);
 			kernel.Bind<ICombatExecutor>().ToConstant(combatExecutor);
+			kernel.Bind<IDataManager, DataManager>().To<DataManager>().InSingletonScope();
+			kernel.Bind<ISystemProvider>().To<SystemProvider>().InSingletonScope();
 			kernel.Bind<IClock, Clock>().To<Clock>().InSingletonScope();
 			kernel.Bind<IBattleEntityManager, IBattleModel>().To<BattleEntityManager>().InSingletonScope();
 			kernel.Bind<PlayerDecisionManager>().ToSelf().InSingletonScope();
@@ -66,6 +71,7 @@ namespace Redninja.Presenter
 		{
 			this.kernel = kernel;
 
+			dataManager = kernel.Get<DataManager>();
 			combatExecutor = kernel.Get<ICombatExecutor>();
 			entityManager = kernel.Get<IBattleEntityManager>();
 			playerDecisionManager = kernel.Get<PlayerDecisionManager>();
@@ -98,6 +104,12 @@ namespace Redninja.Presenter
 		#region Configuration
 		public void Configure(Action<IPresenterConfiguration> configFunc)
 			=> configFunc(this);
+
+		public void LoadJsonData(string configPath)
+			=> dataManager.LoadJson(configPath);
+
+		public void LoadData(IDataLoader loader)
+			=> dataManager.Load(loader);
 
 		public void AddCharacter(IUnit character, int row, int col)
 			=> AddCharacter(character, playerDecisionManager, 0, row, col);
