@@ -30,7 +30,7 @@ namespace Redninja.Entities
 		public void AddGrid(int team, Coordinate size) => grids[team] = size;
 
 		public void AddEntity(IBattleEntity entity)
-		{			
+		{
 			entity.SetClock(clock);
 			entity.ActionNeeded += ActionNeeded;
 			entity.ActionSet += ActionSet;
