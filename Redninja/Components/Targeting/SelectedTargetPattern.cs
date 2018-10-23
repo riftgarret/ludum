@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Redninja.Components.Targeting
 {
-	public class SelectedTargetPattern : ISelectedTarget
+	internal class SelectedTargetPattern : ISelectedTarget
 	{
 		public ITargetingRule Rule { get; }
 		public ITargetPattern Pattern { get; }

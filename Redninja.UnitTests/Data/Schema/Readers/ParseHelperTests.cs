@@ -28,11 +28,11 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 		{
 			IUnitModel mEntity = Substitute.For<IUnitModel>();
 			ITargetResolver mTarget = Substitute.For<ITargetResolver>();
-			ISkill mSkill = Substitute.For<ISkill>();
+			ISkillOperationParameters mParams = Substitute.For<ISkillOperationParameters>();
 
 			OperationProvider result = ParseHelper.ParseOperationProvider("Damage");
 			Assert.AreEqual(OperationProviders.Damage, result);
-			Assert.IsInstanceOf<DamageOperation>(result(mEntity, mTarget, mSkill));
+			Assert.IsInstanceOf<DamageOperation>(result(mEntity, mTarget, mParams));
 		}
 
 		public static IEnumerable ParseAITargetConditionTestCases

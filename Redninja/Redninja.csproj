@@ -49,13 +49,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\Actions\AttackAction.cs" />
     <Compile Include="Components\Actions\BattleActionBase.cs" />
     <Compile Include="Components\Clock\Clock.cs" />
     <Compile Include="Components\Decisions\AI\AIExecutor.cs" />
     <Compile Include="Components\Decisions\AI\AIRuleTracker.cs" />
     <Compile Include="Components\Decisions\AI\IAISkillRule.cs" />
     <Compile Include="Components\Decisions\IActionProvider.cs" />
+    <Compile Include="Components\Skills\ISkillOperationParameters.cs" />
     <Compile Include="Components\Skills\OperationProvider.cs" />
     <Compile Include="Components\Skills\SkillAction.cs" />
     <Compile Include="Components\Actions\MovementAction.cs" />
@@ -77,6 +77,7 @@
     <Compile Include="Components\Decisions\AI\IAITargetCondition.cs" />
     <Compile Include="Components\Decisions\AI\IAITargetPriority.cs" />
     <Compile Include="Components\Decisions\AI\WeightedPool.cs" />
+    <Compile Include="Components\Skills\SkillOperationParameters.cs" />
     <Compile Include="Components\Utils\TextUtils.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="Data\Encounter.cs" />
@@ -162,7 +163,6 @@
     <Compile Include="Components\Skills\CombatSkill.cs" />
     <Compile Include="Components\Skills\ISkillResolver.cs" />
     <Compile Include="Components\Skills\SkillOperationDefinition.cs" />
-    <Compile Include="Components\Skills\SkillOperationResolver.cs" />
     <Compile Include="Components\Skills\SkillTargetingSet.cs" />
     <Compile Include="Components\Skills\WeaponAttackResolver.cs" />
     <Compile Include="Components\Targeting\ISelectedTarget.cs" />

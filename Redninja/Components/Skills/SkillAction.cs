@@ -3,18 +3,18 @@ using Redninja.Components.Actions;
 
 namespace Redninja.Components.Skills
 {
-	public class SkillAction : BattleActionBase
+	internal class SkillAction : BattleActionBase
 	{
 		private readonly IUnitModel entity;
 		private readonly ISkill skill;
-		private readonly IList<ISkillResolver> resolvers;
+		private readonly IEnumerable<ISkillResolver> resolvers;
 
 		public SkillAction(IUnitModel entity, ISkill skill, IEnumerable<ISkillResolver> resolvers)
 			: base(skill.Name, skill.Time)
 		{
 			this.skill = skill;
 			this.entity = entity;
-			this.resolvers = new List<ISkillResolver>(resolvers);
+			this.resolvers = resolvers;
 		}
 
 		protected override void ExecuteAction(float timeDelta, float time)
@@ -23,7 +23,7 @@ namespace Redninja.Components.Skills
 			{
 				if (!r.Resolved && PhaseProgress >= r.ExecutionStart)
 				{
-					SendBattleOperation(GetPhaseTimeAt(r.ExecutionStart), r.Resolve(entity, skill));
+					SendBattleOperation(GetPhaseTimeAt(r.ExecutionStart), r.Resolve(entity));
 				}
 			}
 		}

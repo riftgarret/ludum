@@ -7,6 +7,6 @@ namespace Redninja.Components.Skills
 		bool Resolved { get; }
 		float ExecutionStart { get; }
 
-		IBattleOperation Resolve(IUnitModel entity, ISkill skill);
+		IBattleOperation Resolve(IUnitModel entity);
 	}
 }

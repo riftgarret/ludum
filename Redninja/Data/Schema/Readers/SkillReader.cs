@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 
@@ -18,33 +16,24 @@ namespace Redninja.Data.Schema.Readers
 		{
 			foreach (CombatSkillSchema item in skills)
 			{
-				skillStore[item.DataId] = CombatSkill.Build(b => b
-					.SetName(item.Name)
-					.SetActionTime(ParseHelper.ParseActionTime(item.Time))
-					.SetDamage(item.BaseDamage)
-					.SetBonusDamageStat(item.BonusDamageStat)
-					.AddDamageTypes(item.DamageTypes.Select(t => (Enum)t))
-					.AddTargetingSets(item.TargetingSets.Select(ts =>
-						SkillTargetingSet.Build(targetStore[ts.TargetingRuleId], builder =>
+				skillStore[item.DataId] = CombatSkill.Build(item.Name, item.DefaultParameters, b =>
+				{
+					b.SetActionTime(ParseHelper.ParseActionTime(item.Time));
+					item.TargetingSets.ForEach(ts => b.AddTargetingSet(targetStore[ts.TargetingRuleId],
+						set =>
 						{
 							foreach (CombatRoundSchema combatRound in ts.CombatRounds)
 							{
-								if (combatRound.Pattern != null)
-								{
-									builder.AddCombatRound(
-										combatRound.ExecutionStart,
-										ParseHelper.ParsePattern(combatRound.Pattern),
-										ParseHelper.ParseOperationProvider(combatRound.OperationProviderName));
-								}
-								else
-								{
-									builder.AddCombatRound(
-										combatRound.ExecutionStart,
-										ParseHelper.ParseOperationProvider(combatRound.OperationProviderName));
-								}
+								set.AddCombatRound(
+									combatRound.ExecutionStart,
+									combatRound.Pattern != null ? ParseHelper.ParsePattern(combatRound.Pattern) : null,
+									ParseHelper.ParseOperationProvider(combatRound.OperationProviderName),
+									combatRound.Parameters ?? item.DefaultParameters);
 							}
-							return builder;
-						}))));
+							return set;
+						}));
+					return b;
+				});
 			}
 		}
 

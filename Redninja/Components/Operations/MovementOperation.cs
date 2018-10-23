@@ -2,7 +2,7 @@
 
 namespace Redninja.Components.Operations
 {
-	public class MovementOperation : BattleOperationBase
+	internal class MovementOperation : BattleOperationBase
 	{
 		private readonly IUnitModel unit;
 		private readonly int row;

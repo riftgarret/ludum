@@ -10,7 +10,7 @@
       },
       {
         "level": 1,
-        "skillId": "TargetedSkill"
+        "skillId": "multi_hit"
       }
     ]
   }
