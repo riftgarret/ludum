@@ -111,7 +111,7 @@ namespace Redninja.Presenter
 		public void LoadData(IDataLoader loader)
 			=> dataManager.Load(loader);
 
-		public void AddCharacter(IUnit character, int row, int col)
+		public void AddPlayerCharacter(IUnit character, int row, int col)
 			=> AddCharacter(character, playerDecisionManager, 0, row, col);
 
 		public void AddCharacter(IUnit character, IActionDecider actionDecider, int team, int row, int col)
@@ -124,8 +124,8 @@ namespace Redninja.Presenter
 			entityManager.AddEntity(entity);
 		}
 
-		public void AddCharacter(Func<Unit.Builder, IBuilder<IUnit>> builderFunc, int row, int col)
-			=> AddCharacter(Unit.Build(builderFunc), row, col);
+		public void AddPlayerCharacter(Func<Unit.Builder, IBuilder<IUnit>> builderFunc, int row, int col)
+			=> AddPlayerCharacter(Unit.Build(builderFunc), row, col);
 
 		public void AddCharacter(Func<Unit.Builder, IBuilder<IUnit>> builderFunc, IActionDecider actionDecider, int team, int row, int col)
 			=> AddCharacter(Unit.Build(builderFunc), actionDecider, team, row, col);

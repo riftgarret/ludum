@@ -31,7 +31,7 @@ namespace Redninja.ConsoleDriver
 				config.LoadData(new ObjectLoader<IWeapon>(typeof(Weapons)));
 				config.LoadJsonData(CONFIG_FILE_PATH);
 
-				config.AddCharacter(b => b
+				config.AddPlayerCharacter(b => b
 					.SetMainDetails("Unit 1", "warrior")
 					.SetBaseStat(CombatStats.HP, 100)
 					.SetBaseStat(CombatStats.ATK, 50)

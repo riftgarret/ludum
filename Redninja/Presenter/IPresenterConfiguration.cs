@@ -10,9 +10,9 @@ namespace Redninja.Presenter
 	{
 		void LoadData(IDataLoader loader);
 		void LoadJsonData(string configPath);
-		void AddCharacter(IUnit character, int row, int col);
+		void AddPlayerCharacter(IUnit character, int row, int col);
+		void AddPlayerCharacter(Func<Unit.Builder, IBuilder<IUnit>> builderFunc, int row, int col);
 		void AddCharacter(IUnit character, IActionDecider actionDecider, int team, int row, int col);
-		void AddCharacter(Func<Unit.Builder, IBuilder<IUnit>> builderFunc, int row, int col);
 		void AddCharacter(Func<Unit.Builder, IBuilder<IUnit>> builderFunc, IActionDecider actionDecider, int team, int row, int col);
 		void SetTeamGrid(int team, Coordinate gridSize);
 	}
