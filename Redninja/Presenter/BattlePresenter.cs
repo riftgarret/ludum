@@ -1,6 +1,7 @@
 ﻿using System;
 using Davfalcon.Builders;
 using Davfalcon.Revelator;
+using Davfalcon.Revelator.Combat;
 using Ninject;
 using Redninja.Components.Actions;
 using Redninja.Components.Clock;
@@ -10,8 +11,10 @@ using Redninja.Components.Decisions.Player;
 using Redninja.Components.Operations;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
+using Redninja.Data;
 using Redninja.Entities;
 using Redninja.Events;
+using Redninja.System;
 using Redninja.View;
 
 namespace Redninja.Presenter
@@ -20,10 +23,12 @@ namespace Redninja.Presenter
 	/// Main logic that flows through this scene is handled by this presenter in a MVP relationship.
 	/// Where this is the presenter, other components generated will represent the views.  
 	/// </summary>
-	public class BattlePresenter : IBattlePresenter, IBaseCallbacks, ISkillsCallbacks, IMovementCallbacks, ITargetingCallbacks
+	public class BattlePresenter : IBattlePresenter, IPresenterConfiguration,
+		IBaseCallbacks, ISkillsCallbacks, IMovementCallbacks, ITargetingCallbacks
 	{
-		private readonly Clock clock;
 		private readonly IKernel kernel;
+		private readonly DataManager dataManager;
+		private readonly Clock clock;
 		private readonly IBattleView view;
 		private readonly ICombatExecutor combatExecutor;
 		private readonly IBattleEntityManager entityManager;
@@ -44,11 +49,16 @@ namespace Redninja.Presenter
 		/// </summary>
 		public bool TimeActive => State == GameState.Active;
 
-		public static IBattlePresenter CreatePresenter(IBattleView view, ICombatExecutor combatExecutor)
+		public static IBattlePresenter CreatePresenter(IBattleView view, Func<CombatResolver.Builder, CombatResolver.Builder> combatRules)
+			=> CreatePresenter(view, new CombatExecutor(combatRules));
+
+		private static IBattlePresenter CreatePresenter(IBattleView view, ICombatExecutor combatExecutor)
 		{
 			IKernel kernel = new StandardKernel();
 			kernel.Bind<IBattleView>().ToConstant(view);
 			kernel.Bind<ICombatExecutor>().ToConstant(combatExecutor);
+			kernel.Bind<IDataManager, DataManager>().To<DataManager>().InSingletonScope();
+			kernel.Bind<ISystemProvider>().To<SystemProvider>().InSingletonScope();
 			kernel.Bind<IClock, Clock>().To<Clock>().InSingletonScope();
 			kernel.Bind<IBattleEntityManager, IBattleModel>().To<BattleEntityManager>().InSingletonScope();
 			kernel.Bind<PlayerDecisionManager>().ToSelf().InSingletonScope();
@@ -61,6 +71,7 @@ namespace Redninja.Presenter
 		{
 			this.kernel = kernel;
 
+			dataManager = kernel.Get<DataManager>();
 			combatExecutor = kernel.Get<ICombatExecutor>();
 			entityManager = kernel.Get<IBattleEntityManager>();
 			playerDecisionManager = kernel.Get<PlayerDecisionManager>();
@@ -90,7 +101,40 @@ namespace Redninja.Presenter
 			playerDecisionManager.WaitResolved += view.Resume;
 		}
 
-		#region Setup and control
+		#region Configuration
+		public void Configure(Action<IPresenterConfiguration> configFunc)
+			=> configFunc(this);
+
+		public void LoadJsonData(string configPath)
+			=> dataManager.LoadJson(configPath);
+
+		public void LoadData(IDataLoader loader)
+			=> dataManager.Load(loader);
+
+		public void AddPlayerCharacter(IUnit character, int row, int col)
+			=> AddCharacter(character, playerDecisionManager, 0, row, col);
+
+		public void AddCharacter(IUnit character, IActionDecider actionDecider, int team, int row, int col)
+		{
+			IBattleEntity entity = new BattleEntity(character, actionDecider, combatExecutor)
+			{
+				Team = team
+			};
+			entity.MovePosition(row, col);
+			entityManager.AddEntity(entity);
+		}
+
+		public void AddPlayerCharacter(Func<Unit.Builder, IBuilder<IUnit>> builderFunc, int row, int col)
+			=> AddPlayerCharacter(Unit.Build(builderFunc), row, col);
+
+		public void AddCharacter(Func<Unit.Builder, IBuilder<IUnit>> builderFunc, IActionDecider actionDecider, int team, int row, int col)
+			=> AddCharacter(Unit.Build(builderFunc), actionDecider, team, row, col);
+
+		public void SetTeamGrid(int team, Coordinate gridSize)
+			=> entityManager.AddGrid(team, gridSize);
+		#endregion
+
+		#region Control
 		/// <summary>
 		/// Initialize presenter to load up views and prepare for lifecycle calls.
 		/// </summary>
@@ -109,25 +153,6 @@ namespace Redninja.Presenter
 		{
 			State = GameState.Paused;
 		}
-
-		public void AddCharacter(IUnit character, int row, int col)
-			=> AddCharacter(character, playerDecisionManager, 0, row, col);
-
-		public void AddCharacter(IUnit character, IActionDecider actionDecider, int team, int row, int col)
-		{
-			IBattleEntity entity = new BattleEntity(character, actionDecider, combatExecutor)
-			{
-				Team = team
-			};
-			entity.MovePosition(row, col);
-			entityManager.AddEntity(entity);
-		}
-
-		public void AddCharacter(Func<Unit.Builder, IBuilder<IUnit>> builderFunc, int row, int col)
-			=> AddCharacter(Unit.Build(builderFunc), row, col);
-
-		public void AddCharacter(Func<Unit.Builder, IBuilder<IUnit>> builderFunc, IActionDecider actionDecider, int team, int row, int col)
-			=> AddCharacter(Unit.Build(builderFunc), actionDecider, team, row, col);
 
 		/// <summary>
 		/// Update game clock. This drives the presenter.

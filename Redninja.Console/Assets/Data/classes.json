@@ -1,0 +1,17 @@
+﻿[
+  {
+    "dataId": "warrior",
+    "name": "Warrior",
+    "attackTime": [ 1, 2, 1 ],
+    "skills": [
+      {
+        "level": 1,
+        "skillId": "TargetedSkill"
+      },
+      {
+        "level": 1,
+        "skillId": "PatternSkill"
+      }
+    ]
+  }
+]

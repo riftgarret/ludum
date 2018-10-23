@@ -4,10 +4,11 @@ using Davfalcon.Revelator;
 using Redninja.Components.Decisions.AI;
 using Redninja.Components.Skills;
 using Redninja.Data.Schema.Readers;
+using Redninja.System;
 
 namespace Redninja.Data
 {
-	public class DataManager : IDataManager, IEditableDataManager
+	internal class DataManager : IDataManager, IEditableDataManager
 	{
 		private readonly Dictionary<Type, object> dataTypeLookup = new Dictionary<Type, object>();
 
@@ -29,6 +30,7 @@ namespace Redninja.Data
 		public IDataStore<IUnit> NPCUnits => GetDataStore<IUnit>();
 		public IDataStore<SkillTargetingSet> SkillTargetSets => GetDataStore<SkillTargetingSet>();
 		public IDataStore<Encounter> Encounters => GetDataStore<Encounter>();
+		public IDataStore<IClassProvider> Classes => GetDataStore<IClassProvider>();
 
 		IEditableDataStore<ISkill> IEditableDataManager.Skills => GetDataStore<ISkill>();
 		IEditableDataStore<IAIRule> IEditableDataManager.AIRules => GetDataStore<IAIRule>();
@@ -38,6 +40,7 @@ namespace Redninja.Data
 		IEditableDataStore<IUnit> IEditableDataManager.NPCUnits => GetDataStore<IUnit>();
 		IEditableDataStore<SkillTargetingSet> IEditableDataManager.SkillTargetSets => GetDataStore<SkillTargetingSet>();
 		IEditableDataStore<Encounter> IEditableDataManager.Encounters => GetDataStore<Encounter>();
+		IEditableDataStore<IClassProvider> IEditableDataManager.Classes => GetDataStore<IClassProvider>();
 
 		IEditableDataStore<T> IEditableDataManager.GetDataStore<T>() => GetDataStore<T>();
 

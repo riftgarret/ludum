@@ -60,6 +60,9 @@
     <None Include="Assets\Data\ai_rules.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Assets\Data\classes.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Assets\Data\config.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -102,7 +105,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties Assets_4Data_4encounters_1json__JSONSchema="..\..\..\json\schemas\encounters-schema.json" Assets_4Data_4characters_1json__JSONSchema="..\..\..\json\schemas\characters-schema.json" Assets_4Data_4skills_1json__JSONSchema="..\..\..\json\schemas\skills-schema.json" />
+      <UserProperties Assets_4Data_4skills_1json__JSONSchema="..\..\..\json\schemas\skills-schema.json" Assets_4Data_4characters_1json__JSONSchema="..\..\..\json\schemas\characters-schema.json" Assets_4Data_4encounters_1json__JSONSchema="..\..\..\json\schemas\encounters-schema.json" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

@@ -5,7 +5,7 @@ using Redninja.Components.Targeting;
 
 namespace Redninja.Components.Skills
 {
-	public class WeaponAttackResolver : ISkillResolver
+	internal class WeaponAttackResolver : ISkillResolver
 	{
 		private readonly IWeapon weapon;
 		private readonly ITargetResolver target;

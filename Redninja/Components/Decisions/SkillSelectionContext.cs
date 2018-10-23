@@ -15,17 +15,11 @@ namespace Redninja.Components.Decisions
 		public IWeaponAttack Attack { get; }
 		public IEnumerable<ISkill> Skills { get; }
 
-		public SkillSelectionContext(IUnitModel entity)
+		public SkillSelectionContext(IUnitModel entity, ISkillProvider skillProvider)
 		{
 			Entity = entity;
-		}
-
-		// SkillProvider needs to be implemented before we can use this
-		public SkillSelectionContext(IUnitModel entity, ISkillProvider skillProvider)
-			: this(entity)
-		{
-			Attack = skillProvider.GetAttack(entity.Character.Class, entity.Character.Equipment.GetAllEquipmentForSlot(EquipmentType.Weapon).Select(e => e as IWeapon));
-			Skills = new List<ISkill>(skillProvider.GetSkills(entity.Character.Class, entity.Character.Level));
+			Attack = skillProvider.GetAttack(entity.Character.Equipment.GetAllEquipmentForSlot(EquipmentType.Weapon).Select(e => e as IWeapon));
+			Skills = skillProvider.GetSkills();
 		}
 	}
 }

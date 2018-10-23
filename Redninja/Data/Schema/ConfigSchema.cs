@@ -7,5 +7,6 @@
 		public string AIBehaviorsPath { get; set; }
 		public string CharactersPath { get; set; }
 		public string EncountersPath { get; set; }
+		public string ClassesPath { get; set; }
 	}
 }
