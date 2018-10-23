@@ -6,6 +6,38 @@
     "targetPattern": {
       "type": "string",
       "pattern": "^(single|row|column|((\\(\\d+,\\d+\\))+))$"
+    },
+    "damageSource": {
+      "type": "object",
+      "properties": {
+        "baseDamage": {
+          "type": "integer",
+          "description": "Base skill damage",
+          "default": 0
+        },
+        "critMultiplier": {
+          "type": "integer",
+          "description": "Critical hit damage multiplier",
+          "default": 1
+        },
+        "bonusDamageStat": {
+          "description": "Additive bonus damage stat",
+          "allOf": [ { "$ref": "global-defs.json#/definitions/statName" } ]
+        },
+        "damageTypes": {
+          "type": "array",
+          "description": "Damage types",
+          "items": {
+            "$ref": "global-defs.json#/definitions/damageType"
+          }
+        }
+      }
+    },
+    "skillOpParams": {
+      "description": "Skill operation parameters",
+      "allOf": [
+        { "$ref": "#/definitions/damageSource" }
+      ]
     }
   },
   "required": [
@@ -42,27 +74,7 @@
               "default": 0
             }
           },
-          "baseDamage": {
-            "type": "integer",
-            "description": "Base skill damage",
-            "default": 0
-          },
-          "critMultiplier": {
-            "type": "integer",
-            "description": "Critical hit damage multiplier",
-            "default": 1
-          },
-          "bonusDamageStat": {
-            "description": "Additive bonus damage stat",
-            "allOf": [ { "$ref": "global-defs.json#/definitions/statName" } ]
-          },
-          "damageTypes": {
-            "type": "array",
-            "description": "Damage types",
-            "items": {
-              "$ref": "global-defs.json#/definitions/damageType"
-            }
-          },
+          "defaultParameters": { "$ref": "#/definitions/skillOpParams" },
           "targetingSets": {
             "type": "array",
             "description": "Targeting sets",
@@ -95,7 +107,8 @@
                       "pattern": {
                         "description": "The pattern used to execute the operation",
                         "allOf": [ { "$ref": "#/definitions/targetPattern" } ]
-                      }
+                      },
+                      "parameters": { "$ref": "#/definitions/skillOpParams" }
                     }
                   }
                 }
