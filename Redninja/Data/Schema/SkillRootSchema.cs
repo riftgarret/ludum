@@ -8,6 +8,6 @@ namespace Redninja.Data.Schema
 	{
 		public List<CombatSkillSchema> CombatSkills { get; set; }
 
-		public List<TargetingSetSchema> TargetSets { get; set; }
+		public List<TargetingRuleSchema> TargetingRules { get; set; }
 	}
 }

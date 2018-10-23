@@ -6,11 +6,11 @@
     "skills": [
       {
         "level": 1,
-        "skillId": "TargetedSkill"
+        "skillId": "double_hit"
       },
       {
         "level": 1,
-        "skillId": "PatternSkill"
+        "skillId": "TargetedSkill"
       }
     ]
   }

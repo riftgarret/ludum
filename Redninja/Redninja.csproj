@@ -112,7 +112,7 @@
     <Compile Include="Data\Schema\Readers\ParseHelper.cs" />
     <Compile Include="Data\Schema\Readers\SkillReader.cs" />
     <Compile Include="Data\Schema\SkillRootSchema.cs" />
-    <Compile Include="Data\Schema\TargetingSetSchema.cs" />
+    <Compile Include="Data\Schema\TargetingRuleSchema.cs" />
     <Compile Include="Data\IDataManager.cs" />
     <Compile Include="Components\Decisions\IActionsContext.cs" />
     <Compile Include="Components\Decisions\IDecisionHelper.cs" />

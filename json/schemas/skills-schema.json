@@ -10,7 +10,7 @@
   },
   "required": [
     "combatSkills",
-    "targetSets"
+    "targetingRules"
   ],
   "properties": {
     "combatSkills": {
@@ -22,7 +22,7 @@
           "dataId",
           "name",
           "time",
-          "targetSetIds"
+          "targetingSets"
         ],
         "properties": {
           "dataId": { "$ref": "global-defs.json#/definitions/dataId" },
@@ -41,11 +41,6 @@
               "title": "Phase time",
               "default": 0
             }
-          },
-          "targetSetIds": {
-            "type": "array",
-            "description": "Targeting set identifiers",
-            "items": { "$ref": "global-defs.json#/definitions/dataId" }
           },
           "baseDamage": {
             "type": "integer",
@@ -67,19 +62,58 @@
             "items": {
               "$ref": "global-defs.json#/definitions/damageType"
             }
+          },
+          "targetingSets": {
+            "type": "array",
+            "description": "Targeting sets",
+            "items": {
+              "type": "object",
+              "required": [
+                "targetingRuleId",
+                "combatRounds"
+              ],
+              "properties": {
+                "targetingRuleId": { "$ref": "global-defs.json#/definitions/dataId" },
+                "combatRounds": {
+                  "type": "array",
+                  "description": "Skill operation definitions",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "executionStart",
+                      "operationProviderName"
+                    ],
+                    "properties": {
+                      "executionStart": {
+                        "type": "number",
+                        "description": "The phase percent to execute the operation"
+                      },
+                      "operationProviderName": {
+                        "type": "string",
+                        "description": "The name of the battle operation provider"
+                      },
+                      "pattern": {
+                        "description": "The pattern used to execute the operation",
+                        "allOf": [ { "$ref": "#/definitions/targetPattern" } ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "targetSets": {
+    "targetingRules": {
       "type": "array",
-      "description": "Targeting phase definitions, specifying a targeting rule and combat operations to be executed with it",
+      "description": "Targeting rule templates",
       "items": {
         "type": "object",
         "required": [
           "dataId",
           "targetType",
-          "combatRounds"
+          "targetTeam"
         ],
         "properties": {
           "dataId": { "$ref": "global-defs.json#/definitions/dataId" },
@@ -89,34 +123,15 @@
             "description": "The type of targeting to use",
             "default": "Entity"
           },
+          "targetTeam": {
+            "type": "string",
+            "enum": [ "Any", "Enemy", "Ally", "Self" ],
+            "description": "Which units can be targeted",
+            "default": "Any"
+          },
           "pattern": {
             "description": "The pattern for the targeting phase",
             "allOf": [ { "$ref": "#/definitions/targetPattern" } ]
-          },
-          "combatRounds": {
-            "type": "array",
-            "description": "Skill operation definitions",
-            "items": {
-              "type": "object",
-              "required": [
-                "executionStart",
-                "operationProviderName"
-              ],
-              "properties": {
-                "executionStart": {
-                  "type": "number",
-                  "description": "The phase percent to execute the operation"
-                },
-                "operationProviderName": {
-                  "type": "string",
-                  "description": "The name of the battle operation provider"
-                },
-                "pattern": {
-                  "description": "The pattern used to execute the operation",
-                  "allOf": [ { "$ref": "#/definitions/targetPattern" } ]
-                }
-              }
-            }
           }
         }
       }
