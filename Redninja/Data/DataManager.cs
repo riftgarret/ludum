@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Davfalcon.Revelator;
 using Redninja.Components.Decisions.AI;
 using Redninja.Components.Skills;
+using Redninja.Components.Targeting;
 using Redninja.Data.Schema.Readers;
 using Redninja.System;
 
@@ -28,7 +29,7 @@ namespace Redninja.Data
 		public IDataStore<IAITargetCondition> AITargetCondition => GetDataStore<IAITargetCondition>();
 		public IDataStore<IAITargetPriority> AITargetPriority => GetDataStore<IAITargetPriority>();
 		public IDataStore<IUnit> NPCUnits => GetDataStore<IUnit>();
-		public IDataStore<SkillTargetingSet> SkillTargetSets => GetDataStore<SkillTargetingSet>();
+		public IDataStore<ITargetingRule> SkillTargetingRules => GetDataStore<ITargetingRule>();
 		public IDataStore<Encounter> Encounters => GetDataStore<Encounter>();
 		public IDataStore<IClassProvider> Classes => GetDataStore<IClassProvider>();
 
@@ -38,7 +39,7 @@ namespace Redninja.Data
 		IEditableDataStore<IAITargetCondition> IEditableDataManager.AITargetCondition => GetDataStore<IAITargetCondition>();
 		IEditableDataStore<IAITargetPriority> IEditableDataManager.AITargetPriority => GetDataStore<IAITargetPriority>();
 		IEditableDataStore<IUnit> IEditableDataManager.NPCUnits => GetDataStore<IUnit>();
-		IEditableDataStore<SkillTargetingSet> IEditableDataManager.SkillTargetSets => GetDataStore<SkillTargetingSet>();
+		IEditableDataStore<ITargetingRule> IEditableDataManager.SkillTargetingRules => GetDataStore<ITargetingRule>();
 		IEditableDataStore<Encounter> IEditableDataManager.Encounters => GetDataStore<Encounter>();
 		IEditableDataStore<IClassProvider> IEditableDataManager.Classes => GetDataStore<IClassProvider>();
 

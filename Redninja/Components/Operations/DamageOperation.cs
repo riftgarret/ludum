@@ -5,7 +5,7 @@ using Redninja.Components.Targeting;
 
 namespace Redninja.Components.Operations
 {
-	public class DamageOperation : BattleOperationBase
+	internal class DamageOperation : BattleOperationBase
 	{
 		private readonly IUnitModel unit;
 		private readonly ITargetResolver target;

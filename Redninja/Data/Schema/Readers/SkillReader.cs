@@ -1,36 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 
 namespace Redninja.Data.Schema.Readers
 {
 	internal static class SkillReader
-	{		
+	{
 		public static void ReadRoot(SkillRootSchema skillRoot, IEditableDataManager manager)
-		{					
-			ReadTargets(manager.SkillTargetSets, skillRoot.TargetSets);
-			ReadSkills(manager.Skills, manager.SkillTargetSets, skillRoot.CombatSkills);
+		{
+			ReadTargets(manager.SkillTargetingRules, skillRoot.TargetingRules);
+			ReadSkills(manager.Skills, manager.SkillTargetingRules, skillRoot.CombatSkills);
 		}
 
-		internal static void ReadSkills(IEditableDataStore<ISkill> skillStore, IEditableDataStore<SkillTargetingSet> targetStore, List<CombatSkillSchema> skills)
+		internal static void ReadSkills(IEditableDataStore<ISkill> skillStore, IDataStore<ITargetingRule> targetStore, List<CombatSkillSchema> skills)
 		{
-			foreach (var item in skills)
+			foreach (CombatSkillSchema item in skills)
 			{
-				skillStore[item.DataId] = CombatSkill.Build(b => b
-					.SetName(item.Name)
-					.SetActionTime(ParseHelper.ParseActionTime(item.Time))
-					.SetDamage(item.BaseDamage)
-					.SetBonusDamageStat(item.BonusDamageStat)
-					.AddDamageTypes(item.DamageTypes.Select(t => (Enum)t))
-					.AddTargetingSets(item.TargetSetIds.Select(tsId => targetStore[tsId])));
+				skillStore[item.DataId] = CombatSkill.Build(item.Name, item.DefaultParameters, b =>
+				{
+					b.SetActionTime(ParseHelper.ParseActionTime(item.Time));
+					item.TargetingSets.ForEach(ts => b.AddTargetingSet(targetStore[ts.TargetingRuleId],
+						set =>
+						{
+							foreach (CombatRoundSchema combatRound in ts.CombatRounds)
+							{
+								set.AddCombatRound(
+									combatRound.ExecutionStart,
+									combatRound.Pattern != null ? ParseHelper.ParsePattern(combatRound.Pattern) : null,
+									ParseHelper.ParseOperationProvider(combatRound.OperationProviderName),
+									combatRound.Parameters ?? item.DefaultParameters);
+							}
+							return set;
+						}));
+					return b;
+				});
 			}
 		}
 
-		internal static void ReadTargets(IEditableDataStore<SkillTargetingSet> targetStore, List<TargetingSetSchema> targets)
+		internal static void ReadTargets(IEditableDataStore<ITargetingRule> targetStore, List<TargetingRuleSchema> targets)
 		{
-			foreach (var item in targets)
+			foreach (TargetingRuleSchema item in targets)
 			{
 				TargetingRule rule;
 				if (item.TargetType == TargetType.Pattern)
@@ -43,25 +52,7 @@ namespace Redninja.Data.Schema.Readers
 					rule = new TargetingRule(item.TargetTeam, ParseHelper.ParseTargetCondition(item.TargetConditionName));
 				}
 
-				var builder = new SkillTargetingSet.Builder(rule);
-				foreach (var combatRound in item.CombatRounds)
-				{
-					if (combatRound.Pattern != null)
-					{
-						builder.AddCombatRound(
-							combatRound.ExecutionStart,
-							ParseHelper.ParsePattern(combatRound.Pattern),
-							ParseHelper.ParseOperationProvider(combatRound.OperationProviderName));
-					}
-					else
-					{
-						builder.AddCombatRound(
-							combatRound.ExecutionStart,
-							ParseHelper.ParseOperationProvider(combatRound.OperationProviderName));
-					}
-				}
-
-				targetStore[item.DataId] = builder.Build();
+				targetStore[item.DataId] = rule;
 			}
 		}
 	}

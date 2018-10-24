@@ -10,10 +10,10 @@ namespace Redninja.Components.Skills
 		private readonly IWeapon weapon;
 		private readonly ITargetResolver target;
 
-		public bool Resolved { get; private set; } = false;
 		public float ExecutionStart { get; }
+		public bool Resolved { get; private set; } = false;
 
-		public IBattleOperation Resolve(IUnitModel entity, ISkill skill)
+		public IBattleOperation Resolve(IUnitModel entity)
 		{
 			Resolved = true;
 			return new DamageOperation(entity, target, weapon);

@@ -5,7 +5,7 @@ namespace Redninja.Components.Targeting
 	/// <summary>
 	/// Selected Target should represent the required meta data for the TargetType.
 	/// </summary>
-	public class SelectedTarget : ISelectedTarget
+	internal class SelectedTarget : ISelectedTarget
 	{
 		public ITargetingRule Rule { get; }
 		public IUnitModel Target { get; }

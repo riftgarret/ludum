@@ -16,11 +16,6 @@ namespace Redninja.Components.Skills
 		public IEnumerable<IWeapon> Weapons { get; private set; }
 		public IReadOnlyList<SkillTargetingSet> Targets { get; private set; }
 
-		public int BaseDamage => weapons[0].BaseDamage;
-		public int CritMultiplier => weapons[0].CritMultiplier;
-		public Enum BonusDamageStat => weapons[0].BonusDamageStat;
-		public IEnumerable<Enum> DamageTypes => weapons[0].DamageTypes;
-
 		public IBattleAction GetAction(IUnitModel entity, ISelectedTarget[] targets)
 		{
 			int n = weapons.Count;
@@ -34,9 +29,6 @@ namespace Redninja.Components.Skills
 			}
 			return new SkillAction(entity, this, resolvers);
 		}
-
-		public static IWeaponAttack Build(Func<Builder, IBuilder<IWeaponAttack>> func)
-			=> func(new Builder()).Build();
 
 		public class Builder : BuilderBase<WeaponAttack, IWeaponAttack, Builder>
 		{
@@ -60,5 +52,7 @@ namespace Redninja.Components.Skills
 			public Builder AddWeapon(IWeapon weapon) => Self(w => w.weapons.Add(weapon));
 			public Builder AddWeapons(IEnumerable<IWeapon> weapons) => Self(w => w.weapons.AddRange(weapons));
 		}
+
+		public static IWeaponAttack Build(Func<Builder, IBuilder<IWeaponAttack>> func) => func(new Builder()).Build();
 	}
 }

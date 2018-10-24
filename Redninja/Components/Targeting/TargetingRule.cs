@@ -5,7 +5,7 @@ namespace Redninja.Components.Targeting
 	/// <summary>
 	/// Targeting Rule represents a collection of conditions and target type.
 	/// </summary>
-	public class TargetingRule : ITargetingRule
+	internal class TargetingRule : ITargetingRule
 	{
 		private readonly TargetCondition condition;
 
