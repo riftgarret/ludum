@@ -194,7 +194,6 @@
     <Compile Include="Components\IItemProperty.cs" />
     <Compile Include="Components\IPassiveProperty.cs" />
     <Compile Include="Components\IPropertyBundle.cs" />
-    <Compile Include="Components\Utils\LinqUtils.cs" />
     <Compile Include="Components\Classes\CompositeRequirement.cs" />
     <Compile Include="Components\Classes\LevelRequirement.cs" />
   </ItemGroup>

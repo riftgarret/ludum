@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Davfalcon.Revelator;
-using Redninja.Components.Utils;
 
 namespace Redninja.Components.Classes
 {
@@ -16,7 +15,7 @@ namespace Redninja.Components.Classes
 
 		public bool IsAvailable(IUnit unit)
 		{
-			return Requirements.AreAll(true, req => req.IsAvailable(unit));
+			return Requirements.All(req => req.IsAvailable(unit));
 		}
 	}
 }
