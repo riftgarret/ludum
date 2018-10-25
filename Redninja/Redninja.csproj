@@ -190,12 +190,14 @@
     <Compile Include="Components\Classes\IStatScaler.cs" />
     <Compile Include="Components\Classes\ICharacteristicRequirement.cs" />
     <Compile Include="Components\Buffs\IBuff.cs" />
-    <Compile Include="Components\IActiveProperty.cs" />
-    <Compile Include="Components\IItemProperty.cs" />
-    <Compile Include="Components\IPassiveProperty.cs" />
-    <Compile Include="Components\IPropertyBundle.cs" />
     <Compile Include="Components\Classes\CompositeRequirement.cs" />
     <Compile Include="Components\Classes\LevelRequirement.cs" />
+    <Compile Include="Events\IBattleEventProcessor.cs" />
+    <Compile Include="Events\EntityBattleEventProcessor.cs" />
+    <Compile Include="Components\Properties\IItemProperty.cs" />
+    <Compile Include="Components\Properties\IPassiveProperty.cs" />
+    <Compile Include="Components\Properties\IPropertyBundle.cs" />
+    <Compile Include="Components\Properties\ITriggeredProperty.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\rpglibrary\Davfalcon.Revelator\Davfalcon.Revelator.csproj">
@@ -215,6 +217,7 @@
     <Folder Include="Components\Equipment\" />
     <Folder Include="Components\Classes\" />
     <Folder Include="Components\Buffs\" />
+    <Folder Include="Components\Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

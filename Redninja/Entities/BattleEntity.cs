@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using Davfalcon.Randomization;
 using Davfalcon.Revelator;
 using Redninja.Components.Actions;
 using Redninja.Components.Clock;
 using Redninja.Components.Combat;
 using Redninja.Components.Decisions;
+using Redninja.Components.Properties;
 
 namespace Redninja.Entities
 {
@@ -28,6 +30,9 @@ namespace Redninja.Entities
 		public float PhaseProgress => CurrentAction?.PhaseProgress ?? 0;
 
 		public IActionDecider ActionDecider { get; }
+
+		// TODO pull properties from equipment, buffs, class def
+		public IEnumerable<ITriggeredProperty> TriggeredProperties => throw new NotImplementedException();
 
 		public event Action<IBattleEntity, IBattleAction> ActionSet;
 		public event Action<IBattleEntity> ActionNeeded;

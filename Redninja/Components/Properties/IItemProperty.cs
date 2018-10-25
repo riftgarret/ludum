@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Redninja.Components
+namespace Redninja.Components.Properties
 {
 	public interface IItemProperty
 	{
