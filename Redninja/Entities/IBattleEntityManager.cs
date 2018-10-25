@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Redninja.Components.Clock;
-using Redninja.Components.Operations;
+using Redninja.Components.Combat;
 
 namespace Redninja.Entities
 {
@@ -10,7 +10,7 @@ namespace Redninja.Entities
 		new IEnumerable<IBattleEntity> Entities { get; }
 
 		event Action<IBattleEntity> ActionNeeded;
-		event Action<IBattleEntity, IOperationGenerator> ActionSet;
+		event Action<IBattleEntity, IOperationSource> ActionSet;
 
 		void AddGrid(int team, Coordinate size);
 		void AddEntity(IBattleEntity entity);

@@ -1,11 +1,11 @@
 using System;
 using Davfalcon;
 using Redninja.Components.Clock;
-using Redninja.Components.Operations;
+using Redninja.Components.Combat;
 
 namespace Redninja.Components.Actions
 {
-	public interface IBattleAction : INameable, IClockSynchronized, IOperationGenerator
+	public interface IBattleAction : INameable, IClockSynchronized, IOperationSource
 	{
 		ActionTime Time { get; }
         ActionPhase Phase { get; }

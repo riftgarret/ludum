@@ -2,7 +2,7 @@
 using Davfalcon.Builders;
 using Davfalcon.Revelator;
 using Davfalcon.Revelator.Combat;
-using Redninja.Events;
+using Redninja.Components.Combat.Events;
 
 namespace Redninja.Components.Combat
 {
@@ -10,6 +10,7 @@ namespace Redninja.Components.Combat
 	{
 		private readonly ICombatResolver resolver;
 
+		// I want to remove this
 		public event Action<IUnitModel, Coordinate> EntityMoving;
 		public event Action<IBattleEvent> BattleEventOccurred;
 
@@ -39,6 +40,12 @@ namespace Redninja.Components.Combat
 		public void MoveEntity(IUnitModel entity, UnitPosition newPosition)
 			=> MoveEntity(entity, newPosition.Row, newPosition.Column);
 
+		public void ApplyStatusEffect(IUnitModel entity, IStatusEffect effect)
+		{
+			resolver.ApplyBuff(entity, effect);
+			BattleEventOccurred?.Invoke(new StatusEffectEvent(entity, effect));
+		}
+
 		public IDamageNode GetRawDamage(IUnitModel attacker, IDamageSource source)
 			=> resolver.GetDamageNode(attacker, source);
 
@@ -48,11 +55,10 @@ namespace Redninja.Components.Combat
 		public IDefenseNode GetDamage(IUnitModel defender, IDamageNode incomingDamage)
 			=> resolver.GetDefenseNode(defender, incomingDamage);
 
-		public IDefenseNode DealDamage(IUnitModel attacker, IUnitModel defender, IDamageSource source)
+		public void DealDamage(IUnitModel attacker, IUnitModel defender, IDamageSource source)
 		{
 			IDefenseNode damage = GetDamage(attacker, defender, source);
 			BattleEventOccurred?.Invoke(new DamageEvent(defender, damage, resolver.ApplyDamage(damage)));
-			return damage;
 		}
 	}
 }

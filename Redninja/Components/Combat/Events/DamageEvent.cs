@@ -4,7 +4,7 @@ using Davfalcon;
 using Davfalcon.Nodes;
 using Davfalcon.Revelator.Combat;
 
-namespace Redninja.Events
+namespace Redninja.Components.Combat.Events
 {
 	public class DamageEvent : IBattleEvent
 	{

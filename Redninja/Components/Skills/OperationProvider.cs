@@ -1,4 +1,4 @@
-﻿using Redninja.Components.Operations;
+﻿using Redninja.Components.Combat;
 using Redninja.Components.Targeting;
 
 namespace Redninja.Components.Skills

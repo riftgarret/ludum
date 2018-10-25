@@ -5,9 +5,8 @@ using Davfalcon.Randomization;
 using Davfalcon.Revelator;
 using Redninja.Components.Actions;
 using Redninja.Components.Clock;
-using Redninja.Components.Combat;
 using Redninja.Components.Decisions;
-using Redninja.Components.Operations;
+using Redninja.Components.Combat;
 using Redninja.Components.Skills.StatusEffects;
 using IUnit = Davfalcon.Revelator.IUnit;
 
@@ -38,6 +37,7 @@ namespace Redninja.Entities
 		public IDictionary<Enum, int> VolatileStats { get; } = new Dictionary<Enum, int>();
 		#endregion
 
+		// Maybe we can back these with VolatileStats
 		public int Team { get; set; }
 		public UnitPosition Position { get; private set; } = new UnitPosition(1);
 
@@ -51,7 +51,7 @@ namespace Redninja.Entities
 
 		public event Action<IBattleEntity> ActionNeeded;
 		// Rename this
-		public event Action<IBattleEntity, IOperationGenerator> ActionSet;
+		public event Action<IBattleEntity, IOperationSource> ActionSet;
 
 		public BattleEntity(IUnit unit, IActionDecider actionDecider, ICombatExecutor combatExecutor)
 		{

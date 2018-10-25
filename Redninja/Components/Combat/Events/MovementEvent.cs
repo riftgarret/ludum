@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Redninja.Events
+namespace Redninja.Components.Combat.Events
 {
 	public class MovementEvent : IBattleEvent
 	{

@@ -1,4 +1,5 @@
-﻿using Redninja.Events;
+﻿using Redninja.Components.Combat;
+using Redninja.Components.Combat.Events;
 
 namespace Redninja.Components.Skills.StatusEffects
 {

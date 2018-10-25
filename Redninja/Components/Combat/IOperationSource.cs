@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Redninja.Components.Operations
+namespace Redninja.Components.Combat
 {
-	public interface IOperationGenerator
+	public interface IOperationSource
 	{
 		event Action<float, IBattleOperation> BattleOperationReady;
 	}

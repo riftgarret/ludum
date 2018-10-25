@@ -1,7 +1,7 @@
 ﻿using System;
 using Davfalcon.Revelator;
 using Davfalcon.Revelator.Combat;
-using Redninja.Events;
+using Redninja.Components.Combat.Events;
 
 namespace Redninja.Components.Combat
 {
@@ -17,6 +17,6 @@ namespace Redninja.Components.Combat
 		IDamageNode GetRawDamage(IUnitModel attacker, IDamageSource source);
 		IDefenseNode GetDamage(IUnitModel attacker, IUnitModel defender, IDamageSource source);
 		IDefenseNode GetDamage(IUnitModel defender, IDamageNode incomingDamage);
-		IDefenseNode DealDamage(IUnitModel attacker, IUnitModel defender, IDamageSource source);
+		void DealDamage(IUnitModel attacker, IUnitModel defender, IDamageSource source);
 	}
 }

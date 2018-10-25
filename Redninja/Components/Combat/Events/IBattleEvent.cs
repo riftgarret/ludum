@@ -1,4 +1,4 @@
-namespace Redninja.Events
+namespace Redninja.Components.Combat.Events
 {
 	/// <summary>
 	/// Interface for Battle Events.

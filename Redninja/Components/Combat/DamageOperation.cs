@@ -1,9 +1,8 @@
 ﻿using System;
 using Davfalcon.Revelator;
-using Redninja.Components.Combat;
 using Redninja.Components.Targeting;
 
-namespace Redninja.Components.Operations
+namespace Redninja.Components.Combat
 {
 	internal class DamageOperation : BattleOperationBase
 	{
