@@ -55,6 +55,7 @@
     <Compile Include="Components\Decisions\AI\AIRuleTracker.cs" />
     <Compile Include="Components\Decisions\AI\IAISkillRule.cs" />
     <Compile Include="Components\Decisions\IActionProvider.cs" />
+    <Compile Include="Components\Operations\IOperationGenerator.cs" />
     <Compile Include="Components\Skills\ISkillOperationParameters.cs" />
     <Compile Include="Components\Skills\OperationProvider.cs" />
     <Compile Include="Components\Skills\SkillAction.cs" />
@@ -78,6 +79,9 @@
     <Compile Include="Components\Decisions\AI\IAITargetPriority.cs" />
     <Compile Include="Components\Decisions\AI\WeightedPool.cs" />
     <Compile Include="Components\Skills\SkillOperationParameters.cs" />
+    <Compile Include="Components\Skills\StatusEffects\EffectResolver.cs" />
+    <Compile Include="Components\Skills\StatusEffects\IStatusEffect.cs" />
+    <Compile Include="Components\Skills\StatusEffects\ITriggeredEffect.cs" />
     <Compile Include="Components\Utils\TextUtils.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="Data\Encounter.cs" />

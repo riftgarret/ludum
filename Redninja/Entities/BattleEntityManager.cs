@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Redninja.Components.Actions;
 using Redninja.Components.Clock;
+using Redninja.Components.Operations;
 
 namespace Redninja.Entities
 {
@@ -18,7 +18,7 @@ namespace Redninja.Entities
 		IEnumerable<IUnitModel> IBattleModel.Entities => Entities;
 
 		public event Action<IBattleEntity> ActionNeeded;
-		public event Action<IBattleEntity, IBattleAction> ActionSet;
+		public event Action<IBattleEntity, IOperationGenerator> ActionSet;
 
 		public BattleEntityManager(IClock clock)
 		{

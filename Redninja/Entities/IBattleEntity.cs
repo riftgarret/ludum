@@ -2,6 +2,7 @@
 using Redninja.Components.Actions;
 using Redninja.Components.Clock;
 using Redninja.Components.Decisions;
+using Redninja.Components.Operations;
 
 namespace Redninja.Entities
 {
@@ -10,8 +11,8 @@ namespace Redninja.Entities
 		IBattleAction CurrentAction { get; }
 		IActionDecider ActionDecider { get; }
 
-		event Action<IBattleEntity, IBattleAction> ActionSet;
 		event Action<IBattleEntity> ActionNeeded;
+		event Action<IBattleEntity, IOperationGenerator> ActionSet;
 
 		void InitializeBattlePhase();
 		void MovePosition(int row, int col);

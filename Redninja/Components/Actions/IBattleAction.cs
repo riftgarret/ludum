@@ -5,15 +5,14 @@ using Redninja.Components.Operations;
 
 namespace Redninja.Components.Actions
 {
-	public interface IBattleAction : INameable, IClockSynchronized
-    {
+	public interface IBattleAction : INameable, IClockSynchronized, IOperationGenerator
+	{
 		ActionTime Time { get; }
         ActionPhase Phase { get; }
 		float PhaseTime { get; }
         float PhaseProgress { get; }
 
 		event Action<IBattleAction> ActionExecuting;
-		event Action<float, IBattleOperation> BattleOperationReady;
 
 		void Start();
 	}

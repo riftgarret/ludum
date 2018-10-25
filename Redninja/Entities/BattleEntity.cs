@@ -7,6 +7,8 @@ using Redninja.Components.Actions;
 using Redninja.Components.Clock;
 using Redninja.Components.Combat;
 using Redninja.Components.Decisions;
+using Redninja.Components.Operations;
+using Redninja.Components.Skills.StatusEffects;
 using IUnit = Davfalcon.Revelator.IUnit;
 
 namespace Redninja.Entities
@@ -47,8 +49,9 @@ namespace Redninja.Entities
 
 		public IActionDecider ActionDecider { get; }
 
-		public event Action<IBattleEntity, IBattleAction> ActionSet;
 		public event Action<IBattleEntity> ActionNeeded;
+		// Rename this
+		public event Action<IBattleEntity, IOperationGenerator> ActionSet;
 
 		public BattleEntity(IUnit unit, IActionDecider actionDecider, ICombatExecutor combatExecutor)
 		{
@@ -91,6 +94,20 @@ namespace Redninja.Entities
 
 		public void MovePosition(int row, int col)
 			=> Position = new UnitPosition(row, col, Position.Size);
+
+		// Need to figure out how to call this
+		public void AddStatusEffect(IStatusEffect effect)
+		{
+			Buffs.Add(effect);
+
+			if (effect is ITriggeredEffect e)
+			{
+				// Need to unbind this when removing the buff
+				combatExecutor.BattleEventOccurred += e.CheckTrigger;
+			}
+
+			ActionSet?.Invoke(this, effect);
+		}
 
 		private void OnTick(float timeDelta)
 		{
