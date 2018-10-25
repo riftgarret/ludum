@@ -99,7 +99,7 @@ namespace Redninja.ConsoleDriver
 					{
 						Console.WriteLine(skill.Name);
 					}
-					Console.WriteLine($"Select an action for {entity.Character.Name}...");
+					Console.WriteLine($"Select an action for {entity.Name}...");
 				};
 				drawTargeting = null;
 			});
@@ -148,7 +148,7 @@ namespace Redninja.ConsoleDriver
 				{
 					foreach (IUnitModel t in availableTargets)
 					{
-						Console.WriteLine(t.Character.Name);
+						Console.WriteLine(t.Name);
 					}
 
 					Console.WriteLine("Select target...");
@@ -174,7 +174,7 @@ namespace Redninja.ConsoleDriver
 			Debug.WriteLine("Battle event occurred.");
 			if (battleEvent is MovementEvent me)
 			{
-				Debug.WriteLine($"{me.Entity.Character.Name} moved to ({me.NewPosition.Row},{me.NewPosition.Column})");
+				Debug.WriteLine($"{me.Entity.Name} moved to ({me.NewPosition.Row},{me.NewPosition.Column})");
 			}
 			else if (battleEvent is DamageEvent de)
 			{

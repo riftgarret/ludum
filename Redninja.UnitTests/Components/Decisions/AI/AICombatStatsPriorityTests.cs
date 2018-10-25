@@ -20,8 +20,8 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 		{
 			var entity = Substitute.For<IUnitModel>();
 			entities.Add(entity);
-			entity.Character.Stats[stat].Returns(statValue);
-			entity.Character.VolatileStats[stat].Returns(volValue);
+			entity.Stats[stat].Returns(statValue);
+			entity.VolatileStats[stat].Returns(volValue);
 			return entity;
 		}
 

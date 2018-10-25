@@ -26,8 +26,8 @@ namespace Redninja.Components.Combat
 			: this(builderFunc(new CombatResolver.Builder()))
 		{ }
 
-		public void InitializeEntity(IUnitModel entity) => resolver.Initialize(entity.Character);
-		public void CleanupEntity(IUnitModel entity) => resolver.Cleanup(entity.Character);
+		public void InitializeEntity(IUnitModel entity) => resolver.Initialize(entity);
+		public void CleanupEntity(IUnitModel entity) => resolver.Cleanup(entity);
 
 		public void MoveEntity(IUnitModel entity, int newRow, int newCol)
 		{
@@ -40,13 +40,13 @@ namespace Redninja.Components.Combat
 			=> MoveEntity(entity, newPosition.Row, newPosition.Column);
 
 		public IDamageNode GetRawDamage(IUnitModel attacker, IDamageSource source)
-			=> resolver.GetDamageNode(attacker.Character, source);
+			=> resolver.GetDamageNode(attacker, source);
 
 		public IDefenseNode GetDamage(IUnitModel attacker, IUnitModel defender, IDamageSource source)
 			=> GetDamage(defender, GetRawDamage(attacker, source));
 
 		public IDefenseNode GetDamage(IUnitModel defender, IDamageNode incomingDamage)
-			=> resolver.GetDefenseNode(defender.Character, incomingDamage);
+			=> resolver.GetDefenseNode(defender, incomingDamage);
 
 		public IDefenseNode DealDamage(IUnitModel attacker, IUnitModel defender, IDamageSource source)
 		{

@@ -42,7 +42,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			CombatStats stat = CombatStats.HP;
 			AIConditionType type = AIConditionType.CombatStatCurrent;
 
-			mEntity.Character.VolatileStats[stat].Returns(volatileValue);
+			mEntity.VolatileStats[stat].Returns(volatileValue);
 
 			subject = new AICombatStatCondition(value, stat, op, type);
 			var result = subject.IsValid(mEntity);
@@ -69,8 +69,8 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			CombatStats stat = CombatStats.HP;
 			AIValueConditionOperator op = AIValueConditionOperator.EQ;
 
-			mEntity.Character.Stats[stat].Returns(statValue);
-			mEntity.Character.VolatileStats[stat].Returns(volatileValue);
+			mEntity.Stats[stat].Returns(statValue);
+			mEntity.VolatileStats[stat].Returns(volatileValue);
 
 			subject = new AICombatStatCondition(value, stat, op, type);
 			var result = subject.IsValid(mEntity);

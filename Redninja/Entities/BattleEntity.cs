@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
+using Davfalcon;
 using Davfalcon.Randomization;
 using Davfalcon.Revelator;
 using Redninja.Components.Actions;
 using Redninja.Components.Clock;
 using Redninja.Components.Combat;
 using Redninja.Components.Decisions;
+using IUnit = Davfalcon.Revelator.IUnit;
 
 namespace Redninja.Entities
 {
@@ -13,10 +16,25 @@ namespace Redninja.Entities
 	/// </summary>
 	internal class BattleEntity : IBattleEntity
 	{
+		private readonly IUnit unit;
+
 		private IClock clock;
 		private readonly ICombatExecutor combatExecutor;
 
-		public IUnit Character { get; }
+		#region Unit interface
+		public string Name => unit.Name;
+		public string Class => unit.Class;
+		public int Level => unit.Level;
+		public IUnitEquipmentManager Equipment => unit.Equipment;
+
+		// Rewire some properties so we can keep volatile elements out of the inner unit
+		// Note that iterating over this Modifiers property will not iterate over Equipment like it normally would
+		public IStats Stats => Modifiers.Stats;
+		public IStatsPackage StatsDetails => Modifiers.StatsDetails;
+		public IUnitModifierStack Modifiers => Buffs;
+		public IUnitModifierStack Buffs { get; } = new UnitModifierStack();
+		public IDictionary<Enum, int> VolatileStats { get; } = new Dictionary<Enum, int>();
+		#endregion
 
 		public int Team { get; set; }
 		public UnitPosition Position { get; private set; } = new UnitPosition(1);
@@ -32,12 +50,14 @@ namespace Redninja.Entities
 		public event Action<IBattleEntity, IBattleAction> ActionSet;
 		public event Action<IBattleEntity> ActionNeeded;
 
-		public BattleEntity(IUnit character, IActionDecider actionDecider, ICombatExecutor combatExecutor)
+		public BattleEntity(IUnit unit, IActionDecider actionDecider, ICombatExecutor combatExecutor)
 		{
+			this.unit = unit;
+			Buffs.Bind(unit.Modifiers);
+
 			this.combatExecutor = combatExecutor;
 			combatExecutor.EntityMoving += OnEntityMoving;
 
-			Character = character;
 			ActionDecider = actionDecider;
 			ActionDecider.ActionSelected += OnActionSelected;
 		}
