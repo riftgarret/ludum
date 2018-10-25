@@ -8,17 +8,17 @@ namespace Redninja.Components.Combat
 {
 	internal class CombatExecutor : ICombatExecutor
 	{
-		private readonly ICombatNodeResolver resolver;
+		private readonly ICombatResolver resolver;
 
 		public event Action<IUnitModel, Coordinate> EntityMoving;
 		public event Action<IBattleEvent> BattleEventOccurred;
 
-		public CombatExecutor(ICombatNodeResolver combatResolver)
+		public CombatExecutor(ICombatResolver combatResolver)
 		{
 			resolver = combatResolver;
 		}
 
-		public CombatExecutor(IBuilder<ICombatNodeResolver> builder)
+		public CombatExecutor(IBuilder<ICombatResolver> builder)
 			: this(builder.Build())
 		{ }
 
