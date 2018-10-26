@@ -5,9 +5,8 @@ using Davfalcon.Randomization;
 using Davfalcon.Revelator;
 using Redninja.Components.Actions;
 using Redninja.Components.Clock;
-using Redninja.Components.Decisions;
 using Redninja.Components.Combat;
-using Redninja.Components.Skills.StatusEffects;
+using Redninja.Components.Decisions;
 using IUnit = Davfalcon.Revelator.IUnit;
 
 namespace Redninja.Entities
@@ -22,6 +21,18 @@ namespace Redninja.Entities
 		private IClock clock;
 		private readonly ICombatExecutor combatExecutor;
 
+		private class StatusEffectManager : UnitModifierStack, IUnitModifierStack
+		{
+			private readonly BattleEntity entity;
+			void IUnitModifierStack.Add(IUnitModifier item)
+			{
+				Add(item);
+				if (item is IStatusEffect effect) entity.ActionSet?.Invoke(entity, effect);
+			}
+
+			public StatusEffectManager(BattleEntity entity) => this.entity = entity;
+		}
+
 		#region Unit interface
 		public string Name => unit.Name;
 		public string Class => unit.Class;
@@ -33,7 +44,7 @@ namespace Redninja.Entities
 		public IStats Stats => Modifiers.Stats;
 		public IStatsPackage StatsDetails => Modifiers.StatsDetails;
 		public IUnitModifierStack Modifiers => Buffs;
-		public IUnitModifierStack Buffs { get; } = new UnitModifierStack();
+		public IUnitModifierStack Buffs { get; }
 		public IDictionary<Enum, int> VolatileStats { get; } = new Dictionary<Enum, int>();
 		#endregion
 
@@ -56,6 +67,7 @@ namespace Redninja.Entities
 		public BattleEntity(IUnit unit, IActionDecider actionDecider, ICombatExecutor combatExecutor)
 		{
 			this.unit = unit;
+			Buffs = new StatusEffectManager(this);
 			Buffs.Bind(unit.Modifiers);
 
 			this.combatExecutor = combatExecutor;
@@ -94,20 +106,6 @@ namespace Redninja.Entities
 
 		public void MovePosition(int row, int col)
 			=> Position = new UnitPosition(row, col, Position.Size);
-
-		// Need to figure out how to call this
-		public void AddStatusEffect(IStatusEffect effect)
-		{
-			Buffs.Add(effect);
-
-			if (effect is ITriggeredEffect e)
-			{
-				// Need to unbind this when removing the buff
-				combatExecutor.BattleEventOccurred += e.CheckTrigger;
-			}
-
-			ActionSet?.Invoke(this, effect);
-		}
 
 		private void OnTick(float timeDelta)
 		{
