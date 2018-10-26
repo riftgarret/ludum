@@ -2,9 +2,9 @@
 
 namespace Redninja.Components.Properties
 {
-	internal interface IPropertyBundle
+	public interface IPropertyBundle
 	{
-		IEnumerable<IPassiveProperty> PassiveProperties { get; }
-		IEnumerable<ITriggeredProperty> GetActiveProperties { get; }
+		IEnumerable<IPassiveProperty> StatProperties { get; }
+		IEnumerable<ITriggeredProperty> TriggeredProperties { get; }
 	}
 }

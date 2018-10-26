@@ -198,6 +198,8 @@
     <Compile Include="Components\Properties\IPassiveProperty.cs" />
     <Compile Include="Components\Properties\IPropertyBundle.cs" />
     <Compile Include="Components\Properties\ITriggeredProperty.cs" />
+    <Compile Include="Components\Properties\TriggerPropertyType.cs" />
+    <Compile Include="Components\Properties\ITriggerCondition.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\rpglibrary\Davfalcon.Revelator\Davfalcon.Revelator.csproj">
