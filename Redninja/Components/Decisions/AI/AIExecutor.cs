@@ -88,14 +88,15 @@ namespace Redninja.Components.Decisions.AI
 			action = null;
 			return false;
 		}
-		
+
+
 		internal virtual bool IsValidTriggerConditions(IAIRule rule)
 		{
 			foreach (var trigger in rule.TriggerConditions)
 			{
 				var validEntities = FilterByType(trigger.Item1);				
 
-				bool foundValid = null != validEntities.FirstOrDefault(ex => trigger.Item2.IsValid(ex));
+				bool foundValid = validEntities.Any(trigger.Item2.IsValid);
 
 				if (!foundValid) return false;
 			}
@@ -169,7 +170,7 @@ namespace Redninja.Components.Decisions.AI
 			leftoverTargets = leftoverTargets.Where(ex => targetingRule.IsValidTarget(ex, source));
 
 			// filter by filter conditions (exclude by finding first condition that fails)
-			leftoverTargets = leftoverTargets.Where(ex => rule.FilterConditions.FirstOrDefault(cond => !cond.IsValid(ex)) == null);
+			leftoverTargets = leftoverTargets.Where(ex => rule.FilterConditions.All(cond => cond.IsValid(ex)));
 			return leftoverTargets;
 		}
 		#endregion
