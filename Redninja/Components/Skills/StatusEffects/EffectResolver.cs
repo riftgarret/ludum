@@ -25,11 +25,11 @@ namespace Redninja.Components.Skills.StatusEffects
 			BattleOperationReady.Invoke((float)args[0], operationProvider(entity, targetResolver, this.args));
 		}
 
-		public EffectResolver(OperationProvider operationProvider, ITargetingRule rule, ITargetPattern pattern, ISkillOperationParameters args)
+		public EffectResolver(ITargetingRule rule, ITargetPattern pattern, OperationProvider operationProvider, ISkillOperationParameters args)
 		{
-			this.operationProvider = operationProvider;
 			this.rule = rule;
 			this.pattern = pattern;
+			this.operationProvider = operationProvider;
 			this.args = args;
 		}
 	}

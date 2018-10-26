@@ -14,6 +14,8 @@ namespace Redninja.Components.Combat
 		void CleanupEntity(IUnitModel entity);
 		void MoveEntity(IUnitModel entity, int newRow, int newCol);
 		void MoveEntity(IUnitModel entity, UnitPosition newPosition);
+		void ApplyStatusEffect(IUnitModel entity, IBuff effect);
+		void RemoveStatusEffect(IUnitModel entity, IBuff effect);
 		IDamageNode GetRawDamage(IUnitModel attacker, IDamageSource source);
 		IDefenseNode GetDamage(IUnitModel attacker, IUnitModel defender, IDamageSource source);
 		IDefenseNode GetDamage(IUnitModel defender, IDamageNode incomingDamage);

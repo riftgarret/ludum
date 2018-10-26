@@ -1,10 +1,7 @@
-﻿using Redninja.Components.Combat;
-using Redninja.Components.Combat.Events;
-
-namespace Redninja.Components.Skills.StatusEffects
+﻿namespace Redninja.Components.Skills.StatusEffects
 {
+	// Placeholder for now, figure out how to integrate with rift's stuff
 	public interface ITriggeredEffect : IStatusEffect
 	{
-		void CheckTrigger(IBattleEvent battleEvent);
 	}
 }

@@ -52,6 +52,7 @@
     <Compile Include="Components\Actions\BattleActionBase.cs" />
     <Compile Include="Components\Clock\Clock.cs" />
     <Compile Include="Components\Combat\Events\StatusEffectEvent.cs" />
+    <Compile Include="Components\Combat\StatusEffectOperation.cs" />
     <Compile Include="Components\Decisions\AI\AIExecutor.cs" />
     <Compile Include="Components\Decisions\AI\AIRuleTracker.cs" />
     <Compile Include="Components\Decisions\AI\IAISkillRule.cs" />
@@ -81,8 +82,9 @@
     <Compile Include="Components\Decisions\AI\WeightedPool.cs" />
     <Compile Include="Components\Skills\SkillOperationParameters.cs" />
     <Compile Include="Components\Skills\StatusEffects\EffectResolver.cs" />
-    <Compile Include="Components\Combat\IStatusEffect.cs" />
+    <Compile Include="Components\Skills\StatusEffects\IStatusEffect.cs" />
     <Compile Include="Components\Skills\StatusEffects\ITriggeredEffect.cs" />
+    <Compile Include="Components\Skills\StatusEffects\StatusEffect.cs" />
     <Compile Include="Components\Utils\TextUtils.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="Data\Encounter.cs" />

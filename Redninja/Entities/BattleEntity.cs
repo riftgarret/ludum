@@ -7,6 +7,7 @@ using Redninja.Components.Actions;
 using Redninja.Components.Clock;
 using Redninja.Components.Combat;
 using Redninja.Components.Decisions;
+using Redninja.Components.Skills.StatusEffects;
 using IUnit = Davfalcon.Revelator.IUnit;
 
 namespace Redninja.Entities
@@ -27,7 +28,7 @@ namespace Redninja.Entities
 			void IUnitModifierStack.Add(IUnitModifier item)
 			{
 				Add(item);
-				if (item is IStatusEffect effect) entity.ActionSet?.Invoke(entity, effect);
+				if (item is IStatusEffect effect) entity.OnStatusEffectApplied(effect);
 			}
 
 			public StatusEffectManager(BattleEntity entity) => this.entity = entity;
@@ -77,6 +78,7 @@ namespace Redninja.Entities
 			ActionDecider.ActionSelected += OnActionSelected;
 		}
 
+		// Considering raising this stuff to BEM
 		private void OnEntityMoving(IUnitModel entity, Coordinate c)
 		{
 			if (entity == this) MovePosition(c.Row, c.Column);
@@ -93,6 +95,9 @@ namespace Redninja.Entities
 			SetAction(new WaitAction(new RandomInteger(1, 10).Get()));
 		}
 
+		public void MovePosition(int row, int col)
+			=> Position = new UnitPosition(row, col, Position.Size);
+
 		public void SetAction(IBattleAction action)
 		{
 			if (CurrentAction != null)
@@ -104,12 +109,30 @@ namespace Redninja.Entities
 			CurrentAction.Start();
 		}
 
-		public void MovePosition(int row, int col)
-			=> Position = new UnitPosition(row, col, Position.Size);
+		private void OnStatusEffectApplied(IStatusEffect effect)
+		{
+			effect.SetClock(clock);
+			ActionSet?.Invoke(this, effect);
+		}
 
 		private void OnTick(float timeDelta)
 		{
-			// Check for buff update interval, then update buffs/status effects
+			// Check if any buffs expired
+			List<IBuff> expired = new List<IBuff>();
+			foreach (IStatusEffect effect in Buffs)
+			{
+				if (effect != null && effect.RemainingTime <= 0)
+				{
+					effect.Dispose();
+					expired.Add(effect);
+				}
+			}
+
+			// Remove expired buffs
+			foreach (IBuff buff in expired)
+			{
+				combatExecutor.RemoveStatusEffect(this, buff);
+			}
 
 			if (CurrentAction.Phase == ActionPhase.Done)
 			{
@@ -143,6 +166,11 @@ namespace Redninja.Entities
 			{
 				CurrentAction.Dispose();
 				CurrentAction = null;
+			}
+
+			foreach (IStatusEffect e in Buffs)
+			{
+				if (e != null) e.Dispose();
 			}
 
 			combatExecutor.CleanupEntity(this);
