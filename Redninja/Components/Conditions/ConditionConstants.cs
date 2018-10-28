@@ -7,7 +7,7 @@ namespace Redninja.Components.Conditions
 		ClassName,
 		IntValue,
 		Percent,
-		Target
+		Battle
 	}
 
 	public enum ConditionOperatorType

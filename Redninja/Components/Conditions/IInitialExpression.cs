@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Redninja.Components.Conditions.Expressions
+namespace Redninja.Components.Conditions
 {
 	public interface IInitialExpression : IExpression
 	{

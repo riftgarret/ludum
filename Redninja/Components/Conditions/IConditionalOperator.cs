@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Redninja.Components.Conditions.Operators
+namespace Redninja.Components.Conditions
 {
 	public interface IConditionalOperator
 	{
