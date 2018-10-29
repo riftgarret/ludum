@@ -41,6 +41,6 @@ namespace Redninja.Components.Conditions
 		Enemy,
 		Ally,
 		AllyNotSelf,
-		All
+		Any
 	}
 }

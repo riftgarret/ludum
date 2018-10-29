@@ -3,9 +3,8 @@ namespace Redninja.Components.Conditions.Expressions
 {
 	public class CombatStatExpression : ChainableBase
 	{
-		public CombatStatExpression(ConditionTargetType targetType, CombatStats combatStat, bool isPercent)
+		public CombatStatExpression(CombatStats combatStat, bool isPercent)
 		{
-			TargetType = targetType;
 			CombatStat = combatStat;
 			IsPercent = isPercent;
 			ResultType = IsPercent ? ExpressionResultType.Percent : ExpressionResultType.IntValue;

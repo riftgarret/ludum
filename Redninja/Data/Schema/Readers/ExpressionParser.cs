@@ -7,7 +7,7 @@ using Redninja.Logging;
 
 namespace Redninja.Data.Schema.Readers
 {
-	internal class ExpresionParser
+	internal class ExpressionParser
 	{
 
 		private const string GROUP_UNIT = "unit";
@@ -15,18 +15,24 @@ namespace Redninja.Data.Schema.Readers
 		private const string GROUP_NUMBER_VALUE = "value";
 		private const string GROUP_EXPGROUP = "group";
 
-		private readonly string pattern;
+		private readonly string initPattern;
+		private readonly string chainPattern;
 
-		public ExpresionParser()
+		public ExpressionParser()
 		{
-			pattern = RegexPatternBuilder
+			initPattern = RegexPatternBuilder
 				.Begin()
 				.StartOptionSet()
 				.AddCapture(GROUP_UNIT, GetEnumRegex(typeof(ConditionTargetType)))
 				.NextOption()
-				.AddCapture(GROUP_COMBAT_STAT, GetEnumRegex(typeof(CombatStats)))
-				.NextOption()
 				.AddCapture(GROUP_NUMBER_VALUE, @"\d+%?")
+				.EndOptions()
+				.Build();
+
+			chainPattern = RegexPatternBuilder
+				.Begin()
+				.StartOptionSet()
+				.AddCapture(GROUP_COMBAT_STAT, $"(?:{GetEnumRegex(typeof(CombatStats))})%?")
 				.NextOption()
 				.AddCapture(GROUP_EXPGROUP, GetEnumRegex(typeof(GroupOp)))
 				.EndOptions()
@@ -44,15 +50,34 @@ namespace Redninja.Data.Schema.Readers
 		/// <param name="expression">Expression.</param>
 		internal bool TryParseExpression(string raw, IExpression prevExpression,  out IExpression expression)
 		{
-			bool result = _TryParseExpression(raw, prevExpression, out expression);
-			if (result)
-				return VerifyAndAttach(prevExpression, expression);
-			return false;
+			if (prevExpression == null)
+				return TryParseInitialExpression(raw, out expression);
+			else
+			{
+				bool result = TryParseChainExpression(raw, prevExpression, out expression);
+				if (result)
+					return VerifyAndAttach(prevExpression, expression);
+				return false;
+			}
 		}
 
-		private bool _TryParseExpression(string raw, IExpression prevExpression, out IExpression expression)
+		private bool TryParseChainExpression(string raw, IExpression prevExpression, out IExpression expression)
 		{
-			Match match = Regex.Match(raw, pattern);
+			Match match = Regex.Match(raw, chainPattern);
+			if (!match.Success) return FalseWithLog($"Unable to parse expression: {raw}", out expression);
+
+			if (match.Groups[GROUP_COMBAT_STAT].Success)
+				return TryParseCombatStatExpression(match.Groups[GROUP_COMBAT_STAT].Value, out expression);
+				
+			if (match.Groups[GROUP_EXPGROUP].Success)
+				return TryParseGroupExpression(match.Groups[GROUP_EXPGROUP].Value, prevExpression, out expression);
+
+			return FalseWithLog($"Missing exception match: {raw}", out expression);
+		}
+
+		private bool TryParseInitialExpression(string raw, out IExpression expression) 
+		{
+			Match match = Regex.Match(raw, initPattern);
 			if (!match.Success) return FalseWithLog($"Unable to parse expression: {raw}", out expression);
 
 			if (match.Groups[GROUP_UNIT].Success)
@@ -60,10 +85,7 @@ namespace Redninja.Data.Schema.Readers
 
 			if (match.Groups[GROUP_NUMBER_VALUE].Success)
 				return TryParseNumberExpression(match.Groups[GROUP_NUMBER_VALUE].Value, out expression);
-
-			if (match.Groups[GROUP_EXPGROUP].Success)
-				return TryParseGroupExpression(match.Groups[GROUP_EXPGROUP].Value, prevExpression, out expression);
-
+				
 			return FalseWithLog($"Missing exception match: {raw}", out expression);
 		}
 
@@ -93,6 +115,18 @@ namespace Redninja.Data.Schema.Readers
 			return true;
 		}
 
+		private bool TryParseCombatStatExpression(string raw, out IExpression expression)
+		{
+			int percIndex = raw.LastIndexOf('%');
+			bool isPercent = percIndex > 0;
+			raw = isPercent ? raw.Substring(0, percIndex) : raw;
+
+			if (!Enum.TryParse(raw, true, out CombatStats stat)) return FalseWithLog($"Unable to parse combat stat from {raw}", out expression);
+
+			expression = new CombatStatExpression(stat, isPercent);
+			return true;
+		}
+
 		private bool TryParseNumberExpression(string raw, out IExpression expression)
 		{
 			int percIndex = raw.LastIndexOf('%');
@@ -107,7 +141,7 @@ namespace Redninja.Data.Schema.Readers
 
 		private bool TryParseUnitExpression(string raw, out IExpression expression)
 		{
-			if (!Enum.TryParse(raw, out ConditionTargetType type)) return FalseWithLog($"Unable to parse type from {raw}", out expression);
+			if (!Enum.TryParse(raw, true, out ConditionTargetType type)) return FalseWithLog($"Unable to parse type from {raw}", out expression);
 
 			expression = new TargetUnitExpression(type);
 			return true;
@@ -115,10 +149,13 @@ namespace Redninja.Data.Schema.Readers
 
 		private bool TryParseGroupExpression(string raw, IExpression prevExpression, out IExpression expression)
 		{
-			if (!Enum.TryParse(raw, out GroupOp groupOp)) return FalseWithLog($"Unable to parse type from {raw}", out expression);
+			if (!Enum.TryParse(raw, true, out GroupOp groupOp)) return FalseWithLog($"Unable to parse type from {raw}", out expression);
 
+			IExpressionResultDef def = ResultDefFactory.From(prevExpression.ResultType);
+			if (def.NativeType != typeof(int))
+				return FalseWithLog("Invalid chained type, this currently only supports native definitions", out expression);
 			expression = new GroupExpression(groupOp, prevExpression.ResultType);
-			return VerifyAndAttach(prevExpression, expression);
+			return true;
 		}
 
 		private bool FalseWithLog(string log, out IExpression failedExpression)

@@ -21,7 +21,7 @@ namespace Redninja.Components.Conditions.Expressions
 		{
 			switch(TargetType)
 			{
-				case ConditionTargetType.All:
+				case ConditionTargetType.Any:
 					return battleModel.Entities;
 				case ConditionTargetType.Ally:
 					return battleModel.Entities.Where(x => x.Team == self.Team);

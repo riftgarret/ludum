@@ -82,6 +82,7 @@
     <Compile Include="Components\Utils\RegexPatternBuilderTests.cs" />
     <Compile Include="Data\Schema\Readers\ConditionParserTests.cs" />
     <Compile Include="GlobalEnvironment.cs" />
+    <Compile Include="Data\Schema\Readers\ExpressionParserTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -21,7 +21,7 @@ namespace Redninja.Data.Schema.Readers
 
 		private readonly string pattern;
 
-		private readonly ExpresionParser expresionParser;
+		private readonly ExpressionParser expresionParser;
 		private readonly ConditionOpParser conditionOpParser;
 		private readonly RequirementParser requirementParser;
 
@@ -38,7 +38,7 @@ namespace Redninja.Data.Schema.Readers
 
 			pattern = builder.Build();
 
-			expresionParser = new ExpresionParser();
+			expresionParser = new ExpressionParser();
 			conditionOpParser = new ConditionOpParser();
 			requirementParser = new RequirementParser();
 		}

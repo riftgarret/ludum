@@ -218,7 +218,7 @@
     <Compile Include="Components\Conditions\ResultDefitions\ObjectResultDefinition.cs" />
     <Compile Include="Components\Conditions\ResultDefitions\ResultDefinitionBase.cs" />
     <Compile Include="Components\Conditions\ResultDefFactory.cs" />
-    <Compile Include="Data\Schema\Readers\ExpresionParser.cs" />
+    <Compile Include="Data\Schema\Readers\ExpressionParser.cs" />
     <Compile Include="Components\Conditions\Expressions\IChainableExpression.cs" />
     <Compile Include="Data\Schema\Readers\ConditionOpParser.cs" />
     <Compile Include="Data\Schema\Readers\RequirementParser.cs" />
