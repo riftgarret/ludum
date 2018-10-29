@@ -1,9 +1,11 @@
 ﻿using System;
+using Redninja.Components.Conditions.Expressions;
+
 namespace Redninja.Components.Conditions
 {
 	public interface IExpression
 	{
 		ExpressionResultType ResultType { get; }
-		IChainableExpression ChainedExpression { get; }
+		IChainedExpression ChainedExpression { get; }
 	}
 }

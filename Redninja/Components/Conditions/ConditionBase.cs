@@ -7,6 +7,9 @@ namespace Redninja.Components.Conditions
 {
 	internal abstract class ConditionBase : ICondition
 	{
+		// used for debugging
+		public string Raw { get; set; }
+
 		public IInitialExpression Left { get; protected set; }
 
 		public IInitialExpression Right { get; protected set; }

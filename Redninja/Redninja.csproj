@@ -195,7 +195,7 @@
     <Compile Include="Components\Conditions\Expressions\ChainableBase.cs" />
     <Compile Include="Components\Conditions\Expressions\CombatStatExpression.cs" />
     <Compile Include="Components\Conditions\Expressions\ExpressionResolver.cs" />
-    <Compile Include="Components\Conditions\Expressions\IChainableExpression.cs" />
+    <Compile Include="Components\Conditions\Expressions\IChainedExpression.cs" />
     <Compile Include="Components\Conditions\Expressions\ITargetUnitExpression.cs" />
     <Compile Include="Components\Conditions\Expressions\IValueExpression.cs" />
     <Compile Include="Components\Conditions\Expressions\NumberExpression.cs" />
@@ -218,6 +218,10 @@
     <Compile Include="Components\Conditions\ResultDefitions\ObjectResultDefinition.cs" />
     <Compile Include="Components\Conditions\ResultDefitions\ResultDefinitionBase.cs" />
     <Compile Include="Components\Conditions\ResultDefFactory.cs" />
+    <Compile Include="Data\Schema\Readers\ExpresionParser.cs" />
+    <Compile Include="Components\Conditions\Expressions\IChainableExpression.cs" />
+    <Compile Include="Data\Schema\Readers\ConditionOpParser.cs" />
+    <Compile Include="Data\Schema\Readers\RequirementParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\rpglibrary\Davfalcon.Revelator\Davfalcon.Revelator.csproj">

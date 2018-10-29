@@ -7,6 +7,14 @@ namespace Redninja.Components.Conditions
 {
 	internal class TargetCondition : ConditionBase
 	{
+		public TargetCondition(IInitialExpression left, IInitialExpression right, IConditionalOperator op, IOperatorCountRequirement req)
+		{
+			this.Left = left;
+			this.Right = right;
+			this.Op = op;
+			this.OpRequirement = req;
+		}
+
 		public bool IsTargetConditionMet(IUnitModel self, IUnitModel target, IBattleModel battleModel)
 		{
 			ExpressionResolver resolver = new ExpressionResolver(self, target, battleModel, null);

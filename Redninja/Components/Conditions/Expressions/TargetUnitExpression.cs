@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Redninja.Components.Conditions.Expressions
 {
-	public class TargetUnitExpression : ITargetUnitExpression, IInitialExpression
+	public class TargetUnitExpression : ITargetUnitExpression
 	{
 		public TargetUnitExpression(ConditionTargetType targetType)
 		{
@@ -15,7 +15,7 @@ namespace Redninja.Components.Conditions.Expressions
 
 		public ExpressionResultType ResultType => ExpressionResultType.Unit;
 
-		public IChainableExpression ChainedExpression { get; set; }
+		public IChainedExpression ChainedExpression { get; set; }
 
 		public IEnumerable<IUnitModel> Result(IUnitModel self, IUnitModel target, IBattleModel battleModel)
 		{

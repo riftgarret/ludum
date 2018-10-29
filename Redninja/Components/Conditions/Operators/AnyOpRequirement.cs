@@ -3,6 +3,8 @@ namespace Redninja.Components.Conditions.Operators
 {
 	public class AnyOpRequirement : IOperatorCountRequirement
 	{
+		public static readonly AnyOpRequirement INSTANCE = new AnyOpRequirement();
+
 		public ConditionalOperatorRequirement RequirementType => ConditionalOperatorRequirement.Any;
 
 		public bool CanComplete(int total) => total > 0;

@@ -23,7 +23,7 @@ namespace Redninja.Components.Conditions.Expressions
 		public IEnumerable<object> Resolve(IInitialExpression expression)
 		{
 			IEnumerable<object> result = ResolveInitialExpression(expression);
-			IChainableExpression chainableExpression = expression.ChainedExpression;
+			IChainedExpression chainableExpression = expression.ChainedExpression;
 
 			while(chainableExpression != null)
 			{
@@ -42,7 +42,7 @@ namespace Redninja.Components.Conditions.Expressions
 			throw new InvalidOperationException($"Invalid initial expression: {expression}");
 		}
 
-		internal IEnumerable<object> ResolveChain(IChainableExpression expression, IEnumerable<object> paramList)
+		internal IEnumerable<object> ResolveChain(IChainedExpression expression, IEnumerable<object> paramList)
 		{
 			List<object> results = new List<object>();
 

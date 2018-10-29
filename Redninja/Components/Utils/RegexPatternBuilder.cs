@@ -16,25 +16,25 @@ namespace Redninja.Components.Utils
 			return this;
 		}
 
-		public RegexPatternBuilder AddWhiteSpaceOptional() => Self(sb => sb.Append(@"(\s*)"));
+		public RegexPatternBuilder AddWhiteSpaceOptional() => AddNonCapture(@"\s*");
 
-		public RegexPatternBuilder AddNonCapture(string regex) => Self(sb => sb.Append(regex));
+		public RegexPatternBuilder AddNonCapture(string regex) => Self(sb => sb.Append($@"(?:{regex})"));
 
 		public OptionSetBuilder StartOptionSet()
 			=> new OptionSetBuilder(this);
 
 		public RegexPatternBuilder AddCapture(string key, string regex)
-			=> Self(sb => sb.Append($@"(<{key}>{regex})"));
+			=> Self(sb => sb.Append($@"(?<{key}>{regex})"));
 
 		public string Build()
 		{
-			sb.Append("$"); // end line
+			sb.Append(")$"); // end line
 			return sb.ToString();
 		}
 
 		public static RegexPatternBuilder Begin() {
 			RegexPatternBuilder self = new RegexPatternBuilder();
-			self.sb.Append("^");
+			self.sb.Append("^(?i:");
 			return self;
 		}
 
@@ -44,7 +44,7 @@ namespace Redninja.Components.Utils
 			internal OptionSetBuilder(RegexPatternBuilder parent)
 			{
 				builder = parent;
-				builder.sb.Append("(");
+				builder.sb.Append("(?:");
 			}
 
 			private OptionSetBuilder Self(Action<RegexPatternBuilder> action) {
@@ -58,10 +58,10 @@ namespace Redninja.Components.Utils
 
 			public OptionSetBuilder AddCapture(string key, string regex) => Self(b => b.AddCapture(key, regex));
 
-			public OptionSetBuilder NextOption() => Self(b => AddNonCapture("|"));
+			public OptionSetBuilder NextOption() => Self(b => builder.sb.Append("|"));
 
-			public RegexPatternBuilder EndOptions() {
-				builder.AddNonCapture(")");
+			public RegexPatternBuilder EndOptions(string regexEnd = "") {
+				builder.sb.Append(")" + regexEnd);
 				return builder;
 			}
 		}

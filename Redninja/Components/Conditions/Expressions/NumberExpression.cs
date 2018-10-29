@@ -13,7 +13,7 @@ namespace Redninja.Components.Conditions.Expressions
 
 		public object Result { get; }
 
-		public IChainableExpression ChainedExpression => null;
+		public IChainedExpression ChainedExpression => null;
 
 		public override string ToString() => $"{Result}";
 	}

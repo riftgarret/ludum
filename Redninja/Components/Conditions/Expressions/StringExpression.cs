@@ -10,7 +10,7 @@ namespace Redninja.Components.Conditions.Expressions
 
 		public virtual ExpressionResultType ResultType => ExpressionResultType.ClassName;
 
-		public IChainableExpression ChainedExpression => null;
+		public IChainedExpression ChainedExpression => null;
 
 		public object Result { get; }
 	}
