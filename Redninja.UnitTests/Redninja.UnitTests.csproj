@@ -83,6 +83,9 @@
     <Compile Include="Data\Schema\Readers\ConditionParserTests.cs" />
     <Compile Include="GlobalEnvironment.cs" />
     <Compile Include="Data\Schema\Readers\ExpressionParserTests.cs" />
+    <Compile Include="Data\Schema\Readers\ConditionalOpParserTests.cs" />
+    <Compile Include="Data\Schema\Readers\RequirementParserTests.cs" />
+    <Compile Include="Components\Conditions\Operators\OpCountRequirementTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

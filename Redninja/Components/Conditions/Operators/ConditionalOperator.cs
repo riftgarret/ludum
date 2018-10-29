@@ -20,29 +20,16 @@ namespace Redninja.Components.Conditions.Operators
 						   ExpressionResultType resultType)
 		{
 			int total = left.Count() * right.Count();
-			int numRuns = 0;
-			int numTrue = 0;
 
 			IExpressionResultDef def = ResultDefFactory.From(resultType);
 
-			if (!requirement.CanComplete(total))
-				return false;
+			int numberTrue =
+				(from lhs in left
+				from rhs in right
+				where def.IsTrue(lhs, rhs, OperatorType)
+				 select lhs).Count();
 
-			foreach (object lhs in left)
-			{
-				foreach(object rhs in right) 
-				{
-					bool result = def.IsTrue(lhs, rhs, OperatorType);
-					numRuns++;
-					numTrue += result ? 1 : 0;
-
-					if (requirement.TryComplete(numTrue, numRuns, total, out bool success))
-						return success;
-				}
-			}
-
-			RLog.E(this, $"Failed to find a resolution to compare left: {left}, right: {right}");
-			return false;
+			return requirement.MeetsRequirement(numberTrue, total);
 		}
 	}
 }

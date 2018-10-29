@@ -32,12 +32,15 @@ namespace Redninja.Data.Schema.Readers
 				case "<=":
 					op = ConditionOperatorType.LTE;
 					return true;
+				case "!=":
+					op = ConditionOperatorType.NEQ;
+					return true;
 				case "=":
 					op = ConditionOperatorType.EQ;
 					return true;
 				default:
 					op = ConditionOperatorType.EQ;
-					return false;
+					return true;
 			}
 		}
 	}
