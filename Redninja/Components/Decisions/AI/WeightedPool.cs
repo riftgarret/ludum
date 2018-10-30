@@ -19,7 +19,7 @@ namespace Redninja.Components.Decisions.AI
 
 		public void Add(T item, double weight)
 		{
-			if (items.FirstOrDefault(x => x.Item1.Equals(item)) != null) throw new InvalidOperationException($"Cannot add the same item: {item}");
+			if (items.Any(x => x.Item1.Equals(item))) throw new InvalidOperationException($"Cannot add the same item: {item}");
 			items.Add(new Tuple<T, double>(item, weight));
 			TotalWeight += weight;
 		}
