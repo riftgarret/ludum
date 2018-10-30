@@ -23,8 +23,9 @@ namespace Redninja.Components.Conditions
 			IEnumerable<object> rightValues = resolver.Resolve(Right);
 
 			ExpressionResultType resultType = Left.GetFinalResultType();
+			IExpressionResultDef resultDef = ResultDefFactory.From(resultType);
 
-			return Op.IsTrue(leftValues, rightValues, OpRequirement, resultType);
+			return Op.IsTrue(leftValues, rightValues, OpRequirement, resultDef);
 		}
 	}
 }

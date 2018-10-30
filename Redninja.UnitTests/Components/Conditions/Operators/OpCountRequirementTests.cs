@@ -3,6 +3,7 @@ using NUnit.Framework;
 
 namespace Redninja.Components.Conditions.Operators.UnitTests
 {
+	[TestFixture]
 	public class OpCountRequirementTests
 	{
 		private OpCountRequirement subject;

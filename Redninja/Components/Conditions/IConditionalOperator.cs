@@ -10,6 +10,6 @@ namespace Redninja.Components.Conditions
 		bool IsTrue(IEnumerable<object> left, 
 		            IEnumerable<object> right, 
 		            IOperatorCountRequirement requirement,
-		            ExpressionResultType resultType);
+		            IExpressionResultDef resultDef);
 	}
 }

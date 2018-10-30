@@ -5,6 +5,7 @@ using Redninja.Components.Conditions.Operators;
 
 namespace Redninja.Data.Schema.Readers.UnitTests
 {
+	[TestFixture]
 	public class RequirementParserTests
 	{
 		private RequirementParser subject;

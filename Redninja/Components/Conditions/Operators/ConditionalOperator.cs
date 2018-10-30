@@ -17,16 +17,14 @@ namespace Redninja.Components.Conditions.Operators
 		public bool IsTrue(IEnumerable<object> left,
 						   IEnumerable<object> right,
 						   IOperatorCountRequirement requirement,
-						   ExpressionResultType resultType)
+		                   IExpressionResultDef resultDef)
 		{
 			int total = left.Count() * right.Count();
-
-			IExpressionResultDef def = ResultDefFactory.From(resultType);
 
 			int numberTrue =
 				(from lhs in left
 				from rhs in right
-				where def.IsTrue(lhs, rhs, OperatorType)
+				where resultDef.IsTrue(lhs, rhs, OperatorType)
 				 select lhs).Count();
 
 			return requirement.MeetsRequirement(numberTrue, total);

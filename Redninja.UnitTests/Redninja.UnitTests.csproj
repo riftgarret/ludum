@@ -86,6 +86,10 @@
     <Compile Include="Data\Schema\Readers\ConditionalOpParserTests.cs" />
     <Compile Include="Data\Schema\Readers\RequirementParserTests.cs" />
     <Compile Include="Components\Conditions\Operators\OpCountRequirementTests.cs" />
+    <Compile Include="Components\Conditions\Operators\ConditionalOperatorTests.cs" />
+    <Compile Include="Components\Conditions\Operators\AnyOpRequirementTests.cs" />
+    <Compile Include="Components\Conditions\Operators\AllOpRequirementTests.cs" />
+    <Compile Include="Components\Conditions\Expressions\CombatStatExpressionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
