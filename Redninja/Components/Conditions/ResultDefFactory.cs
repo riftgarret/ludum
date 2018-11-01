@@ -27,7 +27,7 @@ namespace Redninja.Components.Conditions
 					return UnitResult;
 
 				default:
-					throw new InvalidProgramException($"Missing implementation for resultType: {resultType}");
+					throw new InvalidOperationException($"Missing implementation for resultType: {resultType}");
 			}
 		}
 	}

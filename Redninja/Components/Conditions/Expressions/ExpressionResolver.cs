@@ -5,7 +5,7 @@ using Redninja.Events;
 
 namespace Redninja.Components.Conditions.Expressions
 {
-	public class ExpressionResolver
+	internal class ExpressionResolver
 	{
 		private readonly IUnitModel self;
 		private readonly IUnitModel target;

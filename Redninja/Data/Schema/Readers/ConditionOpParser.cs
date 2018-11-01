@@ -40,7 +40,7 @@ namespace Redninja.Data.Schema.Readers
 					return true;
 				default:
 					op = ConditionOperatorType.EQ;
-					return true;
+					return false;
 			}
 		}
 	}
