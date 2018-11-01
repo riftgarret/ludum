@@ -222,6 +222,8 @@
     <Compile Include="Components\Conditions\Expressions\IChainableExpression.cs" />
     <Compile Include="Data\Schema\Readers\ConditionOpParser.cs" />
     <Compile Include="Data\Schema\Readers\RequirementParser.cs" />
+    <Compile Include="Components\Conditions\Expressions\ExpressionEnv.cs" />
+    <Compile Include="Components\Conditions\Expressions\IExpressionEnv.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\rpglibrary\Davfalcon.Revelator\Davfalcon.Revelator.csproj">
