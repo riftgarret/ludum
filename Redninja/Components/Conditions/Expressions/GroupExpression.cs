@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Redninja.Logging;
 
 namespace Redninja.Components.Conditions.Expressions
 {
-	public class GroupExpression : ChainableBase, IGroupExpression
+	public class GroupExpression : ParamExpressionBase, IGroupExpression
 	{
 		public GroupExpression(GroupOp groupOp, ExpressionResultType resultType)
 		{
@@ -15,8 +16,11 @@ namespace Redninja.Components.Conditions.Expressions
 
 		public GroupOp GroupOp { get; }
 
+		public object GroupResult(IEnumerable<object> param) => GetValue((IEnumerable<int>)param);
+
 		public override object Result(object param)
 		{
+			RLog.E(this, "should call GroupResult explicitly instead");
 			IEnumerable<int> values = (IEnumerable<int>)param;
 
 			return Enumerable.Repeat(GetValue(values), 1);

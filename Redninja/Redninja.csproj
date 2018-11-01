@@ -189,15 +189,11 @@
     <Compile Include="Components\Utils\RegexPatternBuilder.cs" />
     <Compile Include="Components\Conditions\ICondition.cs" />
     <Compile Include="Components\Conditions\ConditionBase.cs" />
-    <Compile Include="Components\Conditions\TargetCondition.cs" />
-    <Compile Include="Components\Conditions\EventCondition.cs" />
     <Compile Include="Events\ITargetedEvent.cs" />
-    <Compile Include="Components\Conditions\Expressions\ChainableBase.cs" />
+    <Compile Include="Components\Conditions\Expressions\ParamExpressionBase.cs" />
     <Compile Include="Components\Conditions\Expressions\CombatStatExpression.cs" />
     <Compile Include="Components\Conditions\Expressions\ExpressionResolver.cs" />
-    <Compile Include="Components\Conditions\Expressions\IChainedExpression.cs" />
-    <Compile Include="Components\Conditions\Expressions\ITargetUnitExpression.cs" />
-    <Compile Include="Components\Conditions\Expressions\IValueExpression.cs" />
+    <Compile Include="Components\Conditions\Expressions\IParamExpression.cs" />
     <Compile Include="Components\Conditions\Expressions\NumberExpression.cs" />
     <Compile Include="Components\Conditions\Expressions\StringExpression.cs" />
     <Compile Include="Components\Conditions\Expressions\TargetUnitExpression.cs" />
@@ -210,7 +206,7 @@
     <Compile Include="Components\Conditions\Expressions\ExpressionExts.cs" />
     <Compile Include="Components\Conditions\IExpressionResultDef.cs" />
     <Compile Include="Components\Conditions\IExpression.cs" />
-    <Compile Include="Components\Conditions\IInitialExpression.cs" />
+    <Compile Include="Components\Conditions\IEnvExpression.cs" />
     <Compile Include="Components\Conditions\IConditionalOperator.cs" />
     <Compile Include="Components\Conditions\IOperatorCountRequirement.cs" />
     <Compile Include="Components\Conditions\ResultDefitions\IntResultDefinition.cs" />
@@ -219,11 +215,10 @@
     <Compile Include="Components\Conditions\ResultDefitions\ResultDefinitionBase.cs" />
     <Compile Include="Components\Conditions\ResultDefFactory.cs" />
     <Compile Include="Data\Schema\Readers\ExpressionParser.cs" />
-    <Compile Include="Components\Conditions\Expressions\IChainableExpression.cs" />
     <Compile Include="Data\Schema\Readers\ConditionOpParser.cs" />
     <Compile Include="Data\Schema\Readers\RequirementParser.cs" />
     <Compile Include="Components\Conditions\Expressions\ExpressionEnv.cs" />
-    <Compile Include="Components\Conditions\Expressions\IExpressionEnv.cs" />
+    <Compile Include="Components\Conditions\IExpressionEnv.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\rpglibrary\Davfalcon.Revelator\Davfalcon.Revelator.csproj">

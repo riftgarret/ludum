@@ -1,8 +1,8 @@
 ﻿using Redninja.Events;
 
-namespace Redninja.Components.Conditions.Expressions
+namespace Redninja.Components.Conditions
 {
-    internal interface IExpressionEnv
+    public interface IExpressionEnv
     {
         IUnitModel Self { get; }
         IUnitModel Target { get; }

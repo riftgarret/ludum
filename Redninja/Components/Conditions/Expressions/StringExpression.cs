@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Redninja.Components.Conditions.Expressions
 {
-	public class StringExpression : IValueExpression
+	public class StringExpression : IEnvExpression
 	{
 		public StringExpression(string result)
 		{
@@ -10,8 +13,14 @@ namespace Redninja.Components.Conditions.Expressions
 
 		public virtual ExpressionResultType ResultType => ExpressionResultType.ClassName;
 
-		public IChainedExpression ChainedExpression => null;
+		public IParamExpression Next
+		{
+			get => null;
+			set => throw new InvalidOperationException("Cannot set string expression next");
+		}
 
 		public object Result { get; }
+
+		public IEnumerable<object> GetResult(IExpressionEnv env) => Enumerable.Repeat(Result, 1);
 	}
 }

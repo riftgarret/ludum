@@ -6,7 +6,7 @@ namespace Redninja.Components.Conditions.Expressions
 		public static ExpressionResultType GetFinalResultType(this IExpression expression)
 		{
 			IExpression cur = expression;
-			while (cur.ChainedExpression != null) cur = cur.ChainedExpression;
+			while (cur.Next != null) cur = cur.Next;
 			return cur.ResultType;
 		}
 	}

@@ -7,57 +7,45 @@ namespace Redninja.Components.Conditions.Expressions
 {
 	internal class ExpressionResolver
 	{
-		private readonly IUnitModel self;
-		private readonly IUnitModel target;
-		private readonly IBattleModel battleModel;
-		private readonly IBattleEvent battleEvent;
+		private IExpressionEnv env;
 
-		public ExpressionResolver(IUnitModel self, IUnitModel target, IBattleModel battleModel, IBattleEvent battleEvent)
+		public ExpressionResolver(IExpressionEnv env)
 		{
-			this.self = self;
-			this.target = target;
-			this.battleModel = battleModel;
-			this.battleEvent = battleEvent;
+			this.env = env;
 		}
 
-		public IEnumerable<object> Resolve(IInitialExpression expression)
+		public IEnumerable<object> Resolve(IEnvExpression expression)
 		{
-			IEnumerable<object> result = ResolveInitialExpression(expression);
-			IChainedExpression chainableExpression = expression.ChainedExpression;
+			IEnumerable<object> result = expression.GetResult(env);
+			IParamExpression chainableExpression = expression.Next;
 
 			while(chainableExpression != null)
 			{
 				result = ResolveChain(chainableExpression, result);
-				chainableExpression = chainableExpression.ChainedExpression;
+				chainableExpression = chainableExpression.Next;
 			}
 
 			return result;
 		}
 
-		internal IEnumerable<object> ResolveInitialExpression(IInitialExpression expression)
-		{
-			if (expression is ITargetUnitExpression) return ResolveUnits((ITargetUnitExpression)expression);
-			if (expression is IValueExpression) return ResolveValue((IValueExpression)expression);
-
-			throw new InvalidOperationException($"Invalid initial expression: {expression}");
-		}
-
-		internal IEnumerable<object> ResolveChain(IChainedExpression expression, IEnumerable<object> paramList)
+		internal IEnumerable<object> ResolveChain(IParamExpression expression, IEnumerable<object> paramList)
 		{
 			List<object> results = new List<object>();
 
-			foreach(object param in paramList)
+			// if group expression evaluate accordingly to group up the results.
+			if (expression is IGroupExpression)
 			{
-				results.Add(expression.Result(param));
+				results.Add(((IGroupExpression)expression).GroupResult(paramList));
+			}
+			else
+			{
+				foreach (object param in paramList)
+				{
+					results.Add(expression.Result(param));
+				}
 			}
 
 			return results;
 		}
-
-		internal IEnumerable<object> ResolveValue(IValueExpression valueExpression)
-			=> Enumerable.Repeat(valueExpression.Result, 1);
-
-		internal IEnumerable<object> ResolveUnits(ITargetUnitExpression expression) 
-			=> expression.Result(self, target, battleModel);
 	}
 }

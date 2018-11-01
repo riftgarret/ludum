@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace Redninja.Components.Conditions.Expressions
 {
-	public interface IGroupExpression : IChainedExpression
+	public interface IGroupExpression : IParamExpression
 	{
-		// nothing to add, we check type for use case in resolver.
+		object GroupResult(IEnumerable<object> param);
 	}
 }

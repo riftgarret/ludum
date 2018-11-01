@@ -40,7 +40,7 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 		{
 			string input = stat.ToString() + (hasPercent ? "%" : "");
 
-			var prevChain = Substitute.For<IChainableExpression>();
+			var prevChain = Substitute.For<IExpression>();
 			prevChain.ResultType.Returns(ExpressionResultType.Unit);
 
 			bool success = subject.TryParseExpression(input, prevChain, out var result);
@@ -60,7 +60,7 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 		{
 			string input = groupOp.ToString();
 
-			var prevChain = Substitute.For<IChainableExpression>();
+			var prevChain = Substitute.For<IExpression>();
 			prevChain.ResultType.Returns(prevResultType);
 
 			bool success = subject.TryParseExpression(input, prevChain, out var result);

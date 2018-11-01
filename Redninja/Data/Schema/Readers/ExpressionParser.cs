@@ -100,18 +100,14 @@ namespace Redninja.Data.Schema.Readers
 			if (prevExpression == null)
 				return true;
 
-			if (!(prevExpression is IChainableExpression))
-				return FalseWithLog($"exp is not chainable for assignment: {prevExpression}", out expression);
-			IChainableExpression chainableExpression = (IChainableExpression)prevExpression;
-
-			if (!(expression is IChainedExpression))
+			if (!(expression is IParamExpression))
 				return FalseWithLog($"exp is not chainned to be assignmented: {expression}", out expression);
-			IChainedExpression chainedExpression = (IChainedExpression)expression;
+			IParamExpression paramExpression = (IParamExpression)expression;
 
-			if (chainableExpression.ResultType != chainedExpression.Param)
-				return FalseWithLog($"Invalid expression chain: {chainableExpression} -> {chainedExpression}", out expression);
+			if (prevExpression.ResultType != paramExpression.Param)
+				return FalseWithLog($"Invalid expression chain: {prevExpression} -> {paramExpression}", out expression);
 
-			chainableExpression.ChainedExpression = chainedExpression;
+			prevExpression.Next = paramExpression;
 			return true;
 		}
 

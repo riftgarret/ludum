@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Redninja.Components.Conditions.Expressions
 {
-	public class CombatStatExpression : ChainableBase
+	public class CombatStatExpression : ParamExpressionBase
 	{
 		public CombatStatExpression(CombatStats combatStat, bool isPercent)
 		{

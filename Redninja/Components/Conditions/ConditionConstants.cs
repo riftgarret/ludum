@@ -38,6 +38,7 @@ namespace Redninja.Components.Conditions
 	{
 		Self,
 		Target,
+		Source,
 		Enemy,
 		Ally,
 		AllyNotSelf,

@@ -7,8 +7,8 @@ namespace Redninja.Components.Conditions
 {
 	public interface ICondition
 	{
-		IInitialExpression Left { get; }
-		IInitialExpression Right { get; }
+		IEnvExpression Left { get; }
+		IEnvExpression Right { get; }
 		IConditionalOperator Op { get; }
 		IOperatorCountRequirement OpRequirement { get; }
 	}

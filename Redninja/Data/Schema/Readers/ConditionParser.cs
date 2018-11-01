@@ -43,7 +43,7 @@ namespace Redninja.Data.Schema.Readers
 			requirementParser = new RequirementParser();
 		}
 
-		public bool TryParseCondition(string raw, bool isEventCondition, out ICondition condition)
+		public bool TryParseCondition(string raw, out ICondition condition)
 		{
 			condition = null;
 
@@ -55,13 +55,13 @@ namespace Redninja.Data.Schema.Readers
 			if (!match.Groups[GROUP_OP].Success) return FalseWithLog($"Missing OP expression: {raw}");
 
 
-			if (!TryBuildExpressionChain(match.Groups[GROUP_LEFT_EXPRESSION], out IInitialExpression left))
+			if (!TryBuildExpressionChain(match.Groups[GROUP_LEFT_EXPRESSION], out IEnvExpression left))
 				return FalseWithLog($"Unable to build left expression tree: {raw}");
 
 			if (!conditionOpParser.TryParseOp(match.Groups[GROUP_OP].Value, out IConditionalOperator op))
 				return FalseWithLog($"Unable to build operator: {raw}");
 
-			if (!TryBuildExpressionChain(match.Groups[GROUP_RIGHT_EXPRESSION], out IInitialExpression right))
+			if (!TryBuildExpressionChain(match.Groups[GROUP_RIGHT_EXPRESSION], out IEnvExpression right))
 				return FalseWithLog($"Unable to build right expression tree: {raw}");
 
 			IOperatorCountRequirement opRequirement = AnyOpRequirement.INSTANCE;
@@ -71,25 +71,22 @@ namespace Redninja.Data.Schema.Readers
 					return FalseWithLog($"Unable to build requirement {raw}");
 			}
 
-			if (isEventCondition)
-				condition = new EventCondition(left, right, op, opRequirement);
-			else
-				condition = new TargetCondition(left, right, op, opRequirement);
+			condition = new Condition(left, right, op, opRequirement);
 
 			return true;
 		}
 
-		private bool TryBuildExpressionChain(Group regexGroup, out IInitialExpression initialExpression) 
+		private bool TryBuildExpressionChain(Group regexGroup, out IEnvExpression initialExpression) 
 		{
 			initialExpression = null;
 
 			if (!expresionParser.TryParseExpression(regexGroup.Captures[0].Value, null, out IExpression expression))
 				return false;
 
-			if (!(expression is IInitialExpression))
+			if (!(expression is IEnvExpression))
 				return FalseWithLog($"Initial expression is not a InitialExpressionType {regexGroup.Captures[0].Value}");
 
-			initialExpression = (IInitialExpression)expression;
+			initialExpression = (IEnvExpression)expression;
 			IExpression curChain = expression;
 
 			for (int i = 1; i < regexGroup.Captures.Count; i++)

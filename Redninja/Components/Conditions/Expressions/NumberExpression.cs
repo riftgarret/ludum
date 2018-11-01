@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Redninja.Components.Conditions.Expressions
 {
-	public class NumberExpression : IValueExpression
+	public class NumberExpression : IEnvExpression
 	{
 		public NumberExpression(int result, bool percent = false)
 		{
@@ -16,7 +19,13 @@ namespace Redninja.Components.Conditions.Expressions
 
 		public object Result { get; }
 
-		public IChainedExpression ChainedExpression => null;
+		public IParamExpression Next
+		{
+			get => null;
+			set => throw new InvalidOperationException("Cannot set string expression next");
+		}
+
+		public IEnumerable<object> GetResult(IExpressionEnv env) => Enumerable.Repeat(Result, 1);
 
 		public override string ToString() => $"{Result}";
 	}
