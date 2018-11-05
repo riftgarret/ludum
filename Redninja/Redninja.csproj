@@ -184,6 +184,22 @@
     <Compile Include="View\IMovementCallbacks.cs" />
     <Compile Include="View\ISkillsCallbacks.cs" />
     <Compile Include="View\ITargetingCallbacks.cs" />
+    <Compile Include="Components\Equipment\IEquipment.cs" />
+    <Compile Include="Components\Classes\IClassPerk.cs" />
+    <Compile Include="Components\Classes\IClassDefinition.cs" />
+    <Compile Include="Components\Classes\IStatScaler.cs" />
+    <Compile Include="Components\Classes\ICharacteristicRequirement.cs" />
+    <Compile Include="Components\Buffs\IBuff.cs" />
+    <Compile Include="Components\Classes\CompositeRequirement.cs" />
+    <Compile Include="Components\Classes\LevelRequirement.cs" />
+    <Compile Include="Events\IBattleEventProcessor.cs" />
+    <Compile Include="Events\EntityBattleEventProcessor.cs" />
+    <Compile Include="Components\Properties\IItemProperty.cs" />
+    <Compile Include="Components\Properties\IPassiveProperty.cs" />
+    <Compile Include="Components\Properties\IPropertyBundle.cs" />
+    <Compile Include="Components\Properties\ITriggeredProperty.cs" />
+    <Compile Include="Components\Properties\TriggerPropertyType.cs" />
+    <Compile Include="Components\Properties\ITriggerCondition.cs" />
     <Compile Include="Data\Schema\Readers\ConditionParser.cs" />
     <Compile Include="Components\Conditions\ConditionConstants.cs" />
     <Compile Include="Components\Utils\RegexPatternBuilder.cs" />
@@ -235,6 +251,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Folder Include="Components\Equipment\" />
+    <Folder Include="Components\Classes\" />
+    <Folder Include="Components\Buffs\" />
+    <Folder Include="Components\Properties\" />
     <Folder Include="Components\Conditions\" />
     <Folder Include="Components\Conditions\Expressions\" />
     <Folder Include="Components\Conditions\Operators\" />

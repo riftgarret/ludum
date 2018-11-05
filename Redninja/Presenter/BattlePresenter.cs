@@ -34,6 +34,7 @@ namespace Redninja.Presenter
 		private readonly IBattleEntityManager entityManager;
 		private readonly PlayerDecisionManager playerDecisionManager;
 		private readonly ProcessingQueue<IBattleEntity> decisionQueue;
+		private readonly IBattleEventProcessor entityEventTriggerProcessor;
 		private readonly PriorityProcessingQueue<float, IBattleOperation> battleOpQueue;
 
 		public event Action<IBattleEvent> BattleEventOccurred;
@@ -63,6 +64,7 @@ namespace Redninja.Presenter
 			kernel.Bind<IBattleEntityManager, IBattleModel>().To<BattleEntityManager>().InSingletonScope();
 			kernel.Bind<PlayerDecisionManager>().ToSelf().InSingletonScope();
 			kernel.Bind<IDecisionHelper>().To<DecisionHelper>().InSingletonScope();
+			kernel.Bind<IBattleEventProcessor>().To<EntityBattleEventProcessor>().InSingletonScope();
 			kernel.Bind<IBattlePresenter>().To<BattlePresenter>().InSingletonScope();
 			return kernel.Get<IBattlePresenter>();
 		}
@@ -75,6 +77,7 @@ namespace Redninja.Presenter
 			combatExecutor = kernel.Get<ICombatExecutor>();
 			entityManager = kernel.Get<IBattleEntityManager>();
 			playerDecisionManager = kernel.Get<PlayerDecisionManager>();
+			entityEventTriggerProcessor = kernel.Get<IBattleEventProcessor>();
 			view = kernel.Get<IBattleView>();
 			clock = kernel.Get<Clock>();
 
@@ -95,6 +98,7 @@ namespace Redninja.Presenter
 			entityManager.ActionSet += (e, action) => action.BattleOperationReady += battleOpQueue.Enqueue;
 			combatExecutor.BattleEventOccurred += BattleEventOccurred;
 			combatExecutor.BattleEventOccurred += view.OnBattleEventOccurred;
+			combatExecutor.BattleEventOccurred += entityEventTriggerProcessor.ProcessEvent;
 			playerDecisionManager.WaitingForDecision += e => Pause();
 			playerDecisionManager.WaitingForDecision += view.OnDecisionNeeded;
 			playerDecisionManager.WaitResolved += Start;
