@@ -32,8 +32,8 @@ namespace Redninja.Entities
 		public void AddEntity(IBattleEntity entity)
 		{
 			entity.SetClock(clock);
-			entity.ActionNeeded += ActionNeeded;
-			entity.ActionSet += ActionSet;
+			entity.ActionNeeded += e => ActionNeeded?.Invoke(e);
+			entity.ActionSet += (e, o) => ActionSet?.Invoke(e, o);
 			entityMap.Add(entity);
 		}
 

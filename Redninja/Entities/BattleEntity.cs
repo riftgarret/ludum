@@ -112,28 +112,20 @@ namespace Redninja.Entities
 		private void OnStatusEffectApplied(IStatusEffect effect)
 		{
 			effect.SetClock(clock);
+			effect.EffectTarget = this;
+			effect.Expired += OnStatusEffectExpired;
 			ActionSet?.Invoke(this, effect);
+		}
+
+		private void OnStatusEffectExpired(IStatusEffect effect)
+		{
+			effect.Dispose();
+			combatExecutor.RemoveStatusEffect(this, effect);
 		}
 
 		private void OnTick(float timeDelta)
 		{
-			// Check if any buffs expired
-			List<IBuff> expired = new List<IBuff>();
-			foreach (IStatusEffect effect in Buffs)
-			{
-				if (effect != null && effect.RemainingTime <= 0)
-				{
-					effect.Dispose();
-					expired.Add(effect);
-				}
-			}
-
-			// Remove expired buffs
-			foreach (IBuff buff in expired)
-			{
-				combatExecutor.RemoveStatusEffect(this, buff);
-			}
-
+			// This should probably be an event as well
 			if (CurrentAction.Phase == ActionPhase.Done)
 			{
 				ActionNeeded?.Invoke(this);

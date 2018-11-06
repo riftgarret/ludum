@@ -92,7 +92,7 @@ namespace Redninja.Presenter
 		{
 			entityManager.ActionNeeded += decisionQueue.Enqueue;
 			entityManager.ActionSet += (e, action) => action.BattleOperationReady += battleOpQueue.Enqueue;
-			combatExecutor.BattleEventOccurred += BattleEventOccurred;
+			combatExecutor.BattleEventOccurred += e => BattleEventOccurred?.Invoke(e);
 			combatExecutor.BattleEventOccurred += view.OnBattleEventOccurred;
 			playerDecisionManager.WaitingForDecision += e => Pause();
 			playerDecisionManager.WaitingForDecision += view.OnDecisionNeeded;

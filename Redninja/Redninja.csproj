@@ -85,6 +85,7 @@
     <Compile Include="Components\Skills\StatusEffects\IStatusEffect.cs" />
     <Compile Include="Components\Skills\StatusEffects\ITriggeredEffect.cs" />
     <Compile Include="Components\Skills\StatusEffects\StatusEffect.cs" />
+    <Compile Include="Components\Targeting\StaticTarget.cs" />
     <Compile Include="Components\Utils\TextUtils.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="Data\Encounter.cs" />

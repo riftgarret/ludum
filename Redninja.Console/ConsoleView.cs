@@ -4,10 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Davfalcon.Nodes;
+using Redninja.Components.Combat.Events;
 using Redninja.Components.Decisions;
 using Redninja.Components.Skills;
-using Redninja.ConsoleDriver.Objects;
-using Redninja.Events;
 using Redninja.View;
 
 namespace Redninja.ConsoleDriver
@@ -120,6 +119,9 @@ namespace Redninja.ConsoleDriver
 						break;
 					case ConsoleKey.W:
 						callbacks.SelectSkill(entity, actionsContext.Skills.ElementAt(1));
+						break;
+					case ConsoleKey.E:
+						callbacks.SelectSkill(entity, actionsContext.Skills.ElementAt(2));
 						break;
 					default:
 						callbacks.Wait(entity);

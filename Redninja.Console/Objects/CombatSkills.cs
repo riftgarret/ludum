@@ -15,17 +15,19 @@ namespace Redninja.ConsoleDriver.Objects
 			.AddWeapon(Weapons.Shortsword)
 			.AddWeapon(Weapons.Dagger));
 
-		public static ISkill TargetedSkill { get; } = CombatSkill.Build("Targeted skill",
+		public static ISkill FireSkill { get; } = CombatSkill.Build("Fire shot",
 			args => args
 				.SetDamage(20)
-				.AddDamageType(DamageType.Physical),
+				.AddDamageType(DamageType.Magical)
+				.AddDamageType(Element.Fire),
 			b => b
 				.SetActionTime(5, 10, 2)
 				.AddTargetingSet(TargetTeam.Enemy, TargetConditions.None, builder => builder
 					.AddCombatRound(0.0f, OperationProviders.Damage)
 					.AddCombatRound(0.2f, OperationProviders.Damage)
 					.AddCombatRound(0.4f, OperationProviders.Damage)
-					.AddCombatRound(0.8f, OperationProviders.Damage)));
+					.AddCombatRound(0.8f, OperationProviders.Damage)
+					.AddCombatRound(1f, OperationProviders.GetStatusEffectProvider(StatusEffects.Burn))));
 
 		public static ISkill PatternSkill { get; } = CombatSkill.Build("Pattern skill",
 			args => args

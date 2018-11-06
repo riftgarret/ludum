@@ -1,4 +1,5 @@
-﻿using Davfalcon.Revelator;
+﻿using System;
+using Davfalcon.Revelator;
 using Redninja.Components.Clock;
 using Redninja.Components.Combat;
 
@@ -9,5 +10,9 @@ namespace Redninja.Components.Skills.StatusEffects
 		float TimeDuration { get; }
 		float TimeInterval { get; }
 		float RemainingTime { get; }
+
+		event Action<IStatusEffect> Expired;
+
+		IUnitModel EffectTarget { get; set; }
 	}
 }
