@@ -86,7 +86,7 @@
     <Compile Include="Components\Skills\StatusEffects\ITriggeredEffect.cs" />
     <Compile Include="Components\Skills\StatusEffects\StatusEffect.cs" />
     <Compile Include="Components\Targeting\StaticTarget.cs" />
-    <Compile Include="Components\Utils\TextUtils.cs" />
+    <Compile Include="Text\TextUtils.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="Data\Encounter.cs" />
     <Compile Include="Data\IDataLoader.cs" />
@@ -210,7 +210,7 @@
     <Compile Include="Components\Properties\ITriggerCondition.cs" />
     <Compile Include="Data\Schema\Readers\ConditionParser.cs" />
     <Compile Include="Components\Conditions\ConditionConstants.cs" />
-    <Compile Include="Components\Utils\RegexPatternBuilder.cs" />
+    <Compile Include="Text\RegexPatternBuilder.cs" />
     <Compile Include="Components\Conditions\ICondition.cs" />
     <Compile Include="Components\Conditions\ConditionBase.cs" />
     <Compile Include="Components\Combat\Events\ITargetedEvent.cs" />

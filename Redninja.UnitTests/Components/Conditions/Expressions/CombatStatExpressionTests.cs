@@ -1,5 +1,4 @@
-﻿using System;
-using NSubstitute;
+﻿using NSubstitute;
 using NUnit.Framework;
 
 namespace Redninja.Components.Conditions.Expressions.UnitTests
@@ -19,7 +18,7 @@ namespace Redninja.Components.Conditions.Expressions.UnitTests
 		public void Result_SingleValue([Values(10, 20, 30)]int statValue, [Values(CombatStats.HP, CombatStats.Resource)] CombatStats stat)
 		{
 			IUnitModel model = Substitute.For<IUnitModel>();
-			model.Character.VolatileStats[stat].Returns(statValue);
+			model.VolatileStats[stat].Returns(statValue);
 
 			subject = new CombatStatExpression(stat, false);
 
@@ -35,8 +34,8 @@ namespace Redninja.Components.Conditions.Expressions.UnitTests
 		{
 			CombatStats stat = CombatStats.HP;
 			IUnitModel model = Substitute.For<IUnitModel>();
-			model.Character.VolatileStats[stat].Returns(volatileValue);
-			model.Character.Stats[stat].Returns(statValue);
+			model.VolatileStats[stat].Returns(volatileValue);
+			model.Stats[stat].Returns(statValue);
 
 			subject = new CombatStatExpression(stat, true);
 

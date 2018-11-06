@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Redninja.Events;
+﻿using System.Collections.Generic;
 
 namespace Redninja.Components.Conditions.Expressions
 {

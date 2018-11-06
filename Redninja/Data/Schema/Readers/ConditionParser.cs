@@ -1,9 +1,8 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Redninja.Components.Conditions;
 using Redninja.Components.Conditions.Operators;
-using Redninja.Components.Utils;
 using Redninja.Logging;
+using Redninja.Text;
 
 namespace Redninja.Data.Schema.Readers
 {

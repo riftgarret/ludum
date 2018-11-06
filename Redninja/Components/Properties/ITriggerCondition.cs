@@ -1,5 +1,4 @@
-﻿using System;
-using Redninja.Events;
+﻿using Redninja.Components.Combat.Events;
 
 namespace Redninja.Components.Properties
 {

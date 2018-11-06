@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Redninja.Components.Combat.Events;
 using Redninja.Components.Conditions.Expressions;
-using Redninja.Events;
 
 namespace Redninja.Components.Conditions
 {

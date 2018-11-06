@@ -1,8 +1,8 @@
-﻿using Redninja.Events;
+﻿using Redninja.Components.Combat.Events;
 
 namespace Redninja.Components.Conditions
 {
-    public interface IExpressionEnv
+	public interface IExpressionEnv
     {
         IUnitModel Self { get; }
         IUnitModel Target { get; }

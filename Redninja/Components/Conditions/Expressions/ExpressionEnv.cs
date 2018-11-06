@@ -1,6 +1,5 @@
 ﻿using System;
-using Davfalcon.Builders;
-using Redninja.Events;
+using Redninja.Components.Combat.Events;
 
 namespace Redninja.Components.Conditions.Expressions
 {

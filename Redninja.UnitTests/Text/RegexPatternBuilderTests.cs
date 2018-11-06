@@ -1,8 +1,7 @@
-﻿using System;
+﻿using System.Text.RegularExpressions;
 using NUnit.Framework;
-using System.Text.RegularExpressions;
 
-namespace Redninja.Components.Utils.UnitTests
+namespace Redninja.Text.UnitTests
 {
 	/// <summary>
 	/// Note about 'Count' checking on groups. There is a group for each
