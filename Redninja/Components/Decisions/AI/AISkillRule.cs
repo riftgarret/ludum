@@ -17,7 +17,7 @@ namespace Redninja.Components.Decisions.AI
 		public TargetTeam TargetType { get; private set; }
 		private List<IAITargetCondition> filterConditions = new List<IAITargetCondition>();
 		public IEnumerable<IAITargetCondition> FilterConditions => filterConditions;
-		public List<Tuple<IAITargetPriority, ISkill>> skillAssignments = new List<Tuple<IAITargetPriority, ISkill>>();
+		private List<Tuple<IAITargetPriority, ISkill>> skillAssignments = new List<Tuple<IAITargetPriority, ISkill>>();
 		public IEnumerable<Tuple<IAITargetPriority, ISkill>> SkillAssignments => skillAssignments;
 
 		/// <summary>

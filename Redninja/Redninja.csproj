@@ -192,6 +192,57 @@
     <Compile Include="View\IMovementCallbacks.cs" />
     <Compile Include="View\ISkillsCallbacks.cs" />
     <Compile Include="View\ITargetingCallbacks.cs" />
+    <Compile Include="Components\Equipment\IEquipment.cs" />
+    <Compile Include="Components\Classes\IClassPerk.cs" />
+    <Compile Include="Components\Classes\IClassDefinition.cs" />
+    <Compile Include="Components\Classes\IStatScaler.cs" />
+    <Compile Include="Components\Classes\ICharacteristicRequirement.cs" />
+    <Compile Include="Components\Buffs\IBuff.cs" />
+    <Compile Include="Components\Classes\CompositeRequirement.cs" />
+    <Compile Include="Components\Classes\LevelRequirement.cs" />
+    <Compile Include="Events\IBattleEventProcessor.cs" />
+    <Compile Include="Events\EntityBattleEventProcessor.cs" />
+    <Compile Include="Components\Properties\IItemProperty.cs" />
+    <Compile Include="Components\Properties\IPassiveProperty.cs" />
+    <Compile Include="Components\Properties\IPropertyBundle.cs" />
+    <Compile Include="Components\Properties\ITriggeredProperty.cs" />
+    <Compile Include="Components\Properties\TriggerPropertyType.cs" />
+    <Compile Include="Components\Properties\ITriggerCondition.cs" />
+    <Compile Include="Data\Schema\Readers\ConditionParser.cs" />
+    <Compile Include="Components\Conditions\ConditionConstants.cs" />
+    <Compile Include="Components\Utils\RegexPatternBuilder.cs" />
+    <Compile Include="Components\Conditions\ICondition.cs" />
+    <Compile Include="Components\Conditions\ConditionBase.cs" />
+    <Compile Include="Events\ITargetedEvent.cs" />
+    <Compile Include="Components\Conditions\Expressions\ParamExpressionBase.cs" />
+    <Compile Include="Components\Conditions\Expressions\CombatStatExpression.cs" />
+    <Compile Include="Components\Conditions\Expressions\ExpressionResolver.cs" />
+    <Compile Include="Components\Conditions\Expressions\IParamExpression.cs" />
+    <Compile Include="Components\Conditions\Expressions\NumberExpression.cs" />
+    <Compile Include="Components\Conditions\Expressions\StringExpression.cs" />
+    <Compile Include="Components\Conditions\Expressions\TargetUnitExpression.cs" />
+    <Compile Include="Components\Conditions\Expressions\IGroupExpression.cs" />
+    <Compile Include="Components\Conditions\Expressions\GroupExpression.cs" />
+    <Compile Include="Components\Conditions\Operators\OpCountRequirement.cs" />
+    <Compile Include="Components\Conditions\Operators\AnyOpRequirement.cs" />
+    <Compile Include="Components\Conditions\Operators\AllOpRequirement.cs" />
+    <Compile Include="Components\Conditions\Operators\ConditionalOperator.cs" />
+    <Compile Include="Components\Conditions\Expressions\ExpressionExts.cs" />
+    <Compile Include="Components\Conditions\IExpressionResultDef.cs" />
+    <Compile Include="Components\Conditions\IExpression.cs" />
+    <Compile Include="Components\Conditions\IEnvExpression.cs" />
+    <Compile Include="Components\Conditions\IConditionalOperator.cs" />
+    <Compile Include="Components\Conditions\IOperatorCountRequirement.cs" />
+    <Compile Include="Components\Conditions\ResultDefitions\IntResultDefinition.cs" />
+    <Compile Include="Components\Conditions\ResultDefitions\StringResultDefinition.cs" />
+    <Compile Include="Components\Conditions\ResultDefitions\ObjectResultDefinition.cs" />
+    <Compile Include="Components\Conditions\ResultDefitions\ResultDefinitionBase.cs" />
+    <Compile Include="Components\Conditions\ResultDefFactory.cs" />
+    <Compile Include="Data\Schema\Readers\ExpressionParser.cs" />
+    <Compile Include="Data\Schema\Readers\ConditionOpParser.cs" />
+    <Compile Include="Data\Schema\Readers\RequirementParser.cs" />
+    <Compile Include="Components\Conditions\Expressions\ExpressionEnv.cs" />
+    <Compile Include="Components\Conditions\IExpressionEnv.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\rpglibrary\Davfalcon.Revelator\Davfalcon.Revelator.csproj">
@@ -207,5 +258,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Components\Equipment\" />
+    <Folder Include="Components\Classes\" />
+    <Folder Include="Components\Buffs\" />
+    <Folder Include="Components\Properties\" />
+    <Folder Include="Components\Conditions\" />
+    <Folder Include="Components\Conditions\Expressions\" />
+    <Folder Include="Components\Conditions\Operators\" />
+    <Folder Include="Components\Conditions\ResultDefitions\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

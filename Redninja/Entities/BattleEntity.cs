@@ -9,6 +9,7 @@ using Redninja.Components.Combat;
 using Redninja.Components.Decisions;
 using Redninja.Components.Skills.StatusEffects;
 using IUnit = Davfalcon.Revelator.IUnit;
+using Redninja.Components.Properties;
 
 namespace Redninja.Entities
 {
@@ -61,6 +62,10 @@ namespace Redninja.Entities
 
 		public IActionDecider ActionDecider { get; }
 
+		// TODO pull properties from equipment, buffs, class def
+		public IEnumerable<ITriggeredProperty> TriggeredProperties => throw new NotImplementedException();
+
+		public event Action<IBattleEntity, IBattleAction> ActionSet;
 		public event Action<IBattleEntity> ActionNeeded;
 		// Rename this
 		public event Action<IBattleEntity, IOperationSource> ActionSet;

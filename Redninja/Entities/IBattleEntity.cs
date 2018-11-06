@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using Redninja.Components.Actions;
 using Redninja.Components.Clock;
 using Redninja.Components.Decisions;
+using Redninja.Components.Properties;
 using Redninja.Components.Combat;
 
 namespace Redninja.Entities
@@ -10,6 +12,7 @@ namespace Redninja.Entities
 	{
 		IBattleAction CurrentAction { get; }
 		IActionDecider ActionDecider { get; }
+		IEnumerable<ITriggeredProperty> TriggeredProperties { get; }
 
 		event Action<IBattleEntity> ActionNeeded;
 		event Action<IBattleEntity, IOperationSource> ActionSet;

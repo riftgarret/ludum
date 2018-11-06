@@ -79,6 +79,17 @@
     <Compile Include="Entities\BattleEntityTests.cs" />
     <Compile Include="MockClock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Components\Utils\RegexPatternBuilderTests.cs" />
+    <Compile Include="Data\Schema\Readers\ConditionParserTests.cs" />
+    <Compile Include="GlobalEnvironment.cs" />
+    <Compile Include="Data\Schema\Readers\ExpressionParserTests.cs" />
+    <Compile Include="Data\Schema\Readers\ConditionalOpParserTests.cs" />
+    <Compile Include="Data\Schema\Readers\RequirementParserTests.cs" />
+    <Compile Include="Components\Conditions\Operators\OpCountRequirementTests.cs" />
+    <Compile Include="Components\Conditions\Operators\ConditionalOperatorTests.cs" />
+    <Compile Include="Components\Conditions\Operators\AnyOpRequirementTests.cs" />
+    <Compile Include="Components\Conditions\Operators\AllOpRequirementTests.cs" />
+    <Compile Include="Components\Conditions\Expressions\CombatStatExpressionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
