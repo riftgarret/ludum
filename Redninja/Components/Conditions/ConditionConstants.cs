@@ -1,5 +1,4 @@
-﻿using System;
-namespace Redninja.Components.Conditions
+﻿namespace Redninja.Components.Conditions
 {
 	public enum ExpressionResultType
 	{
@@ -16,7 +15,7 @@ namespace Redninja.Components.Conditions
 		LTE,
 		GT,
 		GTE,
-		EQ, 
+		EQ,
 		NEQ
 	}
 

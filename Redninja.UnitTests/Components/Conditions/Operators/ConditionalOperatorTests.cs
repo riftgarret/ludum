@@ -43,7 +43,7 @@ namespace Redninja.Components.Conditions.Operators.UnitTests
 			bool result = subject.IsTrue(
 				Enumerable.Repeat((object) 1, 1),
 				Enumerable.Repeat((object) 2, 1),
-				AnyOpRequirement.INSTANCE,
+				AnyOpRequirement.Instance,
 				ResultDefFactory.IntValueResult
 			);
 		}
@@ -60,7 +60,7 @@ namespace Redninja.Components.Conditions.Operators.UnitTests
 			bool result = subject.IsTrue(
 				Enumerable.Repeat((object)1, 1),
 				Enumerable.Repeat((object)2, 1),
-				AllOpRequirement.INSTANCE,
+				AllOpRequirement.Instance,
 				ResultDefFactory.IntValueResult
 			);
 		}

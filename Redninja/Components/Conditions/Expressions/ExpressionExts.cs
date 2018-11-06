@@ -1,5 +1,4 @@
-﻿using System;
-namespace Redninja.Components.Conditions.Expressions
+﻿namespace Redninja.Components.Conditions.Expressions
 {
 	public static class ExpressionExts
 	{

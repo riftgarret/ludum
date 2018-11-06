@@ -8,7 +8,8 @@ namespace Redninja.ConsoleDriver.Objects
 		public static IWeapon Sword { get; } = Weapon.Build(EquipmentType.Weapon, WeaponType.Sword, b => b
 			.SetName("Longsword")
 			.SetDamage(20)
-			.AddDamageType(DamageType.Physical));
+			.AddDamageType(DamageType.Physical)
+			.SetStatAddition(CombatStats.ATK, 10));
 
 		public static IWeapon Shortsword { get; } = Weapon.Build(EquipmentType.Weapon, WeaponType.Sword, b => b
 			.SetName("Shortsword")

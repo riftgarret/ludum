@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace Redninja.Components.Conditions.Operators
 {
 	public class OpCountRequirement : IOperatorCountRequirement

@@ -26,12 +26,12 @@ namespace Redninja.Components.Conditions.Expressions
 			return Enumerable.Repeat(GetValue(values), 1);
 		}
 
-		private int GetValue(IEnumerable<int> values) 
+		private int GetValue(IEnumerable<int> values)
 		{
 			switch (GroupOp)
 			{
 				case GroupOp.Avg:
-					return (int) values.Average();
+					return (int)values.Average();
 
 				case GroupOp.Highest:
 					return values.Max();

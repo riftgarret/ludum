@@ -1,5 +1,5 @@
 ﻿using System;
-using Redninja.Components.Conditions.ResultDefitions;
+using Redninja.Components.Conditions.ResultDefinitions;
 
 namespace Redninja.Components.Conditions
 {
@@ -13,7 +13,7 @@ namespace Redninja.Components.Conditions
 
 		public static IExpressionResultDef From(ExpressionResultType resultType)
 		{
-			switch(resultType)
+			switch (resultType)
 			{
 				case ExpressionResultType.Battle:
 					return BattleResult;

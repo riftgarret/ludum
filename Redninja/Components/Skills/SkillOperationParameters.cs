@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Davfalcon.Builders;
 using Davfalcon.Collections.Adapters;
-using Davfalcon.Revelator;
 using Davfalcon.Serialization;
 
 namespace Redninja.Components.Skills

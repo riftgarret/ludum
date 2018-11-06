@@ -1,16 +1,17 @@
 ﻿using System;
 
-namespace Redninja.Events
+namespace Redninja.Components.Combat.Events
 {
-	public class MovementEvent : IBattleEvent
+	public class MovementEvent : ICombatEvent
 	{
-		public IUnitModel Entity { get; }
+		public IUnitModel Source { get; }
+		public IUnitModel Target => null;
 		public UnitPosition NewPosition { get; }
 		public UnitPosition OriginalPosition { get; }
 
 		internal MovementEvent(IUnitModel entity, UnitPosition newPosition, UnitPosition originalPosition)
 		{
-			Entity = entity ?? throw new ArgumentNullException(nameof(entity));
+			Source = entity ?? throw new ArgumentNullException(nameof(entity));
 			NewPosition = newPosition;
 			OriginalPosition = originalPosition;
 		}

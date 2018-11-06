@@ -11,7 +11,7 @@ namespace Redninja.Components.Conditions.Operators.UnitTests
 		[SetUp]
 		public void SetUp()
 		{
-			subject = AnyOpRequirement.INSTANCE;
+			subject = AnyOpRequirement.Instance;
 		}
 
 

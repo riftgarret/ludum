@@ -1,6 +1,4 @@
-﻿using Redninja.Components.Combat;
-
-namespace Redninja.Components.Operations
+﻿namespace Redninja.Components.Combat
 {
 	public interface IBattleOperation
 	{

@@ -1,5 +1,6 @@
 ﻿using System;
-namespace Redninja.Components.Conditions.ResultDefitions
+
+namespace Redninja.Components.Conditions.ResultDefinitions
 {
 	public class IntResultDefinition : ResultDefinitionBase<int>
 	{
@@ -10,7 +11,7 @@ namespace Redninja.Components.Conditions.ResultDefitions
 
 		protected override bool IsTrueCase(int lhs, int rhs, ConditionOperatorType opType)
 		{
-			switch(opType)
+			switch (opType)
 			{
 				case ConditionOperatorType.EQ:
 					return lhs == rhs;

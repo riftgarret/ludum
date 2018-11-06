@@ -11,6 +11,10 @@
       {
         "level": 1,
         "skillId": "multi_hit"
+      },
+      {
+        "level": 1,
+        "skillId": "FireSkill"
       }
     ]
   }

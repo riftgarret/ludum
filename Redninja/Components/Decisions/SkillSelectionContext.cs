@@ -18,7 +18,7 @@ namespace Redninja.Components.Decisions
 		public SkillSelectionContext(IUnitModel entity, ISkillProvider skillProvider)
 		{
 			Entity = entity;
-			Attack = skillProvider.GetAttack(entity.Character.Equipment.GetAllEquipmentForSlot(EquipmentType.Weapon).Select(e => e as IWeapon));
+			Attack = skillProvider.GetAttack(entity.Equipment.GetAllEquipmentForSlot(EquipmentType.Weapon).Select(e => e as IWeapon));
 			Skills = skillProvider.GetSkills();
 		}
 	}

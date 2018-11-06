@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace Redninja.Components.Utils.UnitTests
+namespace Redninja.Text.UnitTests
 {
 	[TestFixture]
 	public class TextUtilsTests

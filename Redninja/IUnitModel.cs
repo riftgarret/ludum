@@ -2,9 +2,8 @@
 
 namespace Redninja
 {
-	public interface IUnitModel
+	public interface IUnitModel : IUnit
 	{
-		IUnit Character { get; }
 		int Team { get; set; }
 		UnitPosition Position { get; }
 

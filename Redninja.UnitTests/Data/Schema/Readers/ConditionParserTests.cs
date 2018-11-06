@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
-using Redninja.Components.Utils;
+using Redninja.Text;
 
 namespace Redninja.Data.Schema.Readers.UnitTests
 {

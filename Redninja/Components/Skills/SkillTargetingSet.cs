@@ -51,24 +51,24 @@ namespace Redninja.Components.Skills
 			public Builder AddCombatRound(SkillOperationDefinition round) => Self(s => rounds.Add(round));
 
 			// Schema loading
-			public Builder AddCombatRound(float executionStart, OperationProvider getOperation, ISkillOperationParameters args)
-				=> AddCombatRound(new SkillOperationDefinition(executionStart, getOperation, args));
+			public Builder AddCombatRound(float executionStart, OperationProvider operationProvider, ISkillOperationParameters args)
+				=> AddCombatRound(new SkillOperationDefinition(executionStart, operationProvider, args));
 
-			public Builder AddCombatRound(float executionStart, ITargetPattern pattern, OperationProvider getOperation, ISkillOperationParameters args)
-				=> AddCombatRound(new SkillOperationDefinition(executionStart, pattern, getOperation, args));
+			public Builder AddCombatRound(float executionStart, ITargetPattern pattern, OperationProvider operationProvider, ISkillOperationParameters args)
+				=> AddCombatRound(new SkillOperationDefinition(executionStart, pattern, operationProvider, args));
 
 			// Functional creation
-			public Builder AddCombatRound(float executionStart, OperationProvider getOperation)
-				=> AddCombatRound(executionStart, getOperation, defaultArgs);
+			public Builder AddCombatRound(float executionStart, OperationProvider operationProvider)
+				=> AddCombatRound(executionStart, operationProvider, defaultArgs);
 
-			public Builder AddCombatRound(float executionStart, ITargetPattern pattern, OperationProvider getOperation)
-				=> AddCombatRound(executionStart, pattern, getOperation, defaultArgs);
+			public Builder AddCombatRound(float executionStart, ITargetPattern pattern, OperationProvider operationProvider)
+				=> AddCombatRound(executionStart, pattern, operationProvider, defaultArgs);
 
-			public Builder AddCombatRound(float executionStart, OperationProvider getOperation, ParamsFunc args)
-				=> AddCombatRound(executionStart, getOperation, args(new SkillOperationParameters.Builder(defaultArgs.Name)).Build());
+			public Builder AddCombatRound(float executionStart, OperationProvider operationProvider, ParamsFunc args)
+				=> AddCombatRound(executionStart, operationProvider, args(new SkillOperationParameters.Builder(defaultArgs.Name)).Build());
 
-			public Builder AddCombatRound(float executionStart, ITargetPattern pattern, OperationProvider getOperation, ParamsFunc args)
-				=> AddCombatRound(executionStart, pattern, getOperation, args(new SkillOperationParameters.Builder(defaultArgs.Name)).Build());
+			public Builder AddCombatRound(float executionStart, ITargetPattern pattern, OperationProvider operationProvider, ParamsFunc args)
+				=> AddCombatRound(executionStart, pattern, operationProvider, args(new SkillOperationParameters.Builder(defaultArgs.Name)).Build());
 		}
 	}
 }

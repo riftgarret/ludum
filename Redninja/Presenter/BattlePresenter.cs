@@ -6,14 +6,13 @@ using Ninject;
 using Redninja.Components.Actions;
 using Redninja.Components.Clock;
 using Redninja.Components.Combat;
+using Redninja.Components.Combat.Events;
 using Redninja.Components.Decisions;
 using Redninja.Components.Decisions.Player;
-using Redninja.Components.Operations;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 using Redninja.Data;
 using Redninja.Entities;
-using Redninja.Events;
 using Redninja.System;
 using Redninja.View;
 
@@ -37,7 +36,7 @@ namespace Redninja.Presenter
 		private readonly IBattleEventProcessor entityEventTriggerProcessor;
 		private readonly PriorityProcessingQueue<float, IBattleOperation> battleOpQueue;
 
-		public event Action<IBattleEvent> BattleEventOccurred;
+		public event Action<ICombatEvent> BattleEventOccurred;
 
 		/// <summary>
 		/// Gets the presenter's state.
@@ -96,7 +95,7 @@ namespace Redninja.Presenter
 		{
 			entityManager.ActionNeeded += decisionQueue.Enqueue;
 			entityManager.ActionSet += (e, action) => action.BattleOperationReady += battleOpQueue.Enqueue;
-			combatExecutor.BattleEventOccurred += BattleEventOccurred;
+			combatExecutor.BattleEventOccurred += e => BattleEventOccurred?.Invoke(e);
 			combatExecutor.BattleEventOccurred += view.OnBattleEventOccurred;
 			combatExecutor.BattleEventOccurred += entityEventTriggerProcessor.ProcessEvent;
 			playerDecisionManager.WaitingForDecision += e => Pause();

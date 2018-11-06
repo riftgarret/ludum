@@ -1,5 +1,5 @@
 ﻿using System;
-using Redninja.Components.Operations;
+using Redninja.Components.Combat;
 using Redninja.Components.Targeting;
 
 namespace Redninja.Components.Skills
@@ -7,7 +7,7 @@ namespace Redninja.Components.Skills
 	public class SkillOperationDefinition
 	{
 		private readonly ISkillOperationParameters args;
-		private readonly OperationProvider getOperation;
+		private readonly OperationProvider operationProvider;
 
 		public float ExecutionStart { get; }
 		public ITargetPattern Pattern { get; }
@@ -29,21 +29,21 @@ namespace Redninja.Components.Skills
 			public IBattleOperation Resolve(IUnitModel entity)
 			{
 				Resolved = true;
-				return definition.getOperation(entity, target, definition.args);
+				return definition.operationProvider(entity, target, definition.args);
 			}
 		}
 
 		public ISkillResolver GetResolver(ITargetResolver target)
 			=> new Resolver(this, target);
 
-		internal SkillOperationDefinition(float executionStart, OperationProvider getOperation, ISkillOperationParameters args)
-			: this(executionStart, null, getOperation, args)
+		internal SkillOperationDefinition(float executionStart, OperationProvider operationProvider, ISkillOperationParameters args)
+			: this(executionStart, null, operationProvider, args)
 		{ }
 
-		internal SkillOperationDefinition(float executionStart, ITargetPattern pattern, OperationProvider getOperation, ISkillOperationParameters args)
+		internal SkillOperationDefinition(float executionStart, ITargetPattern pattern, OperationProvider operationProvider, ISkillOperationParameters args)
 		{
 			this.args = args;
-			this.getOperation = getOperation ?? throw new ArgumentNullException(nameof(getOperation));
+			this.operationProvider = operationProvider ?? throw new ArgumentNullException(nameof(operationProvider));
 			ExecutionStart = executionStart;
 			Pattern = pattern;
 		}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
-namespace Redninja.Components.Utils
+
+namespace Redninja.Text
 {
 	public class RegexPatternBuilder
 	{

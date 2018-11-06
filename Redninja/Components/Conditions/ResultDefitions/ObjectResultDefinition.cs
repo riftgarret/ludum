@@ -1,5 +1,6 @@
 ﻿using System;
-namespace Redninja.Components.Conditions.ResultDefitions
+
+namespace Redninja.Components.Conditions.ResultDefinitions
 {
 	public class ObjectResultDefinition<T> : ResultDefinitionBase<T> where T : class
 	{

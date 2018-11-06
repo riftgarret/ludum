@@ -1,10 +1,9 @@
-﻿using System;
-using Redninja.Events;
+﻿using Redninja.Components.Combat.Events;
 
 namespace Redninja.Components.Properties
 {
 	public interface ITriggerCondition
 	{
-		void IsValid(IBattleEvent battleEvent, IUnitModel source, IBattleModel battleModel);
+		void IsValid(ICombatEvent battleEvent, IUnitModel source, IBattleModel battleModel);
 	}
 }

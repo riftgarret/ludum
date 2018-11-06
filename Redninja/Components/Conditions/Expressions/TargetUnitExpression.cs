@@ -24,7 +24,7 @@ namespace Redninja.Components.Conditions.Expressions
 
 		public IEnumerable<IUnitModel> GetTargetResult(IExpressionEnv env)
 		{
-			switch(TargetType)
+			switch (TargetType)
 			{
 				case ConditionTargetType.Any:
 					return env.BattleModel.Entities;

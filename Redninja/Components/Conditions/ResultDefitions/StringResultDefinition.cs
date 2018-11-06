@@ -1,5 +1,6 @@
 ﻿using System;
-namespace Redninja.Components.Conditions.ResultDefitions
+
+namespace Redninja.Components.Conditions.ResultDefinitions
 {
 	public class StringResultDefinition : ResultDefinitionBase<string>
 	{
@@ -8,7 +9,7 @@ namespace Redninja.Components.Conditions.ResultDefitions
 
 		public override bool CanSupportOperator(ConditionOperatorType operatorType)
 		{
-			switch(operatorType)
+			switch (operatorType)
 			{
 				case ConditionOperatorType.EQ:
 				case ConditionOperatorType.NEQ:
@@ -20,12 +21,12 @@ namespace Redninja.Components.Conditions.ResultDefitions
 
 		protected override bool IsTrueCase(string lhs, string rhs, ConditionOperatorType opType)
 		{
-			switch(opType)
+			switch (opType)
 			{
 				case ConditionOperatorType.EQ:
 					return String.Equals(lhs, rhs);
 				case ConditionOperatorType.NEQ:
-					return !String.Equals(lhs, rhs);	
+					return !String.Equals(lhs, rhs);
 				default:
 					throw new InvalidOperationException($"Cannot support operator for string: {opType}");
 			}

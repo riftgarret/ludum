@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Redninja.Components.Conditions
 {
@@ -7,9 +6,9 @@ namespace Redninja.Components.Conditions
 	{
 		ConditionOperatorType OperatorType { get; }
 
-		bool IsTrue(IEnumerable<object> left, 
-		            IEnumerable<object> right, 
-		            IOperatorCountRequirement requirement,
-		            IExpressionResultDef resultDef);
+		bool IsTrue(IEnumerable<object> left,
+					IEnumerable<object> right,
+					IOperatorCountRequirement requirement,
+					IExpressionResultDef resultDef);
 	}
 }

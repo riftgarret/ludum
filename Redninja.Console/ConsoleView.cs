@@ -4,10 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Davfalcon.Nodes;
+using Redninja.Components.Combat.Events;
 using Redninja.Components.Decisions;
 using Redninja.Components.Skills;
-using Redninja.ConsoleDriver.Objects;
-using Redninja.Events;
 using Redninja.View;
 
 namespace Redninja.ConsoleDriver
@@ -99,7 +98,7 @@ namespace Redninja.ConsoleDriver
 					{
 						Console.WriteLine(skill.Name);
 					}
-					Console.WriteLine($"Select an action for {entity.Character.Name}...");
+					Console.WriteLine($"Select an action for {entity.Name}...");
 				};
 				drawTargeting = null;
 			});
@@ -120,6 +119,9 @@ namespace Redninja.ConsoleDriver
 						break;
 					case ConsoleKey.W:
 						callbacks.SelectSkill(entity, actionsContext.Skills.ElementAt(1));
+						break;
+					case ConsoleKey.E:
+						callbacks.SelectSkill(entity, actionsContext.Skills.ElementAt(2));
 						break;
 					default:
 						callbacks.Wait(entity);
@@ -148,7 +150,7 @@ namespace Redninja.ConsoleDriver
 				{
 					foreach (IUnitModel t in availableTargets)
 					{
-						Console.WriteLine(t.Character.Name);
+						Console.WriteLine(t.Name);
 					}
 
 					Console.WriteLine("Select target...");
@@ -169,12 +171,12 @@ namespace Redninja.ConsoleDriver
 			}).Start();
 		}
 
-		public void OnBattleEventOccurred(IBattleEvent battleEvent)
+		public void OnBattleEventOccurred(ICombatEvent battleEvent)
 		{
 			Debug.WriteLine("Battle event occurred.");
 			if (battleEvent is MovementEvent me)
 			{
-				Debug.WriteLine($"{me.Entity.Character.Name} moved to ({me.NewPosition.Row},{me.NewPosition.Column})");
+				Debug.WriteLine($"{me.Source.Name} moved to ({me.NewPosition.Row},{me.NewPosition.Column})");
 			}
 			else if (battleEvent is DamageEvent de)
 			{

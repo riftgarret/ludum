@@ -6,7 +6,7 @@ using NSubstitute;
 using NUnit.Framework;
 using Redninja.Components.Actions;
 using Redninja.Components.Decisions.AI;
-using Redninja.Components.Operations;
+using Redninja.Components.Combat;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Redninja.Components.Conditions;
 using Redninja.Components.Conditions.Operators;
-using Redninja.Components.Utils;
 using Redninja.Logging;
+using Redninja.Text;
 
 namespace Redninja.Data.Schema.Readers
 {
@@ -64,7 +63,7 @@ namespace Redninja.Data.Schema.Readers
 			if (!TryBuildExpressionChain(match.Groups[GROUP_RIGHT_EXPRESSION], out IEnvExpression right))
 				return FalseWithLog($"Unable to build right expression tree: {raw}");
 
-			IOperatorCountRequirement opRequirement = AnyOpRequirement.INSTANCE;
+			IOperatorCountRequirement opRequirement = AnyOpRequirement.Instance;
 			if(match.Groups[GROUP_REQUIRE].Success)
 			{
 				if (!requirementParser.TryParseRequirement(match.Groups[GROUP_REQUIRE].Value, out opRequirement))

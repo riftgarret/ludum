@@ -7,7 +7,7 @@ namespace Redninja.ConsoleDriver
 	{
 		public static void Print(this IUnitModel entity)
 			=> Console.WriteLine(
-				$"{entity.Character.Name} HP: {entity.Character.VolatileStats[CombatStats.HP]}/{entity.Character.Stats[CombatStats.HP]} ({(Coordinate)entity.Position})" + Environment.NewLine +
+				$"{entity.Name} HP: {entity.VolatileStats[CombatStats.HP]}/{entity.Stats[CombatStats.HP]} ({(Coordinate)entity.Position})" + Environment.NewLine +
 				$"\tAction: {entity.CurrentActionName} [{entity.Phase} {(int)(entity.PhaseProgress * 100)}%]");
 	}
 }

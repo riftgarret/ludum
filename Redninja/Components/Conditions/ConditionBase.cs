@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Redninja.Components.Combat.Events;
 using Redninja.Components.Conditions.Expressions;
-using Redninja.Events;
 
 namespace Redninja.Components.Conditions
 {
@@ -28,7 +28,7 @@ namespace Redninja.Components.Conditions
 		public bool IsTargetConditionMet(IUnitModel self, IUnitModel target, IBattleModel battleModel)
 			=> IsConditionMet(ExpressionEnv.From(battleModel, self, target));
 
-		public bool IsEventConditionMet(IUnitModel self, IBattleEvent battleEvent, IBattleModel battleModel)
+		public bool IsEventConditionMet(IUnitModel self, ICombatEvent battleEvent, IBattleModel battleModel)
 			=> IsConditionMet(ExpressionEnv.From(battleModel, self, battleEvent));
 
 

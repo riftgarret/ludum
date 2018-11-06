@@ -35,11 +35,11 @@ namespace Redninja.Components.Decisions.AI
 		{
 			if (ConditionType == AIConditionType.CombatStatCurrent)
 			{
-				return entity.Character.VolatileStats[CombatStat];
+				return entity.VolatileStats[CombatStat];
 			}
 			else
 			{
-				return (100 * entity.Character.VolatileStats[CombatStat]) / entity.Character.Stats[CombatStat];
+				return (100 * entity.VolatileStats[CombatStat]) / entity.Stats[CombatStat];
 			}
 		}
 

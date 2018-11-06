@@ -1,9 +1,8 @@
-﻿using System;
-namespace Redninja.Components.Conditions.Operators
+﻿namespace Redninja.Components.Conditions.Operators
 {
 	public class AnyOpRequirement : IOperatorCountRequirement
 	{
-		public static readonly AnyOpRequirement INSTANCE = new AnyOpRequirement();
+		public static AnyOpRequirement Instance { get; } = new AnyOpRequirement();
 
 		public ConditionalOperatorRequirement RequirementType => ConditionalOperatorRequirement.Any;
 

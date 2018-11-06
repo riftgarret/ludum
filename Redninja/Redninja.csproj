@@ -51,10 +51,13 @@
   <ItemGroup>
     <Compile Include="Components\Actions\BattleActionBase.cs" />
     <Compile Include="Components\Clock\Clock.cs" />
+    <Compile Include="Components\Combat\Events\StatusEffectEvent.cs" />
+    <Compile Include="Components\Combat\StatusEffectOperation.cs" />
     <Compile Include="Components\Decisions\AI\AIExecutor.cs" />
     <Compile Include="Components\Decisions\AI\AIRuleTracker.cs" />
     <Compile Include="Components\Decisions\AI\IAISkillRule.cs" />
     <Compile Include="Components\Decisions\IActionProvider.cs" />
+    <Compile Include="Components\Combat\IOperationSource.cs" />
     <Compile Include="Components\Skills\ISkillOperationParameters.cs" />
     <Compile Include="Components\Skills\OperationProvider.cs" />
     <Compile Include="Components\Skills\SkillAction.cs" />
@@ -78,7 +81,12 @@
     <Compile Include="Components\Decisions\AI\IAITargetPriority.cs" />
     <Compile Include="Components\Decisions\AI\WeightedPool.cs" />
     <Compile Include="Components\Skills\SkillOperationParameters.cs" />
-    <Compile Include="Components\Utils\TextUtils.cs" />
+    <Compile Include="Components\Skills\StatusEffects\EffectResolver.cs" />
+    <Compile Include="Components\Skills\StatusEffects\IStatusEffect.cs" />
+    <Compile Include="Components\Skills\StatusEffects\ITriggeredEffect.cs" />
+    <Compile Include="Components\Skills\StatusEffects\StatusEffect.cs" />
+    <Compile Include="Components\Targeting\StaticTarget.cs" />
+    <Compile Include="Text\TextUtils.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="Data\Encounter.cs" />
     <Compile Include="Data\IDataLoader.cs" />
@@ -132,8 +140,8 @@
     <Compile Include="Components\Decisions\SkillTargetingContext.cs" />
     <Compile Include="Components\Combat\CombatExecutor.cs" />
     <Compile Include="Components\Decisions\DecisionHelper.cs" />
-    <Compile Include="Events\DamageEvent.cs" />
-    <Compile Include="Events\MovementEvent.cs" />
+    <Compile Include="Components\Combat\Events\DamageEvent.cs" />
+    <Compile Include="Components\Combat\Events\MovementEvent.cs" />
     <Compile Include="Presenter\GameState.cs" />
     <Compile Include="Components\Decisions\IActionDecider.cs" />
     <Compile Include="IBattleModel.cs" />
@@ -147,14 +155,14 @@
     <Compile Include="UnitPosition.cs" />
     <Compile Include="Components\Clock\IClock.cs" />
     <Compile Include="Components\Clock\IClockSynchronized.cs" />
-    <Compile Include="Components\Operations\BattleOperationBase.cs" />
-    <Compile Include="Components\Operations\DamageOperation.cs" />
-    <Compile Include="Components\Operations\MovementOperation.cs" />
+    <Compile Include="Components\Combat\BattleOperationBase.cs" />
+    <Compile Include="Components\Combat\DamageOperation.cs" />
+    <Compile Include="Components\Combat\MovementOperation.cs" />
     <Compile Include="ActionPhase.cs" />
     <Compile Include="Entities\IBattleEntity.cs" />
     <Compile Include="Entities\IBattleEntityManager.cs" />
-    <Compile Include="Events\IBattleEvent.cs" />
-    <Compile Include="Components\Operations\IBattleOperation.cs" />
+    <Compile Include="Components\Combat\Events\ICombatEvent.cs" />
+    <Compile Include="Components\Combat\IBattleOperation.cs" />
     <Compile Include="View\IBaseCallbacks.cs" />
     <Compile Include="View\IBattleView.cs" />
     <Compile Include="Components\Skills\ISkillProvider.cs" />
@@ -192,8 +200,8 @@
     <Compile Include="Components\Buffs\IBuff.cs" />
     <Compile Include="Components\Classes\CompositeRequirement.cs" />
     <Compile Include="Components\Classes\LevelRequirement.cs" />
-    <Compile Include="Events\IBattleEventProcessor.cs" />
-    <Compile Include="Events\EntityBattleEventProcessor.cs" />
+    <Compile Include="Entities\IBattleEventProcessor.cs" />
+    <Compile Include="Entities\EntityBattleEventProcessor.cs" />
     <Compile Include="Components\Properties\IItemProperty.cs" />
     <Compile Include="Components\Properties\IPassiveProperty.cs" />
     <Compile Include="Components\Properties\IPropertyBundle.cs" />
@@ -202,10 +210,9 @@
     <Compile Include="Components\Properties\ITriggerCondition.cs" />
     <Compile Include="Data\Schema\Readers\ConditionParser.cs" />
     <Compile Include="Components\Conditions\ConditionConstants.cs" />
-    <Compile Include="Components\Utils\RegexPatternBuilder.cs" />
+    <Compile Include="Text\RegexPatternBuilder.cs" />
     <Compile Include="Components\Conditions\ICondition.cs" />
     <Compile Include="Components\Conditions\ConditionBase.cs" />
-    <Compile Include="Events\ITargetedEvent.cs" />
     <Compile Include="Components\Conditions\Expressions\ParamExpressionBase.cs" />
     <Compile Include="Components\Conditions\Expressions\CombatStatExpression.cs" />
     <Compile Include="Components\Conditions\Expressions\ExpressionResolver.cs" />
@@ -250,15 +257,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Folder Include="Components\Equipment\" />
-    <Folder Include="Components\Classes\" />
-    <Folder Include="Components\Buffs\" />
-    <Folder Include="Components\Properties\" />
-    <Folder Include="Components\Conditions\" />
-    <Folder Include="Components\Conditions\Expressions\" />
-    <Folder Include="Components\Conditions\Operators\" />
-    <Folder Include="Components\Conditions\ResultDefitions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

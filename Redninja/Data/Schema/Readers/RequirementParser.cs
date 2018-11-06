@@ -14,13 +14,13 @@ namespace Redninja.Data.Schema.Readers
 
 			if(rawLower.Equals("any"))
 			{
-				requirement = AnyOpRequirement.INSTANCE;
+				requirement = AnyOpRequirement.Instance;
 				return true;
 			}
 
 			if(rawLower.Equals("all"))
 			{
-				requirement = AllOpRequirement.INSTANCE;
+				requirement = AllOpRequirement.Instance;
 				return true;
 			}
 
