@@ -3,11 +3,11 @@
 namespace Redninja.Components.Conditions
 {
 	public interface IExpressionEnv
-    {
-        IUnitModel Self { get; }
-        IUnitModel Target { get; }
+	{
+		IUnitModel Self { get; }
+		IUnitModel Target { get; }
 		IUnitModel Source { get; }
 		IBattleModel BattleModel { get; }
-        IBattleEvent BattleEvent { get; }
-    }
+		IBattleEvent BattleEvent { get; }
+	}
 }

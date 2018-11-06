@@ -1,5 +1,4 @@
-﻿using System;
-namespace Redninja.Components.Conditions.Expressions
+﻿namespace Redninja.Components.Conditions.Expressions
 {
 	public class CombatStatExpression : ParamExpressionBase
 	{
@@ -18,7 +17,7 @@ namespace Redninja.Components.Conditions.Expressions
 		private int GetPercent(IUnitModel model)
 			=> 100 * model.VolatileStats[CombatStat] / model.VolatileStats[CombatStat];
 
-		public object Get(IUnitModel model) 
+		public object Get(IUnitModel model)
 			=> IsPercent ? GetPercent(model) : model.VolatileStats[CombatStat];
 
 		public override object Result(object param) => Get((IUnitModel)param);

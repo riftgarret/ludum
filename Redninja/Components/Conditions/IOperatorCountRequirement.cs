@@ -1,5 +1,4 @@
-﻿using System;
-namespace Redninja.Components.Conditions
+﻿namespace Redninja.Components.Conditions
 {
 	/// <summary>
 	/// Operator Count Requirement.

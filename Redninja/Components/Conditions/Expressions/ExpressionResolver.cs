@@ -16,7 +16,7 @@ namespace Redninja.Components.Conditions.Expressions
 			IEnumerable<object> result = expression.GetResult(env);
 			IParamExpression chainableExpression = expression.Next;
 
-			while(chainableExpression != null)
+			while (chainableExpression != null)
 			{
 				result = ResolveChain(chainableExpression, result);
 				chainableExpression = chainableExpression.Next;

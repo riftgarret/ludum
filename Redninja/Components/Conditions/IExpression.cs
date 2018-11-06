@@ -1,5 +1,4 @@
-﻿using System;
-using Redninja.Components.Conditions.Expressions;
+﻿using Redninja.Components.Conditions.Expressions;
 
 namespace Redninja.Components.Conditions
 {

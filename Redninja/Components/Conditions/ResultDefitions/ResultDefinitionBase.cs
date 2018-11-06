@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Redninja.Components.Conditions.ResultDefitions
+namespace Redninja.Components.Conditions.ResultDefinitions
 {
 	public abstract class ResultDefinitionBase<T> : IExpressionResultDef
 	{

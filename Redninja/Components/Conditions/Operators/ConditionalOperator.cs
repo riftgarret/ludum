@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Redninja.Logging;
 
 namespace Redninja.Components.Conditions.Operators
 {
@@ -17,14 +15,14 @@ namespace Redninja.Components.Conditions.Operators
 		public bool IsTrue(IEnumerable<object> left,
 						   IEnumerable<object> right,
 						   IOperatorCountRequirement requirement,
-		                   IExpressionResultDef resultDef)
+						   IExpressionResultDef resultDef)
 		{
 			int total = left.Count() * right.Count();
 
 			int numberTrue =
 				(from lhs in left
-				from rhs in right
-				where resultDef.IsTrue(lhs, rhs, OperatorType)
+				 from rhs in right
+				 where resultDef.IsTrue(lhs, rhs, OperatorType)
 				 select lhs).Count();
 
 			return requirement.MeetsRequirement(numberTrue, total);
