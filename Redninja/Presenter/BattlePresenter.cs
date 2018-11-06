@@ -5,14 +5,14 @@ using Davfalcon.Revelator.Combat;
 using Ninject;
 using Redninja.Components.Actions;
 using Redninja.Components.Clock;
+using Redninja.Components.Combat;
+using Redninja.Components.Combat.Events;
 using Redninja.Components.Decisions;
 using Redninja.Components.Decisions.Player;
-using Redninja.Components.Combat;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 using Redninja.Data;
 using Redninja.Entities;
-using Redninja.Components.Combat.Events;
 using Redninja.System;
 using Redninja.View;
 

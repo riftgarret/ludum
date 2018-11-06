@@ -1,7 +1,6 @@
-﻿using System;
-using Redninja.Components.Operations;
+﻿using Redninja.Components.Combat.Events;
 
-namespace Redninja.Events
+namespace Redninja.Entities
 {
 	internal interface IBattleEventProcessor
 	{

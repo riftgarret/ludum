@@ -200,8 +200,8 @@
     <Compile Include="Components\Buffs\IBuff.cs" />
     <Compile Include="Components\Classes\CompositeRequirement.cs" />
     <Compile Include="Components\Classes\LevelRequirement.cs" />
-    <Compile Include="Events\IBattleEventProcessor.cs" />
-    <Compile Include="Events\EntityBattleEventProcessor.cs" />
+    <Compile Include="Entities\IBattleEventProcessor.cs" />
+    <Compile Include="Entities\EntityBattleEventProcessor.cs" />
     <Compile Include="Components\Properties\IItemProperty.cs" />
     <Compile Include="Components\Properties\IPassiveProperty.cs" />
     <Compile Include="Components\Properties\IPropertyBundle.cs" />
@@ -213,7 +213,7 @@
     <Compile Include="Components\Utils\RegexPatternBuilder.cs" />
     <Compile Include="Components\Conditions\ICondition.cs" />
     <Compile Include="Components\Conditions\ConditionBase.cs" />
-    <Compile Include="Events\ITargetedEvent.cs" />
+    <Compile Include="Components\Combat\Events\ITargetedEvent.cs" />
     <Compile Include="Components\Conditions\Expressions\ParamExpressionBase.cs" />
     <Compile Include="Components\Conditions\Expressions\CombatStatExpression.cs" />
     <Compile Include="Components\Conditions\Expressions\ExpressionResolver.cs" />
@@ -258,15 +258,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Folder Include="Components\Equipment\" />
-    <Folder Include="Components\Classes\" />
-    <Folder Include="Components\Buffs\" />
-    <Folder Include="Components\Properties\" />
-    <Folder Include="Components\Conditions\" />
-    <Folder Include="Components\Conditions\Expressions\" />
-    <Folder Include="Components\Conditions\Operators\" />
-    <Folder Include="Components\Conditions\ResultDefitions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -65,7 +65,6 @@ namespace Redninja.Entities
 		// TODO pull properties from equipment, buffs, class def
 		public IEnumerable<ITriggeredProperty> TriggeredProperties => throw new NotImplementedException();
 
-		public event Action<IBattleEntity, IBattleAction> ActionSet;
 		public event Action<IBattleEntity> ActionNeeded;
 		// Rename this
 		public event Action<IBattleEntity, IOperationSource> ActionSet;
