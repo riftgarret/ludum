@@ -15,7 +15,7 @@
 		public bool IsPercent { get; }
 
 		private int GetPercent(IUnitModel model)
-			=> 100 * model.VolatileStats[CombatStat] / model.VolatileStats[CombatStat];
+			=> 100 * model.VolatileStats[CombatStat] / model.Stats[CombatStat];
 
 		public object Get(IUnitModel model)
 			=> IsPercent ? GetPercent(model) : model.VolatileStats[CombatStat];

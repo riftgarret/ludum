@@ -40,10 +40,10 @@ namespace Redninja.Components.Combat
 		public void MoveEntity(IUnitModel entity, UnitPosition newPosition)
 			=> MoveEntity(entity, newPosition.Row, newPosition.Column);
 
-		public void ApplyStatusEffect(IUnitModel entity, IBuff effect)
+		public void ApplyStatusEffect(IUnitModel source, IUnitModel target, IBuff effect)
 		{
-			resolver.ApplyBuff(entity, effect);
-			BattleEventOccurred?.Invoke(new StatusEffectEvent(entity, effect));
+			resolver.ApplyBuff(target, effect);
+			BattleEventOccurred?.Invoke(new StatusEffectEvent(source, target, effect));
 		}
 
 		public void RemoveStatusEffect(IUnitModel entity, IBuff effect)

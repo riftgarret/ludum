@@ -22,7 +22,7 @@ namespace Redninja.Components.Combat
 		{
 			foreach (IUnitModel t in target.GetValidTargets(unit, battleModel))
 			{
-				combatExecutor.ApplyStatusEffect(t, statusEffect);
+				combatExecutor.ApplyStatusEffect(unit, t, statusEffect);
 			}
 		}
 	}

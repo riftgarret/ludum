@@ -42,8 +42,7 @@ namespace Redninja.Components.Conditions.Expressions
 			env.source = battleEvent.Source;
 			env.self = self;
 			env.battleModel = model;
-			if (battleEvent is ITargetedEvent)
-				env.target = ((ITargetedEvent)battleEvent).Target;
+			env.target = battleEvent.Target;
 			env.battleEvent = battleEvent;
 			return env;
 		}
