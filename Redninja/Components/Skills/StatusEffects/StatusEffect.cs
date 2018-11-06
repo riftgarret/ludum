@@ -35,7 +35,7 @@ namespace Redninja.Components.Skills.StatusEffects
 			}
 
 			if (RemainingTime <= 0)
-				Expired.Invoke(this);
+				Expired?.Invoke(this);
 		}
 
 		protected virtual void TriggerEffects(float time)

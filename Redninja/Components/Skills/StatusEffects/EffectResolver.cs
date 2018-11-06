@@ -21,7 +21,7 @@ namespace Redninja.Components.Skills.StatusEffects
 				rule == null
 				? new StaticTarget(targetEntity)
 				: new SelectedTargetPattern(rule, rule.Pattern, targetEntity.Team, targetEntity.Position) as ITargetResolver;
-			BattleOperationReady.Invoke((float)args[0], operationProvider(entity, targetResolver, this.args));
+			BattleOperationReady?.Invoke((float)args[0], operationProvider(entity, targetResolver, this.args));
 		}
 
 		public EffectResolver(OperationProvider operationProvider, ISkillOperationParameters args)
