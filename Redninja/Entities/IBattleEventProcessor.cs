@@ -4,6 +4,6 @@ namespace Redninja.Entities
 {
 	internal interface IBattleEventProcessor
 	{
-		void ProcessEvent(IBattleEvent battleEvent);
+		void ProcessEvent(ICombatEvent battleEvent);
 	}
 }

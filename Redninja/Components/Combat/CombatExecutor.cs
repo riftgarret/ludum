@@ -12,7 +12,7 @@ namespace Redninja.Components.Combat
 
 		// I want to remove this
 		public event Action<IUnitModel, Coordinate> EntityMoving;
-		public event Action<IBattleEvent> BattleEventOccurred;
+		public event Action<ICombatEvent> BattleEventOccurred;
 
 		public CombatExecutor(ICombatResolver combatResolver)
 		{
@@ -63,7 +63,7 @@ namespace Redninja.Components.Combat
 		public void DealDamage(IUnitModel attacker, IUnitModel defender, IDamageSource source)
 		{
 			IDefenseNode damage = GetDamage(attacker, defender, source);
-			BattleEventOccurred?.Invoke(new DamageEvent(defender, damage, resolver.ApplyDamage(damage)));
+			BattleEventOccurred?.Invoke(new DamageEvent(attacker, defender, damage, resolver.ApplyDamage(damage)));
 		}
 	}
 }

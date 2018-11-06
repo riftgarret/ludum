@@ -171,12 +171,12 @@ namespace Redninja.ConsoleDriver
 			}).Start();
 		}
 
-		public void OnBattleEventOccurred(IBattleEvent battleEvent)
+		public void OnBattleEventOccurred(ICombatEvent battleEvent)
 		{
 			Debug.WriteLine("Battle event occurred.");
 			if (battleEvent is MovementEvent me)
 			{
-				Debug.WriteLine($"{me.Entity.Name} moved to ({me.NewPosition.Row},{me.NewPosition.Column})");
+				Debug.WriteLine($"{me.Source.Name} moved to ({me.NewPosition.Row},{me.NewPosition.Column})");
 			}
 			else if (battleEvent is DamageEvent de)
 			{

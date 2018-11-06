@@ -8,7 +8,7 @@ namespace Redninja.Components.Combat
 	public interface ICombatExecutor
 	{
 		event Action<IUnitModel, Coordinate> EntityMoving;
-		event Action<IBattleEvent> BattleEventOccurred;
+		event Action<ICombatEvent> BattleEventOccurred;
 
 		void InitializeEntity(IUnitModel entity);
 		void CleanupEntity(IUnitModel entity);

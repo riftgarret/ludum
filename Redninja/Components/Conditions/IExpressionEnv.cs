@@ -8,6 +8,6 @@ namespace Redninja.Components.Conditions
 		IUnitModel Target { get; }
 		IUnitModel Source { get; }
 		IBattleModel BattleModel { get; }
-		IBattleEvent BattleEvent { get; }
+		ICombatEvent BattleEvent { get; }
 	}
 }

@@ -6,15 +6,17 @@ using Davfalcon.Revelator.Combat;
 
 namespace Redninja.Components.Combat.Events
 {
-	public class DamageEvent : IBattleEvent
+	public class DamageEvent : ICombatEvent
 	{
-		public IUnitModel Entity { get; }
+		public IUnitModel Source { get; }
+		public IUnitModel Target { get; }
 		public INode Damage { get; }
 		public IEnumerable<StatChange> StatChanges { get; }
 
-		internal DamageEvent(IUnitModel entity, INode damage, IEnumerable<StatChange> statChanges)
+		internal DamageEvent(IUnitModel source, IUnitModel target, INode damage, IEnumerable<StatChange> statChanges)
 		{
-			Entity = entity ?? throw new ArgumentNullException(nameof(entity));
+			Source = source ?? throw new ArgumentNullException(nameof(source));
+			Target = target ?? throw new ArgumentNullException(nameof(target));
 			Damage = damage ?? throw new ArgumentNullException(nameof(damage));
 			StatChanges = statChanges.ToNewReadOnlyCollectionSafe();
 		}

@@ -3,14 +3,16 @@ using Davfalcon.Revelator;
 
 namespace Redninja.Components.Combat.Events
 {
-	public class StatusEffectEvent : IBattleEvent
+	public class StatusEffectEvent : ICombatEvent
 	{
-		public IUnitModel Entity { get; }
+		public IUnitModel Source { get; }
+		public IUnitModel Target { get; }
 		public IBuff StatusEffect { get; }
 
-		public StatusEffectEvent(IUnitModel entity, IBuff statusEffect)
+		public StatusEffectEvent(IUnitModel source, IUnitModel target, IBuff statusEffect)
 		{
-			Entity = entity ?? throw new ArgumentNullException(nameof(entity));
+			Source = source ?? throw new ArgumentNullException(nameof(source));
+			Target = target ?? throw new ArgumentNullException(nameof(target));
 			StatusEffect = statusEffect ?? throw new ArgumentNullException(nameof(statusEffect));
 		}
 	}

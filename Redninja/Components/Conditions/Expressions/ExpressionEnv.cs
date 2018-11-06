@@ -9,13 +9,13 @@ namespace Redninja.Components.Conditions.Expressions
 		private IUnitModel target;
 		private IUnitModel source;
 		private IBattleModel battleModel;
-		private IBattleEvent battleEvent;
+		private ICombatEvent battleEvent;
 
 		public IUnitModel Self => ReturnOrThrow(self, "SELF");
 		public IUnitModel Source => ReturnOrThrow(source, "SOURCE");
 		public IUnitModel Target => ReturnOrThrow(self, "TARGET");
 		public IBattleModel BattleModel => ReturnOrThrow(battleModel, "BATTLE");
-		public IBattleEvent BattleEvent => ReturnOrThrow(battleEvent, "EVENT");
+		public ICombatEvent BattleEvent => ReturnOrThrow(battleEvent, "EVENT");
 
 		private ExpressionEnv()
 		{
@@ -36,10 +36,10 @@ namespace Redninja.Components.Conditions.Expressions
 			return env;
 		}
 
-		public static ExpressionEnv From(IBattleModel model, IUnitModel self, IBattleEvent battleEvent)
+		public static ExpressionEnv From(IBattleModel model, IUnitModel self, ICombatEvent battleEvent)
 		{
 			ExpressionEnv env = new ExpressionEnv();
-			env.source = battleEvent.Entity;
+			env.source = battleEvent.Source;
 			env.self = self;
 			env.battleModel = model;
 			if (battleEvent is ITargetedEvent)

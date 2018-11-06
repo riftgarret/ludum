@@ -161,7 +161,7 @@
     <Compile Include="ActionPhase.cs" />
     <Compile Include="Entities\IBattleEntity.cs" />
     <Compile Include="Entities\IBattleEntityManager.cs" />
-    <Compile Include="Components\Combat\Events\IBattleEvent.cs" />
+    <Compile Include="Components\Combat\Events\ICombatEvent.cs" />
     <Compile Include="Components\Combat\IBattleOperation.cs" />
     <Compile Include="View\IBaseCallbacks.cs" />
     <Compile Include="View\IBattleView.cs" />
@@ -213,7 +213,6 @@
     <Compile Include="Text\RegexPatternBuilder.cs" />
     <Compile Include="Components\Conditions\ICondition.cs" />
     <Compile Include="Components\Conditions\ConditionBase.cs" />
-    <Compile Include="Components\Combat\Events\ITargetedEvent.cs" />
     <Compile Include="Components\Conditions\Expressions\ParamExpressionBase.cs" />
     <Compile Include="Components\Conditions\Expressions\CombatStatExpression.cs" />
     <Compile Include="Components\Conditions\Expressions\ExpressionResolver.cs" />

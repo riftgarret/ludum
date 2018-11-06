@@ -36,7 +36,7 @@ namespace Redninja.Presenter
 		private readonly IBattleEventProcessor entityEventTriggerProcessor;
 		private readonly PriorityProcessingQueue<float, IBattleOperation> battleOpQueue;
 
-		public event Action<IBattleEvent> BattleEventOccurred;
+		public event Action<ICombatEvent> BattleEventOccurred;
 
 		/// <summary>
 		/// Gets the presenter's state.
