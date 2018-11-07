@@ -10,6 +10,8 @@ namespace Redninja.Components.Combat.Events
 	{
 		IUnitModel Source { get; }
 		IUnitModel Target { get; }
+
+		ICombatEvent EventType { get; }
 		
 		IEnumerable<CombatEventFlag> CombatFlags { get; }
 
