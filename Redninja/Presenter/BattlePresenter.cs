@@ -8,6 +8,7 @@ using Redninja.Components.Clock;
 using Redninja.Components.Combat;
 using Redninja.Components.Combat.Events;
 using Redninja.Components.Decisions;
+using Redninja.Components.Decisions.AI;
 using Redninja.Components.Decisions.Player;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
@@ -108,30 +109,21 @@ namespace Redninja.Presenter
 		public void Configure(Action<IPresenterConfiguration> configFunc)
 			=> configFunc(this);
 
-		public void LoadJsonData(string configPath)
-			=> dataManager.LoadJson(configPath);
+		public void AddPC(IUnit character, int teamId, Coordinate position)
+			=> AddCharacter(character, teamId, position, playerDecisionManager);
 
-		public void LoadData(IDataLoader loader)
-			=> dataManager.Load(loader);
+		public void AddNPC(IUnit character, int teamId, Coordinate position, AIBehavior aiBehavior)
+			=> AddCharacter(character, teamId, position, new AIActionDecider(aiBehavior, kernel.Get<IDecisionHelper>()));
 
-		public void AddPlayerCharacter(IUnit character, int row, int col)
-			=> AddCharacter(character, playerDecisionManager, 0, row, col);
-
-		public void AddCharacter(IUnit character, IActionDecider actionDecider, int team, int row, int col)
+		private void AddCharacter(IUnit character, int team, Coordinate position, IActionDecider actionDecider)
 		{
 			IBattleEntity entity = new BattleEntity(character, actionDecider, combatExecutor)
 			{
 				Team = team
 			};
-			entity.MovePosition(row, col);
+			entity.MovePosition(position.Row, position.Column);
 			entityManager.AddEntity(entity);
 		}
-
-		public void AddPlayerCharacter(Func<Unit.Builder, IBuilder<IUnit>> builderFunc, int row, int col)
-			=> AddPlayerCharacter(Unit.Build(builderFunc), row, col);
-
-		public void AddCharacter(Func<Unit.Builder, IBuilder<IUnit>> builderFunc, IActionDecider actionDecider, int team, int row, int col)
-			=> AddCharacter(Unit.Build(builderFunc), actionDecider, team, row, col);
 
 		public void SetTeamGrid(int team, Coordinate gridSize)
 			=> entityManager.AddGrid(team, gridSize);

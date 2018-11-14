@@ -5,7 +5,7 @@ namespace Redninja
 	public interface IUnitModel : IUnit
 	{
 		int Team { get; set; }
-		UnitPosition Position { get; }
+		UnitPosition Position { get; }		
 
 		string CurrentActionName { get; }
 		ActionPhase Phase { get; }

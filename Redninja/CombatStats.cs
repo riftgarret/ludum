@@ -5,6 +5,16 @@
         HP,
 		DEF,
 		ATK,
-        Resource        
-    }
+        Resource,
+		STR,
+		CON,
+		AGI,
+		DEX,
+		INT,
+		WIS,
+		CHA,
+		LUK,
+		Level,
+		HpLevelScale,
+	}
 }

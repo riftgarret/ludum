@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Threading;
-using Davfalcon.Revelator;
 using Davfalcon.Revelator.Borger;
-using Redninja.Components.Skills;
-using Redninja.ConsoleDriver.Objects;
+using Redninja.Data;
 using Redninja.Presenter;
+using static Redninja.Data.Encounter;
 
 namespace Redninja.ConsoleDriver
 {
@@ -16,6 +15,8 @@ namespace Redninja.ConsoleDriver
 		{
 			ConsoleView view = new ConsoleView();
 
+			IDataManager dataManager = DataManagerFactory.Create(CONFIG_FILE_PATH);
+
 			IBattlePresenter presenter = BattlePresenter.CreatePresenter(
 				view,
 				builder => builder
@@ -24,38 +25,30 @@ namespace Redninja.ConsoleDriver
 					.SetDefaultDamageResource(CombatStats.HP)
 					.AddVolatileStat(CombatStats.HP));
 
-			presenter.Configure(config =>
-			{
-				// This serves no purpose, it's just here to prove it works
-				config.LoadData(new ObjectLoader<ISkill>(typeof(CombatSkills)));
-				config.LoadData(new ObjectLoader<IWeapon>(typeof(Weapons)));
-				config.LoadJsonData(CONFIG_FILE_PATH);
+			const int playerTeam = 0;
+			const int enemyTeam = 1;
 
-				config.AddPlayerCharacter(b => b
-					.SetMainDetails("Unit 1", "warrior")
-					.SetBaseStat(CombatStats.HP, 100)
-					.SetBaseStat(CombatStats.ATK, 50)
-					.SetBaseStat(CombatStats.DEF, 10)
-					.AddEquipmentSlot(EquipmentType.Weapon)
-					.AddEquipment(Weapons.Sword),
-					0, 0);
-				config.AddCharacter(b => b
-					.SetMainDetails("Enemy 1")
-					.SetBaseStat(CombatStats.HP, 1000)
-					.SetBaseStat(CombatStats.DEF, 10),
-					new DummyAI(), 1, 0, 0);
-				config.AddCharacter(b => b
-					.SetMainDetails("Enemy 2")
-					.SetBaseStat(CombatStats.HP, 1000)
-					.SetBaseStat(CombatStats.DEF, 20),
-					new DummyAI(), 1, 1, 0);
-				config.AddCharacter(b => b
-					.SetMainDetails("Enemy 3")
-					.SetBaseStat(CombatStats.HP, 1000)
-					.SetBaseStat(CombatStats.DEF, 30),
-					new DummyAI(), 1, 2, 0);
-				config.SetTeamGrid(0, new Coordinate(3, 3));
-				config.SetTeamGrid(1, new Coordinate(3, 3));
+			presenter.Configure(config =>
+			{									
+				Encounter encounter = dataManager.Encounters["goblin_party"];
+
+				// environment
+				config.SetTeamGrid(playerTeam, encounter.PlayerGridSize);
+				config.SetTeamGrid(enemyTeam, encounter.EnemyGridSize);
+
+				// players
+				config.AddPC(TestablePlayerFactory.Warrior(dataManager), 
+					playerTeam, 
+					new Coordinate(0, 0));
+
+				// enemies
+				foreach (EnemyMeta enemyMeta in encounter.EnemyMetas)
+				{
+					config.AddNPC(enemyMeta.Character, 
+						enemyTeam, 
+						enemyMeta.InitialPosition, 
+						enemyMeta.AiBehavior);
+				}
 			});
 
 			presenter.Initialize();

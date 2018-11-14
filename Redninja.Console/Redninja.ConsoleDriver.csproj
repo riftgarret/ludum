@@ -54,6 +54,7 @@
     <Compile Include="Objects\StatusEffects.cs" />
     <Compile Include="Objects\Weapons.cs" />
     <Compile Include="Output.cs" />
+    <Compile Include="TestablePlayerFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -107,7 +108,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties Assets_4Data_4encounters_1json__JSONSchema="..\..\..\json\schemas\encounters-schema.json" Assets_4Data_4characters_1json__JSONSchema="..\..\..\json\schemas\characters-schema.json" Assets_4Data_4skills_1json__JSONSchema="..\..\..\json\schemas\skills-schema.json" />
+      <UserProperties Assets_4Data_4skills_1json__JSONSchema="..\..\..\json\schemas\skills-schema.json" Assets_4Data_4characters_1json__JSONSchema="..\..\..\json\schemas\characters-schema.json" Assets_4Data_4encounters_1json__JSONSchema="..\..\..\json\schemas\encounters-schema.json" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
