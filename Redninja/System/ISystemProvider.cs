@@ -3,7 +3,7 @@ using Redninja.Components.Skills;
 
 namespace Redninja.System
 {
-	internal interface ISystemProvider
+	public interface ISystemProvider
 	{
 		IClassProvider GetClass(string className);
 
