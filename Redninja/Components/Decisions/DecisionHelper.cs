@@ -18,7 +18,7 @@ namespace Redninja.Components.Decisions
 		}
 
 		public IActionsContext GetActionsContext(IUnitModel entity)
-			=> new SkillSelectionContext(entity, Provider.GetClass(entity.Class).GetSkillProvider(entity.Level));
+			=> new SkillSelectionContext(entity, Provider.GetSkillProvider(entity));
 
 		public IMovementContext GetMovementContext(IUnitModel entity)
 			=> new MovementContext(entity, BattleModel);

@@ -1,13 +1,16 @@
 ﻿using Davfalcon.Revelator;
 using Davfalcon.Revelator.Borger;
+using Redninja.Components.Actions;
+using Redninja.Components.Skills;
 using Redninja.ConsoleDriver.Objects;
 using Redninja.Data;
+using Redninja.System;
 
 namespace Redninja.ConsoleDriver
 {
 	public static class TestablePlayerFactory
 	{
-		public static IUnit Warrior(IDataManager dataManager)
+		public static IUnit WarriorUnit(IDataManager dataManager)
 			=> Unit.Build(b => b
 			.SetMainDetails("Unit 1", "warrior")
 			.SetBaseStat(CombatStats.STR, 16)
@@ -24,6 +27,15 @@ namespace Redninja.ConsoleDriver
 			.SetBaseStat(CombatStats.ATK, 50)
 			.SetBaseStat(CombatStats.DEF, 10)			
 			.AddEquipmentSlot(EquipmentType.Weapon)
-			.AddEquipment(Weapons.Sword));		
-	}
+			.AddEquipment(Weapons.Sword));
+
+		public static ISkillProvider WarriorSkills(IDataManager dataManager)
+		{
+			ConfigurableSkillProvider skillProvider = new ConfigurableSkillProvider();
+			skillProvider.Skills.Add(dataManager.Skills["double_hit"]);
+			skillProvider.Skills.Add(dataManager.Skills["multi_hit"]);
+			skillProvider.AttackTime = new ActionTime(1, 2, 1);
+			return skillProvider;
+		}
+	}	
 }

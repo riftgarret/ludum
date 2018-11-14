@@ -87,6 +87,7 @@
     <Compile Include="Components\Skills\StatusEffects\StatusEffect.cs" />
     <Compile Include="Components\Targeting\StaticTarget.cs" />
     <Compile Include="Data\DataManagerFactory.cs" />
+    <Compile Include="System\ConfigurableSkillProvider.cs" />
     <Compile Include="Text\TextUtils.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="Data\Encounter.cs" />
