@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using Davfalcon.Revelator;
 using Redninja.Components.Actions;
-using Redninja.Components.Skills;
 
-namespace Redninja.System
+namespace Redninja.Components.Skills
 {
 	public class ConfigurableSkillProvider : ISkillProvider
 	{

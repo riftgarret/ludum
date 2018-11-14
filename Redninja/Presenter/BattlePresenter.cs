@@ -58,8 +58,7 @@ namespace Redninja.Presenter
 			IKernel kernel = new StandardKernel();
 			kernel.Bind<IBattleView>().ToConstant(view);
 			kernel.Bind<ICombatExecutor>().ToConstant(combatExecutor);
-			kernel.Bind<IDataManager, DataManager>().To<DataManager>().InSingletonScope();
-			kernel.Bind<SystemProvider>().ToSelf().InSingletonScope();
+			kernel.Bind<IDataManager, DataManager>().To<DataManager>().InSingletonScope();			
 			kernel.Bind<ISystemProvider>().To<SystemProvider>().InSingletonScope();
 			kernel.Bind<IClock, Clock>().To<Clock>().InSingletonScope();
 			kernel.Bind<IBattleEntityManager, IBattleModel>().To<BattleEntityManager>().InSingletonScope();
@@ -79,7 +78,7 @@ namespace Redninja.Presenter
 			entityManager = kernel.Get<IBattleEntityManager>();
 			playerDecisionManager = kernel.Get<PlayerDecisionManager>();
 			entityEventTriggerProcessor = kernel.Get<IBattleEventProcessor>();
-			systemProvider = kernel.Get<SystemProvider>();
+			systemProvider = (SystemProvider) kernel.Get<ISystemProvider>();
 			view = kernel.Get<IBattleView>();
 			clock = kernel.Get<Clock>();
 
@@ -118,7 +117,10 @@ namespace Redninja.Presenter
 		}
 
 		public void AddNPC(IUnit character, int teamId, Coordinate position, AIBehavior aiBehavior)
-			=> AddCharacter(character, teamId, position, new AIActionDecider(aiBehavior, kernel.Get<IDecisionHelper>()));
+		{
+			IBattleEntity entity = AddCharacter(character, teamId, position, new AIActionDecider(aiBehavior, kernel.Get<IDecisionHelper>()));
+			systemProvider.SetSkillProvider(entity, new AISkillProvider(aiBehavior));
+		}
 
 		private IBattleEntity AddCharacter(IUnit character, int team, Coordinate position, IActionDecider actionDecider)
 		{
