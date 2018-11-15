@@ -182,7 +182,6 @@ namespace Redninja.Components.Decisions.AI
 
 			ITargetingContext targetMeta = decisionHelper.GetTargetingContext(source, skillMeta.Attack);
 			
-			
 			IEnumerable<IUnitModel> leftoverTargets = FilterByType(TargetTeam.Enemy);			
 			leftoverTargets = leftoverTargets.Where(ex => TargetConditions.MustBeAlive(ex, source));
 
