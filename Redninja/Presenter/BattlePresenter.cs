@@ -1,5 +1,4 @@
 ﻿using System;
-using Davfalcon.Builders;
 using Davfalcon.Revelator;
 using Davfalcon.Revelator.Combat;
 using Ninject;
@@ -8,6 +7,7 @@ using Redninja.Components.Clock;
 using Redninja.Components.Combat;
 using Redninja.Components.Combat.Events;
 using Redninja.Components.Decisions;
+using Redninja.Components.Decisions.AI;
 using Redninja.Components.Decisions.Player;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
@@ -35,6 +35,7 @@ namespace Redninja.Presenter
 		private readonly ProcessingQueue<IBattleEntity> decisionQueue;
 		private readonly IBattleEventProcessor entityEventTriggerProcessor;
 		private readonly PriorityProcessingQueue<float, IBattleOperation> battleOpQueue;
+		private readonly SystemProvider systemProvider;
 
 		public event Action<ICombatEvent> BattleEventOccurred;
 
@@ -57,7 +58,7 @@ namespace Redninja.Presenter
 			IKernel kernel = new StandardKernel();
 			kernel.Bind<IBattleView>().ToConstant(view);
 			kernel.Bind<ICombatExecutor>().ToConstant(combatExecutor);
-			kernel.Bind<IDataManager, DataManager>().To<DataManager>().InSingletonScope();
+			kernel.Bind<IDataManager, DataManager>().To<DataManager>().InSingletonScope();			
 			kernel.Bind<ISystemProvider>().To<SystemProvider>().InSingletonScope();
 			kernel.Bind<IClock, Clock>().To<Clock>().InSingletonScope();
 			kernel.Bind<IBattleEntityManager, IBattleModel>().To<BattleEntityManager>().InSingletonScope();
@@ -77,6 +78,7 @@ namespace Redninja.Presenter
 			entityManager = kernel.Get<IBattleEntityManager>();
 			playerDecisionManager = kernel.Get<PlayerDecisionManager>();
 			entityEventTriggerProcessor = kernel.Get<IBattleEventProcessor>();
+			systemProvider = (SystemProvider) kernel.Get<ISystemProvider>();
 			view = kernel.Get<IBattleView>();
 			clock = kernel.Get<Clock>();
 
@@ -108,30 +110,28 @@ namespace Redninja.Presenter
 		public void Configure(Action<IPresenterConfiguration> configFunc)
 			=> configFunc(this);
 
-		public void LoadJsonData(string configPath)
-			=> dataManager.LoadJson(configPath);
+		public void AddPC(IUnit character, int teamId, Coordinate position, ISkillProvider skillProvider)
+		{			
+			IBattleEntity entity = AddCharacter(character, teamId, position, playerDecisionManager);
+			systemProvider.SetSkillProvider(entity, skillProvider);
+		}
 
-		public void LoadData(IDataLoader loader)
-			=> dataManager.Load(loader);
+		public void AddNPC(IUnit character, int teamId, Coordinate position, AIBehavior aiBehavior)
+		{
+			IBattleEntity entity = AddCharacter(character, teamId, position, new AIActionDecider(aiBehavior, kernel.Get<IDecisionHelper>()));
+			systemProvider.SetSkillProvider(entity, new AISkillProvider(aiBehavior));
+		}
 
-		public void AddPlayerCharacter(IUnit character, int row, int col)
-			=> AddCharacter(character, playerDecisionManager, 0, row, col);
-
-		public void AddCharacter(IUnit character, IActionDecider actionDecider, int team, int row, int col)
+		private IBattleEntity AddCharacter(IUnit character, int team, Coordinate position, IActionDecider actionDecider)
 		{
 			IBattleEntity entity = new BattleEntity(character, actionDecider, combatExecutor)
 			{
 				Team = team
 			};
-			entity.MovePosition(row, col);
+			entity.MovePosition(position.Row, position.Column);
 			entityManager.AddEntity(entity);
+			return entity;
 		}
-
-		public void AddPlayerCharacter(Func<Unit.Builder, IBuilder<IUnit>> builderFunc, int row, int col)
-			=> AddPlayerCharacter(Unit.Build(builderFunc), row, col);
-
-		public void AddCharacter(Func<Unit.Builder, IBuilder<IUnit>> builderFunc, IActionDecider actionDecider, int team, int row, int col)
-			=> AddCharacter(Unit.Build(builderFunc), actionDecider, team, row, col);
 
 		public void SetTeamGrid(int team, Coordinate gridSize)
 			=> entityManager.AddGrid(team, gridSize);

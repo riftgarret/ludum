@@ -58,6 +58,7 @@
     <Compile Include="Components\Decisions\AI\IAISkillRule.cs" />
     <Compile Include="Components\Decisions\IActionProvider.cs" />
     <Compile Include="Components\Combat\IOperationSource.cs" />
+    <Compile Include="Components\Skills\AISkillProvider.cs" />
     <Compile Include="Components\Skills\ISkillOperationParameters.cs" />
     <Compile Include="Components\Skills\OperationProvider.cs" />
     <Compile Include="Components\Skills\SkillAction.cs" />
@@ -86,6 +87,8 @@
     <Compile Include="Components\Skills\StatusEffects\ITriggeredEffect.cs" />
     <Compile Include="Components\Skills\StatusEffects\StatusEffect.cs" />
     <Compile Include="Components\Targeting\StaticTarget.cs" />
+    <Compile Include="Data\DataManagerFactory.cs" />
+    <Compile Include="Components\Skills\ConfigurableSkillProvider.cs" />
     <Compile Include="Text\TextUtils.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="Data\Encounter.cs" />

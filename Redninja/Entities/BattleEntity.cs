@@ -10,6 +10,7 @@ using Redninja.Components.Decisions;
 using Redninja.Components.Skills.StatusEffects;
 using IUnit = Davfalcon.Revelator.IUnit;
 using Redninja.Components.Properties;
+using System.Linq;
 
 namespace Redninja.Entities
 {
@@ -63,7 +64,7 @@ namespace Redninja.Entities
 		public IActionDecider ActionDecider { get; }
 
 		// TODO pull properties from equipment, buffs, class def
-		public IEnumerable<ITriggeredProperty> TriggeredProperties => throw new NotImplementedException();
+		public IEnumerable<ITriggeredProperty> TriggeredProperties => Enumerable.Empty<ITriggeredProperty>();
 
 		public event Action<IBattleEntity> ActionNeeded;
 		// Rename this
@@ -108,7 +109,7 @@ namespace Redninja.Entities
 				CurrentAction.Dispose();
 
 			CurrentAction = action;
-			CurrentAction.SetClock(clock);
+			CurrentAction.SetClock(clock);	// TODO NRE on 2nd skill usage 
 			ActionSet?.Invoke(this, action);
 			CurrentAction.Start();
 		}
