@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Redninja.Components.Actions;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 
@@ -11,7 +10,7 @@ namespace Redninja.Components.Decisions.AI
 	/// This represents a set of conditions that may be attached to a list of
 	/// actionable items. All skills in this rule should be unique.
 	/// </summary>
-	public class AISkillRule : AIRuleBase, IAISkillRule
+	internal class AISkillRule : AIRuleBase, IAISkillRule
 	{
 		// targeting who gets focused should be uniform for rule
 		public TargetTeam TargetType { get; private set; }

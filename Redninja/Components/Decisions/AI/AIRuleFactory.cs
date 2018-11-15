@@ -2,15 +2,13 @@
 
 namespace Redninja.Components.Decisions.AI
 {
-	public static class AIRuleFactory
+	internal static class AIRuleFactory
 	{		
-		public static AISkillRule CreateAttackRule()
-			=> new AISkillRule.Builder()
-				.SetName("Attack")
-				.SetRuleTargetType(TargetTeam.Enemy)
+		public static AIAttackRule CreateDefaultAttackRule()
+			=> new AIAttackRule.Builder()				
+				.SetName("Attack")			
 				.SetWeight(1)				
-				.AddSkillAndPriority(null, AITargetPriorityFactory.Any) // TODO
-				.Build();
-		
+				.SetTargetPriority(AITargetPriorityFactory.Any) 
+				.Build();		
 	}
 }

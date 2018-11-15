@@ -65,15 +65,15 @@ namespace Redninja.Components.Decisions.AI
 				// no targets found for any skill, prune and research
 				weightedPool.Remove(rule);
 			}
-			LogResult(debugRuleMeta, null, null);
-			return null;
+			LogResult(debugRuleMeta, null, null);			
+			return new WaitAction(2);
 		}
 
 		private void LogResult(Dictionary<string, bool> ruleMeta, IAIRule resolvedRule, IBattleAction resultAction)
 		{
 			string ruleStr = resolvedRule != null ? resolvedRule.RuleName : "NONE";
-			string actionStr = resultAction != null ? resultAction.GetType().ToString() : "NONE";
-			RLog.D(this, $"RuleSet - resultRule:{ruleStr} resultAction: {actionStr}\n\t{ruleMeta}");
+			string actionStr = resultAction != null ? resultAction.Name : "NONE";
+			RLog.D(this, $"Behavior RuleSet:\n\tresultRule:{ruleStr}\n\tresultAction: {actionStr}\n\tValid Rules: {string.Join(";", ruleMeta)}");
 		}
 
 		#region generic rule handling
@@ -84,7 +84,7 @@ namespace Redninja.Components.Decisions.AI
 		internal virtual bool TryGetAction(IAIRule rule, out IBattleAction action)
 		{
 			if (rule is IAISkillRule) return TryGetSkillAction(rule as IAISkillRule, out action);
-
+			if (rule is IAIAttackRule) return TryGetAttackAction(rule as IAIAttackRule, out action);
 			action = null;
 			return false;
 		}
@@ -122,7 +122,7 @@ namespace Redninja.Components.Decisions.AI
 				ITargetingContext targetMeta = decisionHelper.GetTargetingContext(source, skill);
 
 				// found!				
-				while (TryFindTarget(rule, targetMeta, out ISelectedTarget selectedTarget))
+				while (TryFindSkillTarget(rule, targetMeta, out ISelectedTarget selectedTarget))
 				{
 					targetMeta.SelectTarget(selectedTarget);
 
@@ -141,10 +141,10 @@ namespace Redninja.Components.Decisions.AI
 			=> meta.Skills.Intersect(rule.SkillAssignments.Select(x => x.Item2));
 
 
-		internal virtual bool TryFindTarget(IAISkillRule rule, ITargetingContext meta, out ISelectedTarget selectedTarget)
+		internal virtual bool TryFindSkillTarget(IAISkillRule rule, ITargetingContext meta, out ISelectedTarget selectedTarget)
 		{
 			// filter targets
-			IEnumerable<IUnitModel> filteredTargets = GetValidTargets(rule, meta.TargetingRule);
+			IEnumerable<IUnitModel> filteredTargets = GetValidSkillTargets(rule, meta.TargetingRule);
 
 			if (filteredTargets.Count() == 0)
 			{
@@ -161,7 +161,7 @@ namespace Redninja.Components.Decisions.AI
 			return true;
 		}
 
-		internal IEnumerable<IUnitModel> GetValidTargets(IAISkillRule rule, ITargetingRule targetingRule)
+		internal IEnumerable<IUnitModel> GetValidSkillTargets(IAISkillRule rule, ITargetingRule targetingRule)
 		{
 			// first filter by TargetType
 			IEnumerable<IUnitModel> leftoverTargets = FilterByType(rule.TargetType);
@@ -173,6 +173,33 @@ namespace Redninja.Components.Decisions.AI
 			leftoverTargets = leftoverTargets.Where(ex => rule.FilterConditions.All(cond => cond.IsValid(ex)));
 			return leftoverTargets;
 		}
+		#endregion
+		#region Attack Rule
+
+		internal virtual bool TryGetAttackAction(IAIAttackRule rule, out IBattleAction action)
+		{
+			IActionsContext skillMeta = decisionHelper.GetActionsContext(source);
+
+			ITargetingContext targetMeta = decisionHelper.GetTargetingContext(source, skillMeta.Attack);
+			
+			
+			IEnumerable<IUnitModel> leftoverTargets = FilterByType(TargetTeam.Enemy);			
+			leftoverTargets = leftoverTargets.Where(ex => TargetConditions.MustBeAlive(ex, source));
+
+			if(leftoverTargets.Count() == 0)
+			{
+				action = null;
+				return false;
+			}
+
+			IUnitModel entityTarget = rule.TargetPriority.GetBestTarget(leftoverTargets);
+			ISelectedTarget selectedTarget = targetMeta.GetSelectedTarget(entityTarget);
+
+			targetMeta.SelectTarget(selectedTarget);
+			action = targetMeta.GetAction();
+			return true;
+		}
+
 		#endregion
 	}
 }

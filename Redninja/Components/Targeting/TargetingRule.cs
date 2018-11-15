@@ -47,5 +47,7 @@ namespace Redninja.Components.Targeting
 			=> condition(target, user);
 
 		public static ITargetingRule Any { get; } = new TargetingRule(TargetTeam.Any);
+
+		public static ITargetingRule Alive { get; } = new TargetingRule(TargetTeam.Enemy, TargetConditions.MustBeAlive);
 	}
 }

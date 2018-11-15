@@ -53,8 +53,10 @@
     <Compile Include="Components\Clock\Clock.cs" />
     <Compile Include="Components\Combat\Events\StatusEffectEvent.cs" />
     <Compile Include="Components\Combat\StatusEffectOperation.cs" />
+    <Compile Include="Components\Decisions\AI\AIAttackRule.cs" />
     <Compile Include="Components\Decisions\AI\AIExecutor.cs" />
     <Compile Include="Components\Decisions\AI\AIRuleTracker.cs" />
+    <Compile Include="Components\Decisions\AI\IAIAttackRule.cs" />
     <Compile Include="Components\Decisions\AI\IAISkillRule.cs" />
     <Compile Include="Components\Decisions\IActionProvider.cs" />
     <Compile Include="Components\Combat\IOperationSource.cs" />
@@ -89,6 +91,7 @@
     <Compile Include="Components\Targeting\StaticTarget.cs" />
     <Compile Include="Data\DataManagerFactory.cs" />
     <Compile Include="Components\Skills\ConfigurableSkillProvider.cs" />
+    <Compile Include="Data\Schema\AIAttackRuleSchema.cs" />
     <Compile Include="Text\TextUtils.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="Data\Encounter.cs" />

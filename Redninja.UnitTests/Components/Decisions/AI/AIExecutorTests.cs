@@ -159,7 +159,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			subject.When(x => x.FilterByType(Arg.Any<TargetTeam>())).DoNotCallBase();
 			subject.FilterByType(Arg.Any<TargetTeam>()).Returns(x => originalEntities);
 
-			var result = subject.GetValidTargets(mRule, mTargetingRule);
+			var result = subject.GetValidSkillTargets(mRule, mTargetingRule);
 
 			Assert.That(result, Is.EquivalentTo(expectedEntities));
 		}
