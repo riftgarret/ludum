@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Davfalcon.Builders;
 
 namespace Redninja.Components.Decisions.AI
@@ -19,7 +20,13 @@ namespace Redninja.Components.Decisions.AI
 				return this;
 			}
 
-			public void AddRule(IAIRule rule) => ruleSet.Rules.Add(rule);
+			private Builder Self(Action<Builder> action)
+			{
+				action(this);
+				return this;
+			}
+
+			public void AddRule(IAIRule rule) => Self(x => ruleSet.Rules.Add(rule));
 
 			public AIBehavior Build()
 			{

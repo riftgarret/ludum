@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using NUnit.Framework;
 using Redninja.Logging;
 
@@ -11,15 +12,15 @@ namespace Redninja.UnitTests
 		public void InitLogger() {
 			RLog.AppendPrinter((string tag, object msg, RLog.LogType logtype) =>
 			{
-				string text = $"[{tag}] $msg";
+				string text = $"[{tag}] {msg}";
 				switch (logtype)
 				{
 					case RLog.LogType.ERROR:
-						Console.Error.WriteLine(text);
+						Debug.Fail(text);
 						break;
 					
 					default:
-						Console.WriteLine(text);
+						Debug.WriteLine(text);
 						break;
 				}
 			});

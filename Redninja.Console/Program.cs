@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using Davfalcon.Revelator.Borger;
 using Redninja.Data;
+using Redninja.Logging;
 using Redninja.Presenter;
 using static Redninja.Data.Encounter;
 
@@ -13,6 +15,7 @@ namespace Redninja.ConsoleDriver
 
 		static void Main(string[] args)
 		{
+			InstallLogger();
 			ConsoleView view = new ConsoleView();
 
 			IDataManager dataManager = DataManagerFactory.Create(CONFIG_FILE_PATH);
@@ -63,6 +66,24 @@ namespace Redninja.ConsoleDriver
 				view.Draw();
 				Thread.Sleep(100);
 			}
+		}
+
+		private static void InstallLogger()
+		{
+			RLog.AppendPrinter((string tag, object msg, RLog.LogType logtype) =>
+			{
+				string text = $"[{tag}] {msg}";
+				switch (logtype)
+				{
+					case RLog.LogType.ERROR:
+						Debug.Fail(text);
+						break;
+
+					default:
+						Debug.WriteLine(text);
+						break;
+				}
+			});
 		}
 	}
 }

@@ -12,7 +12,7 @@ using Redninja.Components.Targeting;
 namespace Redninja.Components.Decisions.AI.UnitTests
 {
 	[TestFixture]
-	public class AISkillRuleTests : AIRuleBaseTests<AISkillRule.Builder, AISkillRule>
+	internal class AISkillRuleTests : AIRuleBaseTests<AISkillRule.Builder, AISkillRule>
 	{			
 		private AISkillRule.Builder subjectBuilder;
 
