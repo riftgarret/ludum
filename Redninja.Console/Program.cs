@@ -40,7 +40,7 @@ namespace Redninja.ConsoleDriver
 				config.SetTeamGrid(enemyTeam, encounter.EnemyGridSize);
 
 				// players
-				config.AddPC(TestablePlayerFactory.WarriorUnit(dataManager), 
+				config.AddPlayerCharacter(TestablePlayerFactory.WarriorUnit(dataManager), 
 					playerTeam, 
 					new Coordinate(0, 0),
 					TestablePlayerFactory.WarriorSkills(dataManager));
@@ -48,7 +48,7 @@ namespace Redninja.ConsoleDriver
 				// enemies
 				foreach (EnemyMeta enemyMeta in encounter.EnemyMetas)
 				{					
-					config.AddNPC(enemyMeta.Character, 
+					config.AddAICharacter(enemyMeta.Character, 
 						enemyTeam, 
 						enemyMeta.InitialPosition, 
 						enemyMeta.AiBehavior,
