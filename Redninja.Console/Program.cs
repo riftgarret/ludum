@@ -47,11 +47,12 @@ namespace Redninja.ConsoleDriver
 
 				// enemies
 				foreach (EnemyMeta enemyMeta in encounter.EnemyMetas)
-				{
+				{					
 					config.AddNPC(enemyMeta.Character, 
 						enemyTeam, 
 						enemyMeta.InitialPosition, 
-						enemyMeta.AiBehavior);
+						enemyMeta.AiBehavior,
+						enemyMeta.DisplayName);
 				}
 			});
 

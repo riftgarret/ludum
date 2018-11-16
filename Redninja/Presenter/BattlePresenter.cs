@@ -116,18 +116,19 @@ namespace Redninja.Presenter
 			systemProvider.SetSkillProvider(entity, skillProvider);
 		}
 
-		public void AddNPC(IUnit character, int teamId, Coordinate position, AIBehavior aiBehavior)
+		public void AddNPC(IUnit character, int teamId, Coordinate position, AIBehavior aiBehavior, string nameOverride = null)
 		{
-			IBattleEntity entity = AddCharacter(character, teamId, position, new AIActionDecider(aiBehavior, kernel.Get<IDecisionHelper>()));
+			IBattleEntity entity = AddCharacter(character, teamId, position, new AIActionDecider(aiBehavior, kernel.Get<IDecisionHelper>()), nameOverride);
 			systemProvider.SetSkillProvider(entity, new AISkillProvider(aiBehavior));
 		}
 
-		private IBattleEntity AddCharacter(IUnit character, int team, Coordinate position, IActionDecider actionDecider)
+		private IBattleEntity AddCharacter(IUnit character, int team, Coordinate position, IActionDecider actionDecider, string nameOverride = null)
 		{
-			IBattleEntity entity = new BattleEntity(character, actionDecider, combatExecutor)
+			BattleEntity entity = new BattleEntity(character, actionDecider, combatExecutor)
 			{
-				Team = team
+				Team = team				
 			};
+			if(nameOverride != null) entity.SetNameOverride(nameOverride);
 			entity.MovePosition(position.Row, position.Column);
 			entityManager.AddEntity(entity);
 			return entity;
