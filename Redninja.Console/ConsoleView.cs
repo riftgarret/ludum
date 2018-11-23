@@ -80,53 +80,40 @@ namespace Redninja.ConsoleDriver
 				drawUnitActions = null;
 				drawTargeting = null;
 			});
-		}
+		}		
+
+		
 
 		public void SetViewMode(IActionsView actionsContext, ISkillsCallbacks callbacks)
 		{
 			Debug.WriteLine("Entering action selection view state.");
+
+			ActionHandler<IActionsView, ISkillsCallbacks> actionHandler = new ActionHandler<IActionsView, ISkillsCallbacks>();
+			actionHandler.AddAction("Wait", (ac, cb) => cb.Wait(ac.Entity));
+			actionHandler.AddAction($"Attack ({String.Join(", ", actionsContext.Attack.Weapons.Select(w => w.Name))})", 
+				(ac, cb) => cb.SelectSkill(ac.Entity, ac.Attack));
+			actionsContext.Skills.ToList().ForEach(
+				skill => actionHandler.AddAction(skill.Name,
+				(ac, cb) => cb.SelectSkill(ac.Entity, skill)));
 
 			IUnitModel entity = actionsContext.Entity;
 			Safe(() =>
 			{
 				checkActionNeeded = null;
 				drawUnitActions = () =>
-				{
-					Console.WriteLine($"Attack ({String.Join(", ", actionsContext.Attack.Weapons.Select(w => w.Name))})");
-					Console.WriteLine("Skills:");
-					foreach (ISkill skill in actionsContext.Skills)
-					{
-						Console.WriteLine(skill.Name);
-					}
-					Console.WriteLine($"Select an action for {entity.Name}...");
+				{					
+					Console.WriteLine($"\nSelect an action for {entity.Name}...");
+					actionHandler.PrintActions();										
 				};
 				drawTargeting = null;
 			});
 
 			new Thread(() =>
 			{
-				ConsoleKey key = Console.ReadKey().Key;
-				switch (key)
-				{
-					case ConsoleKey.A:
-						callbacks.SelectSkill(entity, actionsContext.Attack);
-						break;
-					case ConsoleKey.M:
-						callbacks.InitiateMovement(entity);
-						break;
-					case ConsoleKey.Q:
-						callbacks.SelectSkill(entity, actionsContext.Skills.ElementAt(0));
-						break;
-					case ConsoleKey.W:
-						callbacks.SelectSkill(entity, actionsContext.Skills.ElementAt(1));
-						break;
-					case ConsoleKey.E:
-						callbacks.SelectSkill(entity, actionsContext.Skills.ElementAt(2));
-						break;
-					default:
-						callbacks.Wait(entity);
-						break;
-				}
+				Action<IActionsView, ISkillsCallbacks> action;
+				while (!actionHandler.TryGetAction(Console.ReadKey(), out action))
+					;
+				Safe(() => action(actionsContext, callbacks));
 			}).Start();
 		}
 
@@ -142,32 +129,30 @@ namespace Redninja.ConsoleDriver
 			Debug.WriteLine("Entering targeting view state.");
 
 			List<IUnitModel> availableTargets = new List<IUnitModel>(targetingContext.GetTargetableEntities());
+			ActionHandler<ITargetingView, ITargetingCallbacks> actionHandler = new ActionHandler<ITargetingView, ITargetingCallbacks>();
+
+			actionHandler.AddAction("Cancel Action", (tc, cb) => cb.Cancel());
+			targetingContext.GetTargetableEntities().ToList().ForEach(
+				x => actionHandler.AddAction(x.Name, 
+				(tc, cb) => callbacks.SelectTarget(tc.GetSelectedTarget(x))));
+
 			Safe(() =>
 			{
 				checkActionNeeded = null;
 				drawUnitActions = null;
 				drawTargeting = () =>
-				{
-					foreach (IUnitModel t in availableTargets)
-					{
-						Console.WriteLine(t.Name);
-					}
-
-					Console.WriteLine("Select target...");
+				{					
+					Console.WriteLine("\nSelect target...");
+					actionHandler.PrintActions();
 				};
 			});
 
 			new Thread(() =>
 			{
-				try
-				{
-					int selected = Convert.ToInt32(Console.ReadKey().KeyChar.ToString()) - 1;
-					callbacks.SelectTarget(targetingContext.GetSelectedTarget(availableTargets[selected]));
-				}
-				catch (Exception)
-				{
-					callbacks.Cancel();
-				}
+				Action<ITargetingView, ITargetingCallbacks> action;
+				while (!actionHandler.TryGetAction(Console.ReadKey(), out action))
+					;
+				Safe(() => action(targetingContext, callbacks));
 			}).Start();
 		}
 
@@ -181,6 +166,36 @@ namespace Redninja.ConsoleDriver
 			else if (battleEvent is DamageEvent de)
 			{
 				Debug.Write(de.Damage.ToStringRecursive());
+			}
+		}
+
+		/// <summary>
+		/// Class to help pull together input and keypresses with actions.
+		/// </summary>
+		/// <typeparam name="CONTEXT"></typeparam>
+		/// <typeparam name="CALLBACKS"></typeparam>
+		private class ActionHandler<CONTEXT, CALLBACKS>
+		{
+			List<Tuple<string, Action<CONTEXT, CALLBACKS>, Func<ConsoleKeyInfo, bool>>> keyActionList
+				= new List<Tuple<string, Action<CONTEXT, CALLBACKS>, Func<ConsoleKeyInfo, bool>>>();
+
+
+			private readonly char[] expectedInputOrder = "0123456789qwertyuiopasdfghjklzxcvbnm".ToArray();
+			private int keyIndex = 0;
+
+			public void AddAction(string name, Action<CONTEXT, CALLBACKS> action)
+			{
+				char keyChar = expectedInputOrder[keyIndex++];
+				Func<ConsoleKeyInfo, bool> keyPredicate = (key => key.KeyChar == keyChar);
+				keyActionList.Add(Tuple.Create($"{keyChar}. {name}", action, keyPredicate));
+			}
+
+			public void PrintActions() => keyActionList.ForEach(x => Console.WriteLine(x.Item1));
+
+			public bool TryGetAction(ConsoleKeyInfo keyInfo, out Action<CONTEXT, CALLBACKS> action)
+			{
+				action = keyActionList.Where(x => x.Item3(keyInfo)).Select(x => x.Item2).FirstOrDefault();
+				return action != null;
 			}
 		}
 	}

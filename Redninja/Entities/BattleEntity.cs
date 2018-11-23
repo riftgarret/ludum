@@ -23,6 +23,7 @@ namespace Redninja.Entities
 
 		private IClock clock;
 		private readonly ICombatExecutor combatExecutor;
+		private string nameOverride = null;
 
 		private class StatusEffectManager : UnitModifierStack, IUnitModifierStack
 		{
@@ -37,7 +38,7 @@ namespace Redninja.Entities
 		}
 
 		#region Unit interface
-		public string Name => unit.Name;
+		public string Name => nameOverride?? unit.Name;
 		public string Class => unit.Class;
 		public int Level => unit.Level;
 		public IUnitEquipmentManager Equipment => unit.Equipment;
@@ -82,6 +83,8 @@ namespace Redninja.Entities
 			ActionDecider = actionDecider;
 			ActionDecider.ActionSelected += OnActionSelected;
 		}
+
+		public void SetNameOverride(string nameOverride) => this.nameOverride = nameOverride;
 
 		// Considering raising this stuff to BEM
 		private void OnEntityMoving(IUnitModel entity, Coordinate c)

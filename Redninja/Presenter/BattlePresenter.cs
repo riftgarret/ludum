@@ -110,24 +110,25 @@ namespace Redninja.Presenter
 		public void Configure(Action<IPresenterConfiguration> configFunc)
 			=> configFunc(this);
 
-		public void AddPC(IUnit character, int teamId, Coordinate position, ISkillProvider skillProvider)
+		public void AddPlayerCharacter(IUnit character, int teamId, Coordinate position, ISkillProvider skillProvider)
 		{			
 			IBattleEntity entity = AddCharacter(character, teamId, position, playerDecisionManager);
 			systemProvider.SetSkillProvider(entity, skillProvider);
 		}
 
-		public void AddNPC(IUnit character, int teamId, Coordinate position, AIBehavior aiBehavior)
+		public void AddAICharacter(IUnit character, int teamId, Coordinate position, AIBehavior aiBehavior, string nameOverride = null)
 		{
-			IBattleEntity entity = AddCharacter(character, teamId, position, new AIActionDecider(aiBehavior, kernel.Get<IDecisionHelper>()));
+			IBattleEntity entity = AddCharacter(character, teamId, position, new AIActionDecider(aiBehavior, kernel.Get<IDecisionHelper>()), nameOverride);
 			systemProvider.SetSkillProvider(entity, new AISkillProvider(aiBehavior));
 		}
 
-		private IBattleEntity AddCharacter(IUnit character, int team, Coordinate position, IActionDecider actionDecider)
+		private IBattleEntity AddCharacter(IUnit character, int team, Coordinate position, IActionDecider actionDecider, string nameOverride = null)
 		{
-			IBattleEntity entity = new BattleEntity(character, actionDecider, combatExecutor)
+			BattleEntity entity = new BattleEntity(character, actionDecider, combatExecutor)
 			{
-				Team = team
+				Team = team				
 			};
+			if(nameOverride != null) entity.SetNameOverride(nameOverride);
 			entity.MovePosition(position.Row, position.Column);
 			entityManager.AddEntity(entity);
 			return entity;
