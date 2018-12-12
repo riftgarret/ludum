@@ -12,7 +12,7 @@ namespace Redninja.Components.Combat
 
 		// I want to remove this
 		public event Action<IUnitModel, Coordinate> EntityMoving;
-		public event Action<IBattleEvent> BattleEventOccurred;
+		public event Action<ICombatEvent> BattleEventOccurred;
 
 		public CombatExecutor(ICombatResolver combatResolver)
 		{
@@ -40,10 +40,10 @@ namespace Redninja.Components.Combat
 		public void MoveEntity(IUnitModel entity, UnitPosition newPosition)
 			=> MoveEntity(entity, newPosition.Row, newPosition.Column);
 
-		public void ApplyStatusEffect(IUnitModel entity, IBuff effect)
+		public void ApplyStatusEffect(IUnitModel source, IUnitModel target, IBuff effect)
 		{
-			resolver.ApplyBuff(entity, effect);
-			BattleEventOccurred?.Invoke(new StatusEffectEvent(entity, effect));
+			resolver.ApplyBuff(target, effect);
+			BattleEventOccurred?.Invoke(new StatusEffectEvent(source, target, effect));
 		}
 
 		public void RemoveStatusEffect(IUnitModel entity, IBuff effect)
@@ -63,7 +63,7 @@ namespace Redninja.Components.Combat
 		public void DealDamage(IUnitModel attacker, IUnitModel defender, IDamageSource source)
 		{
 			IDefenseNode damage = GetDamage(attacker, defender, source);
-			BattleEventOccurred?.Invoke(new DamageEvent(defender, damage, resolver.ApplyDamage(damage)));
+			BattleEventOccurred?.Invoke(new DamageEvent(attacker, defender, damage, resolver.ApplyDamage(damage)));
 		}
 	}
 }
