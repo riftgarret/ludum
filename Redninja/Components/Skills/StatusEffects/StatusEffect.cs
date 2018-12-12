@@ -15,26 +15,32 @@ namespace Redninja.Components.Skills.StatusEffects
 		private float nextTime;
 
 		public float TimeDuration { get; private set; }
-		public float TimeInterval { get; private set; }
-		public float RemainingTime => TimeDuration + startTime - clock.Time;
+		public float EffectInterval { get; private set; }
+		public float TimeRemaining => TimeDuration + startTime - clock.Time;
 
 		public IUnitModel EffectTarget { get; set; }
 
 		public event Action<float, IBattleOperation> BattleOperationReady;
 		public event Action<IStatusEffect> Expired;
 
-		private void NextInterval() => nextTime += TimeInterval;
+		private void NextInterval() => nextTime += EffectInterval;
 
 		// This replaces IBuff.Tick(), which was originally meant to work with turn counts
 		protected virtual void OnTick(float timeDelta)
 		{
-			if (RemainingTime >= 0 && clock.Time >= nextTime)
+			// If effect interval is set, check if interval has passed
+			if (EffectInterval > 0)
 			{
-				TriggerEffects(nextTime);
-				NextInterval();
+				// Use a while in case multiple intervals are passed
+				while (clock.Time >= nextTime)
+				{
+					TriggerEffects(nextTime);
+					NextInterval();
+				}
 			}
 
-			if (RemainingTime <= 0)
+			// Check if buff has expired
+			if (Duration > 0 && TimeRemaining <= 0)
 				Expired?.Invoke(this);
 		}
 
@@ -53,7 +59,7 @@ namespace Redninja.Components.Skills.StatusEffects
 			this.clock = clock;
 			clock.Tick += OnTick;
 			startTime = clock.Time;
-			nextTime = startTime + TimeInterval;
+			nextTime = startTime + EffectInterval;
 		}
 
 		private void UnsetClock()
@@ -82,10 +88,10 @@ namespace Redninja.Components.Skills.StatusEffects
 				Reset();
 			}
 
-			public override Builder Reset() => Reset(new StatusEffect() { Name = name, TimeInterval = 1 });
+			public override Builder Reset() => Reset(new StatusEffect() { Name = name, EffectInterval = 1 });
 
 			public Builder SetDuration(float duration) => Self(b => b.TimeDuration = duration);
-			public Builder SetEffectInterval(float interval) => Self(b => b.TimeInterval = interval);
+			public Builder SetEffectInterval(float interval) => Self(b => b.EffectInterval = interval);
 
 			public Builder IsDebuff() => Self(b => b.IsDebuff = true);
 

@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Actions\BattleActionBase.cs" />
+    <Compile Include="Components\Buffs\IBuff.cs" />
     <Compile Include="Components\Clock\Clock.cs" />
     <Compile Include="Components\Combat\Events\StatusEffectEvent.cs" />
     <Compile Include="Components\Combat\StatusEffectOperation.cs" />
@@ -60,6 +61,8 @@
     <Compile Include="Components\Decisions\AI\IAISkillRule.cs" />
     <Compile Include="Components\Decisions\IActionProvider.cs" />
     <Compile Include="Components\Combat\IOperationSource.cs" />
+    <Compile Include="Components\Equipment\IEquipment.cs" />
+    <Compile Include="Components\Properties\ITriggerCondition.cs" />
     <Compile Include="Components\Skills\AISkillProvider.cs" />
     <Compile Include="Components\Skills\ISkillOperationParameters.cs" />
     <Compile Include="Components\Skills\OperationProvider.cs" />
@@ -85,7 +88,9 @@
     <Compile Include="Components\Decisions\AI\WeightedPool.cs" />
     <Compile Include="Components\Skills\SkillOperationParameters.cs" />
     <Compile Include="Components\Skills\StatusEffects\EffectResolver.cs" />
+    <Compile Include="Components\Skills\StatusEffects\IConditionalEffect.cs" />
     <Compile Include="Components\Skills\StatusEffects\IStatusEffect.cs" />
+    <Compile Include="Components\Skills\StatusEffects\IEventTrigger.cs" />
     <Compile Include="Components\Skills\StatusEffects\ITriggeredEffect.cs" />
     <Compile Include="Components\Skills\StatusEffects\StatusEffect.cs" />
     <Compile Include="Components\Targeting\StaticTarget.cs" />
@@ -198,12 +203,10 @@
     <Compile Include="View\IMovementCallbacks.cs" />
     <Compile Include="View\ISkillsCallbacks.cs" />
     <Compile Include="View\ITargetingCallbacks.cs" />
-    <Compile Include="Components\Equipment\IEquipment.cs" />
     <Compile Include="Components\Classes\IClassPerk.cs" />
     <Compile Include="Components\Classes\IClassDefinition.cs" />
     <Compile Include="Components\Classes\IStatScaler.cs" />
     <Compile Include="Components\Classes\ICharacteristicRequirement.cs" />
-    <Compile Include="Components\Buffs\IBuff.cs" />
     <Compile Include="Components\Classes\CompositeRequirement.cs" />
     <Compile Include="Components\Classes\LevelRequirement.cs" />
     <Compile Include="Entities\IBattleEventProcessor.cs" />
@@ -213,7 +216,7 @@
     <Compile Include="Components\Properties\IPropertyBundle.cs" />
     <Compile Include="Components\Properties\ITriggeredProperty.cs" />
     <Compile Include="Components\Properties\TriggerPropertyType.cs" />
-    <Compile Include="Components\Properties\ITriggerCondition.cs" />
+    <Compile Include="Components\Skills\StatusEffects\IStateCondition.cs" />
     <Compile Include="Data\Schema\Readers\ConditionParser.cs" />
     <Compile Include="Components\Conditions\ConditionConstants.cs" />
     <Compile Include="Text\RegexPatternBuilder.cs" />
@@ -238,10 +241,10 @@
     <Compile Include="Components\Conditions\IEnvExpression.cs" />
     <Compile Include="Components\Conditions\IConditionalOperator.cs" />
     <Compile Include="Components\Conditions\IOperatorCountRequirement.cs" />
-    <Compile Include="Components\Conditions\ResultDefitions\IntResultDefinition.cs" />
-    <Compile Include="Components\Conditions\ResultDefitions\StringResultDefinition.cs" />
-    <Compile Include="Components\Conditions\ResultDefitions\ObjectResultDefinition.cs" />
-    <Compile Include="Components\Conditions\ResultDefitions\ResultDefinitionBase.cs" />
+    <Compile Include="Components\Conditions\ResultDefinitions\IntResultDefinition.cs" />
+    <Compile Include="Components\Conditions\ResultDefinitions\StringResultDefinition.cs" />
+    <Compile Include="Components\Conditions\ResultDefinitions\ObjectResultDefinition.cs" />
+    <Compile Include="Components\Conditions\ResultDefinitions\ResultDefinitionBase.cs" />
     <Compile Include="Components\Conditions\ResultDefFactory.cs" />
     <Compile Include="Data\Schema\Readers\ExpressionParser.cs" />
     <Compile Include="Data\Schema\Readers\ConditionOpParser.cs" />
