@@ -54,6 +54,7 @@
     <Compile Include="Objects\StatusEffects.cs" />
     <Compile Include="Objects\Weapons.cs" />
     <Compile Include="Output.cs" />
+    <Compile Include="TestablePlayerFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

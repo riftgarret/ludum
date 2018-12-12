@@ -12,6 +12,6 @@ namespace Redninja.Components.Decisions
 
 		IMovementContext GetMovementContext(IUnitModel entity);
 		IActionsContext GetActionsContext(IUnitModel entity);
-		ITargetingContext GetTargetingContext(IUnitModel entity, ISkill skill);
+		ITargetingContext GetTargetingContext(IUnitModel entity, ISkill skill);		
 	}
 }

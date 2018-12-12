@@ -1,13 +1,13 @@
 ﻿{
   "combatSkills": [
     {
-      "dataId": "attack",
-      "name": "skill",
+      "dataId": "fire_skill",
+      "name": "Fire",
       "time": [ 3, 1, 2 ],
       "defaultParameters": {
         "baseDamage": 10,
         "critMultiplier": 2,
-        "damageTypes": [ "Physical" ]
+        "damageTypes": [ "Magical" ]
       },
       "targetingSets": [
         {

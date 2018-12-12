@@ -10,6 +10,7 @@ using Redninja.Components.Decisions;
 using Redninja.Components.Skills.StatusEffects;
 using IUnit = Davfalcon.Revelator.IUnit;
 using Redninja.Components.Properties;
+using System.Linq;
 
 namespace Redninja.Entities
 {
@@ -22,6 +23,7 @@ namespace Redninja.Entities
 
 		private IClock clock;
 		private readonly ICombatExecutor combatExecutor;
+		private string nameOverride = null;
 
 		private class StatusEffectManager : UnitModifierStack, IUnitModifierStack
 		{
@@ -36,7 +38,7 @@ namespace Redninja.Entities
 		}
 
 		#region Unit interface
-		public string Name => unit.Name;
+		public string Name => nameOverride?? unit.Name;
 		public string Class => unit.Class;
 		public int Level => unit.Level;
 		public IUnitEquipmentManager Equipment => unit.Equipment;
@@ -63,7 +65,7 @@ namespace Redninja.Entities
 		public IActionDecider ActionDecider { get; }
 
 		// TODO pull properties from equipment, buffs, class def
-		public IEnumerable<ITriggeredProperty> TriggeredProperties => throw new NotImplementedException();
+		public IEnumerable<ITriggeredProperty> TriggeredProperties => Enumerable.Empty<ITriggeredProperty>();
 
 		public event Action<IBattleEntity> ActionNeeded;
 		// Rename this
@@ -81,6 +83,8 @@ namespace Redninja.Entities
 			ActionDecider = actionDecider;
 			ActionDecider.ActionSelected += OnActionSelected;
 		}
+
+		public void SetNameOverride(string nameOverride) => this.nameOverride = nameOverride;
 
 		// Considering raising this stuff to BEM
 		private void OnEntityMoving(IUnitModel entity, Coordinate c)
@@ -108,7 +112,7 @@ namespace Redninja.Entities
 				CurrentAction.Dispose();
 
 			CurrentAction = action;
-			CurrentAction.SetClock(clock);
+			CurrentAction.SetClock(clock);	// TODO NRE on 2nd skill usage 
 			ActionSet?.Invoke(this, action);
 			CurrentAction.Start();
 		}

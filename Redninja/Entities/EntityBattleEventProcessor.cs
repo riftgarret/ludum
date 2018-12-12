@@ -21,7 +21,7 @@ namespace Redninja.Entities
 			this.bem = bem;
 		}
 
-		public void ProcessEvent(IBattleEvent battleEvent)
+		public void ProcessEvent(ICombatEvent battleEvent)
 		{
 			foreach(IBattleEntity entity in bem.Entities) 
 			{
@@ -29,7 +29,7 @@ namespace Redninja.Entities
 			}
 		}
 
-		internal void ProcessEntity(IBattleEvent battleEvent, IBattleEntity entity)
+		internal void ProcessEntity(ICombatEvent battleEvent, IBattleEntity entity)
 		{
 			foreach (ITriggeredProperty property in entity.TriggeredProperties)
 			{
@@ -66,40 +66,40 @@ namespace Redninja.Entities
 			}
 		}
 
-		internal virtual bool ApplyAttack(IBattleEvent battleEvent, IBattleEntity entity, ITriggeredProperty property) 
+		internal virtual bool ApplyAttack(ICombatEvent battleEvent, IBattleEntity entity, ITriggeredProperty property) 
 		{
 			// TODO
 			return true;
 		}
 
-		internal virtual void ApplyConstantBuff(IBattleEvent battleEvent, IBattleEntity entity, ITriggeredProperty property)
+		internal virtual void ApplyConstantBuff(ICombatEvent battleEvent, IBattleEntity entity, ITriggeredProperty property)
 		{
 			// TODO
 		}
 
-		internal virtual void RemoveConstantBuff(IBattleEvent battleEvent, IBattleEntity entity, ITriggeredProperty property)
+		internal virtual void RemoveConstantBuff(ICombatEvent battleEvent, IBattleEntity entity, ITriggeredProperty property)
 		{
 			// TODO
 		}
 
-		internal virtual bool ApplyTimedtBuff(IBattleEvent battleEvent, IBattleEntity entity, ITriggeredProperty property)
-		{
-			// TODO
-			return true;
-		}
-
-		internal virtual bool ApplySkill(IBattleEvent battleEvent, IBattleEntity entity, ITriggeredProperty property)
+		internal virtual bool ApplyTimedtBuff(ICombatEvent battleEvent, IBattleEntity entity, ITriggeredProperty property)
 		{
 			// TODO
 			return true;
 		}
 
-		internal virtual bool HasConditions(IBattleEvent battleEvent, IBattleEntity entity, IEnumerable<ITriggerCondition> conditions) {
+		internal virtual bool ApplySkill(ICombatEvent battleEvent, IBattleEntity entity, ITriggeredProperty property)
+		{
 			// TODO
 			return true;
 		}
 
-		internal virtual IEnumerable<IBattleEntity> FilterTargets(IBattleEvent battleEvent, IBattleEntity entity, IEnumerable<ITriggerCondition> conditions)
+		internal virtual bool HasConditions(ICombatEvent battleEvent, IBattleEntity entity, IEnumerable<ITriggerCondition> conditions) {
+			// TODO
+			return true;
+		}
+
+		internal virtual IEnumerable<IBattleEntity> FilterTargets(ICombatEvent battleEvent, IBattleEntity entity, IEnumerable<ITriggerCondition> conditions)
 		{
 			// TODO
 			return Enumerable.Empty<IBattleEntity>();

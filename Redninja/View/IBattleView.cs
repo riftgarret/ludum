@@ -6,7 +6,7 @@ namespace Redninja.View
 	public interface IBattleView
 	{
 		void SetBattleModel(IBattleModel model);
-		void OnBattleEventOccurred(IBattleEvent battleEvent);
+		void OnBattleEventOccurred(ICombatEvent battleEvent);
 		void OnDecisionNeeded(IUnitModel entity);
 		void Resume();
 		void SetViewMode(IBaseCallbacks callbacks);

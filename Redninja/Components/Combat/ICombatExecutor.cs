@@ -8,13 +8,13 @@ namespace Redninja.Components.Combat
 	public interface ICombatExecutor
 	{
 		event Action<IUnitModel, Coordinate> EntityMoving;
-		event Action<IBattleEvent> BattleEventOccurred;
+		event Action<ICombatEvent> BattleEventOccurred;
 
 		void InitializeEntity(IUnitModel entity);
 		void CleanupEntity(IUnitModel entity);
 		void MoveEntity(IUnitModel entity, int newRow, int newCol);
 		void MoveEntity(IUnitModel entity, UnitPosition newPosition);
-		void ApplyStatusEffect(IUnitModel entity, IBuff effect);
+		void ApplyStatusEffect(IUnitModel source, IUnitModel target, IBuff effect);
 		void RemoveStatusEffect(IUnitModel entity, IBuff effect);
 		IDamageNode GetRawDamage(IUnitModel attacker, IDamageSource source);
 		IDefenseNode GetDamage(IUnitModel attacker, IUnitModel defender, IDamageSource source);

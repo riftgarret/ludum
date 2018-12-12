@@ -8,7 +8,6 @@ namespace Redninja.Data.Schema
 	internal class AISkillRuleSchema : IDataSource
 	{
 		public string DataId { get; set; }
-		public string RuleName { get; set; }
 		public int RefreshTime { get; set; }
 		public int Weight { get; set; }
 

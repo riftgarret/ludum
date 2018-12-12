@@ -53,11 +53,14 @@
     <Compile Include="Components\Clock\Clock.cs" />
     <Compile Include="Components\Combat\Events\StatusEffectEvent.cs" />
     <Compile Include="Components\Combat\StatusEffectOperation.cs" />
+    <Compile Include="Components\Decisions\AI\AIAttackRule.cs" />
     <Compile Include="Components\Decisions\AI\AIExecutor.cs" />
     <Compile Include="Components\Decisions\AI\AIRuleTracker.cs" />
+    <Compile Include="Components\Decisions\AI\IAIAttackRule.cs" />
     <Compile Include="Components\Decisions\AI\IAISkillRule.cs" />
     <Compile Include="Components\Decisions\IActionProvider.cs" />
     <Compile Include="Components\Combat\IOperationSource.cs" />
+    <Compile Include="Components\Skills\AISkillProvider.cs" />
     <Compile Include="Components\Skills\ISkillOperationParameters.cs" />
     <Compile Include="Components\Skills\OperationProvider.cs" />
     <Compile Include="Components\Skills\SkillAction.cs" />
@@ -86,6 +89,9 @@
     <Compile Include="Components\Skills\StatusEffects\ITriggeredEffect.cs" />
     <Compile Include="Components\Skills\StatusEffects\StatusEffect.cs" />
     <Compile Include="Components\Targeting\StaticTarget.cs" />
+    <Compile Include="Data\DataManagerFactory.cs" />
+    <Compile Include="Components\Skills\ConfigurableSkillProvider.cs" />
+    <Compile Include="Data\Schema\AIAttackRuleSchema.cs" />
     <Compile Include="Text\TextUtils.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="Data\Encounter.cs" />
@@ -161,7 +167,7 @@
     <Compile Include="ActionPhase.cs" />
     <Compile Include="Entities\IBattleEntity.cs" />
     <Compile Include="Entities\IBattleEntityManager.cs" />
-    <Compile Include="Components\Combat\Events\IBattleEvent.cs" />
+    <Compile Include="Components\Combat\Events\ICombatEvent.cs" />
     <Compile Include="Components\Combat\IBattleOperation.cs" />
     <Compile Include="View\IBaseCallbacks.cs" />
     <Compile Include="View\IBattleView.cs" />
@@ -213,7 +219,6 @@
     <Compile Include="Text\RegexPatternBuilder.cs" />
     <Compile Include="Components\Conditions\ICondition.cs" />
     <Compile Include="Components\Conditions\ConditionBase.cs" />
-    <Compile Include="Components\Combat\Events\ITargetedEvent.cs" />
     <Compile Include="Components\Conditions\Expressions\ParamExpressionBase.cs" />
     <Compile Include="Components\Conditions\Expressions\CombatStatExpression.cs" />
     <Compile Include="Components\Conditions\Expressions\ExpressionResolver.cs" />

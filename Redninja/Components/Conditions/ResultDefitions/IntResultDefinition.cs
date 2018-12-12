@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace Redninja.Components.Conditions.ResultDefinitions
 {
 	public class IntResultDefinition : ResultDefinitionBase<int>
