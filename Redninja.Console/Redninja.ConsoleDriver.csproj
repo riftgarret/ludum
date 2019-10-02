@@ -76,11 +76,11 @@
       <Project>{790e540a-0759-4bfa-b387-3115586f4e90}</Project>
       <Name>Redninja</Name>
     </ProjectReference>
-    <ProjectReference Include="..\rpglibrary\Davfalcon.Revelator\Davfalcon.Revelator.csproj">
+    <ProjectReference Include="..\Davfalcon.Revelator\Davfalcon.Revelator.csproj">
       <Project>{3f1fa461-a8b2-4b6d-8c39-050069ce2a66}</Project>
       <Name>Davfalcon.Revelator</Name>
     </ProjectReference>
-    <ProjectReference Include="..\rpglibrary\Davfalcon\Davfalcon.csproj">
+    <ProjectReference Include="..\Davfalcon\Davfalcon.csproj">
       <Project>{1fcb4578-21b8-4db5-b560-c87beeb7fd2e}</Project>
       <Name>Davfalcon</Name>
     </ProjectReference>
@@ -108,7 +108,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties Assets_4Data_4encounters_1json__JSONSchema="..\..\..\json\schemas\encounters-schema.json" Assets_4Data_4characters_1json__JSONSchema="..\..\..\json\schemas\characters-schema.json" Assets_4Data_4skills_1json__JSONSchema="..\..\..\json\schemas\skills-schema.json" />
+      <UserProperties Assets_4Data_4skills_1json__JSONSchema="..\..\..\json\schemas\skills-schema.json" Assets_4Data_4characters_1json__JSONSchema="..\..\..\json\schemas\characters-schema.json" Assets_4Data_4encounters_1json__JSONSchema="..\..\..\json\schemas\encounters-schema.json" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

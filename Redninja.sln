@@ -5,9 +5,9 @@ VisualStudioVersion = 15.0.28010.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redninja", "Redninja\Redninja.csproj", "{790E540A-0759-4BFA-B387-3115586F4E90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Davfalcon", "rpglibrary\Davfalcon\Davfalcon.csproj", "{1FCB4578-21B8-4DB5-B560-C87BEEB7FD2E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Davfalcon", "Davfalcon\Davfalcon.csproj", "{1FCB4578-21B8-4DB5-B560-C87BEEB7FD2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Davfalcon.Revelator", "rpglibrary\Davfalcon.Revelator\Davfalcon.Revelator.csproj", "{3F1FA461-A8B2-4B6D-8C39-050069CE2A66}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Davfalcon.Revelator", "Davfalcon.Revelator\Davfalcon.Revelator.csproj", "{3F1FA461-A8B2-4B6D-8C39-050069CE2A66}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redninja.ConsoleDriver", "Redninja.Console\Redninja.ConsoleDriver.csproj", "{07F10121-23EC-4EBB-93B9-6B99E77E8B75}"
 EndProject

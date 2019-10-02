@@ -568,11 +568,11 @@
     <Compile Include="Util\ValueModifier.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\rpglibrary\Davfalcon\Davfalcon.csproj">
+    <ProjectReference Include="..\Davfalcon\Davfalcon.csproj">
       <Project>{1fcb4578-21b8-4db5-b560-c87beeb7fd2e}</Project>
       <Name>Davfalcon</Name>
     </ProjectReference>
-    <ProjectReference Include="..\rpglibrary\Unity\Davfalcon.Unity\Davfalcon.Unity.csproj">
+    <ProjectReference Include="..\Unity\Davfalcon.Unity\Davfalcon.Unity.csproj">
       <Project>{37146187-bc62-44e6-bce1-ebc64c6c9224}</Project>
       <Name>Davfalcon.Unity</Name>
     </ProjectReference>
