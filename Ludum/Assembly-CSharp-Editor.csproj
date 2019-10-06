@@ -72,6 +72,9 @@
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="com.unity.multiplayer-hlapi.Editor">
+      <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.VSCode.Editor">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
@@ -87,23 +90,14 @@
     <Reference Include="Unity.CollabProxy.Editor">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Rider.Editor">
-      <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.UI">
-      <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="com.unity.multiplayer-hlapi.Editor">
-      <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="com.unity.multiplayer-weaver.Editor">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/com.unity.multiplayer-weaver.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.XR.LegacyInputHelpers">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Rider.Editor">
+      <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Sprite.Editor">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
@@ -117,11 +111,17 @@
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.XR.LegacyInputHelpers">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.UI">
+      <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="com.unity.multiplayer-hlapi.Runtime">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Runtime.dll</HintPath>
@@ -315,6 +315,21 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="Davfalcon">
+      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Davfalcon.dll</HintPath>
+    </Reference>
+    <Reference Include="Davfalcon.Revelator">
+      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Davfalcon.Revelator.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject">
+      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Redninja">
+      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Redninja.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.Advertisements">
       <HintPath>E:/unity/ludum/Ludum/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
     </Reference>
@@ -329,21 +344,6 @@
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
       <HintPath>E:/unity/ludum/Ludum/Library/PackageCache/com.unity.purchasing@2.0.6/Editor/UnityEditor.Purchasing.dll</HintPath>
-    </Reference>
-    <Reference Include="Redninja">
-      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Redninja.dll</HintPath>
-    </Reference>
-    <Reference Include="Davfalcon">
-      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Davfalcon.dll</HintPath>
-    </Reference>
-    <Reference Include="Davfalcon.Revelator">
-      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Davfalcon.Revelator.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject">
-      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Ninject.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>E:/unity/ludum/Ludum/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>

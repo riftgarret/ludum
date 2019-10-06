@@ -1,0 +1,22 @@
+﻿[
+  {
+    "dataId": "goblin",
+    "name": "Harry Goblin",
+    "level": 1,
+    "class": "berserker",
+    "stats": {
+      "STR": 15,
+      "CON": 15,
+      "AGI": 8,
+      "DEX": 9,
+      "INT": 7,
+      "WIS": 8,
+      "LUK": 11,
+      "CHA": 7,
+      "ATK": 20,
+      "DEF": 10,
+      "HP": 100,
+      "Resource": 80
+    }
+  }
+]

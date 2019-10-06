@@ -1,0 +1,8 @@
+﻿{
+  "skillsPath": "Configs/Sandbox/skills.json",
+  "aiRulesPath": "Configs/Sandbox/ai_rules.json",
+  "aiBehaviorsPath": "Configs/Sandbox/ai_behaviors.json",
+  "charactersPath": "Configs/Sandbox/characters.json",
+  "encountersPath": "Configs/Sandbox/encounters.json",
+  "classesPath": "Configs/Sandbox/classes.json"
+}

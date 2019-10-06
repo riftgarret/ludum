@@ -10,8 +10,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{F32EDCF2-26B7-C916-325A-E27970F41ACA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -64,8 +63,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\BattleSystemBehavior.cs" />
+    <Compile Include="Assets\Scripts\BattleView.cs" />
+    <Compile Include="Assets\Scripts\ConfigLoader.cs" />
+    <Compile Include="Assets\Scripts\UI\BarUI.cs" />
+    <Compile Include="Assets\Scripts\UI\BattleCharacterOverlayUI.cs" />
+    <Compile Include="Assets\Scripts\UI\StatusEffectContainerUI.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="com.unity.multiplayer-hlapi.Editor">
+      <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
@@ -82,23 +89,14 @@
     <Reference Include="Unity.CollabProxy.Editor">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Rider.Editor">
-      <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.UI">
-      <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="com.unity.multiplayer-hlapi.Editor">
-      <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="com.unity.multiplayer-weaver.Editor">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/com.unity.multiplayer-weaver.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.XR.LegacyInputHelpers">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Rider.Editor">
+      <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Sprite.Editor">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
@@ -112,11 +110,17 @@
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.XR.LegacyInputHelpers">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.UI">
+      <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="com.unity.multiplayer-hlapi.Runtime">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Runtime.dll</HintPath>
@@ -298,6 +302,21 @@
     <Reference Include="UnityEngine.XRModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.8f1/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
     </Reference>
+    <Reference Include="Davfalcon">
+      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Davfalcon.dll</HintPath>
+    </Reference>
+    <Reference Include="Davfalcon.Revelator">
+      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Davfalcon.Revelator.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject">
+      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Redninja">
+      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Redninja.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Analytics.Editor">
       <HintPath>E:/unity/ludum/Ludum/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
@@ -306,21 +325,6 @@
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
       <HintPath>E:/unity/ludum/Ludum/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Tracker.dll</HintPath>
-    </Reference>
-    <Reference Include="Redninja">
-      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Redninja.dll</HintPath>
-    </Reference>
-    <Reference Include="Davfalcon">
-      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Davfalcon.dll</HintPath>
-    </Reference>
-    <Reference Include="Davfalcon.Revelator">
-      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Davfalcon.Revelator.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject">
-      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Ninject.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.8f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

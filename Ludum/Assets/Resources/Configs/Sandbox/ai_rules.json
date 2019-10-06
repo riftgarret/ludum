@@ -1,0 +1,41 @@
+﻿{
+  "skillRules": [
+    {
+      "dataId": "fire_enemy",     
+      "refreshTime": 0,
+      "weight": 1,
+      "triggerConditions": {},
+      "filterConditions": [],
+      "skillPriorityMap": {
+        "fire_skill": "Any"
+      },
+      "targetType": "Enemy"
+    },
+
+    {
+      "dataId": "heal_self",
+      "refreshTime": 10,
+      "weight": 1,
+      "triggerConditions": {
+        "Self": [
+          "HP < 50%",
+          "Resource > 50"
+        ]
+      },
+      "filterConditions": [],
+      "skillPriorityMap": {
+        "heal_self": "Any"
+      },
+      "targetType": "Self"
+    }
+  ],
+  "attackRules": [
+    {
+      "dataId": "attack_enemy",
+      "refreshTime": 0,
+      "weight": 1,
+      "triggerConditions": {},
+      "priority": "Any"
+    }
+  ]
+}
