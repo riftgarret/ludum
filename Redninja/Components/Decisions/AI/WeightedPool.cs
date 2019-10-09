@@ -20,7 +20,7 @@ namespace Redninja.Components.Decisions.AI
 		public void Add(T item, double weight)
 		{
 			if (items.Any(x => x.Item1.Equals(item))) throw new InvalidOperationException($"Cannot add the same item: {item}");
-			items.Add(new Tuple<T, double>(item, weight));
+			items.Add(Tuple.Create(item, weight));
 			TotalWeight += weight;
 		}
 
@@ -34,18 +34,22 @@ namespace Redninja.Components.Decisions.AI
 		public int Count() => items.Count();		
 
 		// for testing
-		internal T FixedValue(double value) => Select(Math.Min(1, Math.Max(0, value)));
+		internal T FixedValue(double value) => Select(Math.Min(1, Math.Max(0, value))).Item1;
 
-		public T Random() => Select(random.NextDouble());		
+		public T Random() => Select(random.NextDouble()).Item1;
 
-		private T Select(double normalizedValue)
+		public Tuple<T, double> RandomResult() => Select(random.NextDouble());
+
+		public IEnumerable<Tuple<T, double>> WeightedItems => items.AsEnumerable();
+
+		private Tuple<T, double> Select(double normalizedValue)
 		{
 			double resultValue = TotalWeight * normalizedValue;
 			double cursor = 0;
-			return items.FirstOrDefault(x => {
+			return Tuple.Create(items.FirstOrDefault(x => {
 				cursor += x.Item2;
 				return resultValue <= cursor;
-			}).Item1;
+			}).Item1, resultValue);
 		}
 	}
 }

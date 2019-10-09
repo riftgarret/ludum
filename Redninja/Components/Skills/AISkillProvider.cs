@@ -12,7 +12,7 @@ namespace Redninja.Components.Skills
 		// TODO figure out attack time
 		private ActionTime AttackTime { get; set; } = new ActionTime(1, 1, 1);
 
-		public AISkillProvider(AIBehavior aiBehavior)
+		public AISkillProvider(AIRuleSet aiBehavior)
 		{
 			Skills.AddRange(
 				aiBehavior.Rules

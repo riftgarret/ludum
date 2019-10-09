@@ -25,7 +25,7 @@ namespace Redninja.Data
 
 		public IDataStore<ISkill> Skills => GetDataStore<ISkill>();
 		public IDataStore<IAIRule> AIRules => GetDataStore<IAIRule>();
-		public IDataStore<AIBehavior> AIBehavior => GetDataStore<AIBehavior>();
+		public IDataStore<AIRuleSet> AIBehavior => GetDataStore<AIRuleSet>();
 		public IDataStore<IAITargetCondition> AITargetCondition => GetDataStore<IAITargetCondition>();
 		public IDataStore<IAITargetPriority> AITargetPriority => GetDataStore<IAITargetPriority>();
 		public IDataStore<IUnit> NPCUnits => GetDataStore<IUnit>();
@@ -35,7 +35,7 @@ namespace Redninja.Data
 
 		IEditableDataStore<ISkill> IEditableDataManager.Skills => GetDataStore<ISkill>();
 		IEditableDataStore<IAIRule> IEditableDataManager.AIRules => GetDataStore<IAIRule>();
-		IEditableDataStore<AIBehavior> IEditableDataManager.AIBehavior => GetDataStore<AIBehavior>();
+		IEditableDataStore<AIRuleSet> IEditableDataManager.AIBehavior => GetDataStore<AIRuleSet>();
 		IEditableDataStore<IAITargetCondition> IEditableDataManager.AITargetCondition => GetDataStore<IAITargetCondition>();
 		IEditableDataStore<IAITargetPriority> IEditableDataManager.AITargetPriority => GetDataStore<IAITargetPriority>();
 		IEditableDataStore<IUnit> IEditableDataManager.NPCUnits => GetDataStore<IUnit>();

@@ -54,11 +54,14 @@
     <Compile Include="Components\Clock\Clock.cs" />
     <Compile Include="Components\Combat\Events\StatusEffectEvent.cs" />
     <Compile Include="Components\Combat\StatusEffectOperation.cs" />
+    <Compile Include="Components\Decisions\ActionContextProvider.cs" />
+    <Compile Include="Components\Decisions\AI\AIActionDecesionResult.cs" />
     <Compile Include="Components\Decisions\AI\AIAttackRule.cs" />
     <Compile Include="Components\Decisions\AI\AIExecutor.cs" />
     <Compile Include="Components\Decisions\AI\AIRuleTracker.cs" />
     <Compile Include="Components\Decisions\AI\IAIAttackRule.cs" />
     <Compile Include="Components\Decisions\AI\IAISkillRule.cs" />
+    <Compile Include="Components\Decisions\IActionContextProvider.cs" />
     <Compile Include="Components\Decisions\IActionProvider.cs" />
     <Compile Include="Components\Combat\IOperationSource.cs" />
     <Compile Include="Components\Equipment\IEquipment.cs" />
@@ -69,7 +72,7 @@
     <Compile Include="Components\Skills\SkillAction.cs" />
     <Compile Include="Components\Actions\MovementAction.cs" />
     <Compile Include="Components\Actions\WaitAction.cs" />
-    <Compile Include="Components\Decisions\AI\AIActionDecider.cs" />
+    <Compile Include="Components\Decisions\AI\AIBehavior.cs" />
     <Compile Include="Components\Decisions\AI\AICombatStatPriority.cs" />
     <Compile Include="Components\Decisions\AI\AIConditionFactory.cs" />
     <Compile Include="Components\Decisions\AI\AIConstants.cs" />
@@ -79,7 +82,7 @@
     <Compile Include="Components\Decisions\AI\AIMovementRule.cs" />
     <Compile Include="Components\Decisions\AI\AISkillRule.cs" />
     <Compile Include="Components\Decisions\AI\AIRuleFactory.cs" />
-    <Compile Include="Components\Decisions\AI\AIBehavior.cs" />
+    <Compile Include="Components\Decisions\AI\AIRuleSet.cs" />
     <Compile Include="Components\Decisions\AI\AITargetPriorityFactory.cs" />
     <Compile Include="Components\Decisions\AI\IAIRuleTracker.cs" />
     <Compile Include="Components\Decisions\AI\IAIRule.cs" />
@@ -97,6 +100,8 @@
     <Compile Include="Data\DataManagerFactory.cs" />
     <Compile Include="Components\Skills\ConfigurableSkillProvider.cs" />
     <Compile Include="Data\Schema\AIAttackRuleSchema.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="IBattleContext.cs" />
     <Compile Include="Text\TextUtils.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="Data\Encounter.cs" />
@@ -137,16 +142,13 @@
     <Compile Include="Components\Decisions\IActionsContext.cs" />
     <Compile Include="Components\Decisions\IDecisionHelper.cs" />
     <Compile Include="IUnitModel.cs" />
-    <Compile Include="Presenter\IPresenterConfiguration.cs" />
     <Compile Include="Presenter\PriorityProcessingQueue%28T%29.cs" />
     <Compile Include="Presenter\ProcessingQueue%28T%29.cs" />
     <Compile Include="Components\Decisions\IMovementView.cs" />
     <Compile Include="Components\Decisions\IMovementContext.cs" />
-    <Compile Include="Components\Decisions\IActionsView.cs" />
     <Compile Include="Components\Decisions\ITargetingView.cs" />
     <Compile Include="Components\Decisions\ITargetingContext.cs" />
     <Compile Include="Components\Decisions\MovementContext.cs" />
-    <Compile Include="Components\Decisions\Player\PlayerDecisionManager.cs" />
     <Compile Include="Components\Decisions\SkillSelectionContext.cs" />
     <Compile Include="Components\Decisions\SkillTargetingContext.cs" />
     <Compile Include="Components\Combat\CombatExecutor.cs" />
@@ -154,7 +156,7 @@
     <Compile Include="Components\Combat\Events\DamageEvent.cs" />
     <Compile Include="Components\Combat\Events\MovementEvent.cs" />
     <Compile Include="Presenter\GameState.cs" />
-    <Compile Include="Components\Decisions\IActionDecider.cs" />
+    <Compile Include="Components\Decisions\AI\IAIBehavior.cs" />
     <Compile Include="IBattleModel.cs" />
     <Compile Include="Presenter\IBattlePresenter.cs" />
     <Compile Include="Components\Combat\ICombatExecutor.cs" />
@@ -269,6 +271,6 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetDir)*.dll" "$(SolutionDir)Ludum\Assets\Modules"</PostBuildEvent>
+    <PostBuildEvent>copy "$(TargetDir)*.dll" "$(ProjectDir)..\Ludum\Assets\Modules"</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -11,6 +11,8 @@ using Redninja.Components.Skills.StatusEffects;
 using IUnit = Davfalcon.Revelator.IUnit;
 using Redninja.Components.Properties;
 using System.Linq;
+using Redninja.Components.Decisions.AI;
+using Redninja.Components.Skills;
 
 namespace Redninja.Entities
 {
@@ -24,6 +26,7 @@ namespace Redninja.Entities
 		private IClock clock;
 		private readonly ICombatExecutor combatExecutor;
 		private string nameOverride = null;
+		private IBattleContext context;
 
 		private class StatusEffectManager : UnitModifierStack, IUnitModifierStack
 		{
@@ -61,27 +64,32 @@ namespace Redninja.Entities
 		string IUnitModel.CurrentActionName => CurrentAction?.Name;
 		public ActionPhase Phase => CurrentAction?.Phase ?? ActionPhase.Waiting;
 		public float PhaseProgress => CurrentAction?.PhaseProgress ?? 0;
+		
+		public IActionContextProvider ActionContextProvider { get; }		
 
-		public IActionDecider ActionDecider { get; }
+		public bool RequiresAction { get => AIBehavior == null && 
+				(CurrentAction == null || CurrentAction.Phase == ActionPhase.Done); }
 
 		// TODO pull properties from equipment, buffs, class def
 		public IEnumerable<ITriggeredProperty> TriggeredProperties => Enumerable.Empty<ITriggeredProperty>();
 
+		public IAIBehavior AIBehavior { get; private set; }
+
 		public event Action<IBattleEntity> ActionNeeded;
 		// Rename this
-		public event Action<IBattleEntity, IOperationSource> ActionSet;
+		public event Action<IBattleEntity, IOperationSource> ActionSet;		
 
-		public BattleEntity(IUnit unit, IActionDecider actionDecider, ICombatExecutor combatExecutor)
+		public BattleEntity(IBattleContext context, IUnit unit)
 		{
+			this.context = context;
 			this.unit = unit;
 			Buffs = new StatusEffectManager(this);
 			Buffs.Bind(unit.Modifiers);
 
-			this.combatExecutor = combatExecutor;
+			this.combatExecutor = context.CombatExecutor;
 			combatExecutor.EntityMoving += OnEntityMoving;
 
-			ActionDecider = actionDecider;
-			ActionDecider.ActionSelected += OnActionSelected;
+			ActionContextProvider = new ActionContextProvider(context, this);			
 		}
 
 		public void SetNameOverride(string nameOverride) => this.nameOverride = nameOverride;
@@ -101,6 +109,17 @@ namespace Redninja.Entities
 		{
 			combatExecutor.InitializeEntity(this);
 			SetAction(new WaitAction(new RandomInteger(1, 10).Get()));
+		}
+
+		public void SetAIBehavior(AIRuleSet ruleSet)
+		{
+			if(ruleSet != null)
+			{
+				AIBehavior = new AIBehavior(context, this, ruleSet);				
+			} else
+			{
+				AIBehavior = null;
+			}
 		}
 
 		public void MovePosition(int row, int col)
@@ -175,7 +194,6 @@ namespace Redninja.Entities
 
 			combatExecutor.CleanupEntity(this);
 			combatExecutor.EntityMoving -= OnEntityMoving;
-			ActionDecider.ActionSelected -= OnActionSelected;
 		}
 	}
 }

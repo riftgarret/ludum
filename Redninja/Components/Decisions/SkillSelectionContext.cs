@@ -9,7 +9,7 @@ namespace Redninja.Components.Decisions
 	/// <summary>
 	/// Result for requesting what available skills a entity can use.
 	/// </summary>
-	internal class SkillSelectionContext : IActionsContext
+	internal class SkillSelectionContext : IActionContext
 	{
 		public IUnitModel Entity { get; }
 		public IWeaponAttack Attack { get; }

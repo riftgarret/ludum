@@ -11,7 +11,7 @@ namespace Redninja.Components.Decisions
 		IBattleModel BattleModel { get; }
 
 		IMovementContext GetMovementContext(IUnitModel entity);
-		IActionsContext GetActionsContext(IUnitModel entity);
+		IActionContext GetActionsContext(IUnitModel entity);
 		ITargetingContext GetTargetingContext(IUnitModel entity, ISkill skill);		
 	}
 }

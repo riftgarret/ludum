@@ -1,16 +1,9 @@
 ﻿using System;
-using Davfalcon.Revelator;
-using Davfalcon.Revelator.Combat;
+using System.Linq;
 using Ninject;
-using Redninja.Components.Actions;
 using Redninja.Components.Clock;
 using Redninja.Components.Combat;
 using Redninja.Components.Combat.Events;
-using Redninja.Components.Decisions;
-using Redninja.Components.Decisions.AI;
-using Redninja.Components.Decisions.Player;
-using Redninja.Components.Skills;
-using Redninja.Components.Targeting;
 using Redninja.Data;
 using Redninja.Entities;
 using Redninja.System;
@@ -22,16 +15,15 @@ namespace Redninja.Presenter
 	/// Main logic that flows through this scene is handled by this presenter in a MVP relationship.
 	/// Where this is the presenter, other components generated will represent the views.  
 	/// </summary>
-	public class BattlePresenter : IBattlePresenter, IPresenterConfiguration,
-		IBaseCallbacks, ISkillsCallbacks, IMovementCallbacks, ITargetingCallbacks
+	public class BattlePresenter : IBattlePresenter
 	{
+		private readonly IBattleContext context;
 		private readonly IKernel kernel;
 		private readonly DataManager dataManager;
 		private readonly Clock clock;
-		private readonly IBattleView view;
+		private IBattleView view;
 		private readonly ICombatExecutor combatExecutor;
-		private readonly IBattleEntityManager entityManager;
-		private readonly PlayerDecisionManager playerDecisionManager;
+		private readonly IBattleEntityManager entityManager;		
 		private readonly ProcessingQueue<IBattleEntity> decisionQueue;
 		private readonly IBattleEventProcessor entityEventTriggerProcessor;
 		private readonly PriorityProcessingQueue<float, IBattleOperation> battleOpQueue;
@@ -48,42 +40,19 @@ namespace Redninja.Presenter
 		/// Check if time should be active. This can be false due to the game state being
 		/// over or that the user needs to select a skill.
 		/// </summary>
-		public bool TimeActive => State == GameState.Active;
+		public bool TimeActive => State == GameState.Active && !RequiresInput;		
 
-		public static IBattlePresenter CreatePresenter(IBattleView view, Func<CombatResolver.Builder, CombatResolver.Builder> combatRules)
-			=> CreatePresenter(view, new CombatExecutor(combatRules));
-
-		private static IBattlePresenter CreatePresenter(IBattleView view, ICombatExecutor combatExecutor)
+		public BattlePresenter(IBattleContext context)
 		{
-			IKernel kernel = new StandardKernel();
-			kernel.Bind<IBattleView>().ToConstant(view);
-			kernel.Bind<ICombatExecutor>().ToConstant(combatExecutor);
-			kernel.Bind<IDataManager, DataManager>().To<DataManager>().InSingletonScope();			
-			kernel.Bind<ISystemProvider>().To<SystemProvider>().InSingletonScope();
-			kernel.Bind<IClock, Clock>().To<Clock>().InSingletonScope();
-			kernel.Bind<IBattleEntityManager, IBattleModel>().To<BattleEntityManager>().InSingletonScope();
-			kernel.Bind<PlayerDecisionManager>().ToSelf().InSingletonScope();
-			kernel.Bind<IDecisionHelper>().To<DecisionHelper>().InSingletonScope();
-			kernel.Bind<IBattleEventProcessor>().To<EntityBattleEventProcessor>().InSingletonScope();
-			kernel.Bind<IBattlePresenter>().To<BattlePresenter>().InSingletonScope();
-			return kernel.Get<IBattlePresenter>();
-		}
+			this.context = context;
+			context.Bind<IBattlePresenter>(this);
 
-		public BattlePresenter(IKernel kernel)
-		{
-			this.kernel = kernel;
-
-			dataManager = kernel.Get<DataManager>();
-			combatExecutor = kernel.Get<ICombatExecutor>();
-			entityManager = kernel.Get<IBattleEntityManager>();
-			playerDecisionManager = kernel.Get<PlayerDecisionManager>();
-			entityEventTriggerProcessor = kernel.Get<IBattleEventProcessor>();
-			systemProvider = (SystemProvider) kernel.Get<ISystemProvider>();
-			view = kernel.Get<IBattleView>();
-			clock = kernel.Get<Clock>();
-
-			decisionQueue = new ProcessingQueue<IBattleEntity>(entity =>
-				entity.ActionDecider.ProcessNextAction(entity, entityManager));
+			dataManager = context.Get<DataManager>();
+			combatExecutor = context.Get<ICombatExecutor>();
+			entityManager = context.Get<IBattleEntityManager>();
+			entityEventTriggerProcessor = context.Get<IBattleEventProcessor>();
+			systemProvider = context.Get<SystemProvider>();			
+			clock = context.Get<Clock>();			
 
 			battleOpQueue = new PriorityProcessingQueue<float, IBattleOperation>(op =>
 				op.Execute(entityManager, combatExecutor));
@@ -99,53 +68,17 @@ namespace Redninja.Presenter
 			entityManager.ActionSet += (e, action) => action.BattleOperationReady += battleOpQueue.Enqueue;
 			combatExecutor.BattleEventOccurred += e => BattleEventOccurred?.Invoke(e);
 			combatExecutor.BattleEventOccurred += view.OnBattleEventOccurred;
-			combatExecutor.BattleEventOccurred += entityEventTriggerProcessor.ProcessEvent;
-			playerDecisionManager.WaitingForDecision += e => Pause();
-			playerDecisionManager.WaitingForDecision += view.OnDecisionNeeded;
-			playerDecisionManager.WaitResolved += Start;
-			playerDecisionManager.WaitResolved += view.Resume;
+			combatExecutor.BattleEventOccurred += entityEventTriggerProcessor.ProcessEvent;			
 		}
-
-		#region Configuration
-		public void Configure(Action<IPresenterConfiguration> configFunc)
-			=> configFunc(this);
-
-		public void AddPlayerCharacter(IUnit character, int teamId, Coordinate position, ISkillProvider skillProvider)
-		{			
-			IBattleEntity entity = AddCharacter(character, teamId, position, playerDecisionManager);
-			systemProvider.SetSkillProvider(entity, skillProvider);
-		}
-
-		public void AddAICharacter(IUnit character, int teamId, Coordinate position, AIBehavior aiBehavior, string nameOverride = null)
-		{
-			IBattleEntity entity = AddCharacter(character, teamId, position, new AIActionDecider(aiBehavior, kernel.Get<IDecisionHelper>()), nameOverride);
-			systemProvider.SetSkillProvider(entity, new AISkillProvider(aiBehavior));
-		}
-
-		private IBattleEntity AddCharacter(IUnit character, int team, Coordinate position, IActionDecider actionDecider, string nameOverride = null)
-		{
-			BattleEntity entity = new BattleEntity(character, actionDecider, combatExecutor)
-			{
-				Team = team				
-			};
-			if(nameOverride != null) entity.SetNameOverride(nameOverride);
-			entity.MovePosition(position.Row, position.Column);
-			entityManager.AddEntity(entity);
-			return entity;
-		}
-
-		public void SetTeamGrid(int team, Coordinate gridSize)
-			=> entityManager.AddGrid(team, gridSize);
-		#endregion
 
 		#region Control
 		/// <summary>
 		/// Initialize presenter to load up views and prepare for lifecycle calls.
 		/// </summary>
-		public void Initialize()
+		public void Initialize(IBattleView view)
 		{
-			entityManager.InitializeBattlePhase();
-			view.SetViewMode(this);
+			this.view = view;
+			entityManager.InitializeBattlePhase();			
 		}
 
 		public void Start()
@@ -157,6 +90,8 @@ namespace Redninja.Presenter
 		{
 			State = GameState.Paused;
 		}
+
+		private bool RequiresInput => entityManager.Entities.Any(x => RequiresInput);
 
 		/// <summary>
 		/// Update game clock. This drives the presenter.
@@ -181,82 +116,6 @@ namespace Redninja.Presenter
 			entityManager.Dispose();
 			kernel.Dispose();
 		}
-		#endregion
-
-		#region View callbacks
-		void IBaseCallbacks.SelectUnit(IUnitModel entity)
-		{
-			playerDecisionManager.SetEntityContext(entity);
-			view.SetViewMode(playerDecisionManager.ActionsContext, this);
-		}
-
-		#region Action selection
-		void ISkillsCallbacks.InitiateMovement(IUnitModel entity)
-		{
-			playerDecisionManager.SetMovementContext(entity);
-			view.SetViewMode(playerDecisionManager.MovementContext, this);
-		}
-
-		void ISkillsCallbacks.SelectSkill(IUnitModel entity, ISkill skill)
-		{
-			playerDecisionManager.SetTargetingContext(entity, skill);
-			view.SetViewMode(playerDecisionManager.TargetingContext, this);
-		}
-
-		void ISkillsCallbacks.Wait(IUnitModel entity)
-		{
-			playerDecisionManager.Resolve(entity, new WaitAction(5));
-			view.SetViewMode(this);
-		}
-
-		void ISkillsCallbacks.Cancel()
-		{
-			playerDecisionManager.ExitContext();
-			view.SetViewMode(this);
-		}
-		#endregion
-
-		#region Movement
-		void IMovementCallbacks.UpdatePath(Coordinate point)
-		{
-			playerDecisionManager.MovementContext.AddPoint(point);
-			// Should we set view after intermediate steps?
-		}
-
-		void IMovementCallbacks.Confirm()
-		{
-			playerDecisionManager.Resolve();
-			view.SetViewMode(this);
-		}
-
-		void IMovementCallbacks.Cancel()
-		{
-			playerDecisionManager.ExitContext();
-			view.SetViewMode(playerDecisionManager.ActionsContext, this);
-		}
-		#endregion
-
-		#region Targeting
-		void ITargetingCallbacks.SelectTarget(ISelectedTarget target)
-		{
-			playerDecisionManager.TargetingContext.SelectTarget(target);
-
-			if (playerDecisionManager.TargetingContext.Ready)
-			{
-				playerDecisionManager.Resolve();
-				view.SetViewMode(this);
-			}
-		}
-
-		void ITargetingCallbacks.Cancel()
-		{
-			if (!playerDecisionManager.TargetingContext.Back())
-			{
-				playerDecisionManager.ExitContext();
-				view.SetViewMode(playerDecisionManager.ActionsContext, this);
-			}
-		}
-		#endregion
 		#endregion
 	}
 }

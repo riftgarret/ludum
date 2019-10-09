@@ -11,7 +11,7 @@ namespace Redninja.Data.Schema.Readers
 		{
 			foreach(AIRuleSetSchema rs in ruleSets)
 			{
-				AIBehavior.Builder b = new AIBehavior.Builder();
+				AIRuleSet.Builder b = new AIRuleSet.Builder();
 				foreach(string ruleId in rs.RuleIds)
 				{
 					IAIRule rule = manager.AIRules[ruleId];

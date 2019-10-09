@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Redninja.Components.Actions;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 using Redninja.Logging;
+using static Redninja.Components.Decisions.AI.AIActionDecisionResult;
 
 namespace Redninja.Components.Decisions.AI
 {
@@ -14,27 +16,32 @@ namespace Redninja.Components.Decisions.AI
 	/// </summary>
 	internal class AIExecutor
 	{
-		private readonly AIBehavior behavior;
+		private readonly AIRuleSet behavior;
 		private readonly IAIRuleTracker history;
 		private readonly IUnitModel source;
-		private readonly IDecisionHelper decisionHelper;
-		private readonly IBattleModel battleModel;
+		private IBattleModel battleModel => context.BattleModel;
+		private IActionContextProvider acp;
+		private readonly IBattleContext context;
 
-		public AIExecutor(IUnitModel source, 
-			AIBehavior behavior, 
-			IDecisionHelper decisionHelper, 
+		private AIActionDecisionResult.Tracker tracker;
+
+		public AIExecutor(
+			IBattleContext context,
+			IUnitModel source, 
+			AIRuleSet behavior, 			
 			IAIRuleTracker historyState)
 		{
 			this.behavior = behavior;
 			this.source = source;
-			this.decisionHelper = decisionHelper;
 			this.history = historyState;
-			this.battleModel = decisionHelper.BattleModel;
+			this.context = context;
+			this.acp = source.ActionContextProvider;
 		}				
 
-		public IBattleAction ResolveAction()
+		public AIActionDecisionResult ResolveAction()
 		{
 			// DEBUG rule name -> in pool
+			tracker = new AIActionDecisionResult.Tracker();
 			var debugRuleMeta = new Dictionary<string, bool>();
 			behavior.Rules.ForEach(x => debugRuleMeta[x.RuleName] = false);
 
@@ -53,21 +60,27 @@ namespace Redninja.Components.Decisions.AI
 			while (weightedPool.Count() > 0)
 			{
 				// pick weighted rule
-				IAIRule rule = weightedPool.Random();
+				var result = weightedPool.RandomResult();
+				tracker.RecordWeighedPoolResult(weightedPool, result);
+				IAIRule rule = result.Item1;
 				
 				if (TryGetAction(rule, out IBattleAction action))
 				{
 					LogResult(debugRuleMeta, rule, action);
 					history.AddEntry(rule, action);
-					return action;
+					tracker[rule].RuleResolved = true;
+					return tracker.BuildResult(action);
 				}
+
+				tracker[rule].RuleResolved = false;
 
 				// no targets found for any skill, prune and research
 				weightedPool.Remove(rule);
 			}
 			LogResult(debugRuleMeta, null, null);			
-			return new WaitAction(2);
+			return tracker.BuildResult(new WaitAction(2));
 		}
+
 
 		private void LogResult(Dictionary<string, bool> ruleMeta, IAIRule resolvedRule, IBattleAction resultAction)
 		{
@@ -79,12 +92,19 @@ namespace Redninja.Components.Decisions.AI
 		#region generic rule handling
 
 		internal virtual IEnumerable<IAIRule> GetValidRules()
-			=> behavior.Rules.Where(rule => history.IsRuleReady(rule) && IsValidTriggerConditions(rule));		
+			=> behavior.Rules.Where(rule => {
+				bool isReady = history.IsRuleReady(rule);
+				bool isValidTrigger = IsValidTriggerConditions(rule);
+				tracker[rule].IsReady = isReady;
+				tracker[rule].IsValidTrigger = isValidTrigger;
+				return isReady && isValidTrigger;
+			});		
+
 
 		internal virtual bool TryGetAction(IAIRule rule, out IBattleAction action)
 		{
-			if (rule is IAISkillRule) return TryGetSkillAction(rule as IAISkillRule, out action);
-			if (rule is IAIAttackRule) return TryGetAttackAction(rule as IAIAttackRule, out action);
+			tracker[rule].RuleEvaluated = true;
+			if (rule is IAISkillRule) return TryGetSkillAction(rule as IAISkillRule, out action);			
 			action = null;
 			return false;
 		}
@@ -110,47 +130,61 @@ namespace Redninja.Components.Decisions.AI
 		#region skill action
 		internal virtual bool TryGetSkillAction(IAISkillRule rule, out IBattleAction action)
 		{
-			IActionsContext skillMeta = decisionHelper.GetActionsContext(source);
+			var ruleEval = tracker[(IAIRule)rule];
+			rule.SkillAssignments
+				.Select(x => x.Item2)
+				.ForEach(skill => ruleEval[skill].HasSkill = false);
+
+			IActionContext skillMeta = acp.GetActionContext();
 
 			// filter out what skills this rule uses
-			IEnumerable<ISkill> availableSkills = FilterAssignableSkills(rule, skillMeta);
-
+			IEnumerable<ISkill> availableSkills = FilterAssignableSkills(rule, skillMeta);			
+			availableSkills.ForEach(skill => ruleEval[skill].HasSkill = true);
+			
 			// attempt to find targets for first valid skill
 			foreach (ISkill skill in availableSkills)
 			{
+				var skillEval = ruleEval[skill];
+				skillEval.SkillEvaluated = true;
+
 				// look for available targets
-				ITargetingContext targetMeta = decisionHelper.GetTargetingContext(source, skill);
+				ITargetingContext targetMeta = acp.GetTargetingContext(skill);
 
 				// found!				
-				while (TryFindSkillTarget(rule, targetMeta, out ISelectedTarget selectedTarget))
+				while (TryFindSkillTarget(skillEval, rule, targetMeta, out ISelectedTarget selectedTarget))
 				{
 					targetMeta.SelectTarget(selectedTarget);
 
 					if (targetMeta.Ready)
 					{
 						action = targetMeta.GetAction();
+						skillEval.SkillResolved = true;
 						return true;
 					}
 				}
+
+				skillEval.SkillResolved = false;
 			}
 			action = null;
 			return false;
 		}
 
-		internal virtual IEnumerable<ISkill> FilterAssignableSkills(IAISkillRule rule, IActionsContext meta)
+		internal virtual IEnumerable<ISkill> FilterAssignableSkills(IAISkillRule rule, IActionContext meta)
 			=> meta.Skills.Intersect(rule.SkillAssignments.Select(x => x.Item2));
 
 
-		internal virtual bool TryFindSkillTarget(IAISkillRule rule, ITargetingContext meta, out ISelectedTarget selectedTarget)
+		internal virtual bool TryFindSkillTarget(SkillEval skillEval, IAISkillRule rule, ITargetingContext meta, out ISelectedTarget selectedTarget)
 		{
 			// filter targets
-			IEnumerable<IUnitModel> filteredTargets = GetValidSkillTargets(rule, meta.TargetingRule);
+			IEnumerable<IUnitModel> filteredTargets = GetValidSkillTargets(skillEval, rule, meta.TargetingRule);
 
 			if (filteredTargets.Count() == 0)
 			{
 				selectedTarget = null;
 				return false; // didnt find any valid targets
 			}
+
+			// TODO track meta for selecting target
 			
 			// select best target
 			IAITargetPriority targetPriority = rule.SkillAssignments.FirstOrDefault(x => x.Item2 == meta.Skill).Item1;
@@ -161,26 +195,35 @@ namespace Redninja.Components.Decisions.AI
 			return true;
 		}
 
-		internal IEnumerable<IUnitModel> GetValidSkillTargets(IAISkillRule rule, ITargetingRule targetingRule)
+		internal IEnumerable<IUnitModel> GetValidSkillTargets(SkillEval skillEval, IAISkillRule rule, ITargetingRule targetingRule)
 		{
+			// initialize all entities to be recorded
+			IEnumerable<IUnitModel> allEntities = battleModel.Entities;
+			allEntities.ForEach(x => skillEval[x].IsValidType = false);
+
 			// first filter by TargetType
 			IEnumerable<IUnitModel> leftoverTargets = FilterByType(rule.TargetType);
+			leftoverTargets.ForEach(x => skillEval[x].IsValidType = true);
 
 			// filter by skill rule
 			leftoverTargets = leftoverTargets.Where(ex => targetingRule.IsValidTarget(ex, source));
+			leftoverTargets.ForEach(x => skillEval[x].IsValidTarget = true);
 
 			// filter by filter conditions (exclude by finding first condition that fails)
 			leftoverTargets = leftoverTargets.Where(ex => rule.FilterConditions.All(cond => cond.IsValid(ex)));
+			leftoverTargets.ForEach(x => skillEval[x].IsValidConditions = true);
+
 			return leftoverTargets;
 		}
 		#endregion
 		#region Attack Rule
 
-		internal virtual bool TryGetAttackAction(IAIAttackRule rule, out IBattleAction action)
+		// TODO refactor to get default skill if none.
+		internal virtual bool TryGetDefaultSkill(IAIAttackRule rule, out IBattleAction action)
 		{
-			IActionsContext skillMeta = decisionHelper.GetActionsContext(source);
+			IActionContext skillMeta = acp.GetActionContext();
 
-			ITargetingContext targetMeta = decisionHelper.GetTargetingContext(source, skillMeta.Attack);
+			ITargetingContext targetMeta = acp.GetTargetingContext(skillMeta.Skills.First()); // first temp to compile
 			
 			IEnumerable<IUnitModel> leftoverTargets = FilterByType(TargetTeam.Enemy);			
 			leftoverTargets = leftoverTargets.Where(ex => TargetConditions.MustBeAlive(ex, source));

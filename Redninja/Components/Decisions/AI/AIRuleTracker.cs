@@ -6,17 +6,17 @@ namespace Redninja.Components.Decisions.AI
 	internal class AIRuleTracker : IAIRuleTracker
 	{
 		private Dictionary<IAIRule, float> skillTimeUsed = new Dictionary<IAIRule, float>();
-		private IBattleModel battleModel;
+		private IBattleContext context;
 
-		public AIRuleTracker(IBattleModel battleModel)
+		public AIRuleTracker(IBattleContext context)
 		{
-			this.battleModel = battleModel;
+			this.context = context;
 		}
 
 		public void AddEntry(IAIRule rule, IBattleAction resolvedAction)
-			=> skillTimeUsed[rule] = battleModel.Time;
+			=> skillTimeUsed[rule] = context.BattleModel.Time;
 
 		public bool IsRuleReady(IAIRule rule)
-			=> !skillTimeUsed.ContainsKey(rule) || battleModel.Time - skillTimeUsed[rule] > rule.RefreshTime;
+			=> !skillTimeUsed.ContainsKey(rule) || context.BattleModel.Time - skillTimeUsed[rule] > rule.RefreshTime;
 	}
 }

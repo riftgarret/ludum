@@ -9,9 +9,5 @@ namespace Redninja.View
 		void OnBattleEventOccurred(ICombatEvent battleEvent);
 		void OnDecisionNeeded(IUnitModel entity);
 		void Resume();
-		void SetViewMode(IBaseCallbacks callbacks);
-		void SetViewMode(IActionsView actionsContext, ISkillsCallbacks callbacks);
-		void SetViewMode(IMovementView movementContext, IMovementCallbacks callbacks);
-		void SetViewMode(ITargetingView targetingContext, ITargetingCallbacks callbacks);
 	}
 }

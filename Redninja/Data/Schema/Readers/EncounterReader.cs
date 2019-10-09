@@ -17,7 +17,7 @@ namespace Redninja.Data.Schema.Readers
 				foreach(EncounterEnemy ee in es.Enemies)
 				{
 					Coordinate position = ParseHelper.ParseCoordinate(ee.Position);
-					AIBehavior behavior = manager.AIBehavior[ee.AiBehaviorId];
+					AIRuleSet behavior = manager.AIBehavior[ee.AiBehaviorId];
 					IUnit enemy = manager.NPCUnits[ee.CharacterId];
 					b.AddEnemy(enemy, position, behavior);
 				}

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Davfalcon.Revelator;
 using Redninja.Components.Clock;
 using Redninja.Components.Combat;
+using Redninja.Components.Decisions.AI;
+using Redninja.Components.Skills;
 
 namespace Redninja.Entities
 {
@@ -12,9 +15,12 @@ namespace Redninja.Entities
 		event Action<IBattleEntity> ActionNeeded;
 		event Action<IBattleEntity, IOperationSource> ActionSet;
 
-		void AddGrid(int team, Coordinate size);
+		void SetGrid(int team, Coordinate size);
 		void AddEntity(IBattleEntity entity);
 		void RemoveEntity(IBattleEntity entity);
 		void InitializeBattlePhase();
+
+		void AddPlayerCharacter(IUnit character, int team, Coordinate position, ISkillProvider skillProvider);
+		void AddAICharacter(IUnit character, int team, Coordinate position, AIRuleSet behavior, string nameOverride = null);
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Redninja;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,8 @@ public class BattleCharacterOverlayUI : MonoBehaviour
 	[SerializeField] private StatusEffectContainerUI statusEffectContainer;
 
 	private Image hpImage;
+
+	public IUnitModel Character { get; set; }
 
     // Start is called before the first frame update
     void Start()

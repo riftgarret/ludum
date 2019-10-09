@@ -1,14 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Davfalcon.Revelator;
 using Redninja.Components.Clock;
 using Redninja.Components.Combat;
+using Redninja.Components.Decisions;
+using Redninja.Components.Decisions.AI;
+using Redninja.Components.Skills;
 
 namespace Redninja.Entities
 {
 	internal class BattleEntityManager : IBattleEntityManager
 	{
-		private IClock clock;
+		private IBattleContext context;
+		private IClock clock;		
 		private readonly Dictionary<int, Coordinate> grids = new Dictionary<int, Coordinate>();
 		private readonly HashSet<IBattleEntity> entityMap = new HashSet<IBattleEntity>();
 
@@ -20,14 +25,41 @@ namespace Redninja.Entities
 		public event Action<IBattleEntity> ActionNeeded;
 		public event Action<IBattleEntity, IOperationSource> ActionSet;
 
-		public BattleEntityManager(IClock clock)
+		public BattleEntityManager(IBattleContext context)
 		{
-			SetClock(clock);
+			this.context = context;
+			SetClock(context.Clock);
+		}
+
+		public void AddPlayerCharacter(IUnit character, int teamId, Coordinate position, ISkillProvider skillProvider)
+		{
+			IBattleEntity entity = AddCharacter(character, teamId, position);
+			context.SystemProvider.SetSkillProvider(entity, skillProvider);
+		}
+
+		public void AddAICharacter(IUnit character, int teamId, Coordinate position, AIRuleSet aiBehavior, string nameOverride = null)
+		{
+			IBattleEntity entity = AddCharacter(character, teamId, position, nameOverride);
+			// TODO this should be attached to IUnit 
+			context.SystemProvider.SetSkillProvider(entity, new AISkillProvider(aiBehavior));
+			entity.SetAIBehavior(aiBehavior);
+		}
+
+		private IBattleEntity AddCharacter(IUnit character, int team, Coordinate position, string nameOverride = null)
+		{
+			BattleEntity entity = new BattleEntity(context, character)
+			{
+				Team = team
+			};
+			if (nameOverride != null) entity.SetNameOverride(nameOverride);
+			entity.MovePosition(position.Row, position.Column);
+			AddEntity(entity);
+			return entity;
 		}
 
 		public Coordinate GetGridSizeForTeam(int team) => grids[team];
 
-		public void AddGrid(int team, Coordinate size) => grids[team] = size;
+		public void SetGrid(int team, Coordinate size) => grids[team] = size;
 
 		public void AddEntity(IBattleEntity entity)
 		{

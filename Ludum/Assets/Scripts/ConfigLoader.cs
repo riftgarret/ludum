@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class ConfigLoader : MonoBehaviour
 {
-	public TextAsset config;
+	public string configPath;
 
 	void Awake()
 	{
@@ -20,8 +20,9 @@ public class ConfigLoader : MonoBehaviour
 	void todo() { 
 		BattleView view = GetComponent<BattleView>();
 
-		string path = AssetDatabase.GetAssetPath(config);
+		string path = Path.Combine(Application.streamingAssetsPath, configPath);
 		IDataManager dataManager = DataManagerFactory.Create(path);
+		
 
 		IBattlePresenter presenter = BattlePresenter.CreatePresenter(
 			view,

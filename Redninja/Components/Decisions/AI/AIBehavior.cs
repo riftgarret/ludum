@@ -1,39 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using Davfalcon.Builders;
+using Redninja.Components.Actions;
 
 namespace Redninja.Components.Decisions.AI
 {
-	public class AIBehavior
-	{		
-		public List<IAIRule> Rules { get; } = new List<IAIRule>();				
+	internal class AIBehavior : IAIBehavior
+	{
+		private AIExecutor aiExecutor;
 
-		public class Builder : IBuilder<AIBehavior>
+		public AIRuleSet RuleSet { get; }
+
+		public AIActionDecisionResult LastResult { get; private set; }
+
+		public AIBehavior(IBattleContext context, IUnitModel unit, AIRuleSet ruleSet)
 		{
-			private AIBehavior ruleSet;
+			RuleSet = ruleSet;
+			this.aiExecutor = new AIExecutor(context, unit, ruleSet, new AIRuleTracker(context));			
+		}		
 
-			public Builder() => Reset();
-
-			public Builder Reset()
-			{
-				ruleSet = new AIBehavior();
-				return this;
-			}
-
-			private Builder Self(Action<Builder> action)
-			{
-				action(this);
-				return this;
-			}
-
-			public void AddRule(IAIRule rule) => Self(x => ruleSet.Rules.Add(rule));
-
-			public AIBehavior Build()
-			{
-				AIBehavior builtSet = ruleSet;				
-				Reset();
-				return builtSet;
-			}
+		public IBattleAction DetermineAction()
+		{
+			LastResult = aiExecutor.ResolveAction();
+			return LastResult.Result;
 		}
+		
 	}
 }

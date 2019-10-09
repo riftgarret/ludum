@@ -1,7 +1,11 @@
-﻿namespace Redninja.Components.Decisions
+﻿using System.Collections.Generic;
+using Redninja.Components.Skills;
+
+namespace Redninja.Components.Decisions
 {
-	public interface IActionsContext : IActionsView
+	public interface IActionContext
 	{
-		// not sure if we need any control methods, this is mainly here for consistency
+		IUnitModel Entity { get; }
+		IEnumerable<ISkill> Skills { get; }
 	}
 }

@@ -16,7 +16,7 @@ namespace Redninja.Data
 
 		IEditableDataStore<IAIRule> AIRules { get; }
 
-		IEditableDataStore<AIBehavior> AIBehavior { get; }
+		IEditableDataStore<AIRuleSet> AIBehavior { get; }
 
 		IEditableDataStore<IAITargetCondition> AITargetCondition { get; }
 

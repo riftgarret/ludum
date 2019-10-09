@@ -117,6 +117,7 @@ namespace Redninja.Components.Actions
 			SetPhase(ActionPhase.Preparing);
 		}
 
+		// TODO is this necessary?
 		#region Clock binding
 		public void SetClock(IClock clock)
 		{
