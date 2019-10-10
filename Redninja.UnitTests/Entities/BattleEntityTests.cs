@@ -12,18 +12,19 @@ namespace Redninja.Entities.UnitTests
     {
         private BattleEntity subject;
         private IUnit mCharacter;
-        private IActionDecider mActionDecider;
         private MockClock clock;
 		private ICombatExecutor mCombatExecutor;
+		private IBattleContext mContext;
 
         [SetUp]
         public void Setup()
         {
+			mContext = Substitute.For<IBattleContext>();			
             clock = new MockClock();
             mCharacter = Substitute.For<IUnit>();
-			mActionDecider = Substitute.For<IActionDecider>();
 			mCombatExecutor = Substitute.For<ICombatExecutor>();
-            subject = new BattleEntity(mCharacter, mActionDecider, mCombatExecutor);
+			mContext.CombatExecutor.Returns(mCombatExecutor);
+			subject = new BattleEntity(mContext, mCharacter);
             subject.SetClock(clock);
         }
         

@@ -2,7 +2,7 @@
 {
 	public class CombatStatExpression : ParamExpressionBase
 	{
-		public CombatStatExpression(CombatStats combatStat, bool isPercent)
+		public CombatStatExpression(Stat combatStat, bool isPercent)
 		{
 			CombatStat = combatStat;
 			IsPercent = isPercent;
@@ -11,7 +11,7 @@
 		}
 
 		public ConditionTargetType TargetType { get; }
-		public CombatStats CombatStat { get; }
+		public Stat CombatStat { get; }
 		public bool IsPercent { get; }
 
 		private int GetPercent(IUnitModel model)

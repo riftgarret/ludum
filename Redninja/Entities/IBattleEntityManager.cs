@@ -8,7 +8,7 @@ using Redninja.Components.Skills;
 
 namespace Redninja.Entities
 {
-	internal interface IBattleEntityManager : IBattleModel, IClockSynchronized
+	public interface IBattleEntityManager : IBattleModel, IClockSynchronized
 	{
 		new IEnumerable<IBattleEntity> Entities { get; }
 

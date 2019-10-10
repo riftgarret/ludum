@@ -8,7 +8,7 @@
 
 		public static IAITargetCondition CreateCombatStatCondition(
 			int conditionalValue,
-			CombatStats combatStat,
+			Stat combatStat,
 			AIValueConditionOperator op,
 			AIConditionType conditionType)
 			=> new AICombatStatCondition(conditionalValue, combatStat, op, conditionType);

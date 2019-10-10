@@ -41,15 +41,15 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 			{
 				yield return new TestCaseData("AlwaysTrue", AIConditionFactory.AlwaysTrue);
 				yield return new TestCaseData("HP > 50", AIConditionFactory.CreateCombatStatCondition(
-					50, CombatStats.HP, AIValueConditionOperator.GT, AIConditionType.CombatStatCurrent));
+					50, Stat.HP, AIValueConditionOperator.GT, AIConditionType.CombatStatCurrent));
 				yield return new TestCaseData("Resource = 100%", AIConditionFactory.CreateCombatStatCondition(
-					100, CombatStats.Resource, AIValueConditionOperator.EQ, AIConditionType.CombatStatPercent));
+					100, Stat.Resource, AIValueConditionOperator.EQ, AIConditionType.CombatStatPercent));
 				yield return new TestCaseData("DEF <= 20", AIConditionFactory.CreateCombatStatCondition(
-					20, CombatStats.DEF, AIValueConditionOperator.LTE, AIConditionType.CombatStatCurrent));
+					20, Stat.DEF, AIValueConditionOperator.LTE, AIConditionType.CombatStatCurrent));
 				yield return new TestCaseData("HP >= 9%", AIConditionFactory.CreateCombatStatCondition(
-					9, CombatStats.HP, AIValueConditionOperator.GTE, AIConditionType.CombatStatPercent));
+					9, Stat.HP, AIValueConditionOperator.GTE, AIConditionType.CombatStatPercent));
 				yield return new TestCaseData("ATK < 99%", AIConditionFactory.CreateCombatStatCondition(
-					99, CombatStats.ATK, AIValueConditionOperator.LT, AIConditionType.CombatStatPercent));
+					99, Stat.ATK, AIValueConditionOperator.LT, AIConditionType.CombatStatPercent));
 			}
 		}
 

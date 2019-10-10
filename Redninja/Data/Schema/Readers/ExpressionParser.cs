@@ -32,7 +32,7 @@ namespace Redninja.Data.Schema.Readers
 			chainPattern = RegexPatternBuilder
 				.Begin()
 				.StartOptionSet()
-				.AddCapture(GROUP_COMBAT_STAT, $"(?:{GetEnumRegex(typeof(CombatStats))})%?")
+				.AddCapture(GROUP_COMBAT_STAT, $"(?:{GetEnumRegex(typeof(Stat))})%?")
 				.NextOption()
 				.AddCapture(GROUP_EXPGROUP, GetEnumRegex(typeof(GroupOp)))
 				.EndOptions()
@@ -117,7 +117,7 @@ namespace Redninja.Data.Schema.Readers
 			bool isPercent = percIndex > 0;
 			raw = isPercent ? raw.Substring(0, percIndex) : raw;
 
-			if (!Enum.TryParse(raw, true, out CombatStats stat)) return FalseWithLog($"Unable to parse combat stat from {raw}", out expression);
+			if (!Enum.TryParse(raw, true, out Stat stat)) return FalseWithLog($"Unable to parse combat stat from {raw}", out expression);
 
 			expression = new CombatStatExpression(stat, isPercent);
 			return true;

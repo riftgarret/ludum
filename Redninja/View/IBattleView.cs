@@ -5,9 +5,6 @@ namespace Redninja.View
 {
 	public interface IBattleView
 	{
-		void SetBattleModel(IBattleModel model);
 		void OnBattleEventOccurred(ICombatEvent battleEvent);
-		void OnDecisionNeeded(IUnitModel entity);
-		void Resume();
 	}
 }

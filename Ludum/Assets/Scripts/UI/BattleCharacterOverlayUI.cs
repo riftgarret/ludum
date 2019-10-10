@@ -1,33 +1,86 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Redninja;
+﻿using Redninja;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BattleCharacterOverlayUI : MonoBehaviour
 {
-	[SerializeField] private BarUI hpBar;
-	[SerializeField] private Text hpText;
-	[SerializeField] private BarUI resBar;
-	[SerializeField] private Text resText;
-	[SerializeField] private Text nameText;
-	[SerializeField] private BarUI actionBar;
-	[SerializeField] private RawImage actionIcon;
-	[SerializeField] private StatusEffectContainerUI statusEffectContainer;
+	[SerializeField] private BarUI hpBar = default;
+	[SerializeField] private Text hpText = default;
+	[SerializeField] private BarUI resBar = default;
+	[SerializeField] private Text resText = default;
+	[SerializeField] private Text nameText = default;
+	[SerializeField] private BarUI actionBar = default;
+	[SerializeField] private RawImage actionIcon = default;
+	[SerializeField] private StatusEffectContainerUI statusEffectContainer = default;
 
-	private Image hpImage;
+	public IUnitModel Unit {
+		get => unit;
+		set
+		{
+			unit = value;
+			InitCharacterUI(value);
+		}
+	}
+	private IUnitModel unit;
 
-	public IUnitModel Character { get; set; }
+	private void InitCharacterUI(IUnitModel unit)
+	{
+		nameText.text = Unit.Name;
+		switch (Unit.Phase)
+		{
+			case ActionPhase.Waiting:
+			case ActionPhase.Done:
+				actionBar.PercentFill = 0;
+				break;
+			case ActionPhase.Preparing:
+				actionBar.PercentFill = Unit.PhaseProgress;
+				break;
+			case ActionPhase.Executing:
+				actionBar.PercentFill = 1;
+				break;
+			case ActionPhase.Recovering:
+				actionBar.PercentFill = 1f - Unit.PhaseProgress;
+				break;
+		}
 
-    // Start is called before the first frame update
-    void Start()
-    {
-		
-    }
+		// TODO set icon and status effects.
+	}
 
-    // Update is called once per frame
+	private float GetPercentFill(Stat stat)
+	{
+		if (!Unit.VolatileStats.ContainsKey(stat)) return 1f;
+		return (float)Unit.VolatileStats[stat] / (float)Unit.Stats[stat];
+	}
+
+	private int TempGetVolatile(Stat stat) => Unit.VolatileStats.ContainsKey(stat)? Unit.VolatileStats[stat] : 90;
+    
     void Update()
     {
-        
-    }
+		if(Unit == null)
+		{
+			return;
+		}
+
+		hpBar.PercentFill = GetPercentFill(Stat.HP);
+		hpText.text = "" + TempGetVolatile(Stat.HP);
+		resBar.PercentFill = GetPercentFill(Stat.HP);
+		resText.text = "" + TempGetVolatile(Stat.Resource);
+		nameText.text = Unit.Name;
+		switch (Unit.Phase)
+		{
+			case ActionPhase.Waiting:
+			case ActionPhase.Done:
+				actionBar.PercentFill = 0;
+				break;
+			case ActionPhase.Preparing:
+				actionBar.PercentFill = Mathf.Lerp(actionBar.PercentFill, Unit.PhaseProgress, 0.5f);
+				break;
+			case ActionPhase.Executing:
+				actionBar.PercentFill = 1;
+				break;
+			case ActionPhase.Recovering:
+				actionBar.PercentFill = Mathf.Lerp(actionBar.PercentFill, 1f - Unit.PhaseProgress, 0.5f);
+				break;
+		}		
+	}
 }

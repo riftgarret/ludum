@@ -65,7 +65,7 @@ namespace Redninja.Data.Schema
 		public string Name { get; set; }
 		public int BaseDamage { get; set; }
 		public int CritMultiplier { get; set; }
-		public CombatStats? BonusDamageStat { get; set; }
+		public Stat? BonusDamageStat { get; set; }
 		Enum IDamageSource.BonusDamageStat => BonusDamageStat;
 		public List<DamageType> DamageTypes { get; set; }
 		IEnumerable<Enum> IDamageSource.DamageTypes => DamageTypes.Select(t => t as Enum);

@@ -104,7 +104,7 @@ namespace Redninja.Data.Schema.Readers
 			condition = null;
 			if (!match.Success) return false;					
 				
-			if (!Enum.TryParse<CombatStats>(match.Groups["stat"].Value, out CombatStats stats)) return false;
+			if (!Enum.TryParse<Stat>(match.Groups["stat"].Value, out Stat stats)) return false;
 			if (!TryParseOperatorType(match.Groups["op"].Value, out AIValueConditionOperator op)) return false;
 			if (!int.TryParse(match.Groups["val"].Value, out int value)) return false;
 			AIConditionType condType = match.Groups["perc"].Value.Equals("%") ? 

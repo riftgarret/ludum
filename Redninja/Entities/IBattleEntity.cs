@@ -9,7 +9,7 @@ using Redninja.Components.Decisions.AI;
 
 namespace Redninja.Entities
 {
-	internal interface IBattleEntity : IUnitModel, IClockSynchronized
+	public interface IBattleEntity : IUnitModel, IClockSynchronized
 	{	
 		event Action<IBattleEntity> ActionNeeded;
 		event Action<IBattleEntity, IOperationSource> ActionSet;

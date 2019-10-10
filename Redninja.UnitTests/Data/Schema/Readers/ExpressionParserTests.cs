@@ -36,7 +36,7 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 		}
 
 		[Test]
-		public void TryParseExpression_CombatStat([Values] CombatStats stat, [Values] bool hasPercent)
+		public void TryParseExpression_CombatStat([Values] Stat stat, [Values] bool hasPercent)
 		{
 			string input = stat.ToString() + (hasPercent ? "%" : "");
 

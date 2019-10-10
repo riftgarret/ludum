@@ -16,7 +16,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			entities = new List<IUnitModel>();
 		}
 
-		private IUnitModel AddUnit(CombatStats stat, int volValue = 5, int statValue = 10)
+		private IUnitModel AddUnit(Stat stat, int volValue = 5, int statValue = 10)
 		{
 			var entity = Substitute.For<IUnitModel>();
 			entities.Add(entity);
@@ -37,7 +37,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			int expectedIndex)
 		{
 
-			CombatStats stat = CombatStats.HP;
+			Stat stat = Stat.HP;
 			AIPriorityType type = AIPriorityType.CombatStatCurrent;
 
 			AddUnit(stat, vol1);
@@ -60,7 +60,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			int vol3, int stat3,
 			int expectedIndex)
 		{
-			CombatStats stat = CombatStats.HP;
+			Stat stat = Stat.HP;
 			AITargetingPriorityQualifier qualifier = AITargetingPriorityQualifier.Highest;
 
 			AddUnit(stat, vol1, stat1);

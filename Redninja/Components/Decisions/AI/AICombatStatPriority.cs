@@ -5,13 +5,13 @@ namespace Redninja.Components.Decisions.AI
 {
 	public class AICombatStatPriority : IAITargetPriority
 	{
-		public CombatStats CombatStat { get; }
+		public Stat CombatStat { get; }
 
 		public AITargetingPriorityQualifier Qualifier { get; }
 
 		public AIPriorityType PriorityType { get; }
 
-		public AICombatStatPriority(CombatStats combatStat,
+		public AICombatStatPriority(Stat combatStat,
 			AITargetingPriorityQualifier qualifier,
 			AIPriorityType priorityType)
 		{

@@ -17,14 +17,12 @@ namespace Redninja.Presenter
 	/// </summary>
 	public class BattlePresenter : IBattlePresenter
 	{
-		private readonly IBattleContext context;
-		private readonly IKernel kernel;
+		private readonly IBattleContext context;		
 		private readonly DataManager dataManager;
 		private readonly Clock clock;
 		private IBattleView view;
 		private readonly ICombatExecutor combatExecutor;
 		private readonly IBattleEntityManager entityManager;		
-		private readonly ProcessingQueue<IBattleEntity> decisionQueue;
 		private readonly IBattleEventProcessor entityEventTriggerProcessor;
 		private readonly PriorityProcessingQueue<float, IBattleOperation> battleOpQueue;
 		private readonly SystemProvider systemProvider;
@@ -42,10 +40,10 @@ namespace Redninja.Presenter
 		/// </summary>
 		public bool TimeActive => State == GameState.Active && !RequiresInput;		
 
-		public BattlePresenter(IBattleContext context)
+		public BattlePresenter(IBattleContext context, IBattleView view)
 		{
 			this.context = context;
-			context.Bind<IBattlePresenter>(this);
+			this.view = view;			
 
 			dataManager = context.Get<DataManager>();
 			combatExecutor = context.Get<ICombatExecutor>();
@@ -56,32 +54,23 @@ namespace Redninja.Presenter
 
 			battleOpQueue = new PriorityProcessingQueue<float, IBattleOperation>(op =>
 				op.Execute(entityManager, combatExecutor));
+					
+			entityManager.InitializeBattlePhase();
 
 			BindEvents();
-
-			view.SetBattleModel(entityManager);
 		}
 
 		private void BindEvents()
 		{
-			entityManager.ActionNeeded += decisionQueue.Enqueue;
+		//	entityManager.ActionNeeded += decisionQueue.Enqueue;
 			entityManager.ActionSet += (e, action) => action.BattleOperationReady += battleOpQueue.Enqueue;
-			combatExecutor.BattleEventOccurred += e => BattleEventOccurred?.Invoke(e);
+			combatExecutor.BattleEventOccurred += e => BattleEventOccurred?.Invoke(e);			
+			combatExecutor.BattleEventOccurred += entityEventTriggerProcessor.ProcessEvent;
 			combatExecutor.BattleEventOccurred += view.OnBattleEventOccurred;
-			combatExecutor.BattleEventOccurred += entityEventTriggerProcessor.ProcessEvent;			
 		}
 
-		#region Control
-		/// <summary>
-		/// Initialize presenter to load up views and prepare for lifecycle calls.
-		/// </summary>
-		public void Initialize(IBattleView view)
-		{
-			this.view = view;
-			entityManager.InitializeBattlePhase();			
-		}
-
-		public void Start()
+		#region Control	
+		public void Play()
 		{
 			State = GameState.Active;
 		}
@@ -91,7 +80,7 @@ namespace Redninja.Presenter
 			State = GameState.Paused;
 		}
 
-		private bool RequiresInput => entityManager.Entities.Any(x => RequiresInput);
+		private bool RequiresInput => entityManager.Entities.Any(x => x.RequiresAction);
 
 		/// <summary>
 		/// Update game clock. This drives the presenter.
@@ -106,15 +95,11 @@ namespace Redninja.Presenter
 
 			// The queue contains operations that already triggered, so we always want to process this
 			battleOpQueue.Process();
-
-			// Process any pending decisions until we need to wait for one
-			decisionQueue.ProcessWhile(() => TimeActive);
 		}
 
 		public void Dispose()
 		{
-			entityManager.Dispose();
-			kernel.Dispose();
+			entityManager.Dispose();			
 		}
 		#endregion
 	}

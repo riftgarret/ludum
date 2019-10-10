@@ -6,7 +6,7 @@ using Redninja.Components.Combat.Events;
 
 namespace Redninja.Components.Combat
 {
-	internal class CombatExecutor : ICombatExecutor
+	public class CombatExecutor : ICombatExecutor
 	{
 		private readonly ICombatResolver resolver;
 

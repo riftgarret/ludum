@@ -6,7 +6,7 @@ using NUnit.Framework;
 using Redninja.Components.Actions;
 using Redninja.Components.Targeting;
 using Redninja.Entities;
-
+using static Redninja.Components.Decisions.AI.AIActionDecisionResult;
 
 namespace Redninja.Components.Decisions.AI.UnitTests
 {
@@ -159,7 +159,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			subject.When(x => x.FilterByType(Arg.Any<TargetTeam>())).DoNotCallBase();
 			subject.FilterByType(Arg.Any<TargetTeam>()).Returns(x => originalEntities);
 
-			var result = subject.GetValidSkillTargets(mRule, mTargetingRule);
+			var result = subject.GetValidSkillTargets(new SkillEval(), mRule, mTargetingRule);
 
 			Assert.That(result, Is.EquivalentTo(expectedEntities));
 		}

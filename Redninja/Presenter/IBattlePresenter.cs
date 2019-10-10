@@ -5,8 +5,8 @@ namespace Redninja.Presenter
 {
 	public interface IBattlePresenter : IDisposable
 	{
-		void IncrementGameClock(float timeDelta);
-		void Initialize(IBattleView view);
-		void Start();
+		void IncrementGameClock(float timeDelta);		
+		void Play();
+		void Pause();
 	}
 }

@@ -316,19 +316,19 @@
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="Davfalcon">
-      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Davfalcon.dll</HintPath>
+      <HintPath>E:/unity/ludum/Ludum/Assets/Plugins/Davfalcon.dll</HintPath>
     </Reference>
     <Reference Include="Davfalcon.Revelator">
-      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Davfalcon.Revelator.dll</HintPath>
+      <HintPath>E:/unity/ludum/Ludum/Assets/Plugins/Davfalcon.Revelator.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Newtonsoft.Json.dll</HintPath>
+      <HintPath>E:/unity/ludum/Ludum/Assets/Plugins/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Ninject">
-      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Ninject.dll</HintPath>
+      <HintPath>E:/unity/ludum/Ludum/Assets/Plugins/Ninject.dll</HintPath>
     </Reference>
     <Reference Include="Redninja">
-      <HintPath>E:/unity/ludum/Ludum/Assets/Modules/Redninja.dll</HintPath>
+      <HintPath>E:/unity/ludum/Ludum/Assets/Plugins/Redninja.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Advertisements">
       <HintPath>E:/unity/ludum/Ludum/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>

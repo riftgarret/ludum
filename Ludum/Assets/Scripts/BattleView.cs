@@ -4,69 +4,41 @@ using System.Collections.Generic;
 using Redninja;
 using Redninja.Components.Combat.Events;
 using Redninja.Components.Decisions;
+using Redninja.Presenter;
 using Redninja.View;
 using UnityEngine;
 
 public class BattleView : MonoBehaviour, IBattleView
 {
-	private IBattleModel model;
-	private IUnitModel waiting;
 
-	private Action checkActionNeeded;
-	private Action drawUnitActions;
-	private Action drawTargeting;
+	[SerializeField] private CharacterOverlayContainer characterContainer = default;
+	[SerializeField] private CharacterOverlayContainer enemyContainer = default;
+
+	private IBattleContext context;
+	private IBattlePresenter presenter;
 
 	public void OnBattleEventOccurred(ICombatEvent battleEvent)
 	{
-		throw new System.NotImplementedException();
+		Debug.Log(battleEvent);
 	}
 
-	public void OnDecisionNeeded(IUnitModel entity)
+	public void Initialize(IBattleContext context)
 	{
-		throw new System.NotImplementedException();
+		this.context = context;
+		this.presenter = new BattlePresenter(context, this);
+
+		foreach (var unit in context.BattleModel.Entities)
+		{
+			var targetContainer = (unit.Team == 1) ? enemyContainer : characterContainer;
+			targetContainer.AddCharacter(unit);
+		}
+
+		presenter.Play();
 	}
 
-	public void Resume()
+	void Update()
 	{
-		throw new System.NotImplementedException();
+		if (presenter == null) return;
+		presenter.IncrementGameClock(Time.deltaTime);
 	}
-
-	public void SetBattleModel(IBattleModel model)
-	{
-		this.model = model;
-	}
-
-	public void SetViewMode(IBaseCallbacks callbacks)
-	{
-		throw new System.NotImplementedException();
-	}
-
-	public void SetViewMode(IActionsView actionsContext, ISkillsCallbacks callbacks)
-	{
-		throw new System.NotImplementedException();
-	}
-
-	public void SetViewMode(IMovementView movementContext, IMovementCallbacks callbacks)
-	{
-		throw new System.NotImplementedException();
-	}
-
-	public void SetViewMode(ITargetingView targetingContext, ITargetingCallbacks callbacks)
-	{
-		throw new System.NotImplementedException();
-	}
-
-	// Start is called before the first frame update
-	void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
 }

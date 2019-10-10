@@ -110,7 +110,9 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetDir)*.dll" "$(ProjectDir)..\Ludum\Assets\Modules"</PostBuildEvent>
+    <PostBuildEvent>cd $(TargetDir)
+"C:\Program Files\Unity\Hub\Editor\2019.2.8f1\Editor\Data\MonoBleedingEdge\bin\mono" "C:\Program Files\Unity\Hub\Editor\2019.2.8f1\Editor\Data\MonoBleedingEdge\lib\mono\4.5\pdb2mdb.exe" $(TargetFileName)
+copy "$(TargetFileName)*" "$(ProjectDir)..\Ludum\Assets\Plugins"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

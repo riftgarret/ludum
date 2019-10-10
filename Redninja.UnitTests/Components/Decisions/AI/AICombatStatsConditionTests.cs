@@ -39,7 +39,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			int value = 50;
 			int volatileValue = value + deltaFromValue;
 
-			CombatStats stat = CombatStats.HP;
+			Stat stat = Stat.HP;
 			AIConditionType type = AIConditionType.CombatStatCurrent;
 
 			mEntity.VolatileStats[stat].Returns(volatileValue);
@@ -66,7 +66,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			bool expected)
 		{			
 
-			CombatStats stat = CombatStats.HP;
+			Stat stat = Stat.HP;
 			AIValueConditionOperator op = AIValueConditionOperator.EQ;
 
 			mEntity.Stats[stat].Returns(statValue);

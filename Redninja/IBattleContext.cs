@@ -1,4 +1,5 @@
-﻿using Ninject;
+﻿using System;
+using Ninject;
 using Redninja.Components.Clock;
 using Redninja.Components.Combat;
 using Redninja.Data;
@@ -7,15 +8,14 @@ using Redninja.System;
 
 namespace Redninja
 {
-	public interface IBattleContext
+	public interface IBattleContext : IDisposable
 	{
 		IClock Clock { get; }
 		ISystemProvider SystemProvider { get; }
 		IBattleModel BattleModel { get; }
 		IDataManager DataManager { get; }			
 		ICombatExecutor CombatExecutor { get; }
-		T Get<T>() where T : class;
-		void Bind<T>(T obj) where T : class;
+		T Get<T>() where T : class;	
 	}
 
 	public class BattleContext : IBattleContext
@@ -35,6 +35,8 @@ namespace Redninja
 			kernel.Bind<IBattleEventProcessor>().To<EntityBattleEventProcessor>().InSingletonScope();									
 		}
 
+		
+
 		public IClock Clock => Get<Clock>();
 
 		public ISystemProvider SystemProvider => Get<ISystemProvider>();
@@ -47,6 +49,8 @@ namespace Redninja
 
 		// TODO remove as unncessary
 		public void Bind<T>(T obj) where T : class => kernel.Bind<T>().ToConstant(obj);
+
+		public void Dispose() => kernel.Dispose();
 
 		public T Get<T>() where T : class => kernel.Get<T>();		
 	}

@@ -197,7 +197,7 @@
     <Compile Include="Components\Targeting\TargetPatternFactory.cs" />
     <Compile Include="Components\Targeting\TargetTeam.cs" />
     <Compile Include="Components\Targeting\TargetType.cs" />
-    <Compile Include="CombatStats.cs" />
+    <Compile Include="StatDefinitions.cs" />
     <Compile Include="Components\Actions\ActionTime.cs" />
     <Compile Include="Components\Skills\ISkill.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -271,6 +271,8 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetDir)*.dll" "$(ProjectDir)..\Ludum\Assets\Modules"</PostBuildEvent>
+    <PostBuildEvent>cd $(TargetDir)
+"C:\Program Files\Unity\Hub\Editor\2019.2.8f1\Editor\Data\MonoBleedingEdge\bin\mono" "C:\Program Files\Unity\Hub\Editor\2019.2.8f1\Editor\Data\MonoBleedingEdge\lib\mono\4.5\pdb2mdb.exe" $(TargetFileName)
+copy "$(TargetFileName)*" "$(ProjectDir)..\Ludum\Assets\Plugins"</PostBuildEvent>
   </PropertyGroup>
 </Project>

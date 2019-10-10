@@ -6,14 +6,14 @@ namespace Redninja.Components.Decisions.AI
 	{
 		public int ConditionalValue { get; }
 
-		public CombatStats CombatStat { get; }
+		public Stat CombatStat { get; }
 
 		public AIValueConditionOperator Op { get; }
 
 		public AIConditionType ConditionType { get; }
 
 		public AICombatStatCondition(int conditionalValue,
-			CombatStats combatStat,
+			Stat combatStat,
 			AIValueConditionOperator op,
 			AIConditionType conditionType)
 		{
