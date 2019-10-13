@@ -61,9 +61,13 @@
     <Compile Include="Components\Decisions\AI\AIRuleTracker.cs" />
     <Compile Include="Components\Decisions\AI\IAIAttackRule.cs" />
     <Compile Include="Components\Decisions\AI\IAISkillRule.cs" />
+    <Compile Include="Components\Decisions\EntityTargetSpec.cs" />
     <Compile Include="Components\Decisions\IActionContextProvider.cs" />
     <Compile Include="Components\Decisions\IActionProvider.cs" />
     <Compile Include="Components\Combat\IOperationSource.cs" />
+    <Compile Include="Components\Decisions\ITargetSpec.cs" />
+    <Compile Include="Components\Decisions\PatternTargetSpec.cs" />
+    <Compile Include="Components\Decisions\TargetSpec.cs" />
     <Compile Include="Components\Equipment\IEquipment.cs" />
     <Compile Include="Components\Properties\ITriggerCondition.cs" />
     <Compile Include="Components\Skills\AISkillProvider.cs" />
@@ -146,11 +150,10 @@
     <Compile Include="Presenter\ProcessingQueue%28T%29.cs" />
     <Compile Include="Components\Decisions\IMovementView.cs" />
     <Compile Include="Components\Decisions\IMovementContext.cs" />
-    <Compile Include="Components\Decisions\ITargetingView.cs" />
     <Compile Include="Components\Decisions\ITargetingContext.cs" />
     <Compile Include="Components\Decisions\MovementContext.cs" />
     <Compile Include="Components\Decisions\SkillSelectionContext.cs" />
-    <Compile Include="Components\Decisions\SkillTargetingContext.cs" />
+    <Compile Include="Components\Decisions\TargetingContext.cs" />
     <Compile Include="Components\Combat\CombatExecutor.cs" />
     <Compile Include="Components\Decisions\DecisionHelper.cs" />
     <Compile Include="Components\Combat\Events\DamageEvent.cs" />

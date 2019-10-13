@@ -148,20 +148,23 @@ namespace Redninja.Components.Decisions.AI
 				skillEval.SkillEvaluated = true;
 
 				// look for available targets
-				ITargetingContext targetMeta = acp.GetTargetingContext(skill);
-
-				// found!				
-				while (TryFindSkillTarget(skillEval, rule, targetMeta, out ISelectedTarget selectedTarget))
+				ITargetingContext targetMeta = acp.GetTargetingContext(skill);				
+				foreach(ITargetSpec spec in targetMeta.TargetSpecs)
 				{
-					targetMeta.SelectTarget(selectedTarget);
+					// currently we only support targeting entities.
+					if (!(spec is EntityTargetSpec)) {
+						throw new NotImplementedException("Missing impl for non-entity target spec");
+					}
 
-					if (targetMeta.Ready)
+					if (!TryFindSkillTarget(skillEval, rule, (EntityTargetSpec)spec)) break;
+
+					if(targetMeta.IsReady)
 					{
 						action = targetMeta.GetAction();
 						skillEval.SkillResolved = true;
 						return true;
 					}
-				}
+				}				
 
 				skillEval.SkillResolved = false;
 			}
@@ -173,25 +176,20 @@ namespace Redninja.Components.Decisions.AI
 			=> meta.Skills.Intersect(rule.SkillAssignments.Select(x => x.Item2));
 
 
-		internal virtual bool TryFindSkillTarget(SkillEval skillEval, IAISkillRule rule, ITargetingContext meta, out ISelectedTarget selectedTarget)
+		internal virtual bool TryFindSkillTarget(SkillEval skillEval, IAISkillRule rule, EntityTargetSpec targetSpec)
 		{
 			// filter targets
-			IEnumerable<IUnitModel> filteredTargets = GetValidSkillTargets(skillEval, rule, meta.TargetingRule);
+			IEnumerable<IUnitModel> filteredTargets = GetValidSkillTargets(skillEval, rule, targetSpec.TargetRule);
 
-			if (filteredTargets.Count() == 0)
-			{
-				selectedTarget = null;
-				return false; // didnt find any valid targets
-			}
+			if (filteredTargets.Count() == 0) return false; // didnt find any valid targets			
 
 			// TODO track meta for selecting target
-			
-			// select best target
-			IAITargetPriority targetPriority = rule.SkillAssignments.FirstOrDefault(x => x.Item2 == meta.Skill).Item1;
-			IUnitModel entityTarget = targetPriority.GetBestTarget(filteredTargets);
 
-			// convert into ISelectedTarget
-			selectedTarget = meta.GetSelectedTarget(entityTarget);
+			// select best target
+			IAITargetPriority targetPriority = rule.SkillAssignments.FirstOrDefault(x => x.Item2 == targetSpec.Skill).Item1;
+			IUnitModel selectedTarget = targetPriority.GetBestTarget(filteredTargets);
+
+			targetSpec.SelectTarget(selectedTarget);			
 			return true;
 		}
 
@@ -235,10 +233,11 @@ namespace Redninja.Components.Decisions.AI
 			}
 
 			IUnitModel entityTarget = rule.TargetPriority.GetBestTarget(leftoverTargets);
-			ISelectedTarget selectedTarget = targetMeta.GetSelectedTarget(entityTarget);
+			//ISelectedTarget selectedTarget = targetMeta.GetSelectedTarget(entityTarget);
 
-			targetMeta.SelectTarget(selectedTarget);
-			action = targetMeta.GetAction();
+			//targetMeta.SelectTarget(selectedTarget);
+			//action = targetMeta.GetAction();
+			action = null;
 			return true;
 		}
 

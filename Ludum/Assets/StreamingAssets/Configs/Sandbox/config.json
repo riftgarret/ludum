@@ -1,8 +1,0 @@
-﻿{
-  "skillsPath": "Assets/StreamingAssets/Configs/Sandbox/skills.json",
-  "aiRulesPath": "Assets/StreamingAssets/Configs/Sandbox/ai_rules.json",
-  "aiBehaviorsPath": "Assets/StreamingAssets/Configs/Sandbox/ai_behaviors.json",
-  "charactersPath": "Assets/StreamingAssets/Configs/Sandbox/characters.json",
-  "encountersPath": "Assets/StreamingAssets/Configs/Sandbox/encounters.json",
-  "classesPath": "Assets/StreamingAssets/Configs/Sandbox/classes.json"
-}

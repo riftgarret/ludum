@@ -150,7 +150,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 785824476}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -194,7 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f37335ea14ccd748b1bd4b74324d481, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterOverlayPrefab: {fileID: 1025486036012818643, guid: 2498f3d0d7b44c942b5a6afb13fa8730,
+  characterOverlayPrefab: {fileID: 1025486036012818643, guid: 2498f3d0d7b44c942b5a6afb13fa8730,
     type: 3}
 --- !u!1 &337618587
 GameObject:
@@ -273,6 +273,7 @@ GameObject:
   - component: {fileID: 343123221}
   - component: {fileID: 343123220}
   - component: {fileID: 343123222}
+  - component: {fileID: 343123223}
   m_Layer: 0
   m_Name: BattleSystem
   m_TagString: Untagged
@@ -292,7 +293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a09ed21fe57e2a34db28a2cc1a693cff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  configPath: Configs/Sandbox/config.json
+  configPath: configs/config.json
 --- !u!4 &343123221
 Transform:
   m_ObjectHideFlags: 0
@@ -321,6 +322,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterContainer: {fileID: 34286298}
   enemyContainer: {fileID: 858120706}
+--- !u!114 &343123223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343123219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 115730d298f18854ba6d03ff48ae7f22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiCanvas: {fileID: 785824475}
+  skillOverlayContainerPrefab: {fileID: 8286399816966811243, guid: d50a86aa4c271864cb463302a7275d5a,
+    type: 3}
+  proceedButton: {fileID: 0}
 --- !u!1 &417140680
 GameObject:
   m_ObjectHideFlags: 0
@@ -636,10 +653,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1280, y: 720}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -678,8 +695,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 34286296}
   - {fileID: 858120704}
+  - {fileID: 34286296}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -718,7 +735,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 785824476}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -762,7 +779,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f37335ea14ccd748b1bd4b74324d481, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterOverlayPrefab: {fileID: 1025486036012818643, guid: 2498f3d0d7b44c942b5a6afb13fa8730,
+  characterOverlayPrefab: {fileID: 1025486036012818643, guid: 2498f3d0d7b44c942b5a6afb13fa8730,
     type: 3}
 --- !u!1 &2144993607
 GameObject:

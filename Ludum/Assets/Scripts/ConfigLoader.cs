@@ -90,7 +90,7 @@ public class ConfigLoader : MonoBehaviour
 			.SetBaseStat(CalculatedStat.HP, 100) // for now
 			.SetBaseStat(CalculatedStat.Resource, 100)
 			.SetBaseStat(Stat.ATK, 50)
-			.SetBaseStat(Stat.DEF, 10)
+			.SetBaseStat(Stat.DEF, 10)			
 			.AddEquipmentSlot(EquipmentType.Weapon)
 			.AddEquipment(Sword));
 

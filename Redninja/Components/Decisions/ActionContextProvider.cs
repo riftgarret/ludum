@@ -20,6 +20,6 @@ namespace Redninja.Components.Decisions
 			=> new MovementContext(unit, context.BattleModel);
 
 		public ITargetingContext GetTargetingContext(ISkill skill)
-			=> new SkillTargetingContext(unit, skill, context.BattleModel);
+			=> new TargetingContext(unit, skill, context.BattleModel);
 	}
 }

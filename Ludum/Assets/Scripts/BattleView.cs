@@ -8,14 +8,16 @@ using Redninja.Presenter;
 using Redninja.View;
 using UnityEngine;
 
+[RequireComponent(typeof(ActionModeBehavior))]
 public class BattleView : MonoBehaviour, IBattleView
 {
 
 	[SerializeField] private CharacterOverlayContainer characterContainer = default;
 	[SerializeField] private CharacterOverlayContainer enemyContainer = default;
-
+		
 	private IBattleContext context;
 	private IBattlePresenter presenter;
+	private ActionModeBehavior actionModeBehavior;
 
 	public void OnBattleEventOccurred(ICombatEvent battleEvent)
 	{
@@ -36,9 +38,25 @@ public class BattleView : MonoBehaviour, IBattleView
 		presenter.Play();
 	}
 
-	void Update()
+	void Awake()
 	{
-		if (presenter == null) return;
-		presenter.IncrementGameClock(Time.deltaTime);
+		actionModeBehavior = GetComponent<ActionModeBehavior>();
+		characterContainer.OnCharacterOverlaySelected += HandleCharacterSelected;
+		enemyContainer.OnCharacterOverlaySelected += HandleCharacterSelected;
 	}
+
+	void OnDestroy()
+	{
+		characterContainer.OnCharacterOverlaySelected -= HandleCharacterSelected;
+		enemyContainer.OnCharacterOverlaySelected -= HandleCharacterSelected;
+	}
+
+	void Update() => presenter.IncrementGameClock(Time.deltaTime);
+
+	private void HandleCharacterSelected(BattleCharacterOverlayUI ui) => actionModeBehavior.OnCharacterSelected(ui.Unit);
+
+	private void HandleEnemySelected(BattleCharacterOverlayUI ui) => actionModeBehavior.OnCharacterSelected(ui.Unit);
+
+
+
 }

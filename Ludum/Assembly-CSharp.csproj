@@ -65,9 +65,12 @@
     <Compile Include="Assets\Scripts\BattleSystemBehavior.cs" />
     <Compile Include="Assets\Scripts\BattleView.cs" />
     <Compile Include="Assets\Scripts\ConfigLoader.cs" />
+    <Compile Include="Assets\Scripts\UI\ActionModeBehavior.cs" />
     <Compile Include="Assets\Scripts\UI\BarUI.cs" />
     <Compile Include="Assets\Scripts\UI\BattleCharacterOverlayUI.cs" />
     <Compile Include="Assets\Scripts\UI\CharacterOverlayContainer.cs" />
+    <Compile Include="Assets\Scripts\UI\SkillItemUI.cs" />
+    <Compile Include="Assets\Scripts\UI\SkillSelectionContainerUI.cs" />
     <Compile Include="Assets\Scripts\UI\StatusEffectContainerUI.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>E:/unity/ludum/Ludum/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>

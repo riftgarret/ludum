@@ -1,8 +1,10 @@
-﻿using Redninja;
+﻿using System;
+using Redninja;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class BattleCharacterOverlayUI : MonoBehaviour
+public class BattleCharacterOverlayUI : MonoBehaviour, IPointerClickHandler
 {
 	[SerializeField] private BarUI hpBar = default;
 	[SerializeField] private Text hpText = default;
@@ -12,6 +14,8 @@ public class BattleCharacterOverlayUI : MonoBehaviour
 	[SerializeField] private BarUI actionBar = default;
 	[SerializeField] private RawImage actionIcon = default;
 	[SerializeField] private StatusEffectContainerUI statusEffectContainer = default;
+
+	public event Action<BattleCharacterOverlayUI> OnCharacterSelected;
 
 	public IUnitModel Unit {
 		get => unit;
@@ -83,4 +87,6 @@ public class BattleCharacterOverlayUI : MonoBehaviour
 				break;
 		}		
 	}
+
+	public void OnPointerClick(PointerEventData eventData) => OnCharacterSelected?.Invoke(this);
 }

@@ -157,6 +157,12 @@ namespace Redninja.Entities
 			{
 				ActionNeeded?.Invoke(this);
 				// If we add an action queue, pop the completed action off here
+
+				if(AIBehavior != null)
+				{
+					var action = AIBehavior.DetermineAction();
+					SetAction(action);
+				}
 			}
 		}
 

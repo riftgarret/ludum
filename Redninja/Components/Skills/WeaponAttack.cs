@@ -16,7 +16,7 @@ namespace Redninja.Components.Skills
 		public IEnumerable<IWeapon> Weapons { get; private set; }
 		public IReadOnlyList<SkillTargetingSet> Targets { get; private set; }
 
-		public IBattleAction GetAction(IUnitModel entity, ISelectedTarget[] targets)
+		public IBattleAction GetAction(IUnitModel entity, List<ISelectedTarget> targets)
 		{
 			int n = weapons.Count;
 			float interval = 1f / n;
