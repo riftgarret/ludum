@@ -5,7 +5,7 @@ namespace Redninja.Components.Decisions
 {
 	public interface IActionContext
 	{
-		IUnitModel Entity { get; }
+		IBattleEntity Entity { get; }
 		IEnumerable<ISkill> Skills { get; }
 	}
 }

@@ -7,13 +7,13 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 	public class AICombatStatsConditionTests
 	{
 
-		private IUnitModel mEntity;
+		private IBattleEntity mEntity;
 		private AICombatStatCondition subject;
 
 		[SetUp]
 		public void Setup()
 		{
-			mEntity = Substitute.For<IUnitModel>();
+			mEntity = Substitute.For<IBattleEntity>();
 		}
 
 		[TestCase(AIValueConditionOperator.EQ, 1, false)]

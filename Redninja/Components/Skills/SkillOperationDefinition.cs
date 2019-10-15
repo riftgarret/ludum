@@ -26,7 +26,7 @@ namespace Redninja.Components.Skills
 				this.target = target;
 			}
 
-			public IBattleOperation Resolve(IUnitModel entity)
+			public IBattleOperation Resolve(IBattleEntity entity)
 			{
 				Resolved = true;
 				return definition.operationProvider(entity, target, definition.args);

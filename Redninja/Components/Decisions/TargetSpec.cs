@@ -10,7 +10,7 @@ namespace Redninja.Components.Decisions
 {
 	public abstract class TargetSpec : ITargetSpec
 	{
-		protected IUnitModel source;		
+		protected IBattleEntity source;		
 		protected IBattleModel battleModel;
 
 		public SkillTargetingSet TargetingSet { get; protected set; }
@@ -27,7 +27,7 @@ namespace Redninja.Components.Decisions
 
 		public ISkill Skill { get; protected set; }
 
-		public static ITargetSpec CreateSpec(SkillTargetingSet set, IUnitModel source, ISkill skill, IBattleModel model)
+		public static ITargetSpec CreateSpec(SkillTargetingSet set, IBattleEntity source, ISkill skill, IBattleModel model)
 		{
 			TargetSpec spec;
 			switch (set.TargetingRule.Type)

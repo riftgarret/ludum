@@ -5,15 +5,15 @@ namespace Redninja.Components.Conditions.Expressions
 {
 	internal class ExpressionEnv : IExpressionEnv
 	{
-		private IUnitModel self;
-		private IUnitModel target;
-		private IUnitModel source;
+		private IBattleEntity self;
+		private IBattleEntity target;
+		private IBattleEntity source;
 		private IBattleModel battleModel;
 		private ICombatEvent battleEvent;
 
-		public IUnitModel Self => ReturnOrThrow(self, "SELF");
-		public IUnitModel Source => ReturnOrThrow(source, "SOURCE");
-		public IUnitModel Target => ReturnOrThrow(self, "TARGET");
+		public IBattleEntity Self => ReturnOrThrow(self, "SELF");
+		public IBattleEntity Source => ReturnOrThrow(source, "SOURCE");
+		public IBattleEntity Target => ReturnOrThrow(self, "TARGET");
 		public IBattleModel BattleModel => ReturnOrThrow(battleModel, "BATTLE");
 		public ICombatEvent BattleEvent => ReturnOrThrow(battleEvent, "EVENT");
 
@@ -27,7 +27,7 @@ namespace Redninja.Components.Conditions.Expressions
 			return item;
 		}
 
-		public static ExpressionEnv From(IBattleModel model, IUnitModel self, IUnitModel target)
+		public static ExpressionEnv From(IBattleModel model, IBattleEntity self, IBattleEntity target)
 		{
 			ExpressionEnv env = new ExpressionEnv();
 			env.self = self;
@@ -36,7 +36,7 @@ namespace Redninja.Components.Conditions.Expressions
 			return env;
 		}
 
-		public static ExpressionEnv From(IBattleModel model, IUnitModel self, ICombatEvent battleEvent)
+		public static ExpressionEnv From(IBattleModel model, IBattleEntity self, ICombatEvent battleEvent)
 		{
 			ExpressionEnv env = new ExpressionEnv();
 			env.source = battleEvent.Source;

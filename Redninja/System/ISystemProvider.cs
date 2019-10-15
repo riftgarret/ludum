@@ -8,8 +8,8 @@ namespace Redninja.System
 		IClassProvider GetClass(string className);
 
 		// TODO this should be attached to IUnit 
-		ISkillProvider GetSkillProvider(IUnitModel unit);
+		ISkillProvider GetSkillProvider(IBattleEntity unit);
 
-		void SetSkillProvider(IUnitModel unit, ISkillProvider provider);
+		void SetSkillProvider(IBattleEntity unit, ISkillProvider provider);
 	}
 }

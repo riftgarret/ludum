@@ -2,6 +2,6 @@
 {
 	public interface IBaseCallbacks
 	{
-		void SelectUnit(IUnitModel entity);
+		void SelectUnit(IBattleEntity entity);
 	}
 }

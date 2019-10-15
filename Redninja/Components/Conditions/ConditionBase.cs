@@ -25,10 +25,10 @@ namespace Redninja.Components.Conditions
 			this.OpRequirement = req;
 		}
 
-		public bool IsTargetConditionMet(IUnitModel self, IUnitModel target, IBattleModel battleModel)
+		public bool IsTargetConditionMet(IBattleEntity self, IBattleEntity target, IBattleModel battleModel)
 			=> IsConditionMet(ExpressionEnv.From(battleModel, self, target));
 
-		public bool IsEventConditionMet(IUnitModel self, ICombatEvent battleEvent, IBattleModel battleModel)
+		public bool IsEventConditionMet(IBattleEntity self, ICombatEvent battleEvent, IBattleModel battleModel)
 			=> IsConditionMet(ExpressionEnv.From(battleModel, self, battleEvent));
 
 

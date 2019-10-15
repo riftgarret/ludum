@@ -26,7 +26,7 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 		[Test]
 		public void ParseOperationProvider()
 		{
-			IUnitModel mEntity = Substitute.For<IUnitModel>();
+			IBattleEntity mEntity = Substitute.For<IBattleEntity>();
 			ITargetResolver mTarget = Substitute.For<ITargetResolver>();
 			ISkillOperationParameters mParams = Substitute.For<ISkillOperationParameters>();
 

@@ -15,6 +15,6 @@ namespace Redninja.Components.Skills
 
 		IReadOnlyList<SkillTargetingSet> Targets { get; }
 
-		IBattleAction GetAction(IUnitModel entity, List<ISelectedTarget> targets);
+		IBattleAction GetAction(IBattleEntity entity, List<ISelectedTarget> targets);
 	}
 }

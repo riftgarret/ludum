@@ -18,7 +18,7 @@ namespace Redninja.Components.Decisions.AI
 	{
 		private readonly AIRuleSet behavior;
 		private readonly IAIRuleTracker history;
-		private readonly IUnitModel source;
+		private readonly IBattleEntity source;
 		private IBattleModel battleModel => context.BattleModel;
 		private IActionContextProvider acp;
 		private readonly IBattleContext context;
@@ -27,7 +27,7 @@ namespace Redninja.Components.Decisions.AI
 
 		public AIExecutor(
 			IBattleContext context,
-			IUnitModel source, 
+			IBattleEntity source, 
 			AIRuleSet behavior, 			
 			IAIRuleTracker historyState)
 		{
@@ -123,7 +123,7 @@ namespace Redninja.Components.Decisions.AI
 			return true;
 		}
 
-		internal virtual IEnumerable<IUnitModel> FilterByType(TargetTeam type)
+		internal virtual IEnumerable<IBattleEntity> FilterByType(TargetTeam type)
 			=> AIHelper.FilterByType(type, source, battleModel);
 
 		#endregion
@@ -179,7 +179,7 @@ namespace Redninja.Components.Decisions.AI
 		internal virtual bool TryFindSkillTarget(SkillEval skillEval, IAISkillRule rule, EntityTargetSpec targetSpec)
 		{
 			// filter targets
-			IEnumerable<IUnitModel> filteredTargets = GetValidSkillTargets(skillEval, rule, targetSpec.TargetRule);
+			IEnumerable<IBattleEntity> filteredTargets = GetValidSkillTargets(skillEval, rule, targetSpec.TargetRule);
 
 			if (filteredTargets.Count() == 0) return false; // didnt find any valid targets			
 
@@ -187,20 +187,20 @@ namespace Redninja.Components.Decisions.AI
 
 			// select best target
 			IAITargetPriority targetPriority = rule.SkillAssignments.FirstOrDefault(x => x.Item2 == targetSpec.Skill).Item1;
-			IUnitModel selectedTarget = targetPriority.GetBestTarget(filteredTargets);
+			IBattleEntity selectedTarget = targetPriority.GetBestTarget(filteredTargets);
 
 			targetSpec.SelectTarget(selectedTarget);			
 			return true;
 		}
 
-		internal IEnumerable<IUnitModel> GetValidSkillTargets(SkillEval skillEval, IAISkillRule rule, ITargetingRule targetingRule)
+		internal IEnumerable<IBattleEntity> GetValidSkillTargets(SkillEval skillEval, IAISkillRule rule, ITargetingRule targetingRule)
 		{
 			// initialize all entities to be recorded
-			IEnumerable<IUnitModel> allEntities = battleModel.Entities;
+			IEnumerable<IBattleEntity> allEntities = battleModel.Entities;
 			allEntities.ForEach(x => skillEval[x].IsValidType = false);
 
 			// first filter by TargetType
-			IEnumerable<IUnitModel> leftoverTargets = FilterByType(rule.TargetType);
+			IEnumerable<IBattleEntity> leftoverTargets = FilterByType(rule.TargetType);
 			leftoverTargets.ForEach(x => skillEval[x].IsValidType = true);
 
 			// filter by skill rule
@@ -223,7 +223,7 @@ namespace Redninja.Components.Decisions.AI
 
 			ITargetingContext targetMeta = acp.GetTargetingContext(skillMeta.Skills.First()); // first temp to compile
 			
-			IEnumerable<IUnitModel> leftoverTargets = FilterByType(TargetTeam.Enemy);			
+			IEnumerable<IBattleEntity> leftoverTargets = FilterByType(TargetTeam.Enemy);			
 			leftoverTargets = leftoverTargets.Where(ex => TargetConditions.MustBeAlive(ex, source));
 
 			if(leftoverTargets.Count() == 0)
@@ -232,7 +232,7 @@ namespace Redninja.Components.Decisions.AI
 				return false;
 			}
 
-			IUnitModel entityTarget = rule.TargetPriority.GetBestTarget(leftoverTargets);
+			IBattleEntity entityTarget = rule.TargetPriority.GetBestTarget(leftoverTargets);
 			//ISelectedTarget selectedTarget = targetMeta.GetSelectedTarget(entityTarget);
 
 			//targetMeta.SelectTarget(selectedTarget);

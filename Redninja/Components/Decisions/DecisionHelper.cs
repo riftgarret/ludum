@@ -17,13 +17,13 @@ namespace Redninja.Components.Decisions
 			Provider = provider;
 		}
 
-		public IActionContext GetActionsContext(IUnitModel entity)
+		public IActionContext GetActionsContext(IBattleEntity entity)
 			=> new SkillSelectionContext(entity, Provider.GetSkillProvider(entity));
 
-		public IMovementContext GetMovementContext(IUnitModel entity)
+		public IMovementContext GetMovementContext(IBattleEntity entity)
 			=> new MovementContext(entity, BattleModel);
 
-		public ITargetingContext GetTargetingContext(IUnitModel entity, ISkill skill)
+		public ITargetingContext GetTargetingContext(IBattleEntity entity, ISkill skill)
 			=> new TargetingContext(entity, skill, BattleModel);
 	}
 }

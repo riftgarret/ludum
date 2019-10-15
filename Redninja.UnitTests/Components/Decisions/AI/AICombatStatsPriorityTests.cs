@@ -8,17 +8,17 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 	public class AICombatStatsPriorityTests
 	{
 		private AICombatStatPriority subject;
-		private List<IUnitModel> entities;
+		private List<IBattleEntity> entities;
 
 		[SetUp]
 		public void Setup()
 		{
-			entities = new List<IUnitModel>();
+			entities = new List<IBattleEntity>();
 		}
 
-		private IUnitModel AddUnit(Stat stat, int volValue = 5, int statValue = 10)
+		private IBattleEntity AddUnit(Stat stat, int volValue = 5, int statValue = 10)
 		{
-			var entity = Substitute.For<IUnitModel>();
+			var entity = Substitute.For<IBattleEntity>();
 			entities.Add(entity);
 			entity.Stats[stat].Returns(statValue);
 			entity.VolatileStats[stat].Returns(volValue);

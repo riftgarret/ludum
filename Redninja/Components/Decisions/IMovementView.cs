@@ -5,7 +5,7 @@ namespace Redninja.Components.Decisions
 {
 	public interface IMovementView
 	{
-		IUnitModel Source { get; }
+		IBattleEntity Source { get; }
 		ActionTime Time { get; }
 		IEnumerable<Coordinate> CurrentPath { get; }
 

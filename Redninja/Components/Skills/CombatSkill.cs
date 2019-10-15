@@ -14,7 +14,7 @@ namespace Redninja.Components.Skills
 
 		public IReadOnlyList<SkillTargetingSet> Targets { get; private set; }
 
-		public IBattleAction GetAction(IUnitModel entity, List<ISelectedTarget> targets)
+		public IBattleAction GetAction(IBattleEntity entity, List<ISelectedTarget> targets)
 		{
 			List<ISkillResolver> resolvers = new List<ISkillResolver>();
 			for (int i = 0; i < Targets.Count; i++)

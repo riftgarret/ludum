@@ -4,10 +4,10 @@ namespace Redninja.Components.Decisions
 {
 	public class ActionContextProvider : IActionContextProvider
 	{
-		private IUnitModel unit;
+		private IBattleEntity unit;
 		private IBattleContext context;
 
-		public ActionContextProvider(IBattleContext context, IUnitModel unit)
+		public ActionContextProvider(IBattleContext context, IBattleEntity unit)
 		{
 			this.unit = unit;
 			this.context = context;

@@ -12,12 +12,12 @@ namespace Redninja.Components.Decisions
 	{				
 		public ISkill Skill { get; }		
 
-		public IUnitModel Source { get; }
+		public IBattleEntity Source { get; }
 
 		public IReadOnlyList<ITargetSpec> TargetSpecs { get; private set; }
 
 		public TargetingContext(
-			IUnitModel entity,
+			IBattleEntity entity,
 			ISkill skill,
 			IBattleModel battleModel)
 		{

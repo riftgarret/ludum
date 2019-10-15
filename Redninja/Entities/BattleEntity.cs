@@ -61,7 +61,7 @@ namespace Redninja.Entities
 
 		// If we add an action queue here, this will point to the top instead
 		public IBattleAction CurrentAction { get; private set; }
-		string IUnitModel.CurrentActionName => CurrentAction?.Name;
+		string IBattleEntity.CurrentActionName => CurrentAction?.Name;
 		public ActionPhase Phase => CurrentAction?.Phase ?? ActionPhase.Waiting;
 		public float PhaseProgress => CurrentAction?.PhaseProgress ?? 0;
 		
@@ -95,12 +95,12 @@ namespace Redninja.Entities
 		public void SetNameOverride(string nameOverride) => this.nameOverride = nameOverride;
 
 		// Considering raising this stuff to BEM
-		private void OnEntityMoving(IUnitModel entity, Coordinate c)
+		private void OnEntityMoving(IBattleEntity entity, Coordinate c)
 		{
 			if (entity == this) MovePosition(c.Row, c.Column);
 		}
 
-		private void OnActionSelected(IUnitModel entity, IBattleAction action)
+		private void OnActionSelected(IBattleEntity entity, IBattleAction action)
 		{
 			if (entity == this) SetAction(action);
 		}

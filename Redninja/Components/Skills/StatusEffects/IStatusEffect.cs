@@ -11,7 +11,7 @@ namespace Redninja.Components.Skills.StatusEffects
 		float TimeRemaining { get; }
 		float EffectInterval { get; }
 
-		IUnitModel EffectTarget { get; set; }
+		IBattleEntity EffectTarget { get; set; }
 
 		event Action<IStatusEffect> Expired;
 	}

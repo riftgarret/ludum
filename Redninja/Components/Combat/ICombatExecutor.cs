@@ -7,18 +7,18 @@ namespace Redninja.Components.Combat
 {
 	public interface ICombatExecutor
 	{
-		event Action<IUnitModel, Coordinate> EntityMoving;
+		event Action<IBattleEntity, Coordinate> EntityMoving;
 		event Action<ICombatEvent> BattleEventOccurred;
 
-		void InitializeEntity(IUnitModel entity);
-		void CleanupEntity(IUnitModel entity);
-		void MoveEntity(IUnitModel entity, int newRow, int newCol);
-		void MoveEntity(IUnitModel entity, UnitPosition newPosition);
-		void ApplyStatusEffect(IUnitModel source, IUnitModel target, IBuff effect);
-		void RemoveStatusEffect(IUnitModel entity, IBuff effect);
-		IDamageNode GetRawDamage(IUnitModel attacker, IDamageSource source);
-		IDefenseNode GetDamage(IUnitModel attacker, IUnitModel defender, IDamageSource source);
-		IDefenseNode GetDamage(IUnitModel defender, IDamageNode incomingDamage);
-		void DealDamage(IUnitModel attacker, IUnitModel defender, IDamageSource source);
+		void InitializeEntity(IBattleEntity entity);
+		void CleanupEntity(IBattleEntity entity);
+		void MoveEntity(IBattleEntity entity, int newRow, int newCol);
+		void MoveEntity(IBattleEntity entity, UnitPosition newPosition);
+		void ApplyStatusEffect(IBattleEntity source, IBattleEntity target, IBuff effect);
+		void RemoveStatusEffect(IBattleEntity entity, IBuff effect);
+		IDamageNode GetRawDamage(IBattleEntity attacker, IDamageSource source);
+		IDefenseNode GetDamage(IBattleEntity attacker, IBattleEntity defender, IDamageSource source);
+		IDefenseNode GetDamage(IBattleEntity defender, IDamageNode incomingDamage);
+		void DealDamage(IBattleEntity attacker, IBattleEntity defender, IDamageSource source);
 	}
 }

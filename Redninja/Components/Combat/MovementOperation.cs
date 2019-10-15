@@ -2,11 +2,11 @@
 {
 	internal class MovementOperation : BattleOperationBase
 	{
-		private readonly IUnitModel unit;
+		private readonly IBattleEntity unit;
 		private readonly int row;
 		private readonly int col;
 
-		public MovementOperation(IUnitModel unit, int row, int col)
+		public MovementOperation(IBattleEntity unit, int row, int col)
 		{
 			this.unit = unit;
 			this.row = row;

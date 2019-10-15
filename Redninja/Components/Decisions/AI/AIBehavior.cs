@@ -11,7 +11,7 @@ namespace Redninja.Components.Decisions.AI
 
 		public AIActionDecisionResult LastResult { get; private set; }
 
-		public AIBehavior(IBattleContext context, IUnitModel unit, AIRuleSet ruleSet)
+		public AIBehavior(IBattleContext context, IBattleEntity unit, AIRuleSet ruleSet)
 		{
 			RuleSet = ruleSet;
 			this.aiExecutor = new AIExecutor(context, unit, ruleSet, new AIRuleTracker(context));			

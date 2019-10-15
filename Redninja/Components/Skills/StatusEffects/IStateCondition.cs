@@ -6,6 +6,6 @@ namespace Redninja.Components.Skills.StatusEffects
 	public interface IStateCondition
 	{
 		IEnumerable<ICondition> Conditions { get; }
-		void IsValid(IUnitModel self, IBattleModel battleModel);
+		void IsValid(IBattleEntity self, IBattleModel battleModel);
 	}
 }

@@ -22,7 +22,7 @@ namespace Redninja.Components.Conditions.Expressions
 			return GetTargetResult(env);
 		}
 
-		public IEnumerable<IUnitModel> GetTargetResult(IExpressionEnv env)
+		public IEnumerable<IBattleEntity> GetTargetResult(IExpressionEnv env)
 		{
 			switch (TargetType)
 			{

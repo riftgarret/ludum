@@ -15,8 +15,8 @@ namespace Redninja.Components.Skills.StatusEffects
 
 		void IEffect.Resolve(IUnit unit, IUnit target, params object[] args)
 		{
-			IUnitModel entity = unit as IUnitModel;
-			IUnitModel targetEntity = target as IUnitModel;
+			IBattleEntity entity = unit as IBattleEntity;
+			IBattleEntity targetEntity = target as IBattleEntity;
 			ITargetResolver targetResolver =
 				rule == null
 				? new StaticTarget(targetEntity)

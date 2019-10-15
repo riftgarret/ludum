@@ -8,7 +8,7 @@ namespace Redninja.Components.Conditions
 		public static IExpressionResultDef IntValueResult { get; } = new IntResultDefinition(ExpressionResultType.IntValue);
 		public static IExpressionResultDef PercentValueResult { get; } = new IntResultDefinition(ExpressionResultType.Percent);
 		public static IExpressionResultDef ClassNameResult { get; } = new StringResultDefinition(ExpressionResultType.ClassName);
-		public static IExpressionResultDef UnitResult { get; } = new ObjectResultDefinition<IUnitModel>(ExpressionResultType.Unit);
+		public static IExpressionResultDef UnitResult { get; } = new ObjectResultDefinition<IBattleEntity>(ExpressionResultType.Unit);
 		public static IExpressionResultDef BattleResult { get; } = new ObjectResultDefinition<IBattleModel>(ExpressionResultType.Battle);
 
 		public static IExpressionResultDef From(ExpressionResultType resultType)

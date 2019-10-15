@@ -14,12 +14,12 @@
 		public Stat CombatStat { get; }
 		public bool IsPercent { get; }
 
-		private int GetPercent(IUnitModel model)
+		private int GetPercent(IBattleEntity model)
 			=> 100 * model.VolatileStats[CombatStat] / model.Stats[CombatStat];
 
-		public object Get(IUnitModel model)
+		public object Get(IBattleEntity model)
 			=> IsPercent ? GetPercent(model) : model.VolatileStats[CombatStat];
 
-		public override object Result(object param) => Get((IUnitModel)param);
+		public override object Result(object param) => Get((IBattleEntity)param);
 	}
 }
