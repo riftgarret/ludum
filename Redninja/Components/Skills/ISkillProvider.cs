@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Davfalcon.Revelator;
+using Redninja.Components.Equipment;
 
 namespace Redninja.Components.Skills
 {

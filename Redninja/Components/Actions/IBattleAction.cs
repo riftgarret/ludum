@@ -5,8 +5,9 @@ using Redninja.Components.Combat;
 
 namespace Redninja.Components.Actions
 {
-	public interface IBattleAction : INameable, IClockSynchronized, IOperationSource
+	public interface IBattleAction : IClockSynchronized, IOperationSource
 	{
+		string Name { get; }
 		ActionTime Time { get; }
         ActionPhase Phase { get; }
 		float PhaseTime { get; }
