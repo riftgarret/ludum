@@ -1,6 +1,5 @@
 ﻿using System;
-using Davfalcon.Revelator;
-using Davfalcon.Revelator.Combat;
+using Redninja.Components.Buffs;
 using Redninja.Components.Combat.Events;
 
 namespace Redninja.Components.Combat

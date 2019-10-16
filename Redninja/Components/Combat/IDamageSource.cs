@@ -2,6 +2,7 @@
 {
 	public interface IDamageSource
 	{
+		string Name { get; }
 		// reimplement/import combat & damage code into this package
 	}
 }

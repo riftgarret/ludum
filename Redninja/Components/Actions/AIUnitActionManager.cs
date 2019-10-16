@@ -6,19 +6,11 @@ namespace Redninja.Components.Actions
 	[Serializable]
 	public class AIUnitActionManager : UnitActionManager
 	{
-		public IAIBehavior AIBehavior { get; private set; }
+		public IAIBehavior AIBehavior { get; }
 
-		public void SetAIBehavior(AIRuleSet ruleSet, IBattleContext context)
+		public AIUnitActionManager(IBattleContext context, IBattleEntity entity, AIRuleSet ruleSet) : base(context, entity)
 		{
-			if (ruleSet != null)
-			{
-				// this needs to be changed to accept IUnit instead of IUnitModel
-				AIBehavior = new AIBehavior(context, Owner, ruleSet);
-			}
-			else
-			{
-				AIBehavior = null;
-			}
+			AIBehavior = ruleSet != null ? new AIBehavior(BattleContext, BattleEntity, ruleSet) : null;
 		}
 	}
 }

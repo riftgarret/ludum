@@ -1,4 +1,4 @@
-﻿using Davfalcon.Revelator;
+﻿using Redninja.Components.Combat;
 
 namespace Redninja.Components.Skills
 {

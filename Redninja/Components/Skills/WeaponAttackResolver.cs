@@ -1,6 +1,6 @@
 ﻿using System;
-using Davfalcon.Revelator;
 using Redninja.Components.Combat;
+using Redninja.Components.Equipment;
 using Redninja.Components.Targeting;
 
 namespace Redninja.Components.Skills

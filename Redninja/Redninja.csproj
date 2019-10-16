@@ -49,6 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\BuilderBase%28T, TBuilder%29.cs" />
+    <Compile Include="Builders\BuilderBase%28T, TOut, TBuilder%29.cs" />
+    <Compile Include="Builders\IBuilder%28T%29.cs" />
     <Compile Include="Components\Actions\AIUnitActionManager.cs" />
     <Compile Include="Components\Actions\BattleActionBase.cs" />
     <Compile Include="Components\Actions\IUnitActionManager.cs" />
@@ -116,6 +119,7 @@
     <Compile Include="Components\Skills\StatusEffects\StatusEffect.cs" />
     <Compile Include="Components\Skills\UnitSkillManager.cs" />
     <Compile Include="Components\Targeting\StaticTarget.cs" />
+    <Compile Include="Components\UnitComponentExtensions.cs" />
     <Compile Include="Data\DataManagerFactory.cs" />
     <Compile Include="Components\Skills\ConfigurableSkillProvider.cs" />
     <Compile Include="Data\Schema\AIAttackRuleSchema.cs" />

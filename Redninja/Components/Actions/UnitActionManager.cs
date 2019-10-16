@@ -1,16 +1,15 @@
 ﻿using System;
-using Redninja.Components.Clock;
 using Redninja.Components.Combat;
-using Redninja.Entities;
+using Redninja.Components.Decisions;
 
 namespace Redninja.Components.Actions
 {
 	[Serializable]
 	public class UnitActionManager : IUnitActionManager
 	{
-		private IClock clock;
+		protected IBattleContext BattleContext { get; }
 
-		protected IUnit Owner { get; private set; }
+		protected IBattleEntity BattleEntity { get; }
 
 		public IBattleAction CurrentAction { get; protected set; }
 
@@ -22,12 +21,23 @@ namespace Redninja.Components.Actions
 
 		public virtual bool RequiresAction => CurrentAction == null || CurrentAction.Phase == ActionPhase.Done;
 
+		public IActionContextProvider ActionContextProvider { get; }
+
 		public event Action<IBattleEntity> ActionNeeded;
 		public event Action<IBattleEntity, IOperationSource> ActionSet;
 
+		public UnitActionManager(IBattleContext context, IBattleEntity entity)
+		{
+			BattleContext = context;
+			BattleEntity = entity;
+
+			BattleContext.Clock.Tick += OnTick;
+
+			ActionContextProvider = new ActionContextProvider(context, entity);
+		}
+
 		public virtual void Initialize(IUnit unit)
 		{
-			Owner = unit;
 		}
 
 		public virtual void SetAction(IBattleAction action)
@@ -36,18 +46,17 @@ namespace Redninja.Components.Actions
 				CurrentAction.Dispose();
 
 			CurrentAction = action;
-			CurrentAction.SetClock(clock);  // TODO NRE on 2nd skill usage 
+			CurrentAction.SetClock(BattleContext.Clock);  // TODO NRE on 2nd skill usage 
 
-			// forgot what this is for, figure out if need and how to invoke
-			//ActionSet?.Invoke(this, action);
+			// forgot what this is for, figure out if needed
+			ActionSet?.Invoke(BattleEntity, action);
 
 			CurrentAction.Start();
 		}
 
 		protected virtual void OnActionCompleted()
 		{
-			// invoke after determining which interface to pass
-			//ActionNeeded?.Invoke(this);
+			ActionNeeded?.Invoke(BattleEntity);
 
 			// If we add an action queue, pop the completed action off here
 		}
@@ -61,27 +70,16 @@ namespace Redninja.Components.Actions
 			}
 		}
 
-		public void SetClock(IClock clock)
-		{
-			UnsetClock();
-
-			this.clock = clock;
-			clock.Tick += OnTick;
-		}
-
 		private void UnsetClock()
 		{
-			if (clock != null)
+			if (BattleContext != null)
 			{
-				clock.Tick -= OnTick;
-				clock = null;
+				BattleContext.Clock.Tick -= OnTick;
 			}
 		}
 
 		public void Dispose()
 		{
-			UnsetClock();
-
 			if (CurrentAction != null)
 			{
 				CurrentAction.Dispose();

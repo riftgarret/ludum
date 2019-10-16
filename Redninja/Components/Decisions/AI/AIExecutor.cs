@@ -35,7 +35,7 @@ namespace Redninja.Components.Decisions.AI
 			this.source = source;
 			this.history = historyState;
 			this.context = context;
-			this.acp = source.ActionContextProvider;
+			this.acp = source.Actions.ActionContextProvider;
 		}				
 
 		public AIActionDecisionResult ResolveAction()

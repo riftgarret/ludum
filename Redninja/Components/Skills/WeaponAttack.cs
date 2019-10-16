@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Davfalcon.Builders;
-using Davfalcon.Revelator;
 using Redninja.Components.Actions;
+using Redninja.Components.Equipment;
 using Redninja.Components.Targeting;
 
 namespace Redninja.Components.Skills

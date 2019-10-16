@@ -1,5 +1,4 @@
 ﻿using System;
-using Davfalcon.Revelator;
 using Redninja.Components.Targeting;
 
 namespace Redninja.Components.Combat
