@@ -2,6 +2,6 @@
 {
 	public interface IAITargetCondition
 	{
-		bool IsValid(IUnitModel entity);
+		bool IsValid(IBattleEntity entity);
 	}
 }

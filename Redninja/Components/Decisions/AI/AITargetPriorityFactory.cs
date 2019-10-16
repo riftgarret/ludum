@@ -14,7 +14,7 @@ namespace Redninja.Components.Decisions.AI
 
 		public class SimplePriorityEvaluator : IAITargetPriority
 		{
-			internal delegate IUnitModel BestTarget(IEnumerable<IUnitModel> validEntities);
+			internal delegate IBattleEntity BestTarget(IEnumerable<IBattleEntity> validEntities);
 
 			private BestTarget bestTargetDelegate;
 
@@ -23,7 +23,7 @@ namespace Redninja.Components.Decisions.AI
 				bestTargetDelegate = onBestTarget;
 			}
 
-			public IUnitModel GetBestTarget(IEnumerable<IUnitModel> validEntities)
+			public IBattleEntity GetBestTarget(IEnumerable<IBattleEntity> validEntities)
 				=> bestTargetDelegate(validEntities);
 		}
 	}

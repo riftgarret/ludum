@@ -8,12 +8,12 @@ namespace Redninja.Components.Combat.Events
 {
 	public class DamageEvent : ICombatEvent
 	{
-		public IUnitModel Source { get; }
-		public IUnitModel Target { get; }
+		public IBattleEntity Source { get; }
+		public IBattleEntity Target { get; }
 		public INode Damage { get; }
 		public IEnumerable<StatChange> StatChanges { get; }
 
-		internal DamageEvent(IUnitModel source, IUnitModel target, INode damage, IEnumerable<StatChange> statChanges)
+		internal DamageEvent(IBattleEntity source, IBattleEntity target, INode damage, IEnumerable<StatChange> statChanges)
 		{
 			Source = source ?? throw new ArgumentNullException(nameof(source));
 			Target = target ?? throw new ArgumentNullException(nameof(target));

@@ -4,6 +4,6 @@ namespace Redninja.Components.Targeting
 {
 	public interface ITargetResolver
 	{
-		IEnumerable<IUnitModel> GetValidTargets(IUnitModel user, IBattleModel battleModel);
+		IEnumerable<IBattleEntity> GetValidTargets(IBattleEntity user, IBattleModel battleModel);
 	}
 }

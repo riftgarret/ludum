@@ -5,11 +5,11 @@ namespace Redninja.Components.Skills
 {
 	internal class SkillAction : BattleActionBase
 	{
-		private readonly IUnitModel entity;
+		private readonly IBattleEntity entity;
 		private readonly ISkill skill;
 		private readonly IEnumerable<ISkillResolver> resolvers;
 
-		public SkillAction(IUnitModel entity, ISkill skill, IEnumerable<ISkillResolver> resolvers)
+		public SkillAction(IBattleEntity entity, ISkill skill, IEnumerable<ISkillResolver> resolvers)
 			: base(skill.Name, skill.Time)
 		{
 			this.skill = skill;

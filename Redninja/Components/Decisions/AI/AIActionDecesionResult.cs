@@ -104,9 +104,9 @@ namespace Redninja.Components.Decisions.AI
 			public bool HasSkill { get; set; } 			
 			public bool SkillEvaluated { get; set; }
 			public bool SkillResolved { get; set; }
-			private Dictionary<IUnitModel, TargetEval> targetMap = new Dictionary<IUnitModel, TargetEval>();
+			private Dictionary<IBattleEntity, TargetEval> targetMap = new Dictionary<IBattleEntity, TargetEval>();
 
-			public TargetEval this[IUnitModel target]
+			public TargetEval this[IBattleEntity target]
 			{
 				get
 				{
@@ -127,7 +127,7 @@ namespace Redninja.Components.Decisions.AI
 			public bool IsValidType { get; set; }
 			public bool IsValidTarget { get; set; }			
 			public bool IsValidConditions { get; set; }
-			public IUnitModel Target { get; set; }
+			public IBattleEntity Target { get; set; }
 		}
 
 		public class ConditionEval

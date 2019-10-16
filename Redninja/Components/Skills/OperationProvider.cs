@@ -4,7 +4,7 @@ using Redninja.Components.Targeting;
 
 namespace Redninja.Components.Skills
 {
-	public delegate IBattleOperation OperationProvider(IUnitModel entity, ITargetResolver target, ISkillOperationParameters args);
+	public delegate IBattleOperation OperationProvider(IBattleEntity entity, ITargetResolver target, ISkillOperationParameters args);
 
 	public static class OperationProviders
 	{

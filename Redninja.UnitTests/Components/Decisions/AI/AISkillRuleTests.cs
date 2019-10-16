@@ -35,20 +35,20 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			SetupBuilder();
 		}
 
-		private IAITargetCondition AddFilterCondition(bool isTrue, IUnitModel onlyForTarget = null)
+		private IAITargetCondition AddFilterCondition(bool isTrue, IBattleEntity onlyForTarget = null)
 		{
 			IAITargetCondition mFilterCondition = Substitute.For<IAITargetCondition>();
-			mFilterCondition.IsValid(onlyForTarget ?? Arg.Any<IUnitModel>()).Returns(isTrue);
+			mFilterCondition.IsValid(onlyForTarget ?? Arg.Any<IBattleEntity>()).Returns(isTrue);
 			subjectBuilder.AddFilterCondition(mFilterCondition);
 			return mFilterCondition;
 		}
 
-		private Tuple<ISkill, IAITargetPriority> AddSkillPriority(IUnitModel bestTarget)
+		private Tuple<ISkill, IAITargetPriority> AddSkillPriority(IBattleEntity bestTarget)
 		{
 			var mSkill = Substitute.For<ISkill>();
 			var mPriority = Substitute.For<IAITargetPriority>();
 
-			mPriority.GetBestTarget(Arg.Any<IEnumerable<IUnitModel>>()).Returns(bestTarget);
+			mPriority.GetBestTarget(Arg.Any<IEnumerable<IBattleEntity>>()).Returns(bestTarget);
 			subjectBuilder.AddSkillAndPriority(mSkill, mPriority);
 			
 			return Tuple.Create(mSkill, mPriority);

@@ -4,6 +4,6 @@ namespace Redninja.Components.Decisions.AI
 {
 	public interface IAITargetPriority
 	{				
-		IUnitModel GetBestTarget(IEnumerable<IUnitModel> validEntities);
+		IBattleEntity GetBestTarget(IEnumerable<IBattleEntity> validEntities);
 	}
 }

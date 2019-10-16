@@ -21,7 +21,7 @@ namespace Redninja.Components.Decisions
 		//}
 		
 
-		public IEnumerable<IUnitModel> GetTargetableEntities()
+		public IEnumerable<IBattleEntity> GetTargetableEntities()
 		{
 			switch (TargetRule.Team)
 			{
@@ -30,13 +30,13 @@ namespace Redninja.Components.Decisions
 				case TargetTeam.Enemy:
 					return battleModel.Entities.Where(e => e.Team != source.Team && IsValidTarget(e));
 				case TargetTeam.Self:
-					return IsValidTarget(source) ? Enumerable.Repeat(source, 1) : Enumerable.Empty<IUnitModel>();
+					return IsValidTarget(source) ? Enumerable.Repeat(source, 1) : Enumerable.Empty<IBattleEntity>();
 				default: throw new InvalidOperationException();
 			}
 		}
 
-		public bool IsValidTarget(IUnitModel unit) => TargetRule.IsValidTarget(source, unit);
+		public bool IsValidTarget(IBattleEntity unit) => TargetRule.IsValidTarget(source, unit);
 
-		public void SelectTarget(IUnitModel target) => SelectedTarget = new SelectedTarget(TargetRule, target);
+		public void SelectTarget(IBattleEntity target) => SelectedTarget = new SelectedTarget(TargetRule, target);
 	}
 }

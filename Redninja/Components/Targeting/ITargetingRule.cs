@@ -6,6 +6,6 @@
 		TargetTeam Team { get; }
 		ITargetPattern Pattern { get; }
 
-		bool IsValidTarget(IUnitModel target, IUnitModel user);
+		bool IsValidTarget(IBattleEntity target, IBattleEntity user);
 	}
 }

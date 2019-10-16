@@ -4,9 +4,9 @@ namespace Redninja.Components.Conditions
 {
 	public interface IExpressionEnv
 	{
-		IUnitModel Self { get; }
-		IUnitModel Target { get; }
-		IUnitModel Source { get; }
+		IBattleEntity Self { get; }
+		IBattleEntity Target { get; }
+		IBattleEntity Source { get; }
 		IBattleModel BattleModel { get; }
 		ICombatEvent BattleEvent { get; }
 	}

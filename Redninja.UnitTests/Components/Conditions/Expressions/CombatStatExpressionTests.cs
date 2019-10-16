@@ -17,7 +17,7 @@ namespace Redninja.Components.Conditions.Expressions.UnitTests
 		[Test]
 		public void Result_SingleValue([Values(10, 20, 30)]int statValue, [Values(Stat.HP, Stat.Resource)] Stat stat)
 		{
-			IUnitModel model = Substitute.For<IUnitModel>();
+			IBattleEntity model = Substitute.For<IBattleEntity>();
 			model.VolatileStats[stat].Returns(statValue);
 
 			subject = new CombatStatExpression(stat, false);
@@ -33,7 +33,7 @@ namespace Redninja.Components.Conditions.Expressions.UnitTests
 		public void Result_Percent(int volatileValue, int statValue, int expectedValue)
 		{
 			Stat stat = Stat.HP;
-			IUnitModel model = Substitute.For<IUnitModel>();
+			IBattleEntity model = Substitute.For<IBattleEntity>();
 			model.VolatileStats[stat].Returns(volatileValue);
 			model.Stats[stat].Returns(statValue);
 

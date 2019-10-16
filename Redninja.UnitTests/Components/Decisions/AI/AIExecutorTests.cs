@@ -19,7 +19,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 		private IBattleModel mBattleModel;
 		private AIRuleSet behavior;
 
-		protected List<IUnitModel> allEntities;
+		protected List<IBattleEntity> allEntities;
 
 		private AIExecutor subject;
 		private int ruleCounter;		
@@ -33,7 +33,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			mHistory = Substitute.For<IAIRuleTracker>();
 			mDecisionHelper = Substitute.For<IDecisionHelper>();
 			mBattleModel = mDecisionHelper.BattleModel;
-			allEntities = new List<IUnitModel>() { mSource };
+			allEntities = new List<IBattleEntity>() { mSource };
 			mBattleModel.Entities.Returns(allEntities);
 
 			subject = Substitute.ForPartsOf<AIExecutor>(mSource, behavior, mDecisionHelper, mHistory);
@@ -52,18 +52,18 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			return rule;
 		}
 
-		protected IUnitModel AddEntity(int teamId)
+		protected IBattleEntity AddEntity(int teamId)
 		{
-			var mEntity = Substitute.For<IUnitModel>();
+			var mEntity = Substitute.For<IBattleEntity>();
 			mEntity.Team.Returns(teamId);
 			allEntities.Add(mEntity);
 			return mEntity;
 		}
 
-		protected IAITargetCondition AddMockCondition(TargetTeam target, bool isValid, IUnitModel entityArg = null)
+		protected IAITargetCondition AddMockCondition(TargetTeam target, bool isValid, IBattleEntity entityArg = null)
 		{
 			IAITargetCondition mockCondition = Substitute.For<IAITargetCondition>();
-			mockCondition.IsValid(entityArg ?? Arg.Any<IUnitModel>()).Returns(isValid);
+			mockCondition.IsValid(entityArg ?? Arg.Any<IBattleEntity>()).Returns(isValid);
 			// TODO
 			return mockCondition;
 		}
@@ -138,7 +138,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			string validTargetsStr, 						
 			params string[] filteredContionSetStr)
 		{
-			var originalEntities = Enumerable.Range(1, 10).Select(x => Substitute.For<IUnitModel>()).ToList();			
+			var originalEntities = Enumerable.Range(1, 10).Select(x => Substitute.For<IBattleEntity>()).ToList();			
 			
 			var isValid = ParseDigitsToList(validTargetsStr).Select(x => originalEntities[x]);			
 			var expectedEntities = ParseDigitsToList(expectedSubsetStr).Select(x => originalEntities[x]);

@@ -25,10 +25,10 @@ namespace Redninja.Components.Decisions.AI
 			PriorityType = priorityType;
 		}
 
-		public IUnitModel GetBestTarget(IEnumerable<IUnitModel> validEntities)
+		public IBattleEntity GetBestTarget(IEnumerable<IBattleEntity> validEntities)
 			=> AIHelper.FindBestMatch(validEntities, Qualifier, ex => GetCombatStatValue(ex));
 
-		private int GetCombatStatValue(IUnitModel entity)
+		private int GetCombatStatValue(IBattleEntity entity)
 		{
 			if (PriorityType == AIPriorityType.CombatStatCurrent)
 			{

@@ -7,7 +7,7 @@ namespace Redninja.Components.Decisions.AI
 {
 	internal static class AIHelper
 	{
-		internal delegate int ExtractValue(IUnitModel entity);	
+		internal delegate int ExtractValue(IBattleEntity entity);	
 
 		/// <summary>
 		/// Filter total entities by AITargetType.
@@ -16,7 +16,7 @@ namespace Redninja.Components.Decisions.AI
 		/// <param name="source"></param>
 		/// <param name="bem"></param>
 		/// <returns></returns>
-		internal static IEnumerable<IUnitModel> FilterByType(TargetTeam type, IUnitModel source, IBattleModel bem)
+		internal static IEnumerable<IBattleEntity> FilterByType(TargetTeam type, IBattleEntity source, IBattleModel bem)
 		{
 			switch (type)
 			{
@@ -64,7 +64,7 @@ namespace Redninja.Components.Decisions.AI
 		/// <param name="qualifier"></param>
 		/// <param name="extractValueMethod"></param>
 		/// <returns></returns>
-		internal static IUnitModel FindBestMatch(IEnumerable<IUnitModel> entities, 
+		internal static IBattleEntity FindBestMatch(IEnumerable<IBattleEntity> entities, 
 			AITargetingPriorityQualifier qualifier,  
 			ExtractValue extractValueMethod)
 		{

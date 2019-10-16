@@ -13,7 +13,7 @@ namespace Redninja.Components.Skills
 		public float ExecutionStart { get; }
 		public bool Resolved { get; private set; } = false;
 
-		public IBattleOperation Resolve(IUnitModel entity)
+		public IBattleOperation Resolve(IBattleEntity entity)
 		{
 			Resolved = true;
 			return new DamageOperation(entity, target, weapon);

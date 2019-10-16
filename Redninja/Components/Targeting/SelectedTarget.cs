@@ -8,21 +8,21 @@ namespace Redninja.Components.Targeting
 	internal class SelectedTarget : ISelectedTarget
 	{
 		public ITargetingRule Rule { get; }
-		public IUnitModel Target { get; }
+		public IBattleEntity Target { get; }
 
 		ITargetPattern ISelectedTarget.Pattern => null;
 		int ISelectedTarget.Team => Target.Team;
 		Coordinate ISelectedTarget.Anchor => Target.Position;
 
-		public SelectedTarget(ITargetingRule rule, IUnitModel target)
+		public SelectedTarget(ITargetingRule rule, IBattleEntity target)
 		{
 			Rule = rule;
 			Target = target;
 		}
 
-		public IEnumerable<IUnitModel> GetValidTargets(IUnitModel user, IBattleModel battleModel)
+		public IEnumerable<IBattleEntity> GetValidTargets(IBattleEntity user, IBattleModel battleModel)
 		{
-			List<IUnitModel> list = new List<IUnitModel>();
+			List<IBattleEntity> list = new List<IBattleEntity>();
 			if (Rule.IsValidTarget(user, Target))
 				list.Add(Target);
 			return list;

@@ -11,11 +11,11 @@ namespace Redninja.Components.Decisions
 	/// </summary>
 	internal class SkillSelectionContext : IActionContext
 	{
-		public IUnitModel Entity { get; }
+		public IBattleEntity Entity { get; }
 		public IWeaponAttack Attack { get; }
 		public IEnumerable<ISkill> Skills { get; }
 
-		public SkillSelectionContext(IUnitModel entity, ISkillProvider skillProvider)
+		public SkillSelectionContext(IBattleEntity entity, ISkillProvider skillProvider)
 		{
 			Entity = entity;
 			Attack = skillProvider.GetAttack(entity.Equipment.GetAllEquipmentForSlot(EquipmentType.Weapon).Select(e => e as IWeapon));

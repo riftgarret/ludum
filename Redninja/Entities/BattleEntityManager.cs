@@ -20,7 +20,7 @@ namespace Redninja.Entities
 		public float Time => clock.Time;
 
 		public IEnumerable<IBattleEntity> Entities => entityMap;
-		IEnumerable<IUnitModel> IBattleModel.Entities => Entities;
+		IEnumerable<IBattleEntity> IBattleModel.Entities => Entities;
 
 		public event Action<IBattleEntity> ActionNeeded;
 		public event Action<IBattleEntity, IOperationSource> ActionSet;

@@ -5,7 +5,7 @@ namespace Redninja.Components.Decisions
 	// TODO remove
 	public interface IActionProvider
 	{
-		IUnitModel Source { get; }
+		IBattleEntity Source { get; }
 		IBattleAction GetAction();
 	}
 }

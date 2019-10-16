@@ -5,8 +5,8 @@ namespace Redninja.Components.Combat.Events
 	/// </summary>
 	public interface ICombatEvent
 	{
-		IUnitModel Source { get; }
-		IUnitModel Target { get; }
+		IBattleEntity Source { get; }
+		IBattleEntity Target { get; }
 	} 
 }
 

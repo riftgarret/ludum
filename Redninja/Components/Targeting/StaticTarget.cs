@@ -4,11 +4,11 @@ namespace Redninja.Components.Targeting
 {
 	internal class StaticTarget : ITargetResolver
 	{
-		public IUnitModel Target { get; }
+		public IBattleEntity Target { get; }
 
-		public StaticTarget(IUnitModel target) => Target = target;
+		public StaticTarget(IBattleEntity target) => Target = target;
 
-		public IEnumerable<IUnitModel> GetValidTargets(IUnitModel user, IBattleModel battleModel)
-			=> new List<IUnitModel>(1) { Target }.AsReadOnly();
+		public IEnumerable<IBattleEntity> GetValidTargets(IBattleEntity user, IBattleModel battleModel)
+			=> new List<IBattleEntity>(1) { Target }.AsReadOnly();
 	}
 }
