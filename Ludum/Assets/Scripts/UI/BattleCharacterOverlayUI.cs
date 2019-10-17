@@ -17,7 +17,7 @@ public class BattleCharacterOverlayUI : MonoBehaviour, IPointerClickHandler
 
 	public event Action<BattleCharacterOverlayUI> OnCharacterSelected;
 
-	public IUnitModel Unit {
+	public IBattleEntity Unit {
 		get => unit;
 		set
 		{
@@ -25,9 +25,9 @@ public class BattleCharacterOverlayUI : MonoBehaviour, IPointerClickHandler
 			InitCharacterUI(value);
 		}
 	}
-	private IUnitModel unit;
+	private IBattleEntity unit;
 
-	private void InitCharacterUI(IUnitModel unit)
+	private void InitCharacterUI(IBattleEntity unit)
 	{
 		nameText.text = Unit.Name;
 		switch (Unit.Phase)

@@ -11,7 +11,7 @@ public class CharacterOverlayContainer : MonoBehaviour
 
 	public event Action<BattleCharacterOverlayUI> OnCharacterOverlaySelected;
 
-	public void AddCharacter(IUnitModel unit)
+	public void AddCharacter(IBattleEntity unit)
 	{
 		var go = Instantiate(characterOverlayPrefab, transform);
 		var characterUI = go.GetComponent<BattleCharacterOverlayUI>();

@@ -9,11 +9,11 @@ public class SkillSelectionContainerUI : MonoBehaviour
 {
 	[SerializeField] private GameObject skillItemPrefab = default;
 
-	public event Action<SkillItemUI, IUnitModel> OnSkillSelected;
+	public event Action<SkillItemUI, IBattleEntity> OnSkillSelected;
 
-	private IUnitModel unit;
+	private IBattleEntity unit;
 
-	public void LoadSkills(IUnitModel unit)
+	public void LoadSkills(IBattleEntity unit)
 	{
 		this.unit = unit;
 		foreach(ISkill skill in unit.ActionContextProvider.GetActionContext().Skills)

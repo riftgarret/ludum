@@ -24,7 +24,7 @@ public class ActionModeBehavior : MonoBehaviour
 	private SkillItemUI currentSelectedSkill;
 	private ITargetingContext currentTargetContext;
 
-	public void OnCharacterSelected(IUnitModel unit)
+	public void OnCharacterSelected(IBattleEntity unit)
 	{
 		switch (actionFlow)
 		{
@@ -53,7 +53,7 @@ public class ActionModeBehavior : MonoBehaviour
 		}
 	}
 
-	private void AssignEntityTargetSpec(EntityTargetSpec entitySpec, IUnitModel target)
+	private void AssignEntityTargetSpec(EntityTargetSpec entitySpec, IBattleEntity target)
 	{
 		if (entitySpec.IsValidTarget(target)) entitySpec.SelectTarget(target);
 	}
@@ -64,7 +64,7 @@ public class ActionModeBehavior : MonoBehaviour
 		ResetState();
 	}
 
-	private void ShowSkills(IUnitModel unit)
+	private void ShowSkills(IBattleEntity unit)
 	{
 		var go = GameObject.Instantiate(skillOverlayContainerPrefab, uiCanvas.transform);
 		skillSelectionContainer = go.GetComponent<SkillSelectionContainerUI>();
@@ -85,7 +85,7 @@ public class ActionModeBehavior : MonoBehaviour
 		actionFlow = ActionFlow.OPEN_SKILLS;
 	}
 
-	private void HandleSkillSelected(SkillItemUI ui, IUnitModel unit)
+	private void HandleSkillSelected(SkillItemUI ui, IBattleEntity unit)
 	{
 		if (currentSelectedSkill != null) currentSelectedSkill.Selected = false;
 		currentSelectedSkill = ui;
