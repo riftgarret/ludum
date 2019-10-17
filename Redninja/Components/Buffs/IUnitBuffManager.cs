@@ -3,10 +3,10 @@ using Davfalcon.Buffs;
 
 namespace Redninja.Components.Buffs
 {
-	public interface IUnitBuffManager : IUnitBuffManager<IUnit, IBuff>
+	public interface IUnitBuffManager : IUnitBuffManager<IUnit, IBuff>, IDisposable
 	{
 		// need to define effect payload
-		event Action<IBuff, IUnit> Effect;
+		event Action<IBuff, IBattleEntity> Effect;
 
 		event Action<IBuff> BuffExpired;
 

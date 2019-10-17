@@ -1,52 +1,43 @@
 ﻿using System;
 using Davfalcon;
 using Davfalcon.Buffs;
-using Redninja.Components.Clock;
 
 namespace Redninja.Components.Buffs
 {
 	[Serializable]
-	public class UnitBuffManager : UnitBuffManager<IUnit, IBuff>, IUnitBuffManager, IClockSynchronized, IUnitComponent<IUnit>
+	public class UnitBuffManager : UnitBuffManager<IUnit, IBuff>, IUnitBuffManager, IUnitComponent<IUnit>
 	{
-		private IUnit owner;
-		private IClock clock;
+		protected IBattleContext BattleContext { get; }
 
-		public override void Initialize(IUnit unit)
-		{
-			base.Initialize(unit);
-			owner = unit;
-		}
+		protected IBattleEntity BattleEntity { get; }
 
-		public event Action<IBuff, IUnit> Effect;
+		public event Action<IBuff, IBattleEntity> Effect;
 		public event Action<IBuff> BuffExpired;
+
+		public UnitBuffManager(IBattleContext context, IBattleEntity entity)
+		{
+			BattleContext = context;
+			BattleEntity = entity;
+
+			BattleContext.Clock.Tick += OnTick;
+		}
 
 		public void AddActiveBuff(IBuff buff)
 		{
 			Add(buff);
-			buff.Effect += b => Effect?.Invoke(b, owner);
+			buff.Effect += b => Effect?.Invoke(b, BattleEntity);
 		}
-
-		// need to hook up buff manager to battle controller to handle events
 
 		private void OnTick(float timeDelta)
 		{
 			// manager will be responsible for keeping time, buffs will not subscribe to clock
 		}
 
-		public void SetClock(IClock clock)
-		{
-			UnsetClock();
-
-			this.clock = clock;
-			clock.Tick += OnTick;
-		}
-
 		private void UnsetClock()
 		{
-			if (clock != null)
+			if (BattleContext != null)
 			{
-				clock.Tick -= OnTick;
-				clock = null;
+				BattleContext.Clock.Tick -= OnTick;
 			}
 		}
 

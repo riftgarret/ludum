@@ -14,6 +14,8 @@ namespace Redninja.Components.Buffs
 		public float EffectInterval { get; set; }
 
 		public event Action<IBuff> Effect;
+		
+		// reimplement duration tracking
 
 		protected override IUnit SelfAsUnit => this;
 

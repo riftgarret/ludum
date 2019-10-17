@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Redninja.Components.Actions;
+using Redninja.Components.Buffs;
 using Redninja.Components.Decisions.AI;
 using Redninja.Components.Properties;
 
@@ -12,6 +13,7 @@ namespace Redninja
 		UnitPosition Position { get; }
 
 		IUnitActionManager Actions { get; }
+		IUnitBuffManager Buffs { get; }
 
 		IEnumerable<ITriggeredProperty> TriggeredProperties { get; }
 

@@ -80,6 +80,8 @@ namespace Redninja.Components.Actions
 
 		public void Dispose()
 		{
+			UnsetClock(); 
+
 			if (CurrentAction != null)
 			{
 				CurrentAction.Dispose();
