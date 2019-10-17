@@ -10,6 +10,6 @@ namespace Redninja.Components.Buffs
 
 		event Action<IBuff> BuffExpired;
 
-		// add method to hook up battle event handlers
+		void AddActiveBuff(IBuff buff);
 	}
 }
