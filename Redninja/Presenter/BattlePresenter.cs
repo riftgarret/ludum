@@ -80,7 +80,7 @@ namespace Redninja.Presenter
 			State = GameState.Paused;
 		}
 
-		private bool RequiresInput => entityManager.Entities.Any(x => x.RequiresAction);
+		private bool RequiresInput => entityManager.Entities.Any(x => x.Actions.RequiresAction);
 
 		/// <summary>
 		/// Update game clock. This drives the presenter.

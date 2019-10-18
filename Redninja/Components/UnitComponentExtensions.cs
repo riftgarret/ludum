@@ -8,7 +8,7 @@ namespace Redninja.Components
 		public static IUnitEquipmentManager GetEquipmentManager(this IUnit unit)
 			=> unit.GetComponent<IUnitEquipmentManager>(UnitComponents.Equipment);
 
-		public static IUnitBuffManager GetBuffManager(this IUnit unit)
-			=> unit.GetComponent<IUnitBuffManager>(UnitComponents.Buffs);
+		//public static IUnitBuffManager GetBuffManager(this IUnit unit)
+		//	=> unit.GetComponent<IUnitBuffManager>(UnitComponents.Buffs);
 	}
 }

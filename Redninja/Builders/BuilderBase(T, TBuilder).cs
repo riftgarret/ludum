@@ -1,4 +1,4 @@
-﻿namespace Redninja
+﻿namespace Redninja { 
 	/// Base class for implementing extendable builders.
 	/// </summary>
 	/// <typeparam name="T">The type of the object to be constructed.</typeparam>

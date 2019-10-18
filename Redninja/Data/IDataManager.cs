@@ -1,4 +1,3 @@
-using Davfalcon.Revelator;
 using Redninja.Components.Decisions.AI;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;

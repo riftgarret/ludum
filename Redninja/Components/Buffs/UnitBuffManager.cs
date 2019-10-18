@@ -1,11 +1,10 @@
 ﻿using System;
-using Davfalcon;
-using Davfalcon.Buffs;
+
 
 namespace Redninja.Components.Buffs
 {
 	[Serializable]
-	public class UnitBuffManager : UnitBuffManager<IUnit, IBuff>, IUnitBuffManager, IUnitComponent<IUnit>
+	public class UnitBuffManager //: UnitBuffManager<IUnit, IBuff>, IUnitBuffManager, IUnitComponent<IUnit>
 	{
 		protected IBattleContext BattleContext { get; }
 
@@ -24,8 +23,8 @@ namespace Redninja.Components.Buffs
 
 		public void AddActiveBuff(IBuff buff)
 		{
-			Add(buff);
-			buff.Effect += b => Effect?.Invoke(b, BattleEntity);
+			//Add(buff);
+			//buff.Effect += b => Effect?.Invoke(b, BattleEntity);
 		}
 
 		private void OnTick(float timeDelta)

@@ -279,12 +279,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\lib\Davfalcon\Davfalcon.csproj">
-      <Project>{d20748a8-6990-4d69-a22c-4b2a72784343}</Project>
+    <ProjectReference Include="..\Davfalcon\Davfalcon.csproj">
+      <Project>{1fcb4578-21b8-4db5-b560-c87beeb7fd2e}</Project>
       <Name>Davfalcon</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>cd $(TargetDir)

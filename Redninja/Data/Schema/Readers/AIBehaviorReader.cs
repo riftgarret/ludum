@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using Davfalcon.Revelator;
 using Redninja.Components.Decisions.AI;
-using Redninja.Components.Skills;
 
 namespace Redninja.Data.Schema.Readers
 {

@@ -2,6 +2,6 @@
 {
 	public interface ICharacteristicRequirement
 	{
-		bool IsAvailable(IUnit unit);
+		//bool IsAvailable(IUnit unit);
 	}
 }

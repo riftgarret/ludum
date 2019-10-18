@@ -1,5 +1,5 @@
 ﻿using System;
-using Davfalcon.Revelator;
+using Redninja.Components.Buffs;
 
 namespace Redninja.Components.Combat.Events
 {

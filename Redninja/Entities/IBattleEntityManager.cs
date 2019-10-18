@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Davfalcon.Revelator;
 using Redninja.Components.Clock;
 using Redninja.Components.Combat;
 using Redninja.Components.Decisions.AI;

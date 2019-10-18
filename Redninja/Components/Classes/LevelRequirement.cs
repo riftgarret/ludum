@@ -6,6 +6,6 @@
 
 		public LevelRequirement(int level) => this.Level = level;
 
-		public bool IsAvailable(IUnit unit) => unit.Level >= Level;
+		//public bool IsAvailable(IUnit unit) => unit.Level >= Level;
 	}
 }

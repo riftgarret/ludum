@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Davfalcon.Revelator.Borger;
 
 namespace Redninja.Data.Schema
 {
@@ -10,7 +9,7 @@ namespace Redninja.Data.Schema
 		public string DataId { get; set; }
 		public string Name { get; set; }
 		public List<float> AttackTime { get; set; }
-		public List<WeaponType> AttackWeapons { get; set; }
+		//public List<WeaponType> AttackWeapons { get; set; }
 		public List<ClassSkillSchema> Skills { get; set; }
 	}
 }

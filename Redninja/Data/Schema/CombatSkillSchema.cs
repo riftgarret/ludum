@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using Davfalcon.Revelator;
-using Davfalcon.Revelator.Borger;
-using Redninja.Components.Skills;
 
 namespace Redninja.Data.Schema
 {

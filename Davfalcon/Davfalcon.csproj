@@ -22,7 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,7 +33,6 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Davfalcon.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -44,76 +43,64 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Builders\BuilderBase%28T, TBuilder%29.cs" />
-    <Compile Include="Builders\BuilderBase%28T, TOut, TBuilder%29.cs" />
-    <Compile Include="Builders\IBuilder%28T%29.cs" />
+    <Compile Include="Buffs\Buff%28TUnit%29.cs" />
+    <Compile Include="Buffs\IBuff%28TUnit%29.cs" />
+    <Compile Include="Buffs\IUnitBuffManager%28TUnit,TBuff%29.cs" />
+    <Compile Include="Buffs\UnitBuffManager%28TUnit,TBuff%29.cs" />
+    <Compile Include="CollectionExtensions.cs" />
     <Compile Include="Collections\Adapters\EnumStringListAdapter.cs" />
+    <Compile Include="Collections\Adapters\ListAdapter%28T1,T2%29.cs" />
     <Compile Include="Collections\Adapters\ManagedEnumStringList.cs" />
-    <Compile Include="BasicUnit.cs" />
+    <Compile Include="Equipment\CompoundEquipment%28TUnit,TEquipmentType%29.cs" />
+    <Compile Include="Equipment\Equipment%28TUnit,TEquipmentType%29.cs" />
+    <Compile Include="Equipment\IEquipment%28TUnit,TEquipmentType%29.cs" />
+    <Compile Include="Equipment\IEquipmentSlot.cs" />
+    <Compile Include="Equipment\IUnitEquipmentManager%28TUnit,TEquipmentType,TEquipment%29.cs" />
+    <Compile Include="Equipment\UnitEquipmentManager%28TUnit,TEquipmentType,TEquipment%29.cs" />
+    <Compile Include="IStats.cs" />
+    <Compile Include="IStatsModifier%28T%29.cs" />
+    <Compile Include="IUnitComponent%28TUnit%29.cs" />
+    <Compile Include="Nodes\AggregatorNode%28T%29.cs" />
+    <Compile Include="Nodes\CollectionNode%28T%29.cs" />
+    <Compile Include="Nodes\NodeExtensions.cs" />
+    <Compile Include="Nodes\NodeBase.cs" />
+    <Compile Include="Nodes\ValueNode.cs" />
+    <Compile Include="Stats\IStatNode.cs" />
+    <Compile Include="Stats\IStatsCalculator.cs" />
+    <Compile Include="IStatsProperties.cs" />
+    <Compile Include="IUnitTemplate%28TUnit%29.cs" />
     <Compile Include="Collections\Generic\CircularLinkedList%28T%29.cs" />
     <Compile Include="Collections\Generic\ICircularLinkedList%28T%29.cs" />
-    <Compile Include="Collections\Generic\ISelfRegistry%28T%29.cs" />
     <Compile Include="Collections\Generic\IRegistry%28T%29.cs" />
-    <Compile Include="Collections\Adapters\ListAdapter%28T1,T2%29.cs" />
     <Compile Include="Collections\Generic\ManagedList%28T%29.cs" />
     <Compile Include="Collections\Generic\PrototypeCloner%28T%29.cs" />
-    <Compile Include="Collections\Generic\SelfRegisteredPrototypeCloner%28T%29.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="IAggregator.cs" />
-    <Compile Include="IDescribable.cs" />
-    <Compile Include="IEditableDescription.cs" />
-    <Compile Include="IEditableName.cs" />
-    <Compile Include="IEditableStatsModifier.cs" />
-    <Compile Include="Nodes\Extensions.cs" />
-    <Compile Include="Nodes\INode.cs" />
-    <Compile Include="INameable.cs" />
-    <Compile Include="IStatsHolder.cs" />
-    <Compile Include="IStatsModifier.cs" />
+    <Compile Include="IModifier%28T%29.cs" />
     <Compile Include="MathExtensions.cs" />
-    <Compile Include="Nodes\AggregatorNode.cs" />
-    <Compile Include="Nodes\ConstantNode.cs" />
-    <Compile Include="Nodes\IAggregatorNode.cs" />
-    <Compile Include="Nodes\IResolverNode.cs" />
-    <Compile Include="Nodes\IStatNode.cs" />
-    <Compile Include="Nodes\IStatNode%28T%29.cs" />
-    <Compile Include="Nodes\NodeEnumerableBase.cs" />
-    <Compile Include="Nodes\ResolverNode.cs" />
-    <Compile Include="Nodes\StatNode%28T%29.cs" />
+    <Compile Include="Modifier%28T%29.cs" />
+    <Compile Include="ModifierStack%28T%29.cs" />
+    <Compile Include="Nodes\INode%28T%29.cs" />
     <Compile Include="Randomization\CenterWeightedChecker.cs" />
     <Compile Include="Randomization\ISuccessCheck.cs" />
     <Compile Include="Randomization\RandomBase.cs" />
     <Compile Include="Randomization\RandomInteger.cs" />
     <Compile Include="Randomization\SuccessChecker.cs" />
-    <Compile Include="Stats\StatsAggregator.cs" />
-    <Compile Include="StatsOperations.cs" />
-    <Compile Include="Serialization\EnumString.cs" />
-    <Compile Include="TimedModifier.cs" />
-    <Compile Include="ITimedModifier.cs" />
-    <Compile Include="IEditableStats.cs" />
-    <Compile Include="IStats.cs" />
-    <Compile Include="IStatsOperations.cs" />
-    <Compile Include="IStatsPackage.cs" />
-    <Compile Include="IItem.cs" />
+    <Compile Include="Stats\IStatsEditable.cs" />
     <Compile Include="IUnit.cs" />
-    <Compile Include="IUnitModifier.cs" />
-    <Compile Include="IUnitModifierStack.cs" />
+    <Compile Include="IModifierStack%28T%29.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\EnumString.cs" />
     <Compile Include="Serialization\Serializer.cs" />
-    <Compile Include="Stats\StatsCalculator.cs" />
-    <Compile Include="Stats\StatsConstant.cs" />
-    <Compile Include="Stats\StatsPrototype.cs" />
+    <Compile Include="Stats\StatModification.cs" />
+    <Compile Include="Stats\StatNode.cs" />
     <Compile Include="Stats\StatsMap.cs" />
-    <Compile Include="UnitModifier.cs" />
-    <Compile Include="UnitModifierStack.cs" />
-    <Compile Include="UnitStatsModifier.cs" />
+    <Compile Include="Stats\StatsPrototype.cs" />
+    <Compile Include="UnitExtensions.cs" />
+    <Compile Include="UnitModifier%28TUnit%29.cs" />
+    <Compile Include="UnitStatsModifier%28TUnit%29.cs" />
+    <Compile Include="UnitTemplate%28TUnit%29.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>cd $(TargetDir)
-"C:\Program Files\Unity\Hub\Editor\2019.2.8f1\Editor\Data\MonoBleedingEdge\bin\mono" "C:\Program Files\Unity\Hub\Editor\2019.2.8f1\Editor\Data\MonoBleedingEdge\lib\mono\4.5\pdb2mdb.exe" $(TargetFileName)
-copy "$(TargetFileName)*" "$(ProjectDir)..\Ludum\Assets\Plugins"</PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

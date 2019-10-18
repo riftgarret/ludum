@@ -49,7 +49,7 @@ namespace Redninja.Entities
 			{
 				Team = team
 			};
-			if (nameOverride != null) entity.SetNameOverride(nameOverride);
+			//if (nameOverride != null) entity.SetNameOverride(nameOverride);
 			entity.MovePosition(position.Row, position.Column);
 			AddEntity(entity);
 			return entity;

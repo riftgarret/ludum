@@ -6,14 +6,11 @@ using Davfalcon.Randomization;
 using Redninja.Components.Actions;
 using Redninja.Components.Buffs;
 using Redninja.Components.Combat;
-
 using Redninja.Components.Decisions;
-using IUnit = Davfalcon.Revelator.IUnit;
 using Redninja.Components.Properties;
 using System.Linq;
-
 using Redninja.Components.Decisions.AI;
-using Redninja.Components.Properties;
+using Davfalcon.Stats;
 
 namespace Redninja.Entities
 {
@@ -56,20 +53,22 @@ namespace Redninja.Entities
 		// TODO pull properties from equipment, buffs, class def
 		public IEnumerable<ITriggeredProperty> TriggeredProperties => Enumerable.Empty<ITriggeredProperty>();
 
+		public IStats VolatileStats { get; } = new StatsMap();
+
 		public BattleEntity(IBattleContext context, IUnit unit)
 		{
 			this.context = context;
-			this.unit = unit;
+			this.unit = unit;			
 
 			// maybe we don't need this?
 			this.combatExecutor = context.CombatExecutor;
 			combatExecutor.EntityMoving += OnEntityMoving;
 
 			Actions = new UnitActionManager(context, this);
-			Buffs = new UnitBuffManager(context, this);
+			//Buffs = new UnitBuffManager(context, this);
 
 			// set up new modifier layer
-			Modifiers.Add(Buffs);
+			//Modifiers.Add(Buffs);
 			Modifiers.Bind(() => unit.AsModified());
 
 			// TODO add volatile stats component
@@ -83,7 +82,7 @@ namespace Redninja.Entities
 
 		public void InitializeBattlePhase()
 		{
-			combatExecutor.InitializeEntity(this);
+			//combatExecutor.InitializeEntity(this);
 
 			Actions.SetAction(new WaitAction(new RandomInteger(1, 10).Get()));
 		}
@@ -94,11 +93,11 @@ namespace Redninja.Entities
 
 		public void Dispose()
 		{
-			combatExecutor.CleanupEntity(this);
+			//combatExecutor.CleanupEntity(this);
 			combatExecutor.EntityMoving -= OnEntityMoving;
 
 			Actions.Dispose();
-			Buffs.Dispose();
+			//Buffs.Dispose();
 		}
 
 		public void SetAIBehavior(AIRuleSet ruleSet)

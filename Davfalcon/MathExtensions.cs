@@ -25,7 +25,22 @@ namespace Davfalcon
 		/// <returns>The scaled value.</returns>
 		public static int Scale(this int value, int factor)
 		{
-			return (int)(value * (factor > 0 ? 1 + factor / 100f : (factor < 0 ? 100f / (100 - factor) : 1)));
+			float f;
+
+			if (factor == 0)
+			{
+				f = 1;
+			}
+			else if (factor >= 0)
+			{
+				f = 1 + factor / 100f;
+			}
+			else
+			{
+				f = 100f / (100 - factor);
+			}
+
+			return (int)(value * f);
 		}
 
 		/// <summary>

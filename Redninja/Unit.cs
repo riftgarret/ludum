@@ -9,7 +9,7 @@ namespace Redninja
 
 	public enum UnitComponents
 	{
-		Equipment, Skills
+		Equipment, Skills, Buffs
 	}
 
 	public enum VolatileUnitComponents

@@ -8,7 +8,7 @@ namespace Davfalcon.Collections.Adapters
 	/// An adapter to allow representation of one type of <see cref="IList{T}"/> interface as another type of <see cref="IList{T}"/> interface.
 	/// </summary>
 	/// <typeparam name="T1">The original type of the elements.</typeparam>
-	/// <typeparam name="T2">The type to represent the elemetns as instead. <typeparamref name="T1"/> should be able to be cast into <typeparamref name="T2"/>.</typeparam>
+	/// <typeparam name="T2">The type to represent the elements as instead. <typeparamref name="T1"/> should be able to be cast into <typeparamref name="T2"/>.</typeparam>
 	[Serializable]
 	public class ListAdapter<T1, T2> : IList<T2> where T1 : class where T2 : class
 	{

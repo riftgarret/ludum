@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using Davfalcon.Revelator;
-using Redninja.Components.Decisions.AI;
 
 namespace Redninja.Data.Schema.Readers
 {
@@ -10,17 +8,18 @@ namespace Redninja.Data.Schema.Readers
 		{
 			foreach(CharacterSchema cs in characters)
 			{
-				IUnit unit = Unit.Build(b =>
-				{
-					b.SetMainDetails(cs.Name, cs.Class, cs.Level);
+				var unit = new Unit();
+				//IUnit unit = Unit.Build(b =>
+				//{
+				//	b.SetMainDetails(cs.Name, cs.Class, cs.Level);
 
-					foreach (var item in cs.Stats)
-					{
-						b.SetBaseStat(item.Key, item.Value);
-					}
+				//	foreach (var item in cs.Stats)
+				//	{
+				//		b.SetBaseStat(item.Key, item.Value);
+				//	}
 
-					return b;
-				});
+				//	return b;
+				//});
 
 				manager.NPCUnits[cs.DataId] = unit;
 			}

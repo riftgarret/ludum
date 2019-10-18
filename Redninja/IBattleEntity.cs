@@ -1,36 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using Davfalcon.Revelator;
+using Davfalcon;
 using Redninja.Components.Actions;
-using Redninja.Components.Clock;
-using Redninja.Components.Combat;
-using Redninja.Components.Decisions;
+using Redninja.Components.Buffs;
 using Redninja.Components.Decisions.AI;
 using Redninja.Components.Properties;
 
 namespace Redninja
 {
-	public interface IBattleEntity : IUnit, IClockSynchronized
+	public interface IBattleEntity : IUnit, IDisposable
 	{
 		int Team { get; set; }
-		UnitPosition Position { get; }
+		UnitPosition Position {  get; }
 
-		string CurrentActionName { get; }
-		ActionPhase Phase { get; }
-		float PhaseProgress { get; }
-		IAIBehavior AIBehavior { get; }
-		bool RequiresAction { get; }
+		IUnitActionManager Actions { get; }
+		IUnitBuffManager Buffs { get; }
 
-		IBattleAction CurrentAction { get; }
-		IActionContextProvider ActionContextProvider { get; }
+		IStats VolatileStats { get; }
+
 		IEnumerable<ITriggeredProperty> TriggeredProperties { get; }
-
-		event Action<IBattleEntity> ActionNeeded;
-		event Action<IBattleEntity, IOperationSource> ActionSet;
 
 		void InitializeBattlePhase();
 		void MovePosition(int row, int col);
-		void SetAction(IBattleAction action);
+
+		// not sure where this should go, depends on whether AI behavior can be changed
 		void SetAIBehavior(AIRuleSet ruleSet);
 	}
 }

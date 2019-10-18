@@ -14,8 +14,7 @@ namespace Redninja.Components.Combat
 		{
 			this.unit = unit ?? throw new ArgumentNullException(nameof(unit));
 			this.target = target ?? throw new ArgumentNullException(nameof(target));
-			this.statusEffect = statusEffect ?? throw new ArgumentNullException(nameof(statusEffect));
-			statusEffect.Owner = unit;
+			this.statusEffect = statusEffect ?? throw new ArgumentNullException(nameof(statusEffect));			
 		}
 
 		public override void Execute(IBattleModel battleModel, ICombatExecutor combatExecutor)

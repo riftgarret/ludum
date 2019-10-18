@@ -14,7 +14,8 @@ namespace Redninja.Components.Classes
 
 		public bool IsAvailable(IUnit unit)
 		{
-			return Requirements.All(req => req.IsAvailable(unit));
+			return false;
+			//return Requirements.All(req => req.IsAvailable(unit));
 		}
 	}
 }
