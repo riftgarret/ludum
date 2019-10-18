@@ -18,6 +18,8 @@
 		LUK,
 		Level,
 		HpLevelScale,
+		BleedDamageConst,
+		BleedDamageScale,
 	}
 
 	public enum CalculatedStat

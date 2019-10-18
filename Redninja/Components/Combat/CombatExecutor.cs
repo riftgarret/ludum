@@ -61,7 +61,7 @@ namespace Redninja.Components.Combat
 			=> resolver.GetDefenseNode(defender, incomingDamage);
 
 		public void DealDamage(IBattleEntity attacker, IBattleEntity defender, IDamageSource source)
-		{
+		{			
 			IDefenseNode damage = GetDamage(attacker, defender, source);
 			BattleEventOccurred?.Invoke(new DamageEvent(attacker, defender, damage, resolver.ApplyDamage(damage)));
 		}

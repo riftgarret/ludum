@@ -1,5 +1,6 @@
 ﻿using System;
 using Davfalcon.Revelator;
+using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 
 namespace Redninja.Components.Combat
@@ -8,9 +9,9 @@ namespace Redninja.Components.Combat
 	{
 		private readonly IBattleEntity unit;
 		private readonly ITargetResolver target;
-		private readonly IDamageSource source;
+		private readonly ISkillOperationParameters source;
 
-		public DamageOperation(IBattleEntity unit, ITargetResolver target, IDamageSource source)
+		public DamageOperation(IBattleEntity unit, ITargetResolver target, ISkillOperationParameters source)
 		{
 			this.unit = unit ?? throw new ArgumentNullException(nameof(unit));
 			this.target = target ?? throw new ArgumentNullException(nameof(target));
@@ -21,7 +22,7 @@ namespace Redninja.Components.Combat
 		{
 			foreach (IBattleEntity t in target.GetValidTargets(unit, battleModel))
 			{
-				combatExecutor.DealDamage(unit, t, source);
+				//combatExecutor.DealDamage(unit, t, source);
 			}
 		}
 	}

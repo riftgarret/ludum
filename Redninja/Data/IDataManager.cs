@@ -3,6 +3,7 @@ using Redninja.Components.Decisions.AI;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 using Redninja.System;
+using IBuff = Redninja.Components.Buffs.IBuff;
 
 namespace Redninja.Data
 {
@@ -13,6 +14,8 @@ namespace Redninja.Data
 	public interface IDataManager
 	{
 		IDataStore<ISkill> Skills { get; }
+
+		IDataStore<IBuff> Buffs { get; }
 
 		IDataStore<IAIRule> AIRules { get; }
 

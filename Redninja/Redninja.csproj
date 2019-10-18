@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Actions\BattleActionBase.cs" />
+    <Compile Include="Components\Buffs\Buff.cs" />
     <Compile Include="Components\Buffs\IBuff.cs" />
     <Compile Include="Components\Clock\Clock.cs" />
     <Compile Include="Components\Combat\Events\StatusEffectEvent.cs" />
@@ -71,6 +72,11 @@
     <Compile Include="Components\Equipment\IEquipment.cs" />
     <Compile Include="Components\Properties\ITriggerCondition.cs" />
     <Compile Include="Components\Skills\AISkillProvider.cs" />
+    <Compile Include="Components\Buffs\ActiveBuff.cs" />
+    <Compile Include="Components\Buffs\ActiveAura.cs" />
+    <Compile Include="Components\Buffs\BuffConfig.cs" />
+    <Compile Include="Components\Buffs\Behavior\DamageOvertimeExecutionBehavior.cs" />
+    <Compile Include="Components\Buffs\IBuffExecutionBehavior.cs" />
     <Compile Include="Components\Skills\ISkillOperationParameters.cs" />
     <Compile Include="Components\Skills\OperationProvider.cs" />
     <Compile Include="Components\Skills\SkillAction.cs" />
@@ -93,17 +99,13 @@
     <Compile Include="Components\Decisions\AI\IAITargetCondition.cs" />
     <Compile Include="Components\Decisions\AI\IAITargetPriority.cs" />
     <Compile Include="Components\Decisions\AI\WeightedPool.cs" />
+    <Compile Include="Components\Buffs\BuffConstants.cs" />
     <Compile Include="Components\Skills\SkillOperationParameters.cs" />
-    <Compile Include="Components\Skills\StatusEffects\EffectResolver.cs" />
-    <Compile Include="Components\Skills\StatusEffects\IConditionalEffect.cs" />
-    <Compile Include="Components\Skills\StatusEffects\IStatusEffect.cs" />
-    <Compile Include="Components\Skills\StatusEffects\IEventTrigger.cs" />
-    <Compile Include="Components\Skills\StatusEffects\ITriggeredEffect.cs" />
-    <Compile Include="Components\Skills\StatusEffects\StatusEffect.cs" />
     <Compile Include="Components\Targeting\StaticTarget.cs" />
     <Compile Include="Data\DataManagerFactory.cs" />
     <Compile Include="Components\Skills\ConfigurableSkillProvider.cs" />
     <Compile Include="Data\Schema\AIAttackRuleSchema.cs" />
+    <Compile Include="Data\Schema\BuffSchema.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="IBattleContext.cs" />
     <Compile Include="Text\TextUtils.cs" />
@@ -181,13 +183,10 @@
     <Compile Include="View\IBaseCallbacks.cs" />
     <Compile Include="View\IBattleView.cs" />
     <Compile Include="Components\Skills\ISkillProvider.cs" />
-    <Compile Include="Components\Skills\IWeaponAttack.cs" />
-    <Compile Include="Components\Skills\WeaponAttack.cs" />
     <Compile Include="Components\Skills\CombatSkill.cs" />
     <Compile Include="Components\Skills\ISkillResolver.cs" />
     <Compile Include="Components\Skills\SkillOperationDefinition.cs" />
     <Compile Include="Components\Skills\SkillTargetingSet.cs" />
-    <Compile Include="Components\Skills\WeaponAttackResolver.cs" />
     <Compile Include="Components\Targeting\ISelectedTarget.cs" />
     <Compile Include="Components\Targeting\ITargetResolver.cs" />
     <Compile Include="Components\Targeting\ITargetingRule.cs" />
@@ -220,7 +219,6 @@
     <Compile Include="Components\Properties\IPropertyBundle.cs" />
     <Compile Include="Components\Properties\ITriggeredProperty.cs" />
     <Compile Include="Components\Properties\TriggerPropertyType.cs" />
-    <Compile Include="Components\Skills\StatusEffects\IStateCondition.cs" />
     <Compile Include="Data\Schema\Readers\ConditionParser.cs" />
     <Compile Include="Components\Conditions\ConditionConstants.cs" />
     <Compile Include="Text\RegexPatternBuilder.cs" />

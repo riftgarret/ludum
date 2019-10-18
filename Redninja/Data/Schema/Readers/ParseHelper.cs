@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
+using Davfalcon.Stats;
 using Newtonsoft.Json;
 using Redninja.Components.Actions;
 using Redninja.Components.Decisions.AI;
@@ -91,6 +93,18 @@ namespace Redninja.Data.Schema.Readers
 		public static OperationProvider ParseOperationProvider(string operationProviderName)
 			=> (OperationProvider)typeof(OperationProviders).GetProperty(operationProviderName).GetValue(null);
 
+		public static SkillOperationParameters ParseStatsParams(Dictionary<string, int> original)
+		{
+			if (original == null) return null;
+			SkillOperationParameters map = new SkillOperationParameters();
+			foreach(var e in original)
+			{
+				if(!Enum.TryParse<Stat>(e.Key, true, out Stat stat)) throw new FormatException("Invalid Stat found");
+				map[stat] = e.Value;
+			}
+			return map;
+		}			
+
 		public static IAITargetCondition ParseAITargetCondition(string conditionParam)
 		{
 			if (TryParseConditionExpression(conditionParam, out IAITargetCondition cond)) return cond;
@@ -142,6 +156,46 @@ namespace Redninja.Data.Schema.Readers
 		public static IAITargetPriority ParseAITargetPriority(string priorityFactoryProperty)
 			=> (IAITargetPriority)typeof(AITargetPriorityFactory).GetProperty(priorityFactoryProperty).GetValue(null);
 
+		
+		public static T CreateInstance<T>(string theNamespace, string theClass) where T : class
+		{
+			Assembly assem = typeof(ParseHelper).Assembly;
+			Type t = assem.GetType(theNamespace + "." + theClass);
+			return (T) Activator.CreateInstance(t);
+		}
+
+		public static void ApplyProperties(object instance, Dictionary<string, object> properties, bool parseEnums = false)
+		{
+			var modProps = ConvertEnums(properties);
+			modProps?.ForEach(e =>
+			{
+				Type type = instance.GetType();
+				PropertyInfo prop = type.GetProperty(e.Key);
+				prop.SetValue(instance, e.Value, null);
+			});
+		}		
+
+		internal static Dictionary<string, object> ConvertEnums(Dictionary<string, object> dict)
+		{				
+			List<Type> detectedEnums = new List<Type>()
+			{
+				typeof(Stat)
+			};
+
+			return dict?.ToDictionary(e => e.Key, e =>
+			{
+				if (e.Value is string)
+				{
+					string word = (string)e.Value;
+					Type type = detectedEnums.Find(x => word.StartsWith(x.Name + "."));
+					if (type != null)
+					{
+						return Enum.Parse(type, word.Substring(type.Name.Length + 1));
+					}
+				}
+				return e.Value;
+			});			
+		}
 
 		/// <summary>
 		/// Read this file directly into this json node.

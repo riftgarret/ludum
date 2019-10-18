@@ -36,11 +36,6 @@ namespace Redninja.System
 				this.level = level;
 			}
 
-			public IWeaponAttack GetAttack(IEnumerable<IWeapon> weapons)
-				=> WeaponAttack.Build(b => b
-					.SetActionTime(c.attackTime)
-					.AddWeapons(weapons));
-
 			public IEnumerable<ISkill> GetSkills()
 				=> c.skills.Where(s => s.level <= level).Select(s => s.skill);
 		}

@@ -6,6 +6,7 @@ using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 using Redninja.Data.Schema.Readers;
 using Redninja.System;
+using IBuff = Redninja.Components.Buffs.IBuff;
 
 namespace Redninja.Data
 {
@@ -23,6 +24,7 @@ namespace Redninja.Data
 			return dataTypeLookup[type] as DataStore<T>;
 		}
 
+		public IDataStore<IBuff> Buffs => GetDataStore<IBuff>();
 		public IDataStore<ISkill> Skills => GetDataStore<ISkill>();
 		public IDataStore<IAIRule> AIRules => GetDataStore<IAIRule>();
 		public IDataStore<AIRuleSet> AIBehavior => GetDataStore<AIRuleSet>();
@@ -33,6 +35,7 @@ namespace Redninja.Data
 		public IDataStore<Encounter> Encounters => GetDataStore<Encounter>();
 		public IDataStore<IClassProvider> Classes => GetDataStore<IClassProvider>();
 
+		IEditableDataStore<IBuff> IEditableDataManager.Buffs => GetDataStore<IBuff>();
 		IEditableDataStore<ISkill> IEditableDataManager.Skills => GetDataStore<ISkill>();
 		IEditableDataStore<IAIRule> IEditableDataManager.AIRules => GetDataStore<IAIRule>();
 		IEditableDataStore<AIRuleSet> IEditableDataManager.AIBehavior => GetDataStore<AIRuleSet>();

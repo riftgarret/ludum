@@ -9,6 +9,8 @@ using Redninja.Components.Decisions.AI;
 using Redninja.Components.Combat;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
+using Redninja.Components.Buffs;
+using Redninja.Components.Buffs.Behavior;
 
 namespace Redninja.Data.Schema.Readers.UnitTests
 {
@@ -158,6 +160,29 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 		public void ParseCoordinate_FailsInvalidFormat(string text)
 		{
 			Assert.Throws<FormatException>(() => ParseHelper.ParseCoordinate(text));
+		}
+
+		[Test]
+		public void CreateInstance_ExecutorBehavior()
+		{
+			var result = ParseHelper.CreateInstance<IBuffExecutionBehavior>("Redninja.Components.Buffs.Behavior", "DamageOvertimeExecutionBehavior");
+			Assert.IsInstanceOf<IBuffExecutionBehavior>(result);
+		}
+
+		[Test]
+		public void ApplyProperties_ExecutionBehavior()
+		{
+			var behavior = new DamageOvertimeExecutionBehavior();
+			ParseHelper.ApplyProperties(behavior, new Dictionary<string, object>()
+			{
+				{ "DamageSource", "Stat.HP" },
+				{ "TicksPerSecond", 3 },
+				{ "KRatePerSecond", 2 }
+			});
+
+			Assert.That(behavior.DamageSource, Is.EqualTo(Stat.HP));
+			Assert.That(behavior.TicksPerSecond, Is.EqualTo(3));
+			Assert.That(behavior.KRatePerSecond, Is.EqualTo(2));
 		}
 	}
 }

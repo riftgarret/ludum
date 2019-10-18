@@ -23,11 +23,6 @@ namespace Redninja.Components.Skills
 			);			
 		}
 
-		public IWeaponAttack GetAttack(IEnumerable<IWeapon> weapons)
-			=> WeaponAttack.Build(b => b
-					.SetActionTime(AttackTime)
-					.AddWeapons(weapons));
-
 		public IEnumerable<ISkill> GetSkills() => Skills;
 	}
 }

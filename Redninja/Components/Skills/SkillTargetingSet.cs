@@ -2,7 +2,6 @@
 using System.Linq;
 using Davfalcon.Builders;
 using Redninja.Components.Targeting;
-using ParamsFunc = Redninja.Components.Skills.SkillOperationParameters.Builder.Func;
 
 namespace Redninja.Components.Skills
 {
@@ -55,20 +54,7 @@ namespace Redninja.Components.Skills
 				=> AddCombatRound(new SkillOperationDefinition(executionStart, operationProvider, args));
 
 			public Builder AddCombatRound(float executionStart, ITargetPattern pattern, OperationProvider operationProvider, ISkillOperationParameters args)
-				=> AddCombatRound(new SkillOperationDefinition(executionStart, pattern, operationProvider, args));
-
-			// Functional creation
-			public Builder AddCombatRound(float executionStart, OperationProvider operationProvider)
-				=> AddCombatRound(executionStart, operationProvider, defaultArgs);
-
-			public Builder AddCombatRound(float executionStart, ITargetPattern pattern, OperationProvider operationProvider)
-				=> AddCombatRound(executionStart, pattern, operationProvider, defaultArgs);
-
-			public Builder AddCombatRound(float executionStart, OperationProvider operationProvider, ParamsFunc args)
-				=> AddCombatRound(executionStart, operationProvider, args(new SkillOperationParameters.Builder(defaultArgs.Name)).Build());
-
-			public Builder AddCombatRound(float executionStart, ITargetPattern pattern, OperationProvider operationProvider, ParamsFunc args)
-				=> AddCombatRound(executionStart, pattern, operationProvider, args(new SkillOperationParameters.Builder(defaultArgs.Name)).Build());
+				=> AddCombatRound(new SkillOperationDefinition(executionStart, pattern, operationProvider, args));			
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Redninja.Components.Buffs;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 
@@ -10,13 +11,14 @@ namespace Redninja.Data.Schema.Readers
 		{
 			ReadTargets(manager.SkillTargetingRules, skillRoot.TargetingRules);
 			ReadSkills(manager.Skills, manager.SkillTargetingRules, skillRoot.CombatSkills);
+			ReadBuffs(manager.Buffs, skillRoot.Buffs);
 		}
 
 		internal static void ReadSkills(IEditableDataStore<ISkill> skillStore, IDataStore<ITargetingRule> targetStore, List<CombatSkillSchema> skills)
 		{
 			foreach (CombatSkillSchema item in skills)
 			{
-				skillStore[item.DataId] = CombatSkill.Build(item.Name, item.DefaultParameters, b =>
+				skillStore[item.DataId] = CombatSkill.Build(item.Name, ParseHelper.ParseStatsParams(item.DefaultStats), b =>
 				{
 					b.SetActionTime(ParseHelper.ParseActionTime(item.Time));
 					item.TargetingSets.ForEach(ts => b.AddTargetingSet(targetStore[ts.TargetingRuleId],
@@ -28,7 +30,7 @@ namespace Redninja.Data.Schema.Readers
 									combatRound.ExecutionStart,
 									combatRound.Pattern != null ? ParseHelper.ParsePattern(combatRound.Pattern) : null,
 									ParseHelper.ParseOperationProvider(combatRound.OperationProviderName),
-									combatRound.Parameters ?? item.DefaultParameters);
+									ParseHelper.ParseStatsParams(combatRound.Stats ?? item.DefaultStats));
 							}
 							return set;
 						}));
@@ -53,6 +55,19 @@ namespace Redninja.Data.Schema.Readers
 				}
 
 				targetStore[item.DataId] = rule;
+			}
+		}
+
+		internal static void ReadBuffs(IEditableDataStore<IBuff> buffStore, List<BuffSchema> buffSchemas)
+		{
+			foreach(BuffSchema buffSchema in buffSchemas)
+			{
+				Buff buff = new Buff();
+				if(!string.IsNullOrEmpty(buffSchema.Executor))
+				{					
+					buff.Behavior = ParseHelper.CreateInstance<IBuffExecutionBehavior>("Redninja.Components.Buffs.Behavior", buffSchema.Executor);
+					ParseHelper.ApplyProperties(buff.Behavior, buffSchema.ExectorProps);
+				}
 			}
 		}
 	}

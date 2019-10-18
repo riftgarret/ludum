@@ -7,7 +7,6 @@ using Redninja.Components.Actions;
 using Redninja.Components.Clock;
 using Redninja.Components.Combat;
 using Redninja.Components.Decisions;
-using Redninja.Components.Skills.StatusEffects;
 using IUnit = Davfalcon.Revelator.IUnit;
 using Redninja.Components.Properties;
 using System.Linq;
@@ -26,19 +25,7 @@ namespace Redninja.Entities
 		private IClock clock;
 		private readonly ICombatExecutor combatExecutor;
 		private string nameOverride = null;
-		private IBattleContext context;
-
-		private class StatusEffectManager : UnitModifierStack, IUnitModifierStack
-		{
-			private readonly BattleEntity entity;
-			void IUnitModifierStack.Add(IUnitModifier item)
-			{
-				Add(item);
-				if (item is IStatusEffect effect) entity.OnStatusEffectApplied(effect);
-			}
-
-			public StatusEffectManager(BattleEntity entity) => this.entity = entity;
-		}
+		private IBattleContext context;		
 
 		#region Unit interface
 		public string Name => nameOverride?? unit.Name;
@@ -83,8 +70,6 @@ namespace Redninja.Entities
 		{
 			this.context = context;
 			this.unit = unit;
-			Buffs = new StatusEffectManager(this);
-			Buffs.Bind(unit.Modifiers);
 
 			this.combatExecutor = context.CombatExecutor;
 			combatExecutor.EntityMoving += OnEntityMoving;
@@ -134,21 +119,7 @@ namespace Redninja.Entities
 			CurrentAction.SetClock(clock);	// TODO NRE on 2nd skill usage 
 			ActionSet?.Invoke(this, action);
 			CurrentAction.Start();
-		}
-
-		private void OnStatusEffectApplied(IStatusEffect effect)
-		{
-			effect.SetClock(clock);
-			effect.EffectTarget = this;
-			effect.Expired += OnStatusEffectExpired;
-			ActionSet?.Invoke(this, effect);
-		}
-
-		private void OnStatusEffectExpired(IStatusEffect effect)
-		{
-			effect.Dispose();
-			combatExecutor.RemoveStatusEffect(this, effect);
-		}
+		}		
 
 		private void OnTick(float timeDelta)
 		{
@@ -191,12 +162,7 @@ namespace Redninja.Entities
 			{
 				CurrentAction.Dispose();
 				CurrentAction = null;
-			}
-
-			foreach (IStatusEffect e in Buffs)
-			{
-				if (e != null) e.Dispose();
-			}
+			}			
 
 			combatExecutor.CleanupEntity(this);
 			combatExecutor.EntityMoving -= OnEntityMoving;

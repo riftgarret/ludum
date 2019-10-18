@@ -4,10 +4,9 @@
       "dataId": "fire_skill",
       "name": "Fire",
       "time": [ 3, 1, 2 ],
-      "defaultParameters": {
-        "baseDamage": 10,
-        "critMultiplier": 2,
-        "damageTypes": [ "Magical" ]
+      "defaultStats": {
+        "FireDamage": 10,
+        "FireDamageScale": 20
       },
       "targetingSets": [
         {
@@ -16,6 +15,28 @@
             {
               "executionStart": 0.25,
               "operationProviderName": "Damage"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "dataId": "bleed_debuff",
+      "name": "Bleed",
+      "time": [ 3, 1, 2 ],
+      "defaultStats": {
+        "hexSuccessRate": 100
+      },
+      "targetingSets": [
+        {
+          "targetingRuleId": "single_enemy",
+          "combatRounds": [
+            {
+              "executionStart": 0.25,
+              "operationProviderName": "Hex",
+              "hexParams": {
+                "buffId": "bleed_hex",                
+              }
             }
           ]
         }
@@ -120,6 +141,22 @@
       "targetType": "Entity",
       "targetTeam": "Self",
       "targetConditionName": "None"
+    }
+  ],
+  "buffs": [
+    {
+      "dataId": "bleed_hex",
+      "name": "Bleeding",
+      "config": {
+        "alignment": "Positive",
+        "duration": 10
+      },
+      "executor": "DamageOvertimeExecutionBehavior",
+      "exectorProps": {
+        "damageSource": "Bleed",
+        "ticksPerSecond": 4,
+        "kRatePerSecond":  10
+      }
     }
   ]
 }

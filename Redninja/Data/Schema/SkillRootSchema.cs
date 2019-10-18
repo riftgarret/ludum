@@ -9,5 +9,7 @@ namespace Redninja.Data.Schema
 		public List<CombatSkillSchema> CombatSkills { get; set; }
 
 		public List<TargetingRuleSchema> TargetingRules { get; set; }
+
+		public List<BuffSchema> Buffs { get; set; }
 	}
 }

@@ -2,7 +2,6 @@
 using Davfalcon.Builders;
 using Redninja.Components.Actions;
 using Redninja.Components.Targeting;
-using ParamsFunc = Redninja.Components.Skills.SkillOperationParameters.Builder.Func;
 using TargetingSetFunc = Redninja.Components.Skills.SkillTargetingSet.Builder.Func;
 
 namespace Redninja.Components.Skills
@@ -61,9 +60,6 @@ namespace Redninja.Components.Skills
 		}
 
 		// Schema loading
-		public static ISkill Build(string name, ISkillOperationParameters defaultArgs, Builder.Func func) => func(new Builder(name, defaultArgs)).Build();
-
-		// Functional creation
-		public static ISkill Build(string name, ParamsFunc defaultArgs, Builder.Func func) => func(new Builder(name, defaultArgs(new SkillOperationParameters.Builder(name)).Build())).Build();
+		public static ISkill Build(string name, ISkillOperationParameters defaultArgs, Builder.Func func) => func(new Builder(name, defaultArgs)).Build();		
 	}
 }
