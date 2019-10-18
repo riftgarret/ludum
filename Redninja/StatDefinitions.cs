@@ -29,4 +29,9 @@
 		PhysicalDamage,
 		PhysicalResistance,
 	}
+
+	public enum StatModType
+	{
+		Additive, Scaling
+	}
 }

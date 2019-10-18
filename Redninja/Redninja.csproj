@@ -49,11 +49,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\BuilderBase%28T, TBuilder%29.cs" />
+    <Compile Include="Builders\BuilderBase%28T, TOut, TBuilder%29.cs" />
+    <Compile Include="Builders\IBuilder%28T%29.cs" />
+    <Compile Include="Components\Actions\AIUnitActionManager.cs" />
     <Compile Include="Components\Actions\BattleActionBase.cs" />
+    <Compile Include="Components\Actions\IUnitActionManager.cs" />
+    <Compile Include="Components\Actions\UnitActionManager.cs" />
     <Compile Include="Components\Buffs\Buff.cs" />
     <Compile Include="Components\Buffs\IBuff.cs" />
+    <Compile Include="Components\Buffs\IUnitBuffManager.cs" />
+    <Compile Include="Components\Buffs\UnitBuffManager.cs" />
     <Compile Include="Components\Clock\Clock.cs" />
     <Compile Include="Components\Combat\Events\StatusEffectEvent.cs" />
+    <Compile Include="Components\Combat\IDamageSource.cs" />
     <Compile Include="Components\Combat\StatusEffectOperation.cs" />
     <Compile Include="Components\Decisions\ActionContextProvider.cs" />
     <Compile Include="Components\Decisions\AI\AIActionDecesionResult.cs" />
@@ -69,7 +78,13 @@
     <Compile Include="Components\Decisions\ITargetSpec.cs" />
     <Compile Include="Components\Decisions\PatternTargetSpec.cs" />
     <Compile Include="Components\Decisions\TargetSpec.cs" />
+    <Compile Include="Components\Equipment\Equipment.cs" />
+    <Compile Include="Components\Equipment\EquipmentType.cs" />
     <Compile Include="Components\Equipment\IEquipment.cs" />
+    <Compile Include="Components\Equipment\IUnitEquipmentManager.cs" />
+    <Compile Include="Components\Equipment\IWeapon.cs" />
+    <Compile Include="Components\Equipment\UnitEquipmentManager.cs" />
+    <Compile Include="Components\Equipment\WeaponType.cs" />
     <Compile Include="Components\Properties\ITriggerCondition.cs" />
     <Compile Include="Components\Skills\AISkillProvider.cs" />
     <Compile Include="Components\Buffs\ActiveBuff.cs" />
@@ -78,6 +93,7 @@
     <Compile Include="Components\Buffs\Behavior\DamageOvertimeExecutionBehavior.cs" />
     <Compile Include="Components\Buffs\IBuffExecutionBehavior.cs" />
     <Compile Include="Components\Skills\ISkillOperationParameters.cs" />
+    <Compile Include="Components\Skills\IUnitSkillManager.cs" />
     <Compile Include="Components\Skills\OperationProvider.cs" />
     <Compile Include="Components\Skills\SkillAction.cs" />
     <Compile Include="Components\Actions\MovementAction.cs" />
@@ -101,11 +117,16 @@
     <Compile Include="Components\Decisions\AI\WeightedPool.cs" />
     <Compile Include="Components\Buffs\BuffConstants.cs" />
     <Compile Include="Components\Skills\SkillOperationParameters.cs" />
+    <Compile Include="Components\Skills\UnitSkillManager.cs" />
     <Compile Include="Components\Targeting\StaticTarget.cs" />
+    <Compile Include="Components\UnitComponentExtensions.cs" />
     <Compile Include="Data\DataManagerFactory.cs" />
     <Compile Include="Components\Skills\ConfigurableSkillProvider.cs" />
     <Compile Include="Data\Schema\AIAttackRuleSchema.cs" />
     <Compile Include="Data\Schema\BuffSchema.cs" />
+    <Compile Include="IUnit.cs" />
+    <Compile Include="StatFunctions.cs" />
+    <Compile Include="Unit.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="IBattleContext.cs" />
     <Compile Include="Text\TextUtils.cs" />
@@ -255,19 +276,14 @@
     <Compile Include="Components\Conditions\IExpressionEnv.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Davfalcon.Revelator\Davfalcon.Revelator.csproj">
-      <Project>{3f1fa461-a8b2-4b6d-8c39-050069ce2a66}</Project>
-      <Name>Davfalcon.Revelator</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Davfalcon\Davfalcon.csproj">
-      <Project>{1fcb4578-21b8-4db5-b560-c87beeb7fd2e}</Project>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\lib\Davfalcon\Davfalcon.csproj">
+      <Project>{d20748a8-6990-4d69-a22c-4b2a72784343}</Project>
       <Name>Davfalcon</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

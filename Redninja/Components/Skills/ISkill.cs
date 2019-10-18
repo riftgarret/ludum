@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Davfalcon;
 using Redninja.Components.Actions;
 using Redninja.Components.Targeting;
 
@@ -9,8 +8,10 @@ namespace Redninja.Components.Skills
 	/// Implementation that should contain details of what the skill should do and
 	/// target scenario.
 	/// </summary>
-	public interface ISkill : INameable
+	public interface ISkill
 	{
+		string Name { get; }
+
 		ActionTime Time { get; }
 
 		IReadOnlyList<SkillTargetingSet> Targets { get; }

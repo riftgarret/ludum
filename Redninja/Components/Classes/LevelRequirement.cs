@@ -1,7 +1,4 @@
-﻿using System;
-using Davfalcon.Revelator;
-
-namespace Redninja.Components.Classes
+﻿namespace Redninja.Components.Classes
 {
 	public class LevelRequirement : ICharacteristicRequirement
 	{

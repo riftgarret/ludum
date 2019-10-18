@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Davfalcon.Revelator;
-using Davfalcon.Revelator.Borger;
+using Redninja.Components.Equipment;
 using Redninja.Components.Skills;
 
 namespace Redninja.Components.Decisions

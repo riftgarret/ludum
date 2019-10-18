@@ -23,6 +23,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{92089F
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "json", "json\json.njsproj", "{FE216358-70BC-4A7A-A9AC-65CF417CFB26}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{342FAC24-D6BF-4051-8DC1-32AEB75659BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Davfalcon", "lib\Davfalcon\Davfalcon.csproj", "{D20748A8-6990-4D69-A22C-4B2A72784343}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,10 @@ Global
 		{C6FF7814-11C5-4856-902B-9717E9C3A743}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FE216358-70BC-4A7A-A9AC-65CF417CFB26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FE216358-70BC-4A7A-A9AC-65CF417CFB26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D20748A8-6990-4D69-A22C-4B2A72784343}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D20748A8-6990-4D69-A22C-4B2A72784343}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D20748A8-6990-4D69-A22C-4B2A72784343}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D20748A8-6990-4D69-A22C-4B2A72784343}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +66,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{07F10121-23EC-4EBB-93B9-6B99E77E8B75} = {3B717152-77D9-4109-8F4E-4A1C9576679C}
 		{C6FF7814-11C5-4856-902B-9717E9C3A743} = {3B717152-77D9-4109-8F4E-4A1C9576679C}
+		{D20748A8-6990-4D69-A22C-4B2A72784343} = {342FAC24-D6BF-4051-8DC1-32AEB75659BF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5D4A79B7-9746-4A6C-ABFE-58D19EF1BC1B}
