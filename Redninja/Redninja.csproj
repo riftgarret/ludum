@@ -118,6 +118,9 @@
     <Compile Include="Components\Buffs\BuffConstants.cs" />
     <Compile Include="Components\Skills\SkillOperationParameters.cs" />
     <Compile Include="Components\Skills\UnitSkillManager.cs" />
+    <Compile Include="Components\StatCalculators\IStatCalculator.cs" />
+    <Compile Include="Components\StatCalculators\PhysicalDamageCalculator.cs" />
+    <Compile Include="Components\StatCalculators\StatCalculatorExt.cs" />
     <Compile Include="Components\Targeting\StaticTarget.cs" />
     <Compile Include="Components\UnitComponentExtensions.cs" />
     <Compile Include="Data\DataManagerFactory.cs" />
@@ -179,7 +182,7 @@
     <Compile Include="Components\Decisions\TargetingContext.cs" />
     <Compile Include="Components\Combat\CombatExecutor.cs" />
     <Compile Include="Components\Decisions\DecisionHelper.cs" />
-    <Compile Include="Components\Combat\Events\DamageEvent.cs" />
+    <Compile Include="Components\Combat\Events\DamageEventOld.cs" />
     <Compile Include="Components\Combat\Events\MovementEvent.cs" />
     <Compile Include="Presenter\GameState.cs" />
     <Compile Include="Components\Decisions\AI\IAIBehavior.cs" />

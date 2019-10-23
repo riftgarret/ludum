@@ -1,4 +1,5 @@
 ﻿using System;
+using Davfalcon;
 using Redninja.Components.Buffs;
 using Redninja.Components.Combat.Events;
 
@@ -35,9 +36,22 @@ namespace Redninja.Components.Combat
 			//resolver.RemoveBuff(entity, effect);
 		}
 		
-		public void DealDamage(IBattleEntity attacker, IBattleEntity defender, IDamageSource source)
-		{			
+		public void DealDamage(IBattleEntity attacker, IBattleEntity defender, IStats skillStats)
+		{
+			DamageEvent e = new DamageEvent();
+			e.PutResult(DamageType.Physical, GetPhysicalResult(attacker, defender, skillStats));
+
 			// TODO
+			//defender.VolatileStats[CalculatedStat.HP] -= e.Total;
 		}
+
+		private DamageResult GetPhysicalResult(IBattleEntity attacker, IBattleEntity defender, IStats skillStats) => 
+			// TODO combine attacker and skill into a single combiend node
+			DamageResult.Create(
+				attacker.Stats[CalculatedStat.PhysicalDamage],
+				defender.Stats[CalculatedStat.PhysicalReduction],
+				attacker.Stats[CalculatedStat.PhysicalPenetration],
+				defender.Stats[CalculatedStat.PhysicalResistance]
+				);
 	}
 }
