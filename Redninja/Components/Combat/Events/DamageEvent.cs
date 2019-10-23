@@ -17,9 +17,6 @@ namespace Redninja.Components.Combat.Events
 
 		public void PutResult(DamageType type, DamageResult result) => results[type] = result;
 
-		public int Total { get
-			{
-				return 0;
-			} }
+		public int Total => results.Values.Sum(x => x.Total);
 	}
 }
