@@ -56,7 +56,7 @@
     <Compile Include="Components\Actions\BattleActionBase.cs" />
     <Compile Include="Components\Actions\IUnitActionManager.cs" />
     <Compile Include="Components\Actions\UnitActionManager.cs" />
-    <Compile Include="Components\Buffs\Buff.cs" />
+    <Compile Include="Data\Factories\BuffFactory.cs" />
     <Compile Include="Components\Buffs\IBuff.cs" />
     <Compile Include="Components\Buffs\IUnitBuffManager.cs" />
     <Compile Include="Components\Buffs\UnitBuffManager.cs" />
@@ -89,8 +89,8 @@
     <Compile Include="Components\Skills\AISkillProvider.cs" />
     <Compile Include="Components\Buffs\ActiveBuff.cs" />
     <Compile Include="Components\Buffs\ActiveAura.cs" />
-    <Compile Include="Components\Buffs\BuffConfig.cs" />
-    <Compile Include="Components\Buffs\Behavior\DamageOvertimeExecutionBehavior.cs" />
+    <Compile Include="Components\Buffs\BuffProperties.cs" />
+    <Compile Include="Components\Buffs\Behaviors\DamageOvertimeExecutionBehavior.cs" />
     <Compile Include="Components\Buffs\IBuffExecutionBehavior.cs" />
     <Compile Include="Components\Skills\ISkillOperationParameters.cs" />
     <Compile Include="Components\Skills\IUnitSkillManager.cs" />
@@ -119,7 +119,6 @@
     <Compile Include="Components\Skills\SkillOperationParameters.cs" />
     <Compile Include="Components\Skills\UnitSkillManager.cs" />
     <Compile Include="Components\Targeting\StaticTarget.cs" />
-    <Compile Include="Components\UnitComponentExtensions.cs" />
     <Compile Include="Data\DataManagerFactory.cs" />
     <Compile Include="Components\Skills\ConfigurableSkillProvider.cs" />
     <Compile Include="Data\Schema\AIAttackRuleSchema.cs" />

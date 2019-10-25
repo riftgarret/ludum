@@ -1,10 +1,11 @@
 ﻿using System;
-
+using Davfalcon;
+using Davfalcon.Buffs;
 
 namespace Redninja.Components.Buffs
 {
 	[Serializable]
-	public class UnitBuffManager //: UnitBuffManager<IUnit, IBuff>, IUnitBuffManager, IUnitComponent<IUnit>
+	public class UnitBuffManager : UnitBuffManager<IUnit, IBuff>, IUnitBuffManager, IUnitComponent<IUnit>
 	{
 		protected IBattleContext BattleContext { get; }
 
@@ -18,18 +19,19 @@ namespace Redninja.Components.Buffs
 			BattleContext = context;
 			BattleEntity = entity;
 
+			// not sure if this needs to be clock synced at all, leave it for now
 			BattleContext.Clock.Tick += OnTick;
 		}
 
 		public void AddActiveBuff(IBuff buff)
 		{
-			//Add(buff);
+			Add(buff);
 			//buff.Effect += b => Effect?.Invoke(b, BattleEntity);
 		}
 
 		private void OnTick(float timeDelta)
 		{
-			// manager will be responsible for keeping time, buffs will not subscribe to clock
+			
 		}
 
 		private void UnsetClock()
@@ -44,5 +46,11 @@ namespace Redninja.Components.Buffs
 		{
 			UnsetClock();
 		}
+	}
+
+	public static class UnitExtension
+	{
+		public static IUnitBuffManager GetBuffManager(this IUnit unit)
+			=> unit.GetComponent<IUnitBuffManager>(UnitComponents.Buffs);
 	}
 }

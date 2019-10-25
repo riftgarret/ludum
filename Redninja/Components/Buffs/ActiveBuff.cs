@@ -1,76 +1,79 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Redninja.Components.Clock;
+using Davfalcon.Buffs;
 
 namespace Redninja.Components.Buffs
 {
-	public class ActiveBuff : IBuff, IClockSynchronized
+	[Serializable]
+	public sealed class ActiveBuff : Buff<IUnit>, IBuff, IUnit, IDisposable
 	{
-		public IClock Clock { get; private set; }
-		
-		private readonly IBuff buff;
+		private IBattleContext context;
+
+		public BuffProperties Properties { get; set; }
+
+		public IBuffExecutionBehavior Behavior { get; set; }
+
+		public IBattleEntity Owner { get; private set; }
+
+		public IBattleEntity TargetUnit { get; private set; }
 
 		public float LastDuration { get; private set; }
 
-		public float ExecutionStart { get; private set; } 
+		public float ExecutionStart { get; private set; }
 
 		public bool IsDurationBuff { get; private set; }
 
-		public float CalculatedMaxDuration { get; private set; }		
+		public float CalculatedMaxDuration { get; private set; }
 
-		public IBattleContext Context { get; private set; }
-
-		public IBattleEntity Source { get; private set; }
-
-		public IBattleEntity Target { get; private set; }
-		
 		public bool IsExpired { get => CalculatedMaxDuration > 0 && LastDuration >= CalculatedMaxDuration; }
 
+		// this can probably be private
 		public Dictionary<string, float> SavedState { get; } = new Dictionary<string, float>();
 
-		public BuffConfig Config => buff.Config;
+		public event Action<IBuff> BuffExpired;
 
-		public IBuffExecutionBehavior Behavior => buff.Behavior;
+		protected override IUnit SelfAsUnit => this;
 
-		public event Action OnBuffExpired;
+		protected override int Resolve(int baseValue, IReadOnlyDictionary<Enum, int> modifications)
+			=> StatFunctions.Resolve(baseValue, modifications);
 
-		public ActiveBuff(IBuff buff)
+		protected override Func<int, int, int> GetAggregator(Enum modificationType)
+			=> StatFunctions.GetAggregator(modificationType);
+
+		protected override int GetAggregatorSeed(Enum modificationType)
+			=> StatFunctions.GetAggregatorSeed(modificationType);
+
+		public void InitializeBattleState(IBattleContext context, IBattleEntity owner, IBattleEntity target)
 		{
-			this.buff = buff;
-		}
+			this.context = context;
+			this.context.Clock.Tick += OnTick;
 
-		private void InitializeBuff(IBattleContext context, IBattleEntity source, IBattleEntity target)
-		{
-			this.Context = context;
-			this.Source = source;
-			this.Target = target;
+			Owner = owner;
+			TargetUnit = target;
+
+			// TODO Add self to target unit modifiers? Or rely on external set?
 
 			// TODO, apply any special properties about duration or other.
-			LastDuration = Config.Duration;
+			LastDuration = Properties.Duration;
 			ExecutionStart = context.Clock.Time;
 		}
 
-		public void SetClock(IClock clock)
+		private void OnTick(float timeDelta)
 		{
-			Dispose();
-			this.Clock = clock;
-			clock.Tick += OnClockTick;
+			Behavior.OnClockTick(timeDelta, this);
+		}
+
+		private void UnsetClock()
+		{
+			if (context != null)
+			{
+				context.Clock.Tick -= OnTick;
+			}
 		}
 
 		public void Dispose()
 		{
-			if (Clock == null) return;
-			Clock.Tick -= OnClockTick;
-			Clock = null;
-		}
-
-		private void OnClockTick(float delta)
-		{
-			if (!IsExpired) Behavior?.OnClockTick(delta, this);
-			LastDuration += delta;										
+			UnsetClock();
 		}
 	}
 }
