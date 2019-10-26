@@ -19,6 +19,10 @@
 		LUK,
 		Level,
 
+		// WeaponTypes
+		WeaponTypeDagger,
+		WeaponTypeSword,
+
 		// Bleed 	
 		BleedDamageConst,
 		BleedDamageScale,
@@ -40,12 +44,6 @@
 		HpLevelScale,
 	}
 
-	public enum WeaponType
-	{
-		Dagger,
-		Sword
-	}
-
 	public enum DamageType
 	{
 		Physical,
@@ -55,12 +53,18 @@
 
 	public enum CalculatedStat
 	{
-		HP,
-		Resource,
-		PhysicalDamage,
-		PhysicalReduction,
-		PhysicalResistance,
-		PhysicalPenetration,
+		HPTotal,
+		ResourceTotal,
+		PhysicalDamageTotal,
+		PhysicalReductionTotal,
+		PhysicalResistanceTotal,
+		PhysicalPenetrationTotal,
+	}
+
+	public enum LiveStat
+	{
+		LiveHP,
+		LiveResource
 	}
 
 	public enum StatModType

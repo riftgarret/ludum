@@ -2,6 +2,8 @@
 using Davfalcon;
 using Redninja.Components.Buffs;
 using Redninja.Components.Combat.Events;
+using Redninja.Components.Skills;
+using Redninja.Components.StatCalculators;
 
 namespace Redninja.Components.Combat
 {
@@ -36,22 +38,27 @@ namespace Redninja.Components.Combat
 			//resolver.RemoveBuff(entity, effect);
 		}
 		
-		public void DealDamage(IBattleEntity attacker, IBattleEntity defender, IStats skillStats)
+		public void DealDamage(IBattleEntity attacker, IBattleEntity defender, ISkillOperationParameters paramz)
 		{
 			DamageEvent e = new DamageEvent();
-			e.PutResult(DamageType.Physical, GetPhysicalResult(attacker, defender, skillStats));
+			e.PutResult(DamageType.Physical, GetPhysicalResult(attacker, defender, paramz));
 
-			// TODO
-			//defender.VolatileStats[CalculatedStat.HP] -= e.Total;
+			// TODO? possibly damage resource if needed.
+
+			defender.HP.Current -= e.Total;
 		}
 
-		private DamageResult GetPhysicalResult(IBattleEntity attacker, IBattleEntity defender, IStats skillStats) => 
+		private DamageResult GetPhysicalResult(IBattleEntity attacker, IBattleEntity defender, ISkillOperationParameters paramz)
+		{
+			IStats combinedStats = attacker.Stats.Join(paramz.Stats);
+
 			// TODO combine attacker and skill into a single combiend node
-			DamageResult.Create(
-				attacker.Stats[CalculatedStat.PhysicalDamage],
-				defender.Stats[CalculatedStat.PhysicalReduction],
-				attacker.Stats[CalculatedStat.PhysicalPenetration],
-				defender.Stats[CalculatedStat.PhysicalResistance]
+			return DamageResult.Create(
+				combinedStats.GetPhysicalDamageTotal(),
+				defender.Stats.GetPhysicalReductionTotal(),
+				combinedStats.GetPhysicalPenetrationTotal(),
+				defender.Stats.GetPhysicalResistanceTotal()
 				);
+		}
 	}
 }

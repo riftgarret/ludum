@@ -1,6 +1,7 @@
 ﻿using System;
 using Redninja.Components.Buffs;
 using Redninja.Components.Combat.Events;
+using Redninja.Components.Skills;
 
 namespace Redninja.Components.Combat
 {
@@ -13,6 +14,6 @@ namespace Redninja.Components.Combat
 		void MoveEntity(IBattleEntity entity, UnitPosition newPosition);
 		void ApplyStatusEffect(IBattleEntity source, IBattleEntity target, IBuff effect);
 		void RemoveStatusEffect(IBattleEntity entity, IBuff effect);		
-		void DealDamage(IBattleEntity attacker, IBattleEntity defender, IDamageSource source);
+		void DealDamage(IBattleEntity attacker, IBattleEntity defender, ISkillOperationParameters paramz);
 	}
 }

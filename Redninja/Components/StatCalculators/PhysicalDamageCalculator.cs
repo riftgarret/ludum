@@ -7,17 +7,9 @@ using Davfalcon;
 
 namespace Redninja.Components.StatCalculators
 {
-	public class PhysicalDamageCalculator : IStatCalculator
+	public static class PhysicalDamageCalculator
 	{
-		public void AssignCalculations(Unit unit)
-		{
-			unit.StatDerivations[CalculatedStat.PhysicalDamage] = stats => GetPhysicalDamageTotal(unit, stats);
-			unit.StatDerivations[CalculatedStat.PhysicalReduction] = stats => GetPhysicalReductionTotal(unit, stats);
-			unit.StatDerivations[CalculatedStat.PhysicalResistance] = stats => GetPhysicalResistanceTotal(unit, stats);
-			unit.StatDerivations[CalculatedStat.PhysicalPenetration] = stats => GetPhysicalPenetrationTotal(unit, stats);
-		}
-
-		private int GetPhysicalDamageTotal(IUnit unit, IStatsProperties stats)
+		public static int GetPhysicalDamageTotal(this IStats stats)
 		{
 			int val = 0;
 			val += stats[Stat.ATK];
@@ -25,7 +17,7 @@ namespace Redninja.Components.StatCalculators
 			if (stats.HasFlag(Stat.FlagPhysicalDamageAlsoUsesCon))
 				val += stats[Stat.CON];
 
-			if (unit.HasWeaponTypeEquiped(WeaponType.Dagger))
+			if (stats.HasFlag(Stat.WeaponTypeDagger))
 				val += stats[Stat.PhysicalDaggerDamage];
 
 			val *= stats[Stat.PhysicalDamageScale];
@@ -33,7 +25,7 @@ namespace Redninja.Components.StatCalculators
 			return val;
 		}
 
-		private int GetPhysicalReductionTotal(IUnit unit, IStatsProperties stats)
+		public static int GetPhysicalReductionTotal(this IStats stats)
 		{
 			int maxReduction = 50; // maybe get this value somewhere else
 			maxReduction += stats[Stat.PhysicalDamageReductionCap];
@@ -47,12 +39,12 @@ namespace Redninja.Components.StatCalculators
 			return val;
 		}
 
-		private int GetPhysicalResistanceTotal(IUnit unit, IStatsProperties stats)
+		public static int GetPhysicalResistanceTotal(this IStats stats)
 		{
 			return stats[Stat.PhysicalDamageResistance];
 		}
 
-		private int GetPhysicalPenetrationTotal(IUnit unit, IStatsProperties stats)
+		public static int GetPhysicalPenetrationTotal(this IStats stats)
 		{
 			return stats[Stat.PhysicalDamagePenetration];
 		}		

@@ -96,13 +96,14 @@ namespace Redninja.Data.Schema.Readers
 		public static SkillOperationParameters ParseStatsParams(Dictionary<string, int> original)
 		{
 			if (original == null) return null;
-			SkillOperationParameters map = new SkillOperationParameters();
+			SkillOperationParameters paramz = new SkillOperationParameters();
 			foreach(var e in original)
 			{
 				if(!Enum.TryParse<Stat>(e.Key, true, out Stat stat)) throw new FormatException("Invalid Stat found");
-				map[stat] = e.Value;
+				paramz.EditableStats[stat] = e.Value;
+				// TODO set combat flags (Projectile, Spell, Healing, Buff)
 			}
-			return map;
+			return paramz;
 		}			
 
 		public static IAITargetCondition ParseAITargetCondition(string conditionParam)

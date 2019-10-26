@@ -53,7 +53,11 @@ namespace Redninja.Entities
 		// TODO pull properties from equipment, buffs, class def
 		public IEnumerable<ITriggeredProperty> TriggeredProperties => Enumerable.Empty<ITriggeredProperty>();
 
-		public IStats VolatileStats { get; } = new StatsMap();
+		public LiveStatContainer HP => LiveStats[LiveStat.LiveHP];
+		public LiveStatContainer Resource => LiveStats[LiveStat.LiveResource];
+
+		private readonly Dictionary<LiveStat, LiveStatContainer> liveStats = new Dictionary<LiveStat, LiveStatContainer>();
+		public IReadOnlyDictionary<LiveStat, LiveStatContainer> LiveStats => liveStats;
 
 		public BattleEntity(IBattleContext context, IUnit unit)
 		{
@@ -72,6 +76,17 @@ namespace Redninja.Entities
 			Modifiers.Bind(() => unit.AsModified());
 
 			// TODO add volatile stats component
+			liveStats[LiveStat.LiveHP] = new LiveStatContainer()
+			{
+				Current = Stats.Calculate(CalculatedStat.HPTotal),
+				Max = Stats.Calculate(CalculatedStat.HPTotal),
+			};
+
+			liveStats[LiveStat.LiveResource] = new LiveStatContainer()
+			{
+				Current = Stats.Calculate(CalculatedStat.ResourceTotal),
+				Max = Stats.Calculate(CalculatedStat.ResourceTotal),
+			};
 		}
 
 		// Considering raising this stuff to BEM
