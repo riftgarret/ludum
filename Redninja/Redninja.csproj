@@ -61,6 +61,8 @@
     <Compile Include="Components\Buffs\IUnitBuffManager.cs" />
     <Compile Include="Components\Buffs\UnitBuffManager.cs" />
     <Compile Include="Components\Clock\Clock.cs" />
+    <Compile Include="Components\Combat\Events\DamageEvent.cs" />
+    <Compile Include="Components\Combat\Events\DamageResult.cs" />
     <Compile Include="Components\Combat\Events\StatusEffectEvent.cs" />
     <Compile Include="Components\Combat\IDamageSource.cs" />
     <Compile Include="Components\Combat\StatusEffectOperation.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="Components\Decisions\AI\AIRuleTracker.cs" />
     <Compile Include="Components\Decisions\AI\IAIAttackRule.cs" />
     <Compile Include="Components\Decisions\AI\IAISkillRule.cs" />
+    <Compile Include="Components\Decisions\AI\IStatEvaluator.cs" />
     <Compile Include="Components\Decisions\EntityTargetSpec.cs" />
     <Compile Include="Components\Decisions\IActionContextProvider.cs" />
     <Compile Include="Components\Decisions\IActionProvider.cs" />
@@ -118,7 +121,7 @@
     <Compile Include="Components\Buffs\BuffConstants.cs" />
     <Compile Include="Components\Skills\SkillOperationParameters.cs" />
     <Compile Include="Components\Skills\UnitSkillManager.cs" />
-    <Compile Include="Components\StatCalculators\IStatCalculator.cs" />
+    <Compile Include="Components\StatCalculators\BasicStatCalculator.cs" />
     <Compile Include="Components\StatCalculators\PhysicalDamageCalculator.cs" />
     <Compile Include="Components\StatCalculators\StatCalculatorExt.cs" />
     <Compile Include="Components\Targeting\StaticTarget.cs" />
@@ -128,6 +131,7 @@
     <Compile Include="Data\Schema\AIAttackRuleSchema.cs" />
     <Compile Include="Data\Schema\BuffSchema.cs" />
     <Compile Include="IUnit.cs" />
+    <Compile Include="LiveStat.cs" />
     <Compile Include="StatFunctions.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="Extensions.cs" />

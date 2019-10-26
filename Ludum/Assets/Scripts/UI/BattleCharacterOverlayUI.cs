@@ -30,33 +30,25 @@ public class BattleCharacterOverlayUI : MonoBehaviour, IPointerClickHandler
 	private void InitCharacterUI(IBattleEntity unit)
 	{
 		nameText.text = Unit.Name;
-		switch (Unit.Phase)
+		switch (Unit.Actions.Phase)
 		{
 			case ActionPhase.Waiting:
 			case ActionPhase.Done:
 				actionBar.PercentFill = 0;
 				break;
 			case ActionPhase.Preparing:
-				actionBar.PercentFill = Unit.PhaseProgress;
+				actionBar.PercentFill = Unit.Actions.PhaseProgress;
 				break;
 			case ActionPhase.Executing:
 				actionBar.PercentFill = 1;
 				break;
 			case ActionPhase.Recovering:
-				actionBar.PercentFill = 1f - Unit.PhaseProgress;
+				actionBar.PercentFill = 1f - Unit.Actions.PhaseProgress;
 				break;
 		}
 
 		// TODO set icon and status effects.
-	}
-
-	private float GetPercentFill(Stat stat)
-	{
-		if (!Unit.VolatileStats.ContainsKey(stat)) return 1f;
-		return (float)Unit.VolatileStats[stat] / (float)Unit.Stats[stat];
-	}
-
-	private int TempGetVolatile(Stat stat) => Unit.VolatileStats.ContainsKey(stat)? Unit.VolatileStats[stat] : 90;
+	}		
     
     void Update()
     {
@@ -65,25 +57,25 @@ public class BattleCharacterOverlayUI : MonoBehaviour, IPointerClickHandler
 			return;
 		}
 
-		hpBar.PercentFill = GetPercentFill(Stat.HP);
-		hpText.text = "" + TempGetVolatile(Stat.HP);
-		resBar.PercentFill = GetPercentFill(Stat.HP);
-		resText.text = "" + TempGetVolatile(Stat.Resource);
+		hpBar.PercentFill = unit.HP.Percent;
+		hpText.text = "" + unit.HP.Current;
+		resBar.PercentFill = unit.Resource.Percent;
+		resText.text = "" + unit.HP.Current;
 		nameText.text = Unit.Name;
-		switch (Unit.Phase)
+		switch (Unit.Actions.Phase)
 		{
 			case ActionPhase.Waiting:
 			case ActionPhase.Done:
 				actionBar.PercentFill = 0;
 				break;
 			case ActionPhase.Preparing:
-				actionBar.PercentFill = Mathf.Lerp(actionBar.PercentFill, Unit.PhaseProgress, 0.5f);
+				actionBar.PercentFill = Mathf.Lerp(actionBar.PercentFill, Unit.Actions.PhaseProgress, 0.5f);
 				break;
 			case ActionPhase.Executing:
 				actionBar.PercentFill = 1;
 				break;
 			case ActionPhase.Recovering:
-				actionBar.PercentFill = Mathf.Lerp(actionBar.PercentFill, 1f - Unit.PhaseProgress, 0.5f);
+				actionBar.PercentFill = Mathf.Lerp(actionBar.PercentFill, 1f - Unit.Actions.PhaseProgress, 0.5f);
 				break;
 		}		
 	}

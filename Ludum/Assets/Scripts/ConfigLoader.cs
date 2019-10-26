@@ -27,12 +27,7 @@ public class ConfigLoader : MonoBehaviour
 		string path = Path.Combine(Application.streamingAssetsPath, configPath);
 		IDataManager dataManager = DataManagerFactory.Create(path);
 
-		ICombatExecutor combatExecutor = new CombatExecutor(x => x.
-					AddDamageScaling(CalculatedStat.PhysicalDamage, Stat.ATK)
-					.AddDamageResist(CalculatedStat.PhysicalDamage, Stat.DEF)
-					.SetDefaultDamageResource(CalculatedStat.HP)
-					.AddVolatileStat(CalculatedStat.Resource)
-					.AddVolatileStat(CalculatedStat.HP));
+		ICombatExecutor combatExecutor = new CombatExecutor();
 
 		context = new BattleContext(dataManager, combatExecutor);
 
