@@ -6,50 +6,31 @@ namespace Redninja.Components.Decisions.AI
 	{
 		public int ConditionalValue { get; }
 
-		public Stat CombatStat { get; }
+		public IStatEvaluator StatEvaluator { get; }
 
 		public AIValueConditionOperator Op { get; }
 
-		public AIConditionType ConditionType { get; }
+		public AIConditionType ConditionType { get; } = AIConditionType.StatValue;
 
 		public AICombatStatCondition(int conditionalValue,
-			Stat combatStat,
-			AIValueConditionOperator op,
-			AIConditionType conditionType)
+			IStatEvaluator statEvaluator,
+			AIValueConditionOperator op)
 		{
-			if (conditionType != AIConditionType.CombatStatCurrent && conditionType != AIConditionType.CombatStatPercent)
-			{
-				throw new InvalidOperationException("Cannot intantiate AICombatStatCondition without proper type");
-			}
-
-			ConditionalValue = conditionalValue;
-			CombatStat = combatStat;
+			StatEvaluator = statEvaluator;
 			Op = op;
-			ConditionType = conditionType;
+			ConditionalValue = conditionalValue;
 		}
 
 		public bool IsValid(IBattleEntity entity)
-			=> AIHelper.EvaluateCondition(GetCombatStatValue(entity), Op, ConditionalValue);
-
-		private int GetCombatStatValue(IBattleEntity entity)
-		{
-			if (ConditionType == AIConditionType.CombatStatCurrent)
-			{
-				return entity.VolatileStats[CombatStat];
-			}
-			else
-			{
-				return (100 * entity.VolatileStats[CombatStat]) / entity.Stats[CombatStat];
-			}
-		}
+			=> AIHelper.EvaluateCondition(StatEvaluator.Eval(entity), Op, ConditionalValue);
 
 		public override bool Equals(object obj)
 			=> obj is AICombatStatCondition condition &&
 				ConditionalValue == condition.ConditionalValue &&
-				CombatStat == condition.CombatStat &&
+				StatEvaluator == condition.StatEvaluator &&
 				Op == condition.Op &&
 				ConditionType == condition.ConditionType;
 
-		public override int GetHashCode() => $"{CombatStat}{Op}{ConditionalValue}{ConditionType}".GetHashCode();
+		public override int GetHashCode() => $"{StatEvaluator}{Op}{ConditionalValue}{ConditionType}".GetHashCode();
 	}
 }

@@ -5,13 +5,13 @@ namespace Redninja.Components.Decisions.AI
 {
 	public class AICombatStatPriority : IAITargetPriority
 	{
-		public Stat CombatStat { get; }
+		public LiveStat LiveStat { get; }
 
 		public AITargetingPriorityQualifier Qualifier { get; }
 
 		public AIPriorityType PriorityType { get; }
 
-		public AICombatStatPriority(Stat combatStat,
+		public AICombatStatPriority(LiveStat liveStat,
 			AITargetingPriorityQualifier qualifier,
 			AIPriorityType priorityType)
 		{
@@ -20,7 +20,7 @@ namespace Redninja.Components.Decisions.AI
 				throw new InvalidOperationException("Can only instantiate this with CombatStatType");
 			}
 
-			CombatStat = combatStat;
+			LiveStat = liveStat;
 			Qualifier = qualifier;
 			PriorityType = priorityType;
 		}
@@ -32,20 +32,20 @@ namespace Redninja.Components.Decisions.AI
 		{
 			if (PriorityType == AIPriorityType.CombatStatCurrent)
 			{
-				return entity.VolatileStats[CombatStat];
+				return entity.LiveStats[LiveStat].Current;
 			}
 			else
 			{
-				return (100 * entity.VolatileStats[CombatStat]) / entity.Stats[CombatStat];
+				return (int)(100 * entity.LiveStats[LiveStat].Percent);
 			}
 		}
 
 		public override bool Equals(object obj)
 			=> obj is AICombatStatPriority priority &&
-				CombatStat == priority.CombatStat &&
+				LiveStat == priority.LiveStat &&
 				Qualifier == priority.Qualifier &&
 				PriorityType == priority.PriorityType;
 
-		public override int GetHashCode() => $"{CombatStat}{Qualifier}{PriorityType}".GetHashCode();
+		public override int GetHashCode() => $"{LiveStat}{Qualifier}{PriorityType}".GetHashCode();
 	}
 }

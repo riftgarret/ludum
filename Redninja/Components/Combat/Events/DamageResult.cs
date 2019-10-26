@@ -14,7 +14,7 @@ namespace Redninja.Components.Combat.Events
 		public int Resistance { get; private set; }
 		public int Total { get; private set; }
 
-		public DamageResult Create(int damage, int reduction, int penetration, int resistance)
+		public static DamageResult Create(int damage, int reduction, int penetration, int resistance)
 		{
 			DamageResult result = new DamageResult();
 			result.Damage = damage;

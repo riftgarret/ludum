@@ -6,7 +6,7 @@ namespace Redninja.Components.Conditions.Expressions.UnitTests
 	[TestFixture]
 	public class CombatStatExpressionTests
 	{
-		private CombatStatExpression subject;
+		private StatExpression subject;
 
 		[SetUp]
 		public void SetUp()
@@ -20,7 +20,7 @@ namespace Redninja.Components.Conditions.Expressions.UnitTests
 			IBattleEntity model = Substitute.For<IBattleEntity>();
 			model.VolatileStats[stat].Returns(statValue);
 
-			subject = new CombatStatExpression(stat, false);
+			subject = new StatExpression(stat, false);
 
 			Assert.That(subject.Result(model), Is.EqualTo(statValue));
 		}
@@ -37,7 +37,7 @@ namespace Redninja.Components.Conditions.Expressions.UnitTests
 			model.VolatileStats[stat].Returns(volatileValue);
 			model.Stats[stat].Returns(statValue);
 
-			subject = new CombatStatExpression(stat, true);
+			subject = new StatExpression(stat, true);
 
 			Assert.That(subject.Result(model), Is.EqualTo(expectedValue));
 		}

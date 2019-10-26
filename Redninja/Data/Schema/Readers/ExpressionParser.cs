@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using Redninja.Components.Conditions;
 using Redninja.Components.Conditions.Expressions;
+using Redninja.Components.Decisions.AI;
 using Redninja.Logging;
 using Redninja.Text;
 
@@ -117,9 +118,10 @@ namespace Redninja.Data.Schema.Readers
 			bool isPercent = percIndex > 0;
 			raw = isPercent ? raw.Substring(0, percIndex) : raw;
 
-			if (!Enum.TryParse(raw, true, out Stat stat)) return FalseWithLog($"Unable to parse combat stat from {raw}", out expression);
+			Enum someStat = ParseHelper.ParseStatRaw(raw);
 
-			expression = new CombatStatExpression(stat, isPercent);
+			IStatEvaluator statEvaluator = ParseHelper.CreateStatEval(someStat, isPercent);			
+			expression = new StatExpression(statEvaluator);
 			return true;
 		}
 

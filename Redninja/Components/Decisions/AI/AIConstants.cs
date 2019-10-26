@@ -11,8 +11,7 @@
 	public enum AIConditionType
 	{		
 		AlwaysTrue,
-		CombatStatPercent,
-		CombatStatCurrent,
+		StatValue,
 		Class,
 		Position,
 		BeneficialStatusEffect,

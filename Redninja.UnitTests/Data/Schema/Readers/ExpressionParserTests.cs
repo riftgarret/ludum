@@ -46,11 +46,11 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 			bool success = subject.TryParseExpression(input, prevChain, out var result);
 
 			Assert.That(success, Is.True);
-			Assert.That(result, Is.InstanceOf(typeof(CombatStatExpression)));
+			Assert.That(result, Is.InstanceOf(typeof(StatExpression)));
 
-			CombatStatExpression csResult = (CombatStatExpression)result;
+			StatExpression csResult = (StatExpression)result;
 
-			Assert.That(csResult.CombatStat, Is.EqualTo(stat));
+			Assert.That(csResult.LiveStat, Is.EqualTo(stat));
 			Assert.That(csResult.IsPercent, Is.EqualTo(hasPercent));
 		}
 
