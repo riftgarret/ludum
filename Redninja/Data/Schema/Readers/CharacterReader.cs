@@ -9,6 +9,10 @@ namespace Redninja.Data.Schema.Readers
 			foreach(CharacterSchema cs in characters)
 			{
 				var unit = new Unit();
+				foreach (var item in cs.Stats)
+				{
+					unit.BaseStats[item.Key] = item.Value;
+				}
 				//IUnit unit = Unit.Build(b =>
 				//{
 				//	b.SetMainDetails(cs.Name, cs.Class, cs.Level);

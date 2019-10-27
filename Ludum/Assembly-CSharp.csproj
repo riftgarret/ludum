@@ -309,9 +309,6 @@
     <Reference Include="Davfalcon">
       <HintPath>E:/unity/ludum/Ludum/Assets/Plugins/Davfalcon.dll</HintPath>
     </Reference>
-    <Reference Include="Davfalcon.Revelator">
-      <HintPath>E:/unity/ludum/Ludum/Assets/Plugins/Davfalcon.Revelator.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>E:/unity/ludum/Ludum/Assets/Plugins/Newtonsoft.Json.dll</HintPath>
     </Reference>
