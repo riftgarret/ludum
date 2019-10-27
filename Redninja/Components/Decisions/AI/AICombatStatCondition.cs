@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Redninja.Components.Decisions.AI
 {
@@ -25,12 +26,23 @@ namespace Redninja.Components.Decisions.AI
 			=> AIHelper.EvaluateCondition(StatEvaluator.Eval(entity), Op, ConditionalValue);
 
 		public override bool Equals(object obj)
-			=> obj is AICombatStatCondition condition &&
-				ConditionalValue == condition.ConditionalValue &&
-				StatEvaluator == condition.StatEvaluator &&
-				Op == condition.Op &&
-				ConditionType == condition.ConditionType;
+		{
+			var condition = obj as AICombatStatCondition;
+			return condition != null &&
+				   ConditionalValue == condition.ConditionalValue &&
+				   EqualityComparer<IStatEvaluator>.Default.Equals(StatEvaluator, condition.StatEvaluator) &&
+				   Op == condition.Op &&
+				   ConditionType == condition.ConditionType;
+		}
 
-		public override int GetHashCode() => $"{StatEvaluator}{Op}{ConditionalValue}{ConditionType}".GetHashCode();
+		public override int GetHashCode()
+		{
+			var hashCode = 1515522564;
+			hashCode = hashCode * -1521134295 + ConditionalValue.GetHashCode();
+			hashCode = hashCode * -1521134295 + EqualityComparer<IStatEvaluator>.Default.GetHashCode(StatEvaluator);
+			hashCode = hashCode * -1521134295 + Op.GetHashCode();
+			hashCode = hashCode * -1521134295 + ConditionType.GetHashCode();
+			return hashCode;
+		}
 	}
 }

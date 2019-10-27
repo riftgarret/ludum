@@ -3,6 +3,7 @@ using NUnit.Framework;
 using NSubstitute;
 using Redninja.Components.Conditions;
 using Redninja.Components.Conditions.Expressions;
+using Redninja.Components.Decisions.AI;
 
 namespace Redninja.Data.Schema.Readers.UnitTests
 {
@@ -36,9 +37,9 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 		}
 
 		[Test]
-		public void TryParseExpression_CombatStat([Values] Stat stat, [Values] bool hasPercent)
+		public void TryParseExpression_CombatStat([Values] LiveStat stat, [Values] bool hasPercent)
 		{
-			string input = stat.ToString() + (hasPercent ? "%" : "");
+			string input = "LiveStat." + stat.ToString() + (hasPercent ? "%" : "");
 
 			var prevChain = Substitute.For<IExpression>();
 			prevChain.ResultType.Returns(ExpressionResultType.Unit);
@@ -50,8 +51,10 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 
 			StatExpression csResult = (StatExpression)result;
 
-			Assert.That(csResult.LiveStat, Is.EqualTo(stat));
-			Assert.That(csResult.IsPercent, Is.EqualTo(hasPercent));
+			var eval = (LiveStatEvaluator) csResult.StatEvaluator;
+
+			Assert.That(eval.LiveStat, Is.EqualTo(stat));
+			Assert.That(eval.IsPercent, Is.EqualTo(hasPercent));
 		}
 
 		[Test]

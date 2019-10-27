@@ -27,6 +27,22 @@
 			else
 				return entity.LiveStats[LiveStat].Current;
 		}
+
+		public override bool Equals(object obj)
+		{
+			var evaluator = obj as LiveStatEvaluator;
+			return evaluator != null &&
+				   LiveStat == evaluator.LiveStat &&
+				   IsPercent == evaluator.IsPercent;
+		}
+
+		public override int GetHashCode()
+		{
+			var hashCode = 1654115479;
+			hashCode = hashCode * -1521134295 + LiveStat.GetHashCode();
+			hashCode = hashCode * -1521134295 + IsPercent.GetHashCode();
+			return hashCode;
+		}
 	}
 
 	public class CalculatedStatEvaluator : IStatEvaluator
@@ -39,6 +55,18 @@
 		}
 
 		public int Eval(IBattleEntity entity) => entity.Stats.Calculate(CalculatedStat);
+
+		public override bool Equals(object obj)
+		{
+			var evaluator = obj as CalculatedStatEvaluator;
+			return evaluator != null &&
+				   CalculatedStat == evaluator.CalculatedStat;
+		}
+
+		public override int GetHashCode()
+		{
+			return -1097727861 + CalculatedStat.GetHashCode();
+		}
 	}
 
 	public class StatEvaluator : IStatEvaluator
@@ -51,5 +79,17 @@
 		}
 
 		public int Eval(IBattleEntity entity) => entity.Stats[Stat];
+
+		public override bool Equals(object obj)
+		{
+			var evaluator = obj as StatEvaluator;
+			return evaluator != null &&
+				   Stat == evaluator.Stat;
+		}
+
+		public override int GetHashCode()
+		{
+			return -1100411313 + Stat.GetHashCode();
+		}
 	}
 }

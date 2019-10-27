@@ -3,8 +3,7 @@
 	public enum AIPriorityType
 	{
 		None,
-		CombatStatPercent,			
-		CombatStatCurrent,
+		StatValue,			
 		MostTargets
 	}
 
