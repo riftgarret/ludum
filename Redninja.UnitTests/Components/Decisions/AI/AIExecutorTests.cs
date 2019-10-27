@@ -13,11 +13,11 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 	[TestFixture]
 	public class AIExecutorTests
 	{
-		private IDecisionHelper mDecisionHelper;
 		private IBattleEntity mSource;
-		private IAIRuleTracker mHistory;
-		private IBattleModel mBattleModel;
+		private IAIRuleTracker mHistory;		
+		private IBattleContext mContext;
 		private AIRuleSet behavior;
+		private Tracker tracker;
 
 		protected List<IBattleEntity> allEntities;
 
@@ -29,14 +29,14 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 		{
 			ruleCounter = 0;
 			behavior = new AIRuleSet();
+			mContext = Substitute.For<IBattleContext>();
 			mSource = Substitute.For<IBattleEntity>();
 			mHistory = Substitute.For<IAIRuleTracker>();
-			mDecisionHelper = Substitute.For<IDecisionHelper>();
-			mBattleModel = mDecisionHelper.BattleModel;
 			allEntities = new List<IBattleEntity>() { mSource };
-			mBattleModel.Entities.Returns(allEntities);
+			mContext.BattleModel.Entities.Returns(allEntities);
+			tracker = new Tracker();
 
-			subject = Substitute.ForPartsOf<AIExecutor>(mSource, behavior, mDecisionHelper, mHistory);
+			subject = Substitute.ForPartsOf<AIExecutor>(mContext, mSource, behavior, mHistory);
 		}
 
 		private IAIRule CreateMockRule(int weight = 1, string name = null)
@@ -83,20 +83,20 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			var rules = Enumerable.Range(1, numberOfRules).Select(x => CreateMockRule()).ToList();
 			var expectedRule = rules[ruleIndexToUse];
 
-			subject.When(x => x.GetValidRules()).DoNotCallBase();
-			subject.GetValidRules().Returns(rules);
+			subject.When(x => x.GetValidRules(Arg.Any<Tracker>())).DoNotCallBase();
+			subject.GetValidRules(tracker).ReturnsForAnyArgs(rules);
 
-			subject.When(x => x.TryGetAction(Arg.Any<IAIRule>(), out actionOut)).DoNotCallBase();
-			subject.TryGetAction(null, out actionOut).ReturnsForAnyArgs(x =>
+			subject.When(x => x.TryGetAction(tracker, Arg.Any<IAIRule>(), out actionOut)).DoNotCallBase();
+			subject.TryGetAction(tracker, null, out actionOut).ReturnsForAnyArgs(x =>
 			{
-				bool correctRule = x[0] == expectedRule;
-				x[1] = correctRule? expected : null;
+				bool correctRule = x[1] == expectedRule;
+				x[2] = correctRule? expected : null;
 				return correctRule;
 			});
 
 			var result = subject.ResolveAction();
 
-			Assert.That(result, Is.EqualTo(expected));
+			Assert.That(result.Result, Is.EqualTo(expected));
 			mHistory.Received().AddEntry(expectedRule, expected);
 		}
 
@@ -119,12 +119,12 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			var rulesReady = ParseDigitsToList(rulesReadyStr).Select(x => originalRules[x]);
 			var expectedRules = ParseDigitsToList(expectedSubsetStr).Select(x => originalRules[x]);
 
-			subject.When(x => x.IsValidTriggerConditions(Arg.Any<IAIRule>())).DoNotCallBase();			
-			subject.IsValidTriggerConditions(null).ReturnsForAnyArgs(x => validRules.Contains(x[0]));
+			subject.When(x => x.IsValidTriggerConditions(Arg.Any<Tracker>(), Arg.Any<IAIRule>())).DoNotCallBase();			
+			subject.IsValidTriggerConditions(tracker, null).ReturnsForAnyArgs(x => validRules.Contains(x[1]));
 
 			mHistory.IsRuleReady(null).ReturnsForAnyArgs(x => rulesReady.Contains(x[0]));			
 
-			var result = subject.GetValidRules();
+			var result = subject.GetValidRules(tracker);
 
 			Assert.That(result, Is.EquivalentTo(expectedRules));
 		}

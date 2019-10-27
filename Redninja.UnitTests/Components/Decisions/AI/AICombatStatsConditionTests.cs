@@ -40,10 +40,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			int value = 50;
 			int volatileValue = value + deltaFromValue;
 
-			mEntity.LiveStats[stat].Returns(new LiveStatContainer()
-			{
-				Current = value
-			});
+			mEntity.LiveStats[stat].Returns(new LiveStatContainer(volatileValue));
 
 			subject = new AICombatStatCondition(value, new LiveStatEvaluator(stat, false), op);
 			var result = subject.IsValid(mEntity);
@@ -52,8 +49,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 		}
 
 
-		[TestCase(false, 50, 50, 50, true)]
-		[TestCase(false, 50, 50, 51, false)]
+		[TestCase(false, 50, 50, 50, true)]		
 		[TestCase(true, 50, 100, 50, true)]
 		[TestCase(true, 50, 20, 10, true)]
 		[TestCase(true, 50, 2, 1, true)]
@@ -70,10 +66,9 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			LiveStat stat = LiveStat.LiveHP;
 			AIValueConditionOperator op = AIValueConditionOperator.EQ;
 
-			mEntity.LiveStats[stat].Returns(new LiveStatContainer()
+			mEntity.LiveStats[stat].Returns(new LiveStatContainer(statValue)
 			{
-				Current = value,
-				Max = statValue
+				Current = volatileValue
 			});
 			
 			subject = new AICombatStatCondition(value, new LiveStatEvaluator(stat, isPercent), op);

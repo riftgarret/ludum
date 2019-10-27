@@ -20,10 +20,9 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 		{
 			var entity = Substitute.For<IBattleEntity>();
 			entities.Add(entity);
-			entity.LiveStats[stat].Returns(new LiveStatContainer()
+			entity.LiveStats[stat].Returns(new LiveStatContainer(statValue)
 			{
 				Current = volValue,
-				Max = statValue
 			});
 			return entity;
 		}
@@ -54,7 +53,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 
 		[TestCase(false, 1, 1, 2, 2, 3, 3, 2)]
 		[TestCase(true, 10, 10, 2, 5, 3, 8, 0)]
-		[TestCase(true, 10, 10, 10, 5, 3, 8, 1)]
+		[TestCase(true, 9, 10, 5, 5, 3, 8, 1)]
 		public void GetBestTarget_TestType_HighestStat(
 			bool isPercent,
 			int vol1, int stat1,

@@ -10,6 +10,7 @@ using Redninja.Components.Decisions;
 using Redninja.Components.Properties;
 using System.Linq;
 using Redninja.Components.Decisions.AI;
+using Redninja.Components.StatCalculators;
 using Davfalcon.Stats;
 
 namespace Redninja.Entities
@@ -76,17 +77,8 @@ namespace Redninja.Entities
 			Modifiers.Bind(() => unit.AsModified());
 
 			// TODO add volatile stats component
-			liveStats[LiveStat.LiveHP] = new LiveStatContainer()
-			{
-				Current = Stats.Calculate(CalculatedStat.HPTotal),
-				Max = Stats.Calculate(CalculatedStat.HPTotal),
-			};
-
-			liveStats[LiveStat.LiveResource] = new LiveStatContainer()
-			{
-				Current = Stats.Calculate(CalculatedStat.ResourceTotal),
-				Max = Stats.Calculate(CalculatedStat.ResourceTotal),
-			};
+			liveStats[LiveStat.LiveHP] = new LiveStatContainer(Stats.CalculateTotalHp());
+			liveStats[LiveStat.LiveResource] = new LiveStatContainer(Stats.CalculateTotalResource());			
 		}
 
 		// Considering raising this stuff to BEM

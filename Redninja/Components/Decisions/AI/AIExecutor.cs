@@ -23,8 +23,6 @@ namespace Redninja.Components.Decisions.AI
 		private IActionContextProvider acp;
 		private readonly IBattleContext context;
 
-		private AIActionDecisionResult.Tracker tracker;
-
 		public AIExecutor(
 			IBattleContext context,
 			IBattleEntity source, 
@@ -41,12 +39,12 @@ namespace Redninja.Components.Decisions.AI
 		public AIActionDecisionResult ResolveAction()
 		{
 			// DEBUG rule name -> in pool
-			tracker = new AIActionDecisionResult.Tracker();
+			Tracker tracker = new Tracker();
 			var debugRuleMeta = new Dictionary<string, bool>();
 			behavior.Rules.ForEach(x => debugRuleMeta[x.RuleName] = false);
 
 			// find rules triggers
-			IEnumerable<IAIRule> validRules = GetValidRules();
+			IEnumerable<IAIRule> validRules = GetValidRules(tracker);
 
 			// assign pool
 			WeightedPool<IAIRule> weightedPool = new WeightedPool<IAIRule>();
@@ -64,7 +62,7 @@ namespace Redninja.Components.Decisions.AI
 				tracker.RecordWeighedPoolResult(weightedPool, result);
 				IAIRule rule = result.Item1;
 				
-				if (TryGetAction(rule, out IBattleAction action))
+				if (TryGetAction(tracker, rule, out IBattleAction action))
 				{
 					LogResult(debugRuleMeta, rule, action);
 					history.AddEntry(rule, action);
@@ -91,26 +89,26 @@ namespace Redninja.Components.Decisions.AI
 
 		#region generic rule handling
 
-		internal virtual IEnumerable<IAIRule> GetValidRules()
+		internal virtual IEnumerable<IAIRule> GetValidRules(Tracker tracker)
 			=> behavior.Rules.Where(rule => {
 				bool isReady = history.IsRuleReady(rule);
-				bool isValidTrigger = IsValidTriggerConditions(rule);
+				bool isValidTrigger = IsValidTriggerConditions(tracker, rule);
 				tracker[rule].IsReady = isReady;
 				tracker[rule].IsValidTrigger = isValidTrigger;
 				return isReady && isValidTrigger;
 			});		
 
 
-		internal virtual bool TryGetAction(IAIRule rule, out IBattleAction action)
+		internal virtual bool TryGetAction(Tracker tracker, IAIRule rule, out IBattleAction action)
 		{
 			tracker[rule].RuleEvaluated = true;
-			if (rule is IAISkillRule) return TryGetSkillAction(rule as IAISkillRule, out action);			
+			if (rule is IAISkillRule) return TryGetSkillAction(tracker, rule as IAISkillRule, out action);			
 			action = null;
 			return false;
 		}
 
 
-		internal virtual bool IsValidTriggerConditions(IAIRule rule)
+		internal virtual bool IsValidTriggerConditions(Tracker tracker, IAIRule rule)
 		{
 			foreach (var trigger in rule.TriggerConditions)
 			{
@@ -128,7 +126,7 @@ namespace Redninja.Components.Decisions.AI
 
 		#endregion
 		#region skill action
-		internal virtual bool TryGetSkillAction(IAISkillRule rule, out IBattleAction action)
+		internal virtual bool TryGetSkillAction(AIActionDecisionResult.Tracker tracker, IAISkillRule rule, out IBattleAction action)
 		{
 			var ruleEval = tracker[(IAIRule)rule];
 			rule.SkillAssignments

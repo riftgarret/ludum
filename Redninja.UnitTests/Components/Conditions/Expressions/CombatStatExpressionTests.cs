@@ -19,10 +19,7 @@ namespace Redninja.Components.Conditions.Expressions.UnitTests
 		public void Result_SingleValue([Values(10, 20, 30)]int statValue, [Values(LiveStat.LiveHP, LiveStat.LiveResource)] LiveStat stat)
 		{
 			IBattleEntity model = Substitute.For<IBattleEntity>();
-			model.LiveStats[stat].Returns(new LiveStatContainer()
-			{
-				Current = statValue
-			});
+			model.LiveStats[stat].Returns(new LiveStatContainer(statValue));			
 
 			subject = new StatExpression(new LiveStatEvaluator(stat, false));
 
@@ -38,10 +35,9 @@ namespace Redninja.Components.Conditions.Expressions.UnitTests
 		{
 			LiveStat stat = LiveStat.LiveHP;
 			IBattleEntity model = Substitute.For<IBattleEntity>();
-			model.LiveStats[stat].Returns(new LiveStatContainer()
+			model.LiveStats[stat].Returns(new LiveStatContainer(statValue)
 			{
-				Current = volatileValue,
-				Max = statValue
+				Current = volatileValue,				
 			});			
 
 			subject = new StatExpression(new LiveStatEvaluator(stat, true));

@@ -10,6 +10,16 @@ namespace Redninja
 	{
 		private int current;
 
+		/// <summary>
+		/// Initialize this container with this max set it as the current value.
+		/// </summary>
+		/// <param name="max"></param>
+		public LiveStatContainer(int max)
+		{
+			Max = max;
+			Current = max;
+		}
+
 		public int Max { get; set; }
 
 		public int Current {
