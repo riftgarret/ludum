@@ -51,7 +51,7 @@ public class BattleView : MonoBehaviour, IBattleView
 		enemyContainer.OnCharacterOverlaySelected -= HandleCharacterSelected;
 	}
 
-	void Update() => presenter.IncrementGameClock(Time.deltaTime);
+	void Update() => presenter?.IncrementGameClock(Time.deltaTime);
 
 	private void HandleCharacterSelected(BattleCharacterOverlayUI ui) => actionModeBehavior.OnCharacterSelected(ui.Unit);
 

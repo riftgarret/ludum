@@ -1,16 +1,21 @@
 ﻿[
   {
-    "dataid": "goblin_priest",
-    "ruleIds": [
-      "attack_enemy",
-      "fire_enemy",
-      "heal_self"
-    ]
-  },
-  {
-    "dataid": "goblin_warrior",
-    "ruleIds": [
-      "fire_enemy"
+    "type": "AIRuleSetSchema",
+    "data": [
+      {
+        "dataid": "goblin_priest",
+        "ruleIds": [
+          "attack_enemy",
+          "fire_enemy",
+          "heal_self"
+        ]
+      },
+      {
+        "dataid": "goblin_warrior",
+        "ruleIds": [
+          "fire_enemy"
+        ]
+      }
     ]
   }
 ]

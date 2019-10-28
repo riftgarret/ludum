@@ -1,8 +1,8 @@
-﻿{
-  "skillsPath": "Assets/StreamingAssets/configs/skills.json",
-  "aiRulesPath": "Assets/StreamingAssets/configs/ai_rules.json",
-  "aiBehaviorsPath": "Assets/StreamingAssets/configs/ai_behaviors.json",
-  "charactersPath": "Assets/StreamingAssets/configs/characters.json",
-  "encountersPath": "Assets/StreamingAssets/configs/encounters.json",
-  "classesPath": "Assets/StreamingAssets/configs/classes.json"
-}
+﻿[
+  "Assets/StreamingAssets/configs/skills.json",
+  "Assets/StreamingAssets/configs/ai_rules.json",
+  "Assets/StreamingAssets/configs/ai_behaviors.json",
+  "Assets/StreamingAssets/configs/characters.json",
+  "Assets/StreamingAssets/configs/encounters.json",
+  "Assets/StreamingAssets/configs/classes.json"
+]

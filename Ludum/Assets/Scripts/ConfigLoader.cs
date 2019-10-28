@@ -31,7 +31,7 @@ public class ConfigLoader : MonoBehaviour
 
 		var bem = context.Get<IBattleEntityManager>();
 
-		Encounter encounter = dataManager.Encounters["goblin_party"];
+		Encounter encounter = dataManager.CreateInstance<Encounter>("goblin_party");
 
 		const int playerTeam = 0;
 		const int enemyTeam = 1;
@@ -79,8 +79,8 @@ public class ConfigLoader : MonoBehaviour
 		public static ISkillProvider WarriorSkills(IDataManager dataManager)
 		{
 			ConfigurableSkillProvider skillProvider = new ConfigurableSkillProvider();
-			skillProvider.Skills.Add(dataManager.Skills["double_hit"]);
-			skillProvider.Skills.Add(dataManager.Skills["multi_hit"]);
+			skillProvider.Skills.Add(dataManager.SingleInstance<ISkill>("double_hit"));
+			skillProvider.Skills.Add(dataManager.SingleInstance<ISkill>("multi_hit"));
 			skillProvider.AttackTime = new ActionTime(1, 2, 1);
 			return skillProvider;
 		}

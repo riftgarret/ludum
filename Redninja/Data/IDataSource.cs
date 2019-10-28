@@ -1,6 +1,6 @@
 ﻿namespace Redninja.Data
 {
-	internal interface IDataSource
+	public interface IDataSource
 	{
 		string DataId { get; }
 	}
