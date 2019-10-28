@@ -96,13 +96,14 @@ namespace Redninja.Data.Schema.Readers
 		public static SkillOperationParameters ParseStatsParams(Dictionary<string, int> original)
 		{
 			if (original == null) return null;
-			SkillOperationParameters map = new SkillOperationParameters();
+			SkillOperationParameters paramz = new SkillOperationParameters();
 			foreach(var e in original)
 			{
 				if(!Enum.TryParse<Stat>(e.Key, true, out Stat stat)) throw new FormatException("Invalid Stat found");
-				map[stat] = e.Value;
+				paramz.EditableStats[stat] = e.Value;
+				// TODO set combat flags (Projectile, Spell, Healing, Buff)
 			}
-			return map;
+			return paramz;
 		}			
 
 		public static IAITargetCondition ParseAITargetCondition(string conditionParam)
@@ -118,13 +119,13 @@ namespace Redninja.Data.Schema.Readers
 			condition = null;
 			if (!match.Success) return false;					
 				
-			if (!Enum.TryParse<Stat>(match.Groups["stat"].Value, out Stat stats)) return false;
+			if (!TryParseStatRaw(match.Groups["stat"].Value, out Enum someStat)) return false;
 			if (!TryParseOperatorType(match.Groups["op"].Value, out AIValueConditionOperator op)) return false;
 			if (!int.TryParse(match.Groups["val"].Value, out int value)) return false;
-			AIConditionType condType = match.Groups["perc"].Value.Equals("%") ? 
-				AIConditionType.CombatStatPercent : AIConditionType.CombatStatCurrent;
+			bool isPercent = match.Groups["perc"].Value.Equals("%");
 
-			condition = AIConditionFactory.CreateCombatStatCondition(value, stats, op, condType);
+			IStatEvaluator statEvaluator = CreateStatEval(someStat, isPercent);
+			condition = AIConditionFactory.CreateCombatStatCondition(value, statEvaluator, op);
 			return true;
 		}
 
@@ -175,13 +176,53 @@ namespace Redninja.Data.Schema.Readers
 			});
 		}		
 
-		internal static Dictionary<string, object> ConvertEnums(Dictionary<string, object> dict)
-		{				
-			List<Type> detectedEnums = new List<Type>()
+		private static readonly List<Type> _KNOWN_STAT_TYPES = new List<Type>()
 			{
-				typeof(Stat)
+				typeof(Stat),
+				typeof(LiveStat),
+				typeof(CalculatedStat)
 			};
 
+		internal static bool TryParseStatRaw(string raw, out Enum val)
+		{
+			try
+			{
+				val = ParseStatRaw(raw);
+				return true;
+			}
+			catch (InvalidOperationException e)
+			{
+				val = default;
+				return false;
+			}
+		}
+
+		internal static IStatEvaluator CreateStatEval(Enum someStat, bool isPercent)
+		{			
+			if (someStat is Stat)
+				return new StatEvaluator((Stat)someStat);
+			else if (someStat is CalculatedStat)
+				return new CalculatedStatEvaluator((CalculatedStat)someStat);
+			else if (someStat is LiveStat)
+				return new LiveStatEvaluator((LiveStat)someStat, isPercent);
+			else
+				throw new InvalidOperationException("Unable to pick stat expression for " + someStat);
+		}
+
+		internal static Enum ParseStatRaw(string raw)
+		{
+			Type type = _KNOWN_STAT_TYPES.Find(x => raw.StartsWith(x.Name + "."));
+			if (type != null)
+			{
+				return (Enum) Enum.Parse(type, raw.Substring(type.Name.Length + 1));
+			}
+			throw new InvalidOperationException("Unable to parse: " + raw);
+		}
+
+		internal static Dictionary<string, object> ConvertEnums(Dictionary<string, object> dict)
+		{
+			List<Type> detectedEnums = _KNOWN_STAT_TYPES;
+			
 			return dict?.ToDictionary(e => e.Key, e =>
 			{
 				if (e.Value is string)

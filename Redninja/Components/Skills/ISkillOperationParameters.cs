@@ -5,7 +5,9 @@ using Davfalcon;
 
 namespace Redninja.Components.Skills
 {
-	public interface ISkillOperationParameters : IStats
+	public interface ISkillOperationParameters
 	{
+		IStats Stats { get; }
+		ISet<Enum> SkillFlags { get; }
 	}
 }

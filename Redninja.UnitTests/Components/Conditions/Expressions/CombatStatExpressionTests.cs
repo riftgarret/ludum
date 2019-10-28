@@ -1,12 +1,13 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
+using Redninja.Components.Decisions.AI;
 
 namespace Redninja.Components.Conditions.Expressions.UnitTests
 {
 	[TestFixture]
 	public class CombatStatExpressionTests
 	{
-		private CombatStatExpression subject;
+		private StatExpression subject;
 
 		[SetUp]
 		public void SetUp()
@@ -15,12 +16,12 @@ namespace Redninja.Components.Conditions.Expressions.UnitTests
 		}
 
 		[Test]
-		public void Result_SingleValue([Values(10, 20, 30)]int statValue, [Values(Stat.HP, Stat.Resource)] Stat stat)
+		public void Result_SingleValue([Values(10, 20, 30)]int statValue, [Values(LiveStat.LiveHP, LiveStat.LiveResource)] LiveStat stat)
 		{
 			IBattleEntity model = Substitute.For<IBattleEntity>();
-			model.VolatileStats[stat].Returns(statValue);
+			model.LiveStats[stat].Returns(new LiveStatContainer(statValue));			
 
-			subject = new CombatStatExpression(stat, false);
+			subject = new StatExpression(new LiveStatEvaluator(stat, false));
 
 			Assert.That(subject.Result(model), Is.EqualTo(statValue));
 		}
@@ -32,12 +33,14 @@ namespace Redninja.Components.Conditions.Expressions.UnitTests
 		[TestCase(1, 2, 50)]
 		public void Result_Percent(int volatileValue, int statValue, int expectedValue)
 		{
-			Stat stat = Stat.HP;
+			LiveStat stat = LiveStat.LiveHP;
 			IBattleEntity model = Substitute.For<IBattleEntity>();
-			model.VolatileStats[stat].Returns(volatileValue);
-			model.Stats[stat].Returns(statValue);
+			model.LiveStats[stat].Returns(new LiveStatContainer(statValue)
+			{
+				Current = volatileValue,				
+			});			
 
-			subject = new CombatStatExpression(stat, true);
+			subject = new StatExpression(new LiveStatEvaluator(stat, true));
 
 			Assert.That(subject.Result(model), Is.EqualTo(expectedValue));
 		}

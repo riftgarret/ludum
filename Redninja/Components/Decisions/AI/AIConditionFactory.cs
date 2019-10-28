@@ -8,10 +8,9 @@
 
 		public static IAITargetCondition CreateCombatStatCondition(
 			int conditionalValue,
-			Stat combatStat,
-			AIValueConditionOperator op,
-			AIConditionType conditionType)
-			=> new AICombatStatCondition(conditionalValue, combatStat, op, conditionType);
+			IStatEvaluator statEvaluator,
+			AIValueConditionOperator op)
+			=> new AICombatStatCondition(conditionalValue, statEvaluator, op);
 
 		private static IAITargetCondition As(SimpleAICondition.OnCondition condition) => new SimpleAICondition(condition);		
 

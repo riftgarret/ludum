@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Redninja.Components.Conditions;
 using Redninja.Components.Conditions.Expressions;
+using Redninja.Components.Decisions.AI;
 using Redninja.Logging;
 using Redninja.Text;
 
@@ -11,7 +13,7 @@ namespace Redninja.Data.Schema.Readers
 	{
 
 		private const string GROUP_UNIT = "unit";
-		private const string GROUP_COMBAT_STAT = "stats";
+		private const string GROUP_STAT = "stats";
 		private const string GROUP_NUMBER_VALUE = "value";
 		private const string GROUP_EXPGROUP = "group";
 
@@ -22,8 +24,8 @@ namespace Redninja.Data.Schema.Readers
 		{
 			initPattern = RegexPatternBuilder
 				.Begin()
-				.StartOptionSet()
-				.AddCapture(GROUP_UNIT, GetEnumRegex(typeof(ConditionTargetType)))
+				.StartOptionSet()				
+				.AddCapture(GROUP_UNIT, GetEnumRegexShort(typeof(ConditionTargetType)))
 				.NextOption()
 				.AddCapture(GROUP_NUMBER_VALUE, @"\d+%?")
 				.EndOptions()
@@ -32,9 +34,10 @@ namespace Redninja.Data.Schema.Readers
 			chainPattern = RegexPatternBuilder
 				.Begin()
 				.StartOptionSet()
-				.AddCapture(GROUP_COMBAT_STAT, $"(?:{GetEnumRegex(typeof(Stat))})%?")
+				// TODO: Stat.value, should find Stat, not the full word
+				.AddCapture(GROUP_STAT, $"(?:{GetEnumRegexFull(typeof(LiveStat), typeof(CalculatedStat), typeof(Stat))})%?")
 				.NextOption()
-				.AddCapture(GROUP_EXPGROUP, GetEnumRegex(typeof(GroupOp)))
+				.AddCapture(GROUP_EXPGROUP, GetEnumRegexShort(typeof(GroupOp)))
 				.EndOptions()
 				.Build();
 		}
@@ -66,8 +69,8 @@ namespace Redninja.Data.Schema.Readers
 			Match match = Regex.Match(raw, chainPattern);
 			if (!match.Success) return FalseWithLog($"Unable to parse expression: {raw}", out expression);
 
-			if (match.Groups[GROUP_COMBAT_STAT].Success)
-				return TryParseCombatStatExpression(match.Groups[GROUP_COMBAT_STAT].Value, out expression);
+			if (match.Groups[GROUP_STAT].Success)
+				return TryParseCombatStatExpression(match.Groups[GROUP_STAT].Value, out expression);
 				
 			if (match.Groups[GROUP_EXPGROUP].Success)
 				return TryParseGroupExpression(match.Groups[GROUP_EXPGROUP].Value, prevExpression, out expression);
@@ -117,9 +120,10 @@ namespace Redninja.Data.Schema.Readers
 			bool isPercent = percIndex > 0;
 			raw = isPercent ? raw.Substring(0, percIndex) : raw;
 
-			if (!Enum.TryParse(raw, true, out Stat stat)) return FalseWithLog($"Unable to parse combat stat from {raw}", out expression);
+			Enum someStat = ParseHelper.ParseStatRaw(raw);
 
-			expression = new CombatStatExpression(stat, isPercent);
+			IStatEvaluator statEvaluator = ParseHelper.CreateStatEval(someStat, isPercent);			
+			expression = new StatExpression(statEvaluator);
 			return true;
 		}
 
@@ -162,8 +166,21 @@ namespace Redninja.Data.Schema.Readers
 		}
 
 
-		private static string GetEnumRegex(Type enumType)
-			=> string.Join("|", Enum.GetNames(enumType));
+		/// <summary>
+		/// Creates an option of enums that use a full "Stats.HP", instead of "HP"
+		/// </summary>
+		/// <param name="enumTypes"></param>
+		/// <returns></returns>
+		private static string GetEnumRegexFull(params Type[] enumTypes)
+			=> string.Join("|", enumTypes.Select(enumType => enumType.Name + "\\.\\w+"));
+
+		/// <summary>
+		/// Creates an option of enums that just use "HP" from Stats.HP
+		/// </summary>
+		/// <param name="enumTypes"></param>
+		/// <returns></returns>
+		private static string GetEnumRegexShort(params Type[] enumTypes)
+			=> string.Join("|", enumTypes.SelectMany(enumType => Enum.GetNames(enumType)));
 
 	}
 }

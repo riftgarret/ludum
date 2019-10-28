@@ -42,16 +42,14 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 			get
 			{
 				yield return new TestCaseData("AlwaysTrue", AIConditionFactory.AlwaysTrue);
-				yield return new TestCaseData("HP > 50", AIConditionFactory.CreateCombatStatCondition(
-					50, Stat.HP, AIValueConditionOperator.GT, AIConditionType.CombatStatCurrent));
-				yield return new TestCaseData("Resource = 100%", AIConditionFactory.CreateCombatStatCondition(
-					100, Stat.Resource, AIValueConditionOperator.EQ, AIConditionType.CombatStatPercent));
-				yield return new TestCaseData("DEF <= 20", AIConditionFactory.CreateCombatStatCondition(
-					20, Stat.DEF, AIValueConditionOperator.LTE, AIConditionType.CombatStatCurrent));
-				yield return new TestCaseData("HP >= 9%", AIConditionFactory.CreateCombatStatCondition(
-					9, Stat.HP, AIValueConditionOperator.GTE, AIConditionType.CombatStatPercent));
-				yield return new TestCaseData("ATK < 99%", AIConditionFactory.CreateCombatStatCondition(
-					99, Stat.ATK, AIValueConditionOperator.LT, AIConditionType.CombatStatPercent));
+				yield return new TestCaseData("CalculatedStat.HPTotal > 50", AIConditionFactory.CreateCombatStatCondition(
+					50, new CalculatedStatEvaluator(CalculatedStat.HPTotal), AIValueConditionOperator.GT));
+				yield return new TestCaseData("LiveStat.LiveResource = 100%", AIConditionFactory.CreateCombatStatCondition(
+					100, new LiveStatEvaluator(LiveStat.LiveResource, true), AIValueConditionOperator.EQ));
+				yield return new TestCaseData("Stat.DEF <= 20", AIConditionFactory.CreateCombatStatCondition(
+					20, new StatEvaluator(Stat.DEF), AIValueConditionOperator.LTE));
+				yield return new TestCaseData("LiveStat.HP >= 9%", AIConditionFactory.CreateCombatStatCondition(
+					9, new LiveStatEvaluator(LiveStat.LiveHP, true), AIValueConditionOperator.GTE));				
 			}
 		}
 

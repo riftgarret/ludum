@@ -29,7 +29,7 @@ public class ActionModeBehavior : MonoBehaviour
 		switch (actionFlow)
 		{
 			case ActionFlow.OPEN_SKILLS:
-				if (unit.RequiresAction)
+				if (unit.Actions.RequiresAction)
 				{
 					currentUnit = (IBattleEntity) unit;
 					ShowSkills(unit);
@@ -46,7 +46,7 @@ public class ActionModeBehavior : MonoBehaviour
 				if(currentTargetContext.IsReady)
 				{
 					var action = currentTargetContext.GetAction();
-					currentUnit.SetAction(action);
+					currentUnit.Actions.SetAction(action);
 					ResetState();
 				}				
 				break;
@@ -90,7 +90,7 @@ public class ActionModeBehavior : MonoBehaviour
 		if (currentSelectedSkill != null) currentSelectedSkill.Selected = false;
 		currentSelectedSkill = ui;
 		currentSelectedSkill.Selected = true;
-		currentTargetContext = currentUnit.ActionContextProvider.GetTargetingContext(ui.Skill);
+		currentTargetContext = currentUnit.Actions.ActionContextProvider.GetTargetingContext(ui.Skill);
 		actionFlow = ActionFlow.SELECT_TARGET;
 	}
 }

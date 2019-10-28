@@ -7,7 +7,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 	[TestFixture]
 	public class AICombatStatsPriorityTests
 	{
-		private AICombatStatPriority subject;
+		private AIStatPriority subject;
 		private List<IBattleEntity> entities;
 
 		[SetUp]
@@ -16,12 +16,14 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			entities = new List<IBattleEntity>();
 		}
 
-		private IBattleEntity AddUnit(Stat stat, int volValue = 5, int statValue = 10)
+		private IBattleEntity AddUnit(LiveStat stat, int volValue = 5, int statValue = 10)
 		{
 			var entity = Substitute.For<IBattleEntity>();
 			entities.Add(entity);
-			entity.Stats[stat].Returns(statValue);
-			entity.VolatileStats[stat].Returns(volValue);
+			entity.LiveStats[stat].Returns(new LiveStatContainer(statValue)
+			{
+				Current = volValue,
+			});
 			return entity;
 		}
 
@@ -37,37 +39,36 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			int expectedIndex)
 		{
 
-			Stat stat = Stat.HP;
-			AIPriorityType type = AIPriorityType.CombatStatCurrent;
+			LiveStat stat = LiveStat.LiveHP;			
 
 			AddUnit(stat, vol1);
 			AddUnit(stat, vol2);
 			AddUnit(stat, vol3);
 
-			subject = new AICombatStatPriority(stat, qualifier, type);
+			subject = new AIStatPriority(new LiveStatEvaluator(stat, false), qualifier);
 			var result = subject.GetBestTarget(entities);
 
 			Assert.That(result, Is.EqualTo(entities[expectedIndex]));
 		}
 
-		[TestCase(AIPriorityType.CombatStatCurrent, 1, 1, 2, 2, 3, 3, 2)]
-		[TestCase(AIPriorityType.CombatStatPercent, 10, 10, 2, 5, 3, 8, 0)]
-		[TestCase(AIPriorityType.CombatStatPercent, 10, 10, 10, 5, 3, 8, 1)]
+		[TestCase(false, 1, 1, 2, 2, 3, 3, 2)]
+		[TestCase(true, 10, 10, 2, 5, 3, 8, 0)]
+		[TestCase(true, 9, 10, 5, 5, 3, 8, 1)]
 		public void GetBestTarget_TestType_HighestStat(
-			AIPriorityType type,
+			bool isPercent,
 			int vol1, int stat1,
 			int vol2, int stat2,
 			int vol3, int stat3,
 			int expectedIndex)
 		{
-			Stat stat = Stat.HP;
+			LiveStat stat = LiveStat.LiveHP;
 			AITargetingPriorityQualifier qualifier = AITargetingPriorityQualifier.Highest;
 
 			AddUnit(stat, vol1, stat1);
 			AddUnit(stat, vol2, stat2);
 			AddUnit(stat, vol3, stat3);
 
-			subject = new AICombatStatPriority(stat, qualifier, type);
+			subject = new AIStatPriority(new LiveStatEvaluator(stat, isPercent), qualifier);
 			var result = subject.GetBestTarget(entities);
 
 			Assert.That(result, Is.EqualTo(entities[expectedIndex]));

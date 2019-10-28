@@ -10,6 +10,7 @@ using Redninja.Components.Decisions;
 using Redninja.Components.Properties;
 using System.Linq;
 using Redninja.Components.Decisions.AI;
+using Redninja.Components.StatCalculators;
 using Davfalcon.Stats;
 
 namespace Redninja.Entities
@@ -53,7 +54,11 @@ namespace Redninja.Entities
 		// TODO pull properties from equipment, buffs, class def
 		public IEnumerable<ITriggeredProperty> TriggeredProperties => Enumerable.Empty<ITriggeredProperty>();
 
-		public IStats VolatileStats { get; } = new StatsMap();
+		public LiveStatContainer HP => LiveStats[LiveStat.LiveHP];
+		public LiveStatContainer Resource => LiveStats[LiveStat.LiveResource];
+
+		private readonly Dictionary<LiveStat, LiveStatContainer> liveStats = new Dictionary<LiveStat, LiveStatContainer>();
+		public IReadOnlyDictionary<LiveStat, LiveStatContainer> LiveStats => liveStats;
 
 		public BattleEntity(IBattleContext context, IUnit unit)
 		{
@@ -72,6 +77,8 @@ namespace Redninja.Entities
 			Modifiers.Bind(() => unit.AsModified());
 
 			// TODO add volatile stats component
+			liveStats[LiveStat.LiveHP] = new LiveStatContainer(Stats.CalculateTotalHp());
+			liveStats[LiveStat.LiveResource] = new LiveStatContainer(Stats.CalculateTotalResource());			
 		}
 
 		// Considering raising this stuff to BEM

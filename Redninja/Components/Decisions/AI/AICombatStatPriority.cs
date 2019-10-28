@@ -3,49 +3,30 @@ using System.Collections.Generic;
 
 namespace Redninja.Components.Decisions.AI
 {
-	public class AICombatStatPriority : IAITargetPriority
+	public class AIStatPriority : IAITargetPriority
 	{
-		public Stat CombatStat { get; }
+		public IStatEvaluator StatEvaluator { get; }
 
 		public AITargetingPriorityQualifier Qualifier { get; }
 
-		public AIPriorityType PriorityType { get; }
+		public AIPriorityType PriorityType { get; } = AIPriorityType.StatValue;
 
-		public AICombatStatPriority(Stat combatStat,
-			AITargetingPriorityQualifier qualifier,
-			AIPriorityType priorityType)
+		public AIStatPriority(IStatEvaluator statEval,
+			AITargetingPriorityQualifier qualifier)
 		{
-			if (priorityType != AIPriorityType.CombatStatCurrent && priorityType != AIPriorityType.CombatStatPercent)
-			{
-				throw new InvalidOperationException("Can only instantiate this with CombatStatType");
-			}
-
-			CombatStat = combatStat;
-			Qualifier = qualifier;
-			PriorityType = priorityType;
+			StatEvaluator = statEval;
+			Qualifier = qualifier;			
 		}
 
 		public IBattleEntity GetBestTarget(IEnumerable<IBattleEntity> validEntities)
-			=> AIHelper.FindBestMatch(validEntities, Qualifier, ex => GetCombatStatValue(ex));
-
-		private int GetCombatStatValue(IBattleEntity entity)
-		{
-			if (PriorityType == AIPriorityType.CombatStatCurrent)
-			{
-				return entity.VolatileStats[CombatStat];
-			}
-			else
-			{
-				return (100 * entity.VolatileStats[CombatStat]) / entity.Stats[CombatStat];
-			}
-		}
+			=> AIHelper.FindBestMatch(validEntities, Qualifier, ex => StatEvaluator.Eval(ex));
 
 		public override bool Equals(object obj)
-			=> obj is AICombatStatPriority priority &&
-				CombatStat == priority.CombatStat &&
+			=> obj is AIStatPriority priority &&
+				StatEvaluator == priority.StatEvaluator &&
 				Qualifier == priority.Qualifier &&
 				PriorityType == priority.PriorityType;
 
-		public override int GetHashCode() => $"{CombatStat}{Qualifier}{PriorityType}".GetHashCode();
+		public override int GetHashCode() => $"{StatEvaluator}{Qualifier}{PriorityType}".GetHashCode();
 	}
 }
