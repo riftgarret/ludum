@@ -14,7 +14,7 @@ namespace Redninja.Components.Buffs.Behaviors
 		
 		public event Action<float, IBattleOperation> BattleOperationReady;
 
-		public void OnClockTick(float delta, ActiveBuff buff)
+		public void OnClockTick(float delta, IBuff buff)
 		{
 			
 			foreach (float tickTime in GetTicksFromLastUpdate(delta, buff, TicksPerSecond))
@@ -25,7 +25,7 @@ namespace Redninja.Components.Buffs.Behaviors
 
 		private float DamagePerTick => KRatePerSecond / TicksPerSecond;
 
-		private float[] GetTicksFromLastUpdate(float delta, ActiveBuff buff, float ticksPerSecond) 
+		private float[] GetTicksFromLastUpdate(float delta, IBuff buff, float ticksPerSecond) 
 		{
 			float leftover = buff.LastDuration % ticksPerSecond;
 			int ticks = (int) Math.Floor((leftover + delta) / ticksPerSecond);

@@ -7,45 +7,20 @@ namespace Redninja.Components.Buffs
 	[Serializable]
 	public class UnitBuffManager : UnitBuffManager<IUnit, IBuff>, IUnitBuffManager, IUnitComponent<IUnit>
 	{
-		protected IBattleContext BattleContext { get; }
-
-		protected IBattleEntity BattleEntity { get; }
-
-		public event Action<IBuff, IBattleEntity> Effect;
-		public event Action<IBuff> BuffExpired;
-
-		public UnitBuffManager(IBattleContext context, IBattleEntity entity)
-		{
-			BattleContext = context;
-			BattleEntity = entity;
-
-			// not sure if this needs to be clock synced at all, leave it for now
-			BattleContext.Clock.Tick += OnTick;
-		}
-
-		public void AddActiveBuff(IBuff buff)
+		public void AddBuff(IBuff buff)
 		{
 			Add(buff);
-			//buff.Effect += b => Effect?.Invoke(b, BattleEntity);
+			buff.Expired += RemoveBuff;
 		}
 
-		private void OnTick(float timeDelta)
+		public void RemoveBuff(IBuff buff)
 		{
-			
+			Remove(buff);
+			buff.Dispose();
 		}
 
-		private void UnsetClock()
-		{
-			if (BattleContext != null)
-			{
-				BattleContext.Clock.Tick -= OnTick;
-			}
-		}
-
-		public void Dispose()
-		{
-			UnsetClock();
-		}
+		void IUnitBuffManager<IUnit, IBuff>.Add(IBuff buff) => AddBuff(buff);
+		void IUnitBuffManager<IUnit, IBuff>.Remove(IBuff buff) => RemoveBuff(buff);
 	}
 
 	public static class UnitExtension

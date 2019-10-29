@@ -17,8 +17,9 @@ namespace Redninja
 		public static int GetAggregatorSeed(Enum modificationType) => 0;
 
 		public static IStats Join(this IStats stats, params IStats[] moreStats)
-			=> new CombinedStats(moreStats.Append(stats).ToArray());
+			=> new StatsAggregator(moreStats.Append(stats).ToArray());
 
+		// remove this
 		public static int Calculate(this IStats stats, CalculatedStat calcStat)
 		{
 			switch (calcStat)

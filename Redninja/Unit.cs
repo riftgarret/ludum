@@ -1,5 +1,4 @@
 ﻿using Davfalcon;
-using Redninja.Components.StatCalculators;
 
 namespace Redninja
 {

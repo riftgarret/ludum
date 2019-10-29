@@ -52,6 +52,7 @@
     <Compile Include="Builders\BuilderBase%28T, TBuilder%29.cs" />
     <Compile Include="Builders\BuilderBase%28T, TOut, TBuilder%29.cs" />
     <Compile Include="Builders\IBuilder%28T%29.cs" />
+    <Compile Include="StatsAggregator.cs" />
     <Compile Include="Components\Actions\AIUnitActionManager.cs" />
     <Compile Include="Components\Actions\BattleActionBase.cs" />
     <Compile Include="Components\Actions\IUnitActionManager.cs" />
@@ -141,7 +142,7 @@
     <Compile Include="Data\Schema\RootSchema.cs" />
     <Compile Include="Data\Schema\RootSchemaConverter.cs" />
     <Compile Include="IUnit.cs" />
-    <Compile Include="LiveStat.cs" />
+    <Compile Include="LiveStatContainer.cs" />
     <Compile Include="StatFunctions.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="Extensions.cs" />

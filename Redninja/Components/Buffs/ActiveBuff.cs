@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Davfalcon.Buffs;
+using Redninja.Components.Combat;
 
 namespace Redninja.Components.Buffs
 {
 	[Serializable]
-	public sealed class ActiveBuff : Buff<IUnit>, IBuff, IUnit, IDisposable
+	public sealed class ActiveBuff : Buff<IUnit>, IBuff, IUnit
 	{
 		private IBattleContext context;
 
@@ -30,7 +31,9 @@ namespace Redninja.Components.Buffs
 		// this can probably be private
 		public Dictionary<string, float> SavedState { get; } = new Dictionary<string, float>();
 
-		public event Action<IBuff> BuffExpired;
+		public event Action<IBuff> Expired;
+
+		public event Action<float, IBattleOperation> BattleOperationReady;
 
 		protected override IUnit SelfAsUnit => this;
 
@@ -61,6 +64,13 @@ namespace Redninja.Components.Buffs
 		private void OnTick(float timeDelta)
 		{
 			Behavior.OnClockTick(timeDelta, this);
+
+			// track duration here
+
+			if (IsExpired)
+			{
+				Expired?.Invoke(this);
+			}
 		}
 
 		private void UnsetClock()

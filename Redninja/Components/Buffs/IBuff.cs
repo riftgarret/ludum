@@ -1,10 +1,11 @@
 ﻿
 using System;
 using Davfalcon.Buffs;
+using Redninja.Components.Combat;
 
 namespace Redninja.Components.Buffs
 {
-	public interface IBuff : IBuff<IUnit>
+	public interface IBuff : IBuff<IUnit>, IOperationSource, IDisposable
 	{
 		BuffProperties Properties { get; }
 		IBuffExecutionBehavior Behavior { get; }
@@ -17,7 +18,7 @@ namespace Redninja.Components.Buffs
 		float CalculatedMaxDuration { get; }
 		bool IsExpired { get; }
 
-		event Action<IBuff> BuffExpired;
+		event Action<IBuff> Expired;
 
 		void InitializeBattleState(IBattleContext context, IBattleEntity owner, IBattleEntity target);
 	}
