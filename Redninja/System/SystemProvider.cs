@@ -11,7 +11,7 @@ namespace Redninja.System
 
 		public SystemProvider(IDataManager data) => this.data = data;
 
-		public IClassProvider GetClass(string className) => data.Classes[className];
+		public IClassProvider GetClass(string className) => null;// data.Classes[className];
 
 		public ISkillProvider GetSkillProvider(IBattleEntity unit)
 			=> skillProviderMap[unit];

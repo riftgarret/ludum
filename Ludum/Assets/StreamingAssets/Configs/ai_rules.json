@@ -1,41 +1,35 @@
-﻿{
-  "skillRules": [
-    {
-      "dataId": "fire_enemy",     
-      "refreshTime": 0,
-      "weight": 1,
-      "triggerConditions": {},
-      "filterConditions": [],
-      "skillPriorityMap": {
-        "fire_skill": "Any"
+﻿[
+  {
+    "type": "AISkillRuleSchema",
+    "data": [
+      {
+        "dataId": "fire_enemy",
+        "refreshTime": 0,
+        "weight": 1,
+        "triggerConditions": {},
+        "filterConditions": [],
+        "skillPriorityMap": {
+          "fire_skill": "Any"
+        },
+        "targetType": "Enemy"
       },
-      "targetType": "Enemy"
-    },
 
-    {
-      "dataId": "heal_self",
-      "refreshTime": 10,
-      "weight": 1,
-      "triggerConditions": {
-        "Self": [
-          "CalculatedStat.HPTotal < 50%",
-          "CalculatedStat.ResourceTotal > 50"
-        ]
-      },
-      "filterConditions": [],
-      "skillPriorityMap": {
-        "heal_self": "Any"
-      },
-      "targetType": "Self"
-    }
-  ],
-  "attackRules": [
-    {
-      "dataId": "attack_enemy",
-      "refreshTime": 0,
-      "weight": 1,
-      "triggerConditions": {},
-      "priority": "Any"
-    }
-  ]
-}
+      {
+        "dataId": "heal_self",
+        "refreshTime": 10,
+        "weight": 1,
+        "triggerConditions": {
+          "Self": [
+            "CalculatedStat.HPTotal < 50%",
+            "CalculatedStat.ResourceTotal > 50"
+          ]
+        },
+        "filterConditions": [],
+        "skillPriorityMap": {
+          "heal_self": "Any"
+        },
+        "targetType": "Self"
+      }
+    ]
+  }
+]

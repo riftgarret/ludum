@@ -16,16 +16,16 @@ namespace Redninja.Data.Schema.Readers
 			this.configPath = configPath;
 		}
 
-		public void Read(IEditableDataManager manager)
-		{
-			// These will need to be loaded in the correct order for dependencies
-			ConfigSchema config = ParseHelper.ReadJson<ConfigSchema>(configPath);
-			SkillReader.ReadRoot(ParseHelper.ReadJson<SkillRootSchema>(config.SkillsPath), manager);
-			ClassReader.ReadRoot(ParseHelper.ReadJson<ClassesRootSchema>(config.ClassesPath), manager.Classes, manager.Skills);
-			AIRuleReader.ReadRoot(ParseHelper.ReadJson<AIRulesRootSchema>(config.AIRulesPath), manager);
-			AIBehaviorReader.ReadRoot(ParseHelper.ReadJson<AIRuleSetRootSchema>(config.AIBehaviorsPath), manager);
-			CharacterReader.ReadRoot(ParseHelper.ReadJson<CharactersRootSchema>(config.CharactersPath), manager);
-			EncounterReader.ReadRoot(ParseHelper.ReadJson<EncountersRootSchema>(config.EncountersPath), manager);
-		}
+		//public void Read(IEditableDataManager manager)
+		//{
+		//	// These will need to be loaded in the correct order for dependencies
+		//	ConfigSchema config = ParseHelper.ReadJson<ConfigSchema>(configPath);
+		//	SkillReader.ReadRoot(ParseHelper.ReadJson<SkillRootSchema>(config.SkillsPath), manager);
+		//	ClassReader.ReadRoot(ParseHelper.ReadJson<ClassesRootSchema>(config.ClassesPath), manager.Classes, manager.Skills);
+		//	AIRuleReader.ReadRoot(ParseHelper.ReadJson<AIRulesRootSchema>(config.AIRulesPath), manager);
+		//	AIBehaviorReader.ReadRoot(ParseHelper.ReadJson<AIRuleSetRootSchema>(config.AIBehaviorsPath), manager);
+		//	CharacterReader.ReadRoot(ParseHelper.ReadJson<CharactersRootSchema>(config.CharactersPath), manager);
+		//	EncounterReader.ReadRoot(ParseHelper.ReadJson<EncountersRootSchema>(config.EncountersPath), manager);
+		//}
 	}
 }

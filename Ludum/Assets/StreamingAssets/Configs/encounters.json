@@ -1,24 +1,29 @@
 ﻿[
   {
-    "dataId": "goblin_party",
-    "enemyGridSize": "3,3",
-    "playerGridSize": "3,3",
-    "enemies": [
+    "type": "EncounterSchema",
+    "data": [
       {
-        "characterId": "goblin",
-        "aibehaviorid": "goblin_warrior",
-        "position": "1,0"
-      },
-      {
-        "characterId": "goblin",
-        "aibehaviorid": "goblin_warrior",
-        "position": "1,1"
-      },
-      {
-        "characterId": "goblin",
-        "aibehaviorid": "goblin_warrior",
-        "position": "0,0"
+        "dataId": "goblin_party",
+        "enemyGridSize": "3,3",
+        "playerGridSize": "3,3",
+        "enemies": [
+          {
+            "characterId": "goblin",
+            "aibehaviorid": "goblin_warrior",
+            "position": "1,0"
+          },
+          {
+            "characterId": "goblin",
+            "aibehaviorid": "goblin_warrior",
+            "position": "1,1"
+          },
+          {
+            "characterId": "goblin",
+            "aibehaviorid": "goblin_warrior",
+            "position": "0,0"
+          }
+        ]
       }
     ]
-  }
+  }  
 ]

@@ -1,21 +1,26 @@
 ﻿[
   {
-    "dataId": "warrior",
-    "name": "Warrior",
-    "attackTime": [ 1, 2, 1 ],
-    "skills": [
+    "type": "ClassSchema",
+    "data": [
       {
-        "level": 1,
-        "skillId": "double_hit"
-      },
-      {
-        "level": 1,
-        "skillId": "multi_hit"
-      },
-      {
-        "level": 1,
-        "skillId": "heal_self"
+        "dataId": "warrior",
+        "name": "Warrior",
+        "attackTime": [ 1, 2, 1 ],
+        "skills": [
+          {
+            "level": 1,
+            "skillId": "double_hit"
+          },
+          {
+            "level": 1,
+            "skillId": "multi_hit"
+          },
+          {
+            "level": 1,
+            "skillId": "heal_self"
+          }
+        ]
       }
     ]
-  }
+  }  
 ]
