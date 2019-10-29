@@ -31,48 +31,47 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 		[TestCase(AIValueConditionOperator.GTE, 1, true)]
 		[TestCase(AIValueConditionOperator.GTE, 0, true)]
 		[TestCase(AIValueConditionOperator.GTE, -1, false)]		
-		public void IsValid_TestOp_CombatStatCurrent(			
+		public void IsValid_TestOp_LiveStat(			
 			AIValueConditionOperator op, 						
 			int deltaFromValue,
 			bool expected)
 		{
+			LiveStat stat = LiveStat.LiveHP;
 			int value = 50;
 			int volatileValue = value + deltaFromValue;
 
-			Stat stat = Stat.HP;
-			AIConditionType type = AIConditionType.CombatStatCurrent;
+			mEntity.LiveStats[stat].Returns(new LiveStatContainer(volatileValue));
 
-			mEntity.VolatileStats[stat].Returns(volatileValue);
-
-			subject = new AICombatStatCondition(value, stat, op, type);
+			subject = new AICombatStatCondition(value, new LiveStatEvaluator(stat, false), op);
 			var result = subject.IsValid(mEntity);
 
 			Assert.That(result, Is.EqualTo(expected));
 		}
 
 
-		[TestCase(AIConditionType.CombatStatCurrent, 50, 50, 50, true)]
-		[TestCase(AIConditionType.CombatStatCurrent, 50, 50, 51, false)]
-		[TestCase(AIConditionType.CombatStatPercent, 50, 100, 50, true)]
-		[TestCase(AIConditionType.CombatStatPercent, 50, 20, 10, true)]
-		[TestCase(AIConditionType.CombatStatPercent, 50, 2, 1, true)]
-		[TestCase(AIConditionType.CombatStatPercent, 80, 10, 8, true)]
-		[TestCase(AIConditionType.CombatStatPercent, 80, 10, 7, false)]
+		[TestCase(false, 50, 50, 50, true)]		
+		[TestCase(true, 50, 100, 50, true)]
+		[TestCase(true, 50, 20, 10, true)]
+		[TestCase(true, 50, 2, 1, true)]
+		[TestCase(true, 80, 10, 8, true)]
+		[TestCase(true, 80, 10, 7, false)]
 		public void IsValid_TestType_EqualStat(
-			AIConditionType type, 
+			bool isPercent,
 			int value, 
 			int statValue, 
 			int volatileValue, 
 			bool expected)
 		{			
 
-			Stat stat = Stat.HP;
+			LiveStat stat = LiveStat.LiveHP;
 			AIValueConditionOperator op = AIValueConditionOperator.EQ;
 
-			mEntity.Stats[stat].Returns(statValue);
-			mEntity.VolatileStats[stat].Returns(volatileValue);
-
-			subject = new AICombatStatCondition(value, stat, op, type);
+			mEntity.LiveStats[stat].Returns(new LiveStatContainer(statValue)
+			{
+				Current = volatileValue
+			});
+			
+			subject = new AICombatStatCondition(value, new LiveStatEvaluator(stat, isPercent), op);
 			var result = subject.IsValid(mEntity);
 
 			Assert.That(result, Is.EqualTo(expected));

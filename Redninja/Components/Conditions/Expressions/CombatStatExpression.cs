@@ -1,24 +1,22 @@
-﻿namespace Redninja.Components.Conditions.Expressions
+﻿using Redninja.Components.Decisions.AI;
+
+namespace Redninja.Components.Conditions.Expressions
 {
-	public class CombatStatExpression : ParamExpressionBase
+	public class StatExpression : ParamExpressionBase
 	{
-		public CombatStatExpression(Stat combatStat, bool isPercent)
+		public StatExpression(IStatEvaluator statEvaluator)
 		{
-			CombatStat = combatStat;
-			IsPercent = isPercent;
-			ResultType = IsPercent ? ExpressionResultType.Percent : ExpressionResultType.IntValue;
+			StatEvaluator = statEvaluator;
+			bool isPercent = statEvaluator is LiveStatEvaluator
+				&& ((LiveStatEvaluator)statEvaluator).IsPercent;
+
+			ResultType = isPercent ? ExpressionResultType.Percent : ExpressionResultType.IntValue;
 			Param = ExpressionResultType.Unit;
 		}
 
 		public ConditionTargetType TargetType { get; }
-		public Stat CombatStat { get; }
-		public bool IsPercent { get; }
-
-		private int GetPercent(IBattleEntity model)
-			=> 100 * model.VolatileStats[CombatStat] / model.Stats[CombatStat];
-
-		public object Get(IBattleEntity model)
-			=> IsPercent ? GetPercent(model) : model.VolatileStats[CombatStat];
+		public IStatEvaluator StatEvaluator { get; }				
+		public object Get(IBattleEntity model) => StatEvaluator.Eval(model);		
 
 		public override object Result(object param) => Get((IBattleEntity)param);
 	}

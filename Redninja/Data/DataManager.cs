@@ -1,53 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
-using Redninja.Components.Decisions.AI;
-using Redninja.Components.Skills;
-using Redninja.Components.Targeting;
+using Newtonsoft.Json;
+using Redninja.Data.Schema;
 using Redninja.Data.Schema.Readers;
-using Redninja.System;
-using IBuff = Redninja.Components.Buffs.IBuff;
 
 namespace Redninja.Data
 {
-	internal class DataManager : IDataManager, IEditableDataManager
-	{
-		private readonly Dictionary<Type, object> dataTypeLookup = new Dictionary<Type, object>();
+	internal class DataManager : IDataManager, ISchemaStore
+	{		
+		private Dictionary<Tuple<Type, string>, object> cachedStaticMap = new Dictionary<Tuple<Type, string>, object>();
+		private Dictionary<Tuple<Type, string>, IDataSource> schemaMap = new Dictionary<Tuple<Type, string>, IDataSource>();
+		private Dictionary<Type, object> factoryMap = new Dictionary<Type, object>();
 
-		private DataStore<T> GetDataStore<T>()
+		private IDataItemFactory<TYPE> GetFactory<TYPE>() where TYPE : class 
+			=> (IDataItemFactory<TYPE>) factoryMap.GetOrThrow(typeof(TYPE), "factoryMap");
+
+		public TYPE CreateInstance<TYPE>(string dataId) where TYPE : class
+			=> GetFactory<TYPE>().CreateInstance(dataId, this);
+
+		
+
+		public TYPE SingleInstance<TYPE>(string dataId) where TYPE : class
 		{
-			Type type = typeof(T);
-			if (!dataTypeLookup.ContainsKey(type))
+			var key = Tuple.Create(typeof(TYPE), dataId);
+			
+			if (!cachedStaticMap.TryGetValue(key, out object cached))
 			{
-				dataTypeLookup[type] = new DataStore<T>();
+				cached = cachedStaticMap[key] = CreateInstance<TYPE>(dataId);
 			}
-			return dataTypeLookup[type] as DataStore<T>;
+			return (TYPE) cached;
+		}			
+
+		public SCHEMA_TYPE GetSchema<SCHEMA_TYPE>(string dataId) where SCHEMA_TYPE : IDataSource 
+			=> (SCHEMA_TYPE)schemaMap.GetOrThrow(Tuple.Create(typeof(SCHEMA_TYPE), dataId), "schemaMap");
+
+		public DataManager()
+		{
+			AddDataItemFactory(new AIBehaviorItemFactory());
+			AddDataItemFactory(new AIRuleItemFactory());
+			AddDataItemFactory(new BuffItemFactory());
+			AddDataItemFactory(new CharacterItemFactory());						
+			AddDataItemFactory(new EncounterItemFactory());
+			AddDataItemFactory(new SkillItemFactory());
+			AddDataItemFactory(new TargetingRuleItemFactory());
 		}
 
-		public IDataStore<IBuff> Buffs => GetDataStore<IBuff>();
-		public IDataStore<ISkill> Skills => GetDataStore<ISkill>();
-		public IDataStore<IAIRule> AIRules => GetDataStore<IAIRule>();
-		public IDataStore<AIRuleSet> AIBehavior => GetDataStore<AIRuleSet>();
-		public IDataStore<IAITargetCondition> AITargetCondition => GetDataStore<IAITargetCondition>();
-		public IDataStore<IAITargetPriority> AITargetPriority => GetDataStore<IAITargetPriority>();
-		public IDataStore<IUnit> NPCUnits => GetDataStore<IUnit>();
-		public IDataStore<ITargetingRule> SkillTargetingRules => GetDataStore<ITargetingRule>();
-		public IDataStore<Encounter> Encounters => GetDataStore<Encounter>();
-		public IDataStore<IClassProvider> Classes => GetDataStore<IClassProvider>();
+		public void AddDataItemFactory<TYPE>(IDataItemFactory<TYPE> factory) where TYPE : class
+			=> factoryMap[typeof(TYPE)] = factory;
 
-		IEditableDataStore<IBuff> IEditableDataManager.Buffs => GetDataStore<IBuff>();
-		IEditableDataStore<ISkill> IEditableDataManager.Skills => GetDataStore<ISkill>();
-		IEditableDataStore<IAIRule> IEditableDataManager.AIRules => GetDataStore<IAIRule>();
-		IEditableDataStore<AIRuleSet> IEditableDataManager.AIBehavior => GetDataStore<AIRuleSet>();
-		IEditableDataStore<IAITargetCondition> IEditableDataManager.AITargetCondition => GetDataStore<IAITargetCondition>();
-		IEditableDataStore<IAITargetPriority> IEditableDataManager.AITargetPriority => GetDataStore<IAITargetPriority>();
-		IEditableDataStore<IUnit> IEditableDataManager.NPCUnits => GetDataStore<IUnit>();
-		IEditableDataStore<ITargetingRule> IEditableDataManager.SkillTargetingRules => GetDataStore<ITargetingRule>();
-		IEditableDataStore<Encounter> IEditableDataManager.Encounters => GetDataStore<Encounter>();
-		IEditableDataStore<IClassProvider> IEditableDataManager.Classes => GetDataStore<IClassProvider>();
-
-		IEditableDataStore<T> IEditableDataManager.GetDataStore<T>() => GetDataStore<T>();
-
-		public void LoadJson(string configPath) => new JsonSchemaLoader(configPath).Read(this);
-		public void Load(IDataLoader reader) => reader.Load(this);
+		public void LoadJson(string json)
+		{
+			List<RootSchema> schemas = JsonConvert.DeserializeObject<List<RootSchema>>(json, new RootSchemaConverter());
+			schemas.ForEach(schema => schema.Data.ForEach(item => schemaMap[Tuple.Create(schema.DataType, item.DataId)] = item));
+		}
+		//public void LoadJson(string configPath) => new JsonSchemaLoader(configPath).Read(this);
+		//public void Load(IDataLoader reader) => reader.Load(this);
 	}
 }

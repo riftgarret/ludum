@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using Davfalcon;
-using Davfalcon.Nodes;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Redninja.Components.Combat.Events
 {
-	public class DamageEvent : ICombatEvent
-	{
-		public IBattleEntity Source { get; }
-		public IBattleEntity Target { get; }		
+	public class DamageEvent
+	{		
+		private IDictionary<DamageType, DamageResult> results = new Dictionary<DamageType, DamageResult>();
 
-		internal DamageEvent(IBattleEntity source, IBattleEntity target)
+		public DamageResult this[DamageType type]
 		{
-			Source = source ?? throw new ArgumentNullException(nameof(source));
-			Target = target ?? throw new ArgumentNullException(nameof(target));			
+			get => results.ContainsKey(type)? results[type] : null;
 		}
+
+		public void PutResult(DamageType type, DamageResult result) => results[type] = result;
+
+		public int Total => results.Values.Sum(x => x.Total);
 	}
 }

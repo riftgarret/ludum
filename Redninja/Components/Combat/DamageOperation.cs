@@ -8,20 +8,20 @@ namespace Redninja.Components.Combat
 	{
 		private readonly IBattleEntity unit;
 		private readonly ITargetResolver target;
-		private readonly ISkillOperationParameters source;
+		private readonly ISkillOperationParameters paramz;
 
-		public DamageOperation(IBattleEntity unit, ITargetResolver target, ISkillOperationParameters source)
+		public DamageOperation(IBattleEntity unit, ITargetResolver target, ISkillOperationParameters paramz)
 		{
 			this.unit = unit ?? throw new ArgumentNullException(nameof(unit));
 			this.target = target ?? throw new ArgumentNullException(nameof(target));
-			this.source = source ?? throw new ArgumentNullException(nameof(source));
+			this.paramz = paramz ?? throw new ArgumentNullException(nameof(paramz));
 		}
 
 		public override void Execute(IBattleModel battleModel, ICombatExecutor combatExecutor)
 		{
 			foreach (IBattleEntity t in target.GetValidTargets(unit, battleModel))
 			{
-				//combatExecutor.DealDamage(unit, t, source);
+				combatExecutor.DealDamage(unit, t, paramz);
 			}
 		}
 	}

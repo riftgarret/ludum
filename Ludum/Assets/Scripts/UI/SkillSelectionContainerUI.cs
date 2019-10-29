@@ -16,7 +16,7 @@ public class SkillSelectionContainerUI : MonoBehaviour
 	public void LoadSkills(IBattleEntity unit)
 	{
 		this.unit = unit;
-		foreach(ISkill skill in unit.ActionContextProvider.GetActionContext().Skills)
+		foreach(ISkill skill in unit.Actions.ActionContextProvider.GetActionContext().Skills)
 		{
 			var go = Instantiate(skillItemPrefab, transform);
 			var skillUI = go.GetComponent<SkillItemUI>();

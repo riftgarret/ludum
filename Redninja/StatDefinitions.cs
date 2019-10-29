@@ -2,6 +2,7 @@
 {
 	public enum Stat
     {
+		// basic stats
         HP,
 		HPScale,
 		DEF,
@@ -17,17 +18,53 @@
 		CHA,
 		LUK,
 		Level,
-		HpLevelScale,
+
+		// WeaponTypes
+		WeaponTypeDagger,
+		WeaponTypeSword,
+
+		// Bleed 	
 		BleedDamageConst,
 		BleedDamageScale,
+		BleedReduction,
+
+		// Physical base stats
+		PhysicalDamage,
+		PhysicalDamageScale,
+		PhysicalDamagePenetration,
+		PhysicalDaggerDamage,
+		FlagPhysicalDamageAlsoUsesCon,
+
+		PhysicalDamageResistance,
+		PhysicalDamageReduction,
+		PhysicalDamageReductionCap,
+		
+
+
+		HpLevelScale,
+	}
+
+	public enum DamageType
+	{
+		Physical,
+		Fire,
+		Bleed
 	}
 
 	public enum CalculatedStat
 	{
-		HP,
-		Resource,
-		PhysicalDamage,
-		PhysicalResistance,
+		HPTotal,
+		ResourceTotal,
+		PhysicalDamageTotal,
+		PhysicalReductionTotal,
+		PhysicalResistanceTotal,
+		PhysicalPenetrationTotal,
+	}
+
+	public enum LiveStat
+	{
+		LiveHP,
+		LiveResource
 	}
 
 	public enum StatModType

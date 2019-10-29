@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Redninja.Data.Schema
 {
 	[Serializable]
-	internal class ClassSchema
+	internal class ClassSchema : IDataSource
 	{
 		public string DataId { get; set; }
 		public string Name { get; set; }

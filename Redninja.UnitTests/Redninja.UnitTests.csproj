@@ -72,6 +72,7 @@
     <Compile Include="Components\Decisions\AI\AISkillRuleTests.cs" />
     <Compile Include="Components\Decisions\AI\AIRuleBaseTests.cs" />
     <Compile Include="Components\Decisions\AI\WeightedPoolTests.cs" />
+    <Compile Include="Data\Schema\RootSchemaTest.cs" />
     <Compile Include="Text\TextUtilsTests.cs" />
     <Compile Include="Presenter\BattlePresenterTests.cs" />
     <Compile Include="Data\Schema\Readers\ParseHelperTests.cs" />

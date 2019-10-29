@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Redninja.Data.Schema
 {
-	[Serializable]
-	internal class EncountersRootSchema : List<EncounterSchema>
+	internal class RootSchema
 	{
-		
+		public Type DataType { get; set; }
+		public List<IDataSource> Data { get; set; }
 	}
 }

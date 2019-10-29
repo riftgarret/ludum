@@ -3,16 +3,14 @@
 	public enum AIPriorityType
 	{
 		None,
-		CombatStatPercent,			
-		CombatStatCurrent,
+		StatValue,			
 		MostTargets
 	}
 
 	public enum AIConditionType
 	{		
 		AlwaysTrue,
-		CombatStatPercent,
-		CombatStatCurrent,
+		StatValue,
 		Class,
 		Position,
 		BeneficialStatusEffect,

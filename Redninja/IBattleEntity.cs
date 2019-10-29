@@ -16,7 +16,10 @@ namespace Redninja
 		IUnitActionManager Actions { get; }
 		IUnitBuffManager Buffs { get; }
 
-		IStats VolatileStats { get; }
+		LiveStatContainer HP { get; }
+		LiveStatContainer Resource { get; }
+
+		IReadOnlyDictionary<LiveStat, LiveStatContainer> LiveStats { get; }
 
 		IEnumerable<ITriggeredProperty> TriggeredProperties { get; }
 
