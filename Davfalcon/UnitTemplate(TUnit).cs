@@ -26,8 +26,8 @@ namespace Davfalcon
 			public override int Get(Enum stat)
 				=> unit.StatDerivations.ContainsKey(stat) ? unit.StatDerivations[stat](this) : base.Get(stat);
 
-			public int GetModificationBase(Enum stat)
-				=> unit.StatDerivations.ContainsKey(stat) ? unit.StatDerivations[stat](unit.Modifiers.AsModified().Stats) : base.Get(stat);
+			public int GetModificationBase(Enum stat, IStatsProperties modified)
+				=> unit.StatDerivations.ContainsKey(stat) ? unit.StatDerivations[stat](modified) : base.Get(stat);
 
 			public UnitStats(UnitTemplate<TUnit> unit)
 			{

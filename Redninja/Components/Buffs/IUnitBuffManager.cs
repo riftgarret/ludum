@@ -1,15 +1,8 @@
-﻿using System;
-using Davfalcon.Buffs;
+﻿using Davfalcon.Buffs;
 
 namespace Redninja.Components.Buffs
 {
-	public interface IUnitBuffManager //: IUnitBuffManager<IUnit, IBuff>, IDisposable
+	public interface IUnitBuffManager : IUnitBuffManager<IUnit, IBuff>
 	{
-		// need to define effect payload
-		event Action<IBuff, IBattleEntity> Effect;
-
-		event Action<IBuff> BuffExpired;
-
-		void AddActiveBuff(IBuff buff);
 	}
 }

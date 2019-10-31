@@ -9,7 +9,7 @@ namespace Redninja.Data.Schema
 	{
 		public string DataId { get; set; }
 		public string Name { get; set; }
-		public BuffConfig Config { get; set; }
+		public BuffProperties Properties { get; set; }
 		public string Executor { get; set; }
 		public Dictionary<string, object> ExectorProps { get; set; }					
 	}

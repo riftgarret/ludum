@@ -3,11 +3,11 @@ using System.Linq;
 
 namespace Davfalcon.Stats
 {
-	public class CombinedStats : IStats
+	public class StatsAggregator : IStats
 	{
 		private IStats[] stats;
 
-		public CombinedStats(params IStats[] stats) => this.stats = stats;
+		public StatsAggregator(params IStats[] stats) => this.stats = stats;
 
 		public int this[Enum stat] => stats.Sum(x => x[stat]);
 

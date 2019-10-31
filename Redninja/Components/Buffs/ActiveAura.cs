@@ -9,6 +9,6 @@ namespace Redninja.Components.Buffs
 	public class ActiveAura
 	{
 		public ActiveBuff MasterBuff { get; private set; }
-		public BuffConfig BuffDefinition { get; private set; }
+		public BuffProperties BuffDefinition { get; private set; }
 	}
 }
