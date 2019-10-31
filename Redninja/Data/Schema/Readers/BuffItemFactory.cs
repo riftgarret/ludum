@@ -13,7 +13,7 @@ namespace Redninja.Data.Schema.Readers
 		public IBuff CreateInstance(string dataId, ISchemaStore store)
 		{
 			BuffSchema buffSchema = store.GetSchema<BuffSchema>(dataId);
-			Buff buff = new Buff();
+			ActiveBuff buff = new ActiveBuff();
 			if (!string.IsNullOrEmpty(buffSchema.Executor))
 			{
 				buff.Behavior = ParseHelper.CreateInstance<IBuffExecutionBehavior>("Redninja.Components.Buffs.Behavior", buffSchema.Executor);
