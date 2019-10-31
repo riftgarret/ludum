@@ -57,7 +57,6 @@
     <Compile Include="Components\Actions\BattleActionBase.cs" />
     <Compile Include="Components\Actions\IUnitActionManager.cs" />
     <Compile Include="Components\Actions\UnitActionManager.cs" />
-    <Compile Include="Data\Factories\BuffFactory.cs" />
     <Compile Include="Components\Buffs\IBuff.cs" />
     <Compile Include="Components\Buffs\IUnitBuffManager.cs" />
     <Compile Include="Components\Buffs\UnitBuffManager.cs" />
@@ -286,6 +285,9 @@
       <Project>{1fcb4578-21b8-4db5-b560-c87beeb7fd2e}</Project>
       <Name>Davfalcon</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Components\VolatileStats\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

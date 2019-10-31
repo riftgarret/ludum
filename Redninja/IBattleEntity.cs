@@ -15,6 +15,7 @@ namespace Redninja
 		IUnitActionManager Actions { get; }
 		IUnitBuffManager Buffs { get; }
 
+		// dunno about these, are they necessary?
 		LiveStatContainer HP { get; }
 		LiveStatContainer Resource { get; }
 

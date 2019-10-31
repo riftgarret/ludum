@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Redninja.Components.Buffs;
+﻿using Redninja.Components.Buffs;
 
 namespace Redninja.Data.Schema.Readers
 {
@@ -13,7 +8,12 @@ namespace Redninja.Data.Schema.Readers
 		public IBuff CreateInstance(string dataId, ISchemaStore store)
 		{
 			BuffSchema buffSchema = store.GetSchema<BuffSchema>(dataId);
-			ActiveBuff buff = new ActiveBuff();
+
+			ActiveBuff buff = new ActiveBuff()
+			{
+				Properties = buffSchema.Properties
+			};
+
 			if (!string.IsNullOrEmpty(buffSchema.Executor))
 			{
 				buff.Behavior = ParseHelper.CreateInstance<IBuffExecutionBehavior>("Redninja.Components.Buffs.Behavior", buffSchema.Executor);
