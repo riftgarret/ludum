@@ -79,8 +79,8 @@ public class ConfigLoader : MonoBehaviour
 		public static ISkillProvider WarriorSkills(IDataManager dataManager)
 		{
 			ConfigurableSkillProvider skillProvider = new ConfigurableSkillProvider();
-			skillProvider.Skills.Add(dataManager.SingleInstance<ISkill>("double_hit"));
-			skillProvider.Skills.Add(dataManager.SingleInstance<ISkill>("multi_hit"));
+			skillProvider.Skills.Add(dataManager.SingleInstance<ISkill>("fire_skill"));
+			//skillProvider.Skills.Add(dataManager.SingleInstance<ISkill>("multi_hit"));
 			skillProvider.AttackTime = new ActionTime(1, 2, 1);
 			return skillProvider;
 		}

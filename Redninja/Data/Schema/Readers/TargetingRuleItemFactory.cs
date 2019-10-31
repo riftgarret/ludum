@@ -2,9 +2,9 @@
 
 namespace Redninja.Data.Schema.Readers
 {
-	internal class TargetingRuleItemFactory : IDataItemFactory<TargetingRule>
+	internal class TargetingRuleItemFactory : IDataItemFactory<ITargetingRule>
 	{
-		public TargetingRule CreateInstance(string dataId, ISchemaStore store)
+		public ITargetingRule CreateInstance(string dataId, ISchemaStore store)
 		{
 			TargetingRuleSchema item = store.GetSchema<TargetingRuleSchema>(dataId);
 			TargetingRule rule;

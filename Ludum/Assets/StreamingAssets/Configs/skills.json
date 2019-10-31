@@ -12,7 +12,7 @@
         "targetingSets": [
           {
             "targetingRuleId": "single_enemy",
-            "combatRounds": [
+            "operations": [
               {
                 "executionStart": 0.25,
                 "operationType": "Damage",

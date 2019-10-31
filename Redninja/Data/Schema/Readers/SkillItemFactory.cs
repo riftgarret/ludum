@@ -26,7 +26,7 @@ namespace Redninja.Data.Schema.Readers
 		internal SkillTargetingSet ParseTargetSchema(TargetingSetSchema tsSchema, ISchemaStore store)
 		{
 			SkillTargetingSet targetSet = new SkillTargetingSet(store.SingleInstance<ITargetingRule>(tsSchema.TargetingRuleId));
-			foreach (BattleOperationSchema opSchema in tsSchema.Ops)
+			foreach (BattleOperationSchema opSchema in tsSchema.Operations)
 			{
 				targetSet.OpDefinitions.Add(ParseOperation(opSchema));
 			}
@@ -35,10 +35,10 @@ namespace Redninja.Data.Schema.Readers
 
 		internal IBattleOperationDefinition ParseOperation(BattleOperationSchema schema)
 		{
-			if (schema.OpType.Equals("Damage", StringComparison.CurrentCultureIgnoreCase))
+			if (schema.OperationType.Equals("Damage", StringComparison.CurrentCultureIgnoreCase))
 				return ParseDamageParams(schema);
 			else
-				throw new InvalidOperationException($"Unknown OpType for skill: {schema.OpType}");
+				throw new InvalidOperationException($"Unknown OpType for skill: {schema.OperationType}");
 		}
 
 		private class DamageOpSchema

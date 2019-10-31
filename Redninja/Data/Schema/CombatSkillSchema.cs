@@ -22,14 +22,14 @@ namespace Redninja.Data.Schema
 	internal class TargetingSetSchema
 	{
 		public string TargetingRuleId { get; set; }
-		public List<BattleOperationSchema> Ops { get; set; }
+		public List<BattleOperationSchema> Operations { get; set; }
 	}
 
 	[Serializable]
 	internal class BattleOperationSchema
 	{
 		public float ExecutionStart { get; set; }
-		public string OpType { get; set; }
+		public string OperationType { get; set; }
 		public JObject Params { get; set; }
 		public string Pattern { get; set; }
 		public Dictionary<string, int> Stats { get; set; }

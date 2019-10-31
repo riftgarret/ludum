@@ -10,7 +10,7 @@ using Redninja.Components.Combat;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 using Redninja.Components.Buffs;
-using Redninja.Components.Buffs.Behavior;
+using Redninja.Components.Buffs.Behaviors;
 
 namespace Redninja.Data.Schema.Readers.UnitTests
 {

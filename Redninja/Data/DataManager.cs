@@ -37,7 +37,7 @@ namespace Redninja.Data
 		public DataManager()
 		{
 			AddDataItemFactory(new AIBehaviorItemFactory());
-			AddDataItemFactory(new AIRuleItemFactory());
+			AddDataItemFactory(new AIRuleItemFactory());			
 			AddDataItemFactory(new BuffItemFactory());
 			AddDataItemFactory(new CharacterItemFactory());						
 			AddDataItemFactory(new EncounterItemFactory());
