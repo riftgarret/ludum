@@ -21,7 +21,7 @@ namespace Davfalcon
 
 			public IStats Base => modifier.GetBaseStats();
 
-			public int GetModificationBase(Enum stat) => modifier.GetModificationBaseStat(stat);
+			public int GetModificationBase(Enum stat, IStatsProperties modified) => modifier.GetModificationBaseStat(stat, modified);
 
 			public IStatNode GetStatNode(Enum stat) => modifier.GetStatNode(stat);
 
@@ -46,7 +46,7 @@ namespace Davfalcon
 		protected virtual IStatNode GetStatNode(Enum stat)
 		{
 			IStatNode targetStatNode = Target.Stats.GetStatNode(stat);
-			return new StatNode(stat.ToString(), GetModificationBaseStat(stat), Resolve,
+			return new StatNode(stat.ToString(), GetModificationBaseStat(stat, AsModified().Stats), Resolve,
 				StatModifications.ToDictionary(kvp => kvp.Key, kvp =>
 				{
 					INode<int> prev = targetStatNode.GetModification(kvp.Key);
@@ -66,7 +66,7 @@ namespace Davfalcon
 
 		protected IStats GetBaseStats() => Target.Stats.Base;
 
-		protected int GetModificationBaseStat(Enum stat) => Target.Stats.GetModificationBase(stat);
+		protected int GetModificationBaseStat(Enum stat, IStatsProperties modified) => Target.Stats.GetModificationBase(stat, modified);
 
 		protected abstract int Resolve(int baseValue, IReadOnlyDictionary<Enum, int> modifications);
 
