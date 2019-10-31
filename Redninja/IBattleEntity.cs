@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Davfalcon;
 using Redninja.Components.Actions;
 using Redninja.Components.Buffs;
 using Redninja.Components.Decisions.AI;
@@ -16,6 +15,7 @@ namespace Redninja
 		IUnitActionManager Actions { get; }
 		IUnitBuffManager Buffs { get; }
 
+		// dunno about these, are they necessary?
 		LiveStatContainer HP { get; }
 		LiveStatContainer Resource { get; }
 

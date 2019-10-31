@@ -1,48 +1,31 @@
 ﻿using System;
-
+using Davfalcon;
+using Davfalcon.Buffs;
 
 namespace Redninja.Components.Buffs
 {
 	[Serializable]
-	public class UnitBuffManager //: UnitBuffManager<IUnit, IBuff>, IUnitBuffManager, IUnitComponent<IUnit>
+	public class UnitBuffManager : UnitBuffManager<IUnit, IBuff>, IUnitBuffManager, IUnitComponent<IUnit>
 	{
-		protected IBattleContext BattleContext { get; }
-
-		protected IBattleEntity BattleEntity { get; }
-
-		public event Action<IBuff, IBattleEntity> Effect;
-		public event Action<IBuff> BuffExpired;
-
-		public UnitBuffManager(IBattleContext context, IBattleEntity entity)
+		public void AddBuff(IBuff buff)
 		{
-			BattleContext = context;
-			BattleEntity = entity;
-
-			BattleContext.Clock.Tick += OnTick;
+			Add(buff);
+			buff.Expired += RemoveBuff;
 		}
 
-		public void AddActiveBuff(IBuff buff)
+		public void RemoveBuff(IBuff buff)
 		{
-			//Add(buff);
-			//buff.Effect += b => Effect?.Invoke(b, BattleEntity);
+			Remove(buff);
+			buff.Dispose();
 		}
 
-		private void OnTick(float timeDelta)
-		{
-			// manager will be responsible for keeping time, buffs will not subscribe to clock
-		}
+		void IUnitBuffManager<IUnit, IBuff>.Add(IBuff buff) => AddBuff(buff);
+		void IUnitBuffManager<IUnit, IBuff>.Remove(IBuff buff) => RemoveBuff(buff);
+	}
 
-		private void UnsetClock()
-		{
-			if (BattleContext != null)
-			{
-				BattleContext.Clock.Tick -= OnTick;
-			}
-		}
-
-		public void Dispose()
-		{
-			UnsetClock();
-		}
+	public static class UnitExtension
+	{
+		public static IUnitBuffManager GetBuffManager(this IUnit unit)
+			=> unit.GetComponent<IUnitBuffManager>(UnitComponents.Buffs);
 	}
 }

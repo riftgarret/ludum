@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Redninja.Components.Clock;
 using Redninja.Components.Combat;
 using Redninja.Components.Targeting;
 
-namespace Redninja.Components.Buffs.Behavior
+namespace Redninja.Components.Buffs.Behaviors
 {
 	public class DamageOvertimeExecutionBehavior : IBuffExecutionBehavior
 	{
@@ -19,18 +14,18 @@ namespace Redninja.Components.Buffs.Behavior
 		
 		public event Action<float, IBattleOperation> BattleOperationReady;
 
-		public void OnClockTick(float delta, ActiveBuff buff)
+		public void OnClockTick(float delta, IBuff buff)
 		{
 			
 			foreach (float tickTime in GetTicksFromLastUpdate(delta, buff, TicksPerSecond))
 			{
-				BattleOperationReady?.Invoke(tickTime, new DamageOperation(buff.Source, new StaticTarget(buff.Target), null));
+				BattleOperationReady?.Invoke(tickTime, new DamageOperation(buff.Owner, new StaticTarget(buff.TargetUnit), null));
 			}
 		}
 
 		private float DamagePerTick => KRatePerSecond / TicksPerSecond;
 
-		private float[] GetTicksFromLastUpdate(float delta, ActiveBuff buff, float ticksPerSecond) 
+		private float[] GetTicksFromLastUpdate(float delta, IBuff buff, float ticksPerSecond) 
 		{
 			float leftover = buff.LastDuration % ticksPerSecond;
 			int ticks = (int) Math.Floor((leftover + delta) / ticksPerSecond);

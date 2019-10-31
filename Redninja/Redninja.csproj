@@ -52,11 +52,11 @@
     <Compile Include="Builders\BuilderBase%28T, TBuilder%29.cs" />
     <Compile Include="Builders\BuilderBase%28T, TOut, TBuilder%29.cs" />
     <Compile Include="Builders\IBuilder%28T%29.cs" />
+    <Compile Include="StatsAggregator.cs" />
     <Compile Include="Components\Actions\AIUnitActionManager.cs" />
     <Compile Include="Components\Actions\BattleActionBase.cs" />
     <Compile Include="Components\Actions\IUnitActionManager.cs" />
     <Compile Include="Components\Actions\UnitActionManager.cs" />
-    <Compile Include="Components\Buffs\Buff.cs" />
     <Compile Include="Components\Buffs\IBuff.cs" />
     <Compile Include="Components\Buffs\IUnitBuffManager.cs" />
     <Compile Include="Components\Buffs\UnitBuffManager.cs" />
@@ -93,8 +93,8 @@
     <Compile Include="Components\Skills\AISkillProvider.cs" />
     <Compile Include="Components\Buffs\ActiveBuff.cs" />
     <Compile Include="Components\Buffs\ActiveAura.cs" />
-    <Compile Include="Components\Buffs\BuffConfig.cs" />
-    <Compile Include="Components\Buffs\Behavior\DamageOvertimeExecutionBehavior.cs" />
+    <Compile Include="Components\Buffs\BuffProperties.cs" />
+    <Compile Include="Components\Buffs\Behaviors\DamageOvertimeExecutionBehavior.cs" />
     <Compile Include="Components\Buffs\IBuffExecutionBehavior.cs" />
     <Compile Include="Components\Skills\ISkillOperationParameters.cs" />
     <Compile Include="Components\Skills\IUnitSkillManager.cs" />
@@ -125,7 +125,6 @@
     <Compile Include="Components\StatCalculators\PhysicalDamageCalculator.cs" />
     <Compile Include="Components\StatCalculators\StatCalculatorExt.cs" />
     <Compile Include="Components\Targeting\StaticTarget.cs" />
-    <Compile Include="Components\UnitComponentExtensions.cs" />
     <Compile Include="Data\DataManagerFactory.cs" />
     <Compile Include="Components\Skills\ConfigurableSkillProvider.cs" />
     <Compile Include="Data\IDataFactory.cs" />
@@ -142,7 +141,7 @@
     <Compile Include="Data\Schema\RootSchema.cs" />
     <Compile Include="Data\Schema\RootSchemaConverter.cs" />
     <Compile Include="IUnit.cs" />
-    <Compile Include="LiveStat.cs" />
+    <Compile Include="LiveStatContainer.cs" />
     <Compile Include="StatFunctions.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="Extensions.cs" />
@@ -284,6 +283,9 @@
       <Project>{1fcb4578-21b8-4db5-b560-c87beeb7fd2e}</Project>
       <Name>Davfalcon</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Components\VolatileStats\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
