@@ -8,6 +8,9 @@ using Davfalcon.Stats;
 
 namespace Redninja.Components.Skills
 {
+	/// <summary>
+	///  DEPRECATED, TO BE REMOVED
+	/// </summary>
 	public class SkillOperationParameters : ISkillOperationParameters
 	{
 		public StatsMap EditableStats { get; } = new StatsMap();

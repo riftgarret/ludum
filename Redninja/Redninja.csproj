@@ -64,6 +64,7 @@
     <Compile Include="Components\Combat\Events\DamageEvent.cs" />
     <Compile Include="Components\Combat\Events\DamageResult.cs" />
     <Compile Include="Components\Combat\Events\StatusEffectEvent.cs" />
+    <Compile Include="Components\Combat\IBattleOperationDefinition.cs" />
     <Compile Include="Components\Combat\IDamageSource.cs" />
     <Compile Include="Components\Combat\StatusEffectOperation.cs" />
     <Compile Include="Components\Decisions\ActionContextProvider.cs" />
@@ -97,7 +98,6 @@
     <Compile Include="Components\Buffs\IBuffExecutionBehavior.cs" />
     <Compile Include="Components\Skills\ISkillOperationParameters.cs" />
     <Compile Include="Components\Skills\IUnitSkillManager.cs" />
-    <Compile Include="Components\Skills\OperationProvider.cs" />
     <Compile Include="Components\Skills\SkillAction.cs" />
     <Compile Include="Components\Actions\MovementAction.cs" />
     <Compile Include="Components\Actions\WaitAction.cs" />
@@ -208,8 +208,6 @@
     <Compile Include="View\IBattleView.cs" />
     <Compile Include="Components\Skills\ISkillProvider.cs" />
     <Compile Include="Components\Skills\CombatSkill.cs" />
-    <Compile Include="Components\Skills\ISkillResolver.cs" />
-    <Compile Include="Components\Skills\SkillOperationDefinition.cs" />
     <Compile Include="Components\Skills\SkillTargetingSet.cs" />
     <Compile Include="Components\Targeting\ISelectedTarget.cs" />
     <Compile Include="Components\Targeting\ITargetResolver.cs" />

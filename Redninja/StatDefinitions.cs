@@ -51,6 +51,23 @@
 		Bleed
 	}
 
+	public enum WeaponSlotType
+	{
+		Any,
+		OneHanded,
+		TwoHanded,
+		OffHand,		
+	}
+
+	public enum WeaponType
+	{
+		Any,
+		Dagger,
+		Sword,
+		GreatSword,
+		Mace
+	}
+
 	public enum CalculatedStat
 	{
 		HPTotal,

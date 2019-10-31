@@ -10,14 +10,14 @@ namespace Redninja.Components.Combat
 		private readonly ITargetResolver target;
 		private readonly IBuff statusEffect;
 
-		public StatusEffectOperation(IBattleEntity unit, ITargetResolver target, IBuff statusEffect)
+		public StatusEffectOperation(IBattleEntity unit, ITargetResolver target, IBuff statusEffect) : base(1)
 		{
 			this.unit = unit ?? throw new ArgumentNullException(nameof(unit));
 			this.target = target ?? throw new ArgumentNullException(nameof(target));
 			this.statusEffect = statusEffect ?? throw new ArgumentNullException(nameof(statusEffect));			
 		}
 
-		public override void Execute(IBattleModel battleModel, ICombatExecutor combatExecutor)
+		protected override void OnExecute(IBattleModel battleModel, ICombatExecutor combatExecutor)
 		{
 			foreach (IBattleEntity t in target.GetValidTargets(unit, battleModel))
 			{
