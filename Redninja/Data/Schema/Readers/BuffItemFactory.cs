@@ -16,7 +16,7 @@ namespace Redninja.Data.Schema.Readers
 
 			if (!string.IsNullOrEmpty(buffSchema.Executor))
 			{
-				buff.Behavior = ParseHelper.CreateInstance<IBuffExecutionBehavior>("Redninja.Components.Buffs.Behavior", buffSchema.Executor);
+				buff.Behavior = ParseHelper.CreateInstance<IBuffExecutionBehavior>("Redninja.Components.Buffs.Behaviors", buffSchema.Executor);
 				ParseHelper.ApplyProperties(buff.Behavior, buffSchema.ExectorProps);
 			}
 

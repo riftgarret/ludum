@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Redninja.Components.Actions;
 using Redninja.Components.Buffs;
+using Redninja.Components.Combat;
 using Redninja.Components.Decisions.AI;
 using Redninja.Components.Properties;
 
@@ -11,6 +12,9 @@ namespace Redninja
 	{
 		int Team { get; set; }
 		UnitPosition Position {  get; }
+
+		event Action<IBattleEntity> ActionNeeded;
+		event Action<IBattleEntity, IOperationSource> ActionSet;
 
 		IUnitActionManager Actions { get; }
 		IUnitBuffManager Buffs { get; }

@@ -1,0 +1,22 @@
+[
+  {
+    "type": "BuffSchema",
+    "data": [
+      {
+        "dataId": "bleed_hex",
+        "name": "Bleeding",
+        "properties": {
+          "alignment": "Negative",
+          "duration": 10,
+          "isBleedCurable": true
+        },
+        "executor": "DamageOvertimeExecutionBehavior",
+        "exectorProps": {
+          "damageSource": "DamageType.Bleed",
+          "ticksPerSecond": 4,
+          "kRatePerSecond": 10
+        }
+      }
+    ]
+  }
+]

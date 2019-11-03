@@ -60,8 +60,8 @@ namespace Redninja.Entities
 
 		public void AddEntity(IBattleEntity entity)
 		{
-			entity.Actions.ActionNeeded += e => ActionNeeded?.Invoke(e);
-			entity.Actions.ActionSet += (e, o) => ActionSet?.Invoke(e, o);
+			entity.ActionNeeded += e => ActionNeeded?.Invoke(e);
+			entity.ActionSet += (e, o) => ActionSet?.Invoke(e, o);
 			entityMap.Add(entity);
 		}
 

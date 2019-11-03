@@ -5,20 +5,20 @@ using Redninja.Components.Combat;
 
 namespace Redninja.Components.Buffs
 {
-	public interface IBuff : IBuff<IUnit>, IOperationSource, IDisposable
+	public interface IBuff : IBuff<IUnit>, IDisposable
 	{
 		BuffProperties Properties { get; }
 		IBuffExecutionBehavior Behavior { get; }
 		IBattleEntity Owner { get; }
 		IBattleEntity TargetUnit { get; }
 
-		float LastDuration { get; }
+		float CurrentDuration { get; }
 		float ExecutionStart { get; }
 		bool IsDurationBuff { get; }
 		float CalculatedMaxDuration { get; }
 		bool IsExpired { get; }
 
-		event Action<IBuff> Expired;
+		event Action<IBuff> Expired;		
 
 		void InitializeBattleState(IBattleContext context, IBattleEntity owner, IBattleEntity target);
 	}

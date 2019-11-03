@@ -40,13 +40,19 @@ namespace Redninja.Components.Actions
 		{
 		}
 
+		private void HandleBattleOperation(float time, IBattleOperation op) => BattleContext.OperationManager.Enqueue(time, op);
+
 		public virtual void SetAction(IBattleAction action)
 		{
 			if (CurrentAction != null)
+			{
 				CurrentAction.Dispose();
+				CurrentAction.BattleOperationReady -= HandleBattleOperation;
+			}
 
 			CurrentAction = action;
 			CurrentAction.SetClock(BattleContext.Clock);  // TODO NRE on 2nd skill usage 
+			CurrentAction.BattleOperationReady += HandleBattleOperation;
 
 			// forgot what this is for, figure out if needed
 			ActionSet?.Invoke(BattleEntity, action);

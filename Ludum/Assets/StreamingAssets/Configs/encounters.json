@@ -3,6 +3,18 @@
     "type": "EncounterSchema",
     "data": [
       {
+        "dataId": "goblin_solo",
+        "enemyGridSize": "3,3",
+        "playerGridSize": "3,3",
+        "enemies": [
+          {
+            "characterId": "goblin",
+            "aibehaviorid": "goblin_warrior",
+            "position": "1,0"
+          }          
+        ]
+      },
+      {
         "dataId": "goblin_party",
         "enemyGridSize": "3,3",
         "playerGridSize": "3,3",

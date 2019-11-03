@@ -5,6 +5,7 @@ using Redninja.Components.Combat;
 using Redninja.Components.Skills;
 using Redninja.Data;
 using Redninja.Entities;
+using Redninja.Logging;
 using Redninja.Presenter;
 using UnityEngine;
 using static Redninja.Data.Encounter;
@@ -22,6 +23,8 @@ public class ConfigLoader : MonoBehaviour
 
 	void LoadGame()
 	{
+		RLog.AppendPrinter((tag, msg, type) => Debug.Log($"{tag}: {msg}"));
+
 		string path = Path.Combine(Application.streamingAssetsPath, configPath);
 		IDataManager dataManager = DataManagerFactory.Create(path);
 
@@ -31,7 +34,7 @@ public class ConfigLoader : MonoBehaviour
 
 		var bem = context.Get<IBattleEntityManager>();
 
-		Encounter encounter = dataManager.CreateInstance<Encounter>("goblin_party");
+		Encounter encounter = dataManager.CreateInstance<Encounter>("goblin_solo");
 
 		const int playerTeam = 0;
 		const int enemyTeam = 1;
@@ -69,6 +72,7 @@ public class ConfigLoader : MonoBehaviour
 		public static IUnit WarriorUnit(IDataManager dataManager)
 		{
 			Unit unit = new Unit();
+			unit.Name = "Davfalcon";
 			unit.BaseStats[Stat.HP] = 100;
 			unit.BaseStats[Stat.ATK] = 20;
 			unit.BaseStats[Stat.Resource] = 200;
@@ -80,7 +84,7 @@ public class ConfigLoader : MonoBehaviour
 		{
 			ConfigurableSkillProvider skillProvider = new ConfigurableSkillProvider();
 			skillProvider.Skills.Add(dataManager.SingleInstance<ISkill>("fire_skill"));
-			//skillProvider.Skills.Add(dataManager.SingleInstance<ISkill>("multi_hit"));
+			skillProvider.Skills.Add(dataManager.SingleInstance<ISkill>("bleed_debuff"));
 			skillProvider.AttackTime = new ActionTime(1, 2, 1);
 			return skillProvider;
 		}

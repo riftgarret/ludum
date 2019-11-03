@@ -52,6 +52,10 @@
     <Compile Include="Builders\BuilderBase%28T, TBuilder%29.cs" />
     <Compile Include="Builders\BuilderBase%28T, TOut, TBuilder%29.cs" />
     <Compile Include="Builders\IBuilder%28T%29.cs" />
+    <Compile Include="Components\Actions\BattleOperationAction.cs" />
+    <Compile Include="Components\Combat\DebuffOperation .cs" />
+    <Compile Include="Data\Schema\Readers\DataItemParseException.cs" />
+    <Compile Include="IOperationManager.cs" />
     <Compile Include="StatsAggregator.cs" />
     <Compile Include="Components\Actions\AIUnitActionManager.cs" />
     <Compile Include="Components\Actions\BattleActionBase.cs" />
@@ -66,7 +70,6 @@
     <Compile Include="Components\Combat\Events\StatusEffectEvent.cs" />
     <Compile Include="Components\Combat\IBattleOperationDefinition.cs" />
     <Compile Include="Components\Combat\IDamageSource.cs" />
-    <Compile Include="Components\Combat\StatusEffectOperation.cs" />
     <Compile Include="Components\Decisions\ActionContextProvider.cs" />
     <Compile Include="Components\Decisions\AI\AIActionDecesionResult.cs" />
     <Compile Include="Components\Decisions\AI\AIAttackRule.cs" />
@@ -98,8 +101,7 @@
     <Compile Include="Components\Buffs\IBuffExecutionBehavior.cs" />
     <Compile Include="Components\Skills\ISkillOperationParameters.cs" />
     <Compile Include="Components\Skills\IUnitSkillManager.cs" />
-    <Compile Include="Components\Skills\SkillAction.cs" />
-    <Compile Include="Components\Actions\MovementAction.cs" />
+    <Compile Include="Components\Actions\SkillAction.cs" />
     <Compile Include="Components\Actions\WaitAction.cs" />
     <Compile Include="Components\Decisions\AI\AIBehavior.cs" />
     <Compile Include="Components\Decisions\AI\AICombatStatPriority.cs" />
@@ -195,9 +197,7 @@
     <Compile Include="UnitPosition.cs" />
     <Compile Include="Components\Clock\IClock.cs" />
     <Compile Include="Components\Clock\IClockSynchronized.cs" />
-    <Compile Include="Components\Combat\BattleOperationBase.cs" />
     <Compile Include="Components\Combat\DamageOperation.cs" />
-    <Compile Include="Components\Combat\MovementOperation.cs" />
     <Compile Include="ActionPhase.cs" />
     <Compile Include="Entities\IBattleEntityManager.cs" />
     <Compile Include="Components\Combat\Events\ICombatEvent.cs" />

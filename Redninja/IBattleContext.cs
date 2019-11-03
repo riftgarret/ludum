@@ -14,6 +14,7 @@ namespace Redninja
 		ISystemProvider SystemProvider { get; }
 		IBattleModel BattleModel { get; }
 		IDataManager DataManager { get; }			
+		IOperationManager OperationManager { get; }
 		ICombatExecutor CombatExecutor { get; }
 		T Get<T>() where T : class;	
 	}
@@ -32,7 +33,8 @@ namespace Redninja
 			kernel.Bind<ISystemProvider, SystemProvider>().To<SystemProvider>().InSingletonScope();
 			kernel.Bind<IClock, Clock>().To<Clock>().InSingletonScope();
 			kernel.Bind<IBattleEntityManager, IBattleModel, BattleEntityManager>().To<BattleEntityManager>().InSingletonScope();
-			kernel.Bind<IBattleEventProcessor>().To<EntityBattleEventProcessor>().InSingletonScope();									
+			kernel.Bind<IBattleEventProcessor>().To<EntityBattleEventProcessor>().InSingletonScope();
+			kernel.Bind<IOperationManager, OperationManager>().To<OperationManager>().InSingletonScope();
 		}
 
 		
@@ -46,6 +48,8 @@ namespace Redninja
 		public IDataManager DataManager => Get<IDataManager>();
 
 		public ICombatExecutor CombatExecutor => Get<ICombatExecutor>();
+
+		public IOperationManager OperationManager => Get<IOperationManager>();
 
 		// TODO remove as unncessary
 		public void Bind<T>(T obj) where T : class => kernel.Bind<T>().ToConstant(obj);

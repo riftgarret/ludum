@@ -162,22 +162,32 @@ namespace Redninja.Data.Schema.Readers
 			return (T) Activator.CreateInstance(t);
 		}
 
-		public static void ApplyProperties(object instance, Dictionary<string, object> properties, bool parseEnums = false)
+		public static void ApplyProperties(object instance, Dictionary<string, object> properties)
 		{
 			var modProps = ConvertEnums(properties);
 			modProps?.ForEach(e =>
 			{
 				Type type = instance.GetType();
-				PropertyInfo prop = type.GetProperty(e.Key);
-				prop.SetValue(instance, e.Value, null);
+				PropertyInfo prop = type.GetProperty(e.Key, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+				try
+				{
+					prop.SetValue(instance, e.Value, null);
+				}
+				catch(Exception ex)
+				{
+					throw new SystemException($"Failed to Apply property: {e.Key} : {e.Value}", ex);
+				}
 			});
 		}		
 
-		private static readonly List<Type> _KNOWN_STAT_TYPES = new List<Type>()
+		private static readonly List<Type> _KNOWN_ENUM_TYPES = new List<Type>()
 			{
 				typeof(Stat),
 				typeof(LiveStat),
-				typeof(CalculatedStat)
+				typeof(CalculatedStat),
+				typeof(DamageType),
+				typeof(WeaponSlotType),
+				typeof(WeaponType)
 			};
 
 		internal static bool TryParseStatRaw(string raw, out Enum val)
@@ -208,7 +218,7 @@ namespace Redninja.Data.Schema.Readers
 
 		internal static Enum ParseStatRaw(string raw)
 		{
-			Type type = _KNOWN_STAT_TYPES.Find(x => raw.StartsWith(x.Name + "."));
+			Type type = _KNOWN_ENUM_TYPES.Find(x => raw.StartsWith(x.Name + "."));
 			if (type != null)
 			{
 				return (Enum) Enum.Parse(type, raw.Substring(type.Name.Length + 1));
@@ -218,7 +228,7 @@ namespace Redninja.Data.Schema.Readers
 
 		internal static Dictionary<string, object> ConvertEnums(Dictionary<string, object> dict)
 		{
-			List<Type> detectedEnums = _KNOWN_STAT_TYPES;
+			List<Type> detectedEnums = _KNOWN_ENUM_TYPES;
 			
 			return dict?.ToDictionary(e => e.Key, e =>
 			{
