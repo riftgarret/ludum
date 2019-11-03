@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Redninja.Components.Actions;
+using Redninja.Components.Combat;
 
 namespace Redninja.Components.Skills
 {
@@ -7,23 +8,23 @@ namespace Redninja.Components.Skills
 	{
 		private readonly IBattleEntity entity;
 		private readonly ISkill skill;
-		private readonly IEnumerable<ISkillResolver> resolvers;
+		private readonly IEnumerable<IBattleOperation> operations;
 
-		public SkillAction(IBattleEntity entity, ISkill skill, IEnumerable<ISkillResolver> resolvers)
+		public SkillAction(IBattleEntity entity, ISkill skill, IEnumerable<IBattleOperation> operations)
 			: base(skill.Name, skill.Time)
 		{
 			this.skill = skill;
 			this.entity = entity;
-			this.resolvers = resolvers;
+			this.operations = operations;
 		}
 
 		protected override void ExecuteAction(float timeDelta, float time)
 		{
-			foreach (ISkillResolver r in resolvers)
+			foreach (IBattleOperation op in operations)
 			{
-				if (!r.Resolved && PhaseProgress >= r.ExecutionStart)
+				if (!op.Executed && PhaseProgress >= op.ExecutionStart)
 				{
-					SendBattleOperation(GetPhaseTimeAt(r.ExecutionStart), r.Resolve(entity));
+					SendBattleOperation(GetPhaseTimeAt(op.ExecutionStart), op);					
 				}
 			}
 		}

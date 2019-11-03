@@ -1,0 +1,177 @@
+﻿[
+  {
+    "type": "CombatSkillSchema",
+    "data": [
+      {
+        "dataId": "fire_skill",
+        "name": "Fire",
+        "time": [ 3, 1, 2 ],
+        "defaultStats": {
+          
+        },
+        "targetingSets": [
+          {
+            "targetingRuleId": "single_enemy",
+            "combatRounds": [
+              {
+                "executionStart": 0.25,
+                "operationType": "Damage",
+                "params": {
+                  "damage": 20,
+                  "damageType": "Fire",
+                  "slotType": "Any",
+                  "weaponType": "Any",
+                  "stats": {}
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "dataId": "bleed_debuff",
+        "name": "Bleed",
+        "time": [ 3, 1, 2 ],
+        "defaultStats": {
+          "hexSuccessRate": 100
+        },
+        "targetingSets": [
+          {
+            "targetingRuleId": "single_enemy",
+            "combatRounds": [
+              {
+                "executionStart": 0.25,
+                "operationProviderName": "Hex",
+                "hexParams": {
+                  "buffId": "bleed_hex"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "dataId": "double_hit",
+        "name": "Double hit",
+        "time": [ 3, 2, 2 ],
+        "targetingSets": [
+          {
+            "targetingRuleId": "single_enemy",
+            "combatRounds": [
+              {
+                "executionStart": 0.25,
+                "operationProviderName": "Damage",
+                "parameters": {
+                  "baseDamage": 10,
+                  "critMultiplier": 2,
+                  "damageTypes": [ "Physical" ]
+                }
+              },
+              {
+                "executionStart": 0.50,
+                "operationProviderName": "Damage",
+                "parameters": {
+                  "baseDamage": 20,
+                  "critMultiplier": 2,
+                  "damageTypes": [ "Physical" ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "dataId": "multi_hit",
+        "name": "Multi hit",
+        "time": [ 3, 5, 4 ],
+        "defaultParameters": {
+          "baseDamage": 10,
+          "critMultiplier": 2,
+          "damageTypes": [ "Physical" ]
+        },
+        "targetingSets": [
+          {
+            "targetingRuleId": "single_enemy",
+            "combatRounds": [
+              {
+                "executionStart": 0.10,
+                "operationProviderName": "Damage"
+              },
+              {
+                "executionStart": 0.30,
+                "operationProviderName": "Damage"
+              },
+              {
+                "executionStart": 0.50,
+                "operationProviderName": "Damage"
+              },
+              {
+                "executionStart": 0.70,
+                "operationProviderName": "Damage"
+              },
+              {
+                "executionStart": 0.90,
+                "operationProviderName": "Damage"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "dataId": "heal_self",
+        "name": "Ejaculate",
+        "time": [ 2, 1, 3 ],
+        "targetingSets": [
+          {
+            // we'll work on healing definitions later
+            "targetingRuleId": "self_only",
+            "combatRounds": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "TargetingRuleSchema",
+    "data": [
+      {
+        "dataId": "single_enemy",
+        "targetType": "Entity",
+        "targetTeam": "Enemy",
+        "targetConditionName": "None"
+      },
+      {
+        "dataId": "prototype_001",
+        "pattern": "(0,0)(0,1)",
+        "targetType": "Pattern",
+        "targetTeam": "Enemy",
+        "targetConditionName": "None"
+      },
+      {
+        "dataId": "self_only",
+        "targetType": "Entity",
+        "targetTeam": "Self",
+        "targetConditionName": "None"
+      }
+    ]
+  },
+  {
+    "type": "BuffSchema",
+    "data": [
+      {
+        "dataId": "bleed_hex",
+        "name": "Bleeding",
+        "config": {
+          "alignment": "Positive",
+          "duration": 10
+        },
+        "executor": "DamageOvertimeExecutionBehavior",
+        "exectorProps": {
+          "damageSource": "Stat.BleedTotal",
+          "ticksPerSecond": 4,
+          "kRatePerSecond": 10
+        }
+      }
+    ]
+  }
+]

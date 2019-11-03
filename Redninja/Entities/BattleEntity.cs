@@ -48,7 +48,17 @@ namespace Redninja.Entities
 		public int Team { get; set; }
 		public UnitPosition Position { get; private set; } = new UnitPosition(1);
 
-		public IUnitActionManager Actions { get; private set; }
+		private IUnitActionManager _actions;
+		public IUnitActionManager Actions
+		{
+			get => _actions;
+			private set
+			{
+				if (_actions != null) _actions.Dispose();
+				_actions = value;
+			}
+		}
+
 		public IUnitBuffManager Buffs { get; }
 
 		// TODO pull properties from equipment, buffs, class def

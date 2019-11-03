@@ -16,6 +16,7 @@ namespace Redninja.Data.Schema.Readers
 			{
 				unit.BaseStats[item.Key] = item.Value;
 			}
+			unit.Name = cs.Name;			
 			//IUnit unit = Unit.Build(b =>
 			//{
 			//	b.SetMainDetails(cs.Name, cs.Class, cs.Level);

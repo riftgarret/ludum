@@ -6,14 +6,14 @@
 		private readonly int row;
 		private readonly int col;
 
-		public MovementOperation(IBattleEntity unit, int row, int col)
+		public MovementOperation(IBattleEntity unit, int row, int col) : base(1)
 		{
 			this.unit = unit;
 			this.row = row;
 			this.col = col;
 		}
 
-		public override void Execute(IBattleModel manager, ICombatExecutor combatExecutor)
+		protected override void OnExecute(IBattleModel manager, ICombatExecutor combatExecutor)
 		{
 			combatExecutor.MoveEntity(unit, row, col);
 		}

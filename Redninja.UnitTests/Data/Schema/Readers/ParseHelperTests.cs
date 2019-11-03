@@ -10,7 +10,7 @@ using Redninja.Components.Combat;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 using Redninja.Components.Buffs;
-using Redninja.Components.Buffs.Behavior;
+using Redninja.Components.Buffs.Behaviors;
 
 namespace Redninja.Data.Schema.Readers.UnitTests
 {
@@ -23,19 +23,7 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 			TargetCondition result = ParseHelper.ParseTargetCondition("None");
 			Assert.AreEqual(TargetConditions.None, result);
 			Assert.IsTrue(result(null, null));
-		}
-
-		[Test]
-		public void ParseOperationProvider()
-		{
-			IBattleEntity mEntity = Substitute.For<IBattleEntity>();
-			ITargetResolver mTarget = Substitute.For<ITargetResolver>();
-			ISkillOperationParameters mParams = Substitute.For<ISkillOperationParameters>();
-
-			OperationProvider result = ParseHelper.ParseOperationProvider("Damage");
-			Assert.AreEqual(OperationProviders.Damage, result);
-			Assert.IsInstanceOf<DamageOperation>(result(mEntity, mTarget, mParams));
-		}
+		}		
 
 		public static IEnumerable ParseAITargetConditionTestCases
 		{
@@ -48,7 +36,7 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 					100, new LiveStatEvaluator(LiveStat.LiveResource, true), AIValueConditionOperator.EQ));
 				yield return new TestCaseData("Stat.DEF <= 20", AIConditionFactory.CreateCombatStatCondition(
 					20, new StatEvaluator(Stat.DEF), AIValueConditionOperator.LTE));
-				yield return new TestCaseData("LiveStat.HP >= 9%", AIConditionFactory.CreateCombatStatCondition(
+				yield return new TestCaseData("LiveStat.LiveHP >= 9%", AIConditionFactory.CreateCombatStatCondition(
 					9, new LiveStatEvaluator(LiveStat.LiveHP, true), AIValueConditionOperator.GTE));				
 			}
 		}

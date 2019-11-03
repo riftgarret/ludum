@@ -90,16 +90,13 @@ namespace Redninja.Data.Schema.Readers
 		public static TargetCondition ParseTargetCondition(string targetConditionName)
 			=> (TargetCondition)typeof(TargetConditions).GetProperty(targetConditionName).GetValue(null);
 
-		public static OperationProvider ParseOperationProvider(string operationProviderName)
-			=> (OperationProvider)typeof(OperationProviders).GetProperty(operationProviderName).GetValue(null);
-
 		public static SkillOperationParameters ParseStatsParams(Dictionary<string, int> original)
 		{
 			if (original == null) return null;
 			SkillOperationParameters paramz = new SkillOperationParameters();
 			foreach(var e in original)
 			{
-				if(!Enum.TryParse<Stat>(e.Key, true, out Stat stat)) throw new FormatException("Invalid Stat found");
+				if(!Enum.TryParse<Stat>(e.Key, true, out Stat stat)) throw new FormatException($"Invalid Stat found {e.Key}");
 				paramz.EditableStats[stat] = e.Value;
 				// TODO set combat flags (Projectile, Spell, Healing, Buff)
 			}

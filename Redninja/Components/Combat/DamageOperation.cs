@@ -1,28 +1,42 @@
 ﻿using System;
+using Davfalcon;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 
 namespace Redninja.Components.Combat
 {
+	internal class DamageOperationDefinition : IBattleOperationDefinition
+	{
+		public int SkillDamage { get; set; }
+		public DamageType DamageType { get; set; }
+		public WeaponSlotType SlotType { get; set; }
+		public WeaponType WeaponType { get; set; }
+		public IStats Stats { get; set; }		
+		public float ExecutionStart { get; set; }
+
+		public IBattleOperation CreateOperation(IBattleEntity source, ITargetResolver target)
+			=> new DamageOperation(source, target, this);
+	}
+
 	internal class DamageOperation : BattleOperationBase
 	{
 		private readonly IBattleEntity unit;
 		private readonly ITargetResolver target;
-		private readonly ISkillOperationParameters paramz;
+		private readonly DamageOperationDefinition def;
 
-		public DamageOperation(IBattleEntity unit, ITargetResolver target, ISkillOperationParameters paramz)
+		internal DamageOperation(IBattleEntity unit, ITargetResolver target, DamageOperationDefinition def) : base(def.ExecutionStart)
 		{
 			this.unit = unit ?? throw new ArgumentNullException(nameof(unit));
 			this.target = target ?? throw new ArgumentNullException(nameof(target));
-			this.paramz = paramz ?? throw new ArgumentNullException(nameof(paramz));
+			this.def = def;
 		}
 
-		public override void Execute(IBattleModel battleModel, ICombatExecutor combatExecutor)
+		protected override void OnExecute(IBattleModel battleModel, ICombatExecutor combatExecutor)
 		{
 			foreach (IBattleEntity t in target.GetValidTargets(unit, battleModel))
 			{
-				combatExecutor.DealDamage(unit, t, paramz);
-			}
+				// TODO, implement damage logic here
+			}			
 		}
 	}
 }
