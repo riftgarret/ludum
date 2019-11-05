@@ -50,10 +50,8 @@ namespace Redninja.Presenter
 			entityManager = context.Get<IBattleEntityManager>();
 			entityEventTriggerProcessor = context.Get<IBattleEventProcessor>();
 			systemProvider = context.Get<SystemProvider>();			
-			clock = context.Get<Clock>();			
-
-			battleOpQueue = new PriorityProcessingQueue<float, IBattleOperation>(op =>
-				op.Execute(entityManager, combatExecutor));
+			clock = context.Get<Clock>();
+			battleOpQueue = context.Get<OperationManager>();
 					
 			entityManager.InitializeBattlePhase();
 
@@ -62,8 +60,6 @@ namespace Redninja.Presenter
 
 		private void BindEvents()
 		{
-		//	entityManager.ActionNeeded += decisionQueue.Enqueue;
-			entityManager.ActionSet += (e, action) => action.BattleOperationReady += battleOpQueue.Enqueue;
 			combatExecutor.BattleEventOccurred += e => BattleEventOccurred?.Invoke(e);			
 			combatExecutor.BattleEventOccurred += entityEventTriggerProcessor.ProcessEvent;
 			combatExecutor.BattleEventOccurred += view.OnBattleEventOccurred;

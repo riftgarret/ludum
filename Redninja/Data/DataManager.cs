@@ -7,18 +7,26 @@ using Redninja.Data.Schema.Readers;
 namespace Redninja.Data
 {
 	internal class DataManager : IDataManager, ISchemaStore
-	{		
+	{
 		private Dictionary<Tuple<Type, string>, object> cachedStaticMap = new Dictionary<Tuple<Type, string>, object>();
 		private Dictionary<Tuple<Type, string>, IDataSource> schemaMap = new Dictionary<Tuple<Type, string>, IDataSource>();
 		private Dictionary<Type, object> factoryMap = new Dictionary<Type, object>();
 
-		private IDataItemFactory<TYPE> GetFactory<TYPE>() where TYPE : class 
-			=> (IDataItemFactory<TYPE>) factoryMap.GetOrThrow(typeof(TYPE), "factoryMap");
+		private IDataItemFactory<TYPE> GetFactory<TYPE>() where TYPE : class
+			=> (IDataItemFactory<TYPE>)factoryMap.GetOrThrow(typeof(TYPE), "factoryMap");
 
 		public TYPE CreateInstance<TYPE>(string dataId) where TYPE : class
-			=> GetFactory<TYPE>().CreateInstance(dataId, this);
-
-		
+		{
+			var factory = GetFactory<TYPE>();
+			try
+			{
+				return factory.CreateInstance(dataId, this);
+			}
+			catch (Exception e)
+			{
+				throw DataItemParseException.ExceptionFrom(factory, dataId, e);
+			}
+		}
 
 		public TYPE SingleInstance<TYPE>(string dataId) where TYPE : class
 		{

@@ -18,7 +18,7 @@ namespace Redninja.Components.Buffs
 
 		public IBattleEntity TargetUnit { get; private set; }
 
-		public float LastDuration { get; private set; }
+		public float CurrentDuration { get; private set; }
 
 		public float ExecutionStart { get; private set; }
 
@@ -26,14 +26,9 @@ namespace Redninja.Components.Buffs
 
 		public float CalculatedMaxDuration { get; private set; }
 
-		public bool IsExpired { get => CalculatedMaxDuration > 0 && LastDuration >= CalculatedMaxDuration; }
+		public bool IsExpired { get => CalculatedMaxDuration > 0 && CurrentDuration >= CalculatedMaxDuration; }
 
-		// this can probably be private
-		public Dictionary<string, float> SavedState { get; } = new Dictionary<string, float>();
-
-		public event Action<IBuff> Expired;
-
-		public event Action<float, IBattleOperation> BattleOperationReady;
+		public event Action<IBuff> Expired;		
 
 		protected override IUnit SelfAsUnit => this;
 
@@ -57,14 +52,17 @@ namespace Redninja.Components.Buffs
 			// TODO Add self to target unit modifiers? Or rely on external set?
 
 			// TODO, apply any special properties about duration or other.
-			LastDuration = Properties.Duration;
+			CurrentDuration = 0;
+			Duration = Properties.Duration;
 			ExecutionStart = context.Clock.Time;
+			Behavior.BattleOperationReady += (t, b) => context.OperationManager.Enqueue(t, b);
 		}
 
 		private void OnTick(float timeDelta)
-		{
+		{			
+			CurrentDuration += timeDelta;
 			Behavior.OnClockTick(timeDelta, this);
-
+			
 			// track duration here
 
 			if (IsExpired)

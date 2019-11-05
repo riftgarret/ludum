@@ -2,30 +2,27 @@
 using Davfalcon;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
-using Redninja.Logging;
+using Redninja.Components.Buffs;
 
 namespace Redninja.Components.Combat
 {
-	internal class DamageOperationDefinition : IBattleOperationDefinition
+	internal class DebuffOperationDefinition : IBattleOperationDefinition
 	{
-		public int SkillDamage { get; set; }
-		public DamageType DamageType { get; set; }
-		public WeaponSlotType SlotType { get; set; }
-		public WeaponType WeaponType { get; set; }
+		public string BuffId { get; set; }		
 		public IStats Stats { get; set; }		
 		public float ExecutionStart { get; set; }
 
 		public IBattleOperation CreateOperation(IBattleEntity source, ITargetResolver target)
-			=> new DamageOperation(source, target, this);
+			=> new DebuffOperation(source, target, this);
 	}
 
-	internal class DamageOperation : IBattleOperation
+	internal class DebuffOperation : IBattleOperation
 	{
 		private readonly IBattleEntity unit;
 		private readonly ITargetResolver target;
-		private readonly DamageOperationDefinition def;
+		private readonly DebuffOperationDefinition def;
 
-		internal DamageOperation(IBattleEntity unit, ITargetResolver target, DamageOperationDefinition def) 
+		internal DebuffOperation(IBattleEntity unit, ITargetResolver target, DebuffOperationDefinition def)
 		{
 			this.unit = unit ?? throw new ArgumentNullException(nameof(unit));
 			this.target = target ?? throw new ArgumentNullException(nameof(target));
@@ -38,9 +35,15 @@ namespace Redninja.Components.Combat
 		{
 			foreach (IBattleEntity t in target.GetValidTargets(unit, context.BattleModel))
 			{
-				// TODO, implement damage logic here
-				RLog.D(this, $"Damage operation from: {unit.Name} to: {t.Name}");
-			}
+				IBuff buff = context.DataManager.CreateInstance<IBuff>(def.BuffId);
+
+				buff.InitializeBattleState(context, unit, t);
+				// TODO adjust length of buff from skill or use buff definition?
+
+				t.Buffs.Add(buff);
+
+				// TODO notify changes
+			}			
 		}
 	}
 }

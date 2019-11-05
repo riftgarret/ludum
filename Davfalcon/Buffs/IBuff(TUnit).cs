@@ -4,8 +4,8 @@
 	{
 		bool IsDebuff { get; }
 
-		int Duration { get; }
+		float Duration { get; }
 
-		int Remaining { get; set; }
+		float Remaining { get; set; }
 	}
 }

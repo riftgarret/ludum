@@ -23,7 +23,7 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 			TargetCondition result = ParseHelper.ParseTargetCondition("None");
 			Assert.AreEqual(TargetConditions.None, result);
 			Assert.IsTrue(result(null, null));
-		}		
+		}
 
 		public static IEnumerable ParseAITargetConditionTestCases
 		{
@@ -37,7 +37,7 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 				yield return new TestCaseData("Stat.DEF <= 20", AIConditionFactory.CreateCombatStatCondition(
 					20, new StatEvaluator(Stat.DEF), AIValueConditionOperator.LTE));
 				yield return new TestCaseData("LiveStat.LiveHP >= 9%", AIConditionFactory.CreateCombatStatCondition(
-					9, new LiveStatEvaluator(LiveStat.LiveHP, true), AIValueConditionOperator.GTE));				
+					9, new LiveStatEvaluator(LiveStat.LiveHP, true), AIValueConditionOperator.GTE));
 			}
 		}
 
@@ -120,6 +120,25 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 		public void ParsePattern_NullPattern_InvalidOperationException()
 		{
 			Assert.Throws<InvalidOperationException>(() => ParseHelper.ParsePattern(null));
+		}
+
+		[Test]
+		public void ApplyProperties_ApplyBuff()
+		{
+			DamageOvertimeExecutionBehavior obj = new DamageOvertimeExecutionBehavior();
+
+			var properties = new Dictionary<string, object>()
+			{
+				{ "damageSource", "DamageType.Bleed" },
+				{ "ticksPerSecond", 4 },
+				{ "kRatePerSecond", 10 }
+			};
+
+			ParseHelper.ApplyProperties(obj, properties);
+
+			Assert.That(obj.KRatePerSecond, Is.EqualTo(10));
+			Assert.That(obj.TicksPerSecond, Is.EqualTo(4));
+			Assert.That(obj.DamageSource, Is.EqualTo(DamageType.Bleed));
 		}
 
 		[TestCase("1,2", 1, 2)]

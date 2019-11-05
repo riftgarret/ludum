@@ -7,8 +7,8 @@ namespace Davfalcon.Buffs
 	{
 		public bool IsDebuff { get; set; }
 
-		public int Duration { get; set; }
+		public float Duration { get; set; }
 
-		public int Remaining { get; set; }
+		public float Remaining { get; set; }
 	}
 }

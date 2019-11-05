@@ -4,5 +4,6 @@
   "Assets/StreamingAssets/configs/ai_behaviors.json",
   "Assets/StreamingAssets/configs/characters.json",
   "Assets/StreamingAssets/configs/encounters.json",
-  "Assets/StreamingAssets/configs/classes.json"
+  "Assets/StreamingAssets/configs/classes.json",
+  "Assets/StreamingAssets/configs/buffs.json"
 ]

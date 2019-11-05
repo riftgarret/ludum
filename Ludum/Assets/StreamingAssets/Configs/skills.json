@@ -7,7 +7,7 @@
         "name": "Fire",
         "time": [ 3, 1, 2 ],
         "defaultStats": {
-          
+
         },
         "targetingSets": [
           {
@@ -27,7 +27,29 @@
             ]
           }
         ]
-      }      
+      },
+      {
+        "dataId": "bleed_debuff",
+        "name": "Bleed",
+        "time": [ 3, 1, 2 ],
+        "defaultStats": {
+          
+        },
+        "targetingSets": [
+          {
+            "targetingRuleId": "single_enemy",
+            "operations": [
+              {
+                "executionStart": 0.25,
+                "operationType": "Debuff",
+                "params": {
+                  "buffId": "bleed_hex"
+                }
+              }
+            ]
+          }
+        ]
+      }
     ]
   },
   {

@@ -12,16 +12,28 @@ namespace Redninja.Data.Schema.Readers
 {
 	internal class SkillItemFactory : IDataItemFactory<ISkill>
 	{
+		/// <summary>
+		/// This enum is used to determine which type of OperationTypes we support and
+		/// is used to help deserialize and check.
+		/// </summary>
+		private enum OperationType
+		{
+			Damage,
+			Debuff
+		}
+
+
 		public ISkill CreateInstance(string dataId, ISchemaStore store)
 		{
 			CombatSkillSchema item = store.GetSchema<CombatSkillSchema>(dataId);
 
 			CombatSkill skill = new CombatSkill();
+			skill.Name = item.Name;			
 			skill.Time = ParseHelper.ParseActionTime(item.Time);
-			skill.Targets.AddRange(item.TargetingSets.Select(ts => ParseTargetSchema(ts, store)));
+			skill.Targets.AddRange(item.TargetingSets.Select(ts => ParseTargetSchema(ts, store)));		
 
 			return skill;
-		}		
+		}
 
 		internal SkillTargetingSet ParseTargetSchema(TargetingSetSchema tsSchema, ISchemaStore store)
 		{
@@ -33,14 +45,26 @@ namespace Redninja.Data.Schema.Readers
 			return targetSet;
 		}
 
+
 		internal IBattleOperationDefinition ParseOperation(BattleOperationSchema schema)
 		{
-			if (schema.OperationType.Equals("Damage", StringComparison.CurrentCultureIgnoreCase))
-				return ParseDamageParams(schema);
-			else
-				throw new InvalidOperationException($"Unknown OpType for skill: {schema.OperationType}");
+			if(string.IsNullOrEmpty(schema.OperationType))
+				throw new NotSupportedException($"Required missing 'skill.operationType'");
+			if (!Enum.TryParse(schema.OperationType, out OperationType opType))
+				throw new NotSupportedException($"Invalid 'skill.operationType' detected: {schema.OperationType}");
+
+			switch (opType)
+			{
+				case OperationType.Damage:
+					return ParseDamageParams(schema);
+				case OperationType.Debuff:
+					return ParseDebuffParams(schema);
+			}
+
+			throw new NotImplementedException($"Missing implementation for {schema.OperationType}");
 		}
 
+		#region Damage Operation
 		private class DamageOpSchema
 		{
 			public int damage;
@@ -60,7 +84,21 @@ namespace Redninja.Data.Schema.Readers
 			def.ExecutionStart = schema.ExecutionStart;
 			return def;
 		}
+		#endregion
+		#region Debuff Operation
+		private class DebuffOpSchema
+		{
+			public string buffId;
+		}
 
-
+		private DebuffOperationDefinition ParseDebuffParams(BattleOperationSchema schema)
+		{
+			DebuffOpSchema defSchema = schema.Params.ToObject<DebuffOpSchema>();
+			DebuffOperationDefinition def = new DebuffOperationDefinition();
+			def.BuffId = defSchema.buffId;
+			def.ExecutionStart = schema.ExecutionStart;
+			return def;
+		}
+		#endregion
 	}
 }

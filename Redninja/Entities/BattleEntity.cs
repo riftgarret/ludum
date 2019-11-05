@@ -54,12 +54,25 @@ namespace Redninja.Entities
 			get => _actions;
 			private set
 			{
-				if (_actions != null) _actions.Dispose();
+				if (_actions != null)
+				{
+					_actions.Dispose();
+					_actions.ActionNeeded -= HandleActionNeeded;
+					_actions.ActionSet -= HandleActionSet;
+				}
 				_actions = value;
+				if(_actions != null)
+				{
+					_actions.ActionNeeded += HandleActionNeeded;
+					_actions.ActionSet += HandleActionSet;
+				}
 			}
 		}
 
-		public IUnitBuffManager Buffs { get; }
+		private void HandleActionSet(IBattleEntity e, IOperationSource o) => ActionSet?.Invoke(e, o);
+		private void HandleActionNeeded(IBattleEntity e) => ActionNeeded?.Invoke(e);
+
+		public IUnitBuffManager Buffs { get; } = new UnitBuffManager();
 
 		// TODO pull properties from equipment, buffs, class def
 		public IEnumerable<ITriggeredProperty> TriggeredProperties => Enumerable.Empty<ITriggeredProperty>();
@@ -68,6 +81,10 @@ namespace Redninja.Entities
 		public LiveStatContainer Resource => LiveStats[LiveStat.LiveResource];
 
 		private readonly Dictionary<LiveStat, LiveStatContainer> liveStats = new Dictionary<LiveStat, LiveStatContainer>();
+
+		public event Action<IBattleEntity> ActionNeeded;
+		public event Action<IBattleEntity, IOperationSource> ActionSet;
+
 		public IReadOnlyDictionary<LiveStat, LiveStatContainer> LiveStats => liveStats;
 
 		public BattleEntity(IBattleContext context, IUnit unit)
