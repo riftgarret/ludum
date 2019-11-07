@@ -152,7 +152,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 				}).ToList();
 		
 			var mRule = Substitute.For<IAISkillRule>();
-			mRule.FilterConditions.Returns(conditions);
+			mRule.TargetConditions.Returns(conditions);
 			var mTargetingRule = Substitute.For<ITargetingRule>();
 			mTargetingRule.IsValidTarget(null, null).ReturnsForAnyArgs(x => isValid.Contains(x[0]));
 

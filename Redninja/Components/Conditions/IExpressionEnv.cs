@@ -6,7 +6,6 @@ namespace Redninja.Components.Conditions
 	{
 		IBattleEntity Self { get; }
 		IBattleEntity Target { get; }
-		IBattleEntity Source { get; }
 		IBattleModel BattleModel { get; }
 		ICombatEvent BattleEvent { get; }
 	}

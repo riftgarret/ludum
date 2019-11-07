@@ -5,6 +5,6 @@ namespace Redninja.Components.Conditions
 	public interface IExpression
 	{
 		ExpressionResultType ResultType { get; }
-		IParamExpression Next { get; set; }
+		object GetResult(IExpressionEnv env, object param);
 	}
 }

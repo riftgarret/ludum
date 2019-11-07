@@ -23,9 +23,9 @@ namespace Redninja.Data.Schema.Readers
 
 			ReadTriggerConditions(b, rs.TriggerConditions);
 
-			foreach (string filterConditionName in rs.FilterConditions)
+			foreach (string targetConditionExp in rs.TargetConditions)
 			{
-				IAITargetCondition cond = ParseHelper.ParseAITargetCondition(filterConditionName);
+				IAITargetCondition cond = ParseHelper.ParseAITargetCondition(targetConditionExp);
 				b.AddFilterCondition(cond);
 			}
 

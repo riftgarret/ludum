@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using NSubstitute;
 using NUnit.Framework;
+using Redninja.Components.Conditions;
 using Redninja.Text;
 
 namespace Redninja.Data.Schema.Readers.UnitTests
 {
 	[TestFixture]
-	public class ConditionParserTests
+	public class ConditionParserTests : TestBase
 	{
 		[TestCase("REQUIRE < 51", "< 51")]
 		[TestCase("REQUIRE <= 1", "<= 1")]
@@ -64,6 +66,20 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 			var match = Regex.Match(input, pattern);
 			Assert.That(match.Groups.Count, Is.EqualTo(2));
 			Assert.That(match.Groups["test"].Success, Is.True);
+		}
+
+		[Test]
+		public void SelfEqualsTarget()
+		{
+			ConditionParser parser = new ConditionParser();
+
+			var success = parser.TryParseCondition("SELF = Target", out ICondition subject);
+			Assert.That(success, Is.True);
+
+			var unit = this.CreateEntity(10, 10);
+
+			var result = subject.IsTargetConditionMet(unit, unit, Substitute.For<IBattleModel>());
+			Assert.That(result, Is.True);
 		}
 	}
 }

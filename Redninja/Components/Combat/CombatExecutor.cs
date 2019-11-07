@@ -30,7 +30,7 @@ namespace Redninja.Components.Combat
 		public void ApplyStatusEffect(IBattleEntity source, IBattleEntity target, IBuff effect)
 		{
 			//resolver.ApplyBuff(target, effect);
-			BattleEventOccurred?.Invoke(new StatusEffectEvent(source, target, effect));
+			BattleEventOccurred?.Invoke(new BuffEvent(source, target, effect));
 		}
 
 		public void RemoveStatusEffect(IBattleEntity entity, IBuff effect)
@@ -40,7 +40,7 @@ namespace Redninja.Components.Combat
 		
 		public void DealDamage(IBattleEntity attacker, IBattleEntity defender, ISkillOperationParameters paramz)
 		{
-			DamageEvent e = new DamageEvent();
+			DamageEvent e = new DamageEvent(attacker, defender);
 			e.PutResult(DamageType.Physical, GetPhysicalResult(attacker, defender, paramz));
 
 			// TODO? possibly damage resource if needed.

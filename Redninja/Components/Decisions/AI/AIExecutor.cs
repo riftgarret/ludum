@@ -206,7 +206,7 @@ namespace Redninja.Components.Decisions.AI
 			leftoverTargets.ForEach(x => skillEval[x].IsValidTarget = true);
 
 			// filter by filter conditions (exclude by finding first condition that fails)
-			leftoverTargets = leftoverTargets.Where(ex => rule.FilterConditions.All(cond => cond.IsValid(ex)));
+			leftoverTargets = leftoverTargets.Where(ex => rule.TargetConditions.All(cond => cond.IsValid(ex)));
 			leftoverTargets.ForEach(x => skillEval[x].IsValidConditions = true);
 
 			return leftoverTargets;

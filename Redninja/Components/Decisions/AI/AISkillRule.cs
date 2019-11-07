@@ -15,7 +15,7 @@ namespace Redninja.Components.Decisions.AI
 		// targeting who gets focused should be uniform for rule
 		public TargetTeam TargetType { get; private set; }
 		private List<IAITargetCondition> filterConditions = new List<IAITargetCondition>();
-		public IEnumerable<IAITargetCondition> FilterConditions => filterConditions;
+		public IEnumerable<IAITargetCondition> TargetConditions => filterConditions;
 		private List<Tuple<IAITargetPriority, ISkill>> skillAssignments = new List<Tuple<IAITargetPriority, ISkill>>();
 		public IEnumerable<Tuple<IAITargetPriority, ISkill>> SkillAssignments => skillAssignments;
 

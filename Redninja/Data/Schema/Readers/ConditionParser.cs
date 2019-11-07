@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Redninja.Components.Conditions;
+using Redninja.Components.Conditions.Expressions;
 using Redninja.Components.Conditions.Operators;
 using Redninja.Logging;
 using Redninja.Text;
@@ -15,20 +16,19 @@ namespace Redninja.Data.Schema.Readers
 		private const string GROUP_REQUIRE = "require";
 		private const string GROUP_OP = "op";
 
-		private const string GROUP_LEFT_EXPRESSION = "left-exp";
-		private const string GROUP_RIGHT_EXPRESSION = "right-exp";
+		private const string GROUP_LEFT_EXPRESSION = "leftexp";
+		private const string GROUP_RIGHT_EXPRESSION = "rightexp";
 
 		private readonly string pattern;
-
-		private readonly ExpressionParser expresionParser;
+		
 		private readonly ConditionOpParser conditionOpParser;
 		private readonly RequirementParser requirementParser;
 
 		public ConditionParser()
 		{
 			RegexPatternBuilder builder = RegexPatternBuilder.Begin();
-			AddRequireCapture(builder, GROUP_REQUIRE);
-			builder.AddWhiteSpaceOptional();
+			//AddRequireCapture(builder, GROUP_REQUIRE);
+			//builder.AddWhiteSpaceOptional();
 			AddExpCapture(builder, GROUP_LEFT_EXPRESSION);
 			builder.AddWhiteSpaceOptional();
 			AddOpCapture(builder, GROUP_OP);
@@ -36,8 +36,7 @@ namespace Redninja.Data.Schema.Readers
 			AddExpCapture(builder, GROUP_RIGHT_EXPRESSION);
 
 			pattern = builder.Build();
-
-			expresionParser = new ExpressionParser();
+			
 			conditionOpParser = new ConditionOpParser();
 			requirementParser = new RequirementParser();
 		}
@@ -54,14 +53,12 @@ namespace Redninja.Data.Schema.Readers
 			if (!match.Groups[GROUP_OP].Success) return FalseWithLog($"Missing OP expression: {raw}");
 
 
-			if (!TryBuildExpressionChain(match.Groups[GROUP_LEFT_EXPRESSION], out IEnvExpression left))
-				return FalseWithLog($"Unable to build left expression tree: {raw}");
+
+			IExpression left = new RootExpression(match.Groups[GROUP_LEFT_EXPRESSION].Value);
+			IExpression right = new RootExpression(match.Groups[GROUP_RIGHT_EXPRESSION].Value);
 
 			if (!conditionOpParser.TryParseOp(match.Groups[GROUP_OP].Value, out IConditionalOperator op))
 				return FalseWithLog($"Unable to build operator: {raw}");
-
-			if (!TryBuildExpressionChain(match.Groups[GROUP_RIGHT_EXPRESSION], out IEnvExpression right))
-				return FalseWithLog($"Unable to build right expression tree: {raw}");
 
 			IOperatorCountRequirement opRequirement = AnyOpRequirement.Instance;
 			if(match.Groups[GROUP_REQUIRE].Success)
@@ -74,30 +71,7 @@ namespace Redninja.Data.Schema.Readers
 
 			return true;
 		}
-
-		private bool TryBuildExpressionChain(Group regexGroup, out IEnvExpression initialExpression) 
-		{
-			initialExpression = null;
-
-			if (!expresionParser.TryParseExpression(regexGroup.Captures[0].Value, null, out IExpression expression))
-				return false;
-
-			if (!(expression is IEnvExpression))
-				return FalseWithLog($"Initial expression is not a InitialExpressionType {regexGroup.Captures[0].Value}");
-
-			initialExpression = (IEnvExpression)expression;
-			IExpression curChain = expression;
-
-			for (int i = 1; i < regexGroup.Captures.Count; i++)
-			{
-				if (!expresionParser.TryParseExpression(regexGroup.Captures[i].Value, curChain, out IExpression chained))
-					return false;
-				curChain = chained;
-			}
-
-			return true;
-		}
-
+		
 		private bool FalseWithLog(string log)
 		{
 			RLog.E(this, log);

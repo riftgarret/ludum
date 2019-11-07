@@ -7,7 +7,24 @@
         "refreshTime": 0,
         "weight": 1,
         "triggerConditions": {},
-        "filterConditions": [],
+        "targetConditions": [],
+        "skillPriorityMap": {
+          "fire_skill": "Any"
+        },
+        "targetType": "Enemy"
+      },
+
+      {
+        "dataId": "fire_enemy2",
+        "refreshTime": 0,
+        "weight": 1,
+        "triggerConditions": {
+          "Self": [
+            "LiveStat.LiveHP < 50%",
+            "LiveStat.LiveResource > 50"
+          ]
+        },
+        "targetConditions": [],
         "skillPriorityMap": {
           "fire_skill": "Any"
         },
@@ -20,11 +37,11 @@
         "weight": 1,
         "triggerConditions": {
           "Self": [
-            "CalculatedStat.HPTotal < 50%",
-            "CalculatedStat.ResourceTotal > 50"
+            "LiveStat.LiveHP < 50%",
+            "LiveStat.LiveResource > 50"
           ]
         },
-        "filterConditions": [],
+        "targetConditions": [],
         "skillPriorityMap": {
           "heal_self": "Any"
         },

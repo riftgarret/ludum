@@ -24,8 +24,7 @@ namespace Redninja.Components.Conditions.Operators.UnitTests
 
 			subject.IsTrue(Enumerable.Range(1, leftCount).Select(x => (object) x),
 						   Enumerable.Range(1, rightCount).Select(x => (object) x),
-						   requirement,
-						   resultDef);
+						   requirement);
 
 			resultDef.Received(expectedResult).IsTrue(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<ConditionOperatorType>());
 			requirement.Received().MeetsRequirement(expectedResult, expectedResult);
@@ -43,8 +42,7 @@ namespace Redninja.Components.Conditions.Operators.UnitTests
 			bool result = subject.IsTrue(
 				Enumerable.Repeat((object) 1, 1),
 				Enumerable.Repeat((object) 2, 1),
-				AnyOpRequirement.Instance,
-				ResultDefFactory.IntValueResult
+				AnyOpRequirement.Instance
 			);
 		}
 
@@ -60,8 +58,7 @@ namespace Redninja.Components.Conditions.Operators.UnitTests
 			bool result = subject.IsTrue(
 				Enumerable.Repeat((object)1, 1),
 				Enumerable.Repeat((object)2, 1),
-				AllOpRequirement.Instance,
-				ResultDefFactory.IntValueResult
+				AllOpRequirement.Instance
 			);
 		}
 	}

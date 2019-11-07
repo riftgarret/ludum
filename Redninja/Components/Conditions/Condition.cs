@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Redninja.Components.Combat.Events;
 using Redninja.Components.Conditions.Expressions;
+using System.Linq;
 
 namespace Redninja.Components.Conditions
 {
@@ -9,15 +10,15 @@ namespace Redninja.Components.Conditions
 		// used for debugging
 		public string Raw { get; set; }
 
-		public IEnvExpression Left { get; protected set; }
+		public IExpression Left { get; protected set; }
 
-		public IEnvExpression Right { get; protected set; }
+		public IExpression Right { get; protected set; }
 
 		public IConditionalOperator Op { get; protected set; }
 
 		public IOperatorCountRequirement OpRequirement { get; protected set; }
 
-		public Condition(IEnvExpression left, IEnvExpression right, IConditionalOperator op, IOperatorCountRequirement req)
+		public Condition(IExpression left, IExpression right, IConditionalOperator op, IOperatorCountRequirement req)
 		{
 			this.Left = left;
 			this.Right = right;
@@ -34,15 +35,15 @@ namespace Redninja.Components.Conditions
 
 		private bool IsConditionMet(IExpressionEnv expressionEnv)
 		{
-			ExpressionResolver resolver = new ExpressionResolver(expressionEnv);
-
-			IEnumerable<object> leftValues = resolver.Resolve(Left);
-			IEnumerable<object> rightValues = resolver.Resolve(Right);
-
-			ExpressionResultType resultType = Left.GetFinalResultType();
-			IExpressionResultDef resultDef = ResultDefFactory.From(resultType);
-
-			return Op.IsTrue(leftValues, rightValues, OpRequirement, resultDef);
+			var leftValue = Left.GetResult(expressionEnv, expressionEnv);			
+			var rightValue = Right.GetResult(expressionEnv, expressionEnv);			
+					
+			return Op.IsTrue(AsEnumerable(leftValue), AsEnumerable(rightValue), OpRequirement);
 		}
+
+		private IEnumerable<object> AsEnumerable(object val)
+		{
+			return (val is IEnumerable<object>) ? (IEnumerable<object>)val : Enumerable.Repeat(val, 1);
+		} 
 	}
 }
