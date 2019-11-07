@@ -13,10 +13,7 @@ namespace Redninja.Components.Conditions.Operators.UnitTests
 		[Test]
 		public void IsTrue_AllCrossScanned([Values(0, 1, 10)] int leftCount, [Values(0, 1, 10)] int rightCount)
 		{
-			int expectedResult = leftCount * rightCount;
-
-			IExpressionResultDef resultDef = Substitute.For<IExpressionResultDef>();
-			resultDef.IsTrue(null, null, Arg.Any<ConditionOperatorType>()).ReturnsForAnyArgs(true);
+			int expectedResult = leftCount * rightCount;						
 
 			IOperatorCountRequirement requirement = Substitute.For<IOperatorCountRequirement>();
 
@@ -25,9 +22,8 @@ namespace Redninja.Components.Conditions.Operators.UnitTests
 			subject.IsTrue(Enumerable.Range(1, leftCount).Select(x => (object) x),
 						   Enumerable.Range(1, rightCount).Select(x => (object) x),
 						   requirement);
-
-			resultDef.Received(expectedResult).IsTrue(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<ConditionOperatorType>());
-			requirement.Received().MeetsRequirement(expectedResult, expectedResult);
+			
+			requirement.Received().MeetsRequirement(Arg.Any<int>(), Arg.Is(expectedResult));
 		}
 
 

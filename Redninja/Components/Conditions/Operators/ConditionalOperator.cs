@@ -30,6 +30,9 @@ namespace Redninja.Components.Conditions.Operators
 
 		private bool Evaluate(object lhs, object rhs)
 		{
+			if(lhs.GetType() != rhs.GetType())
+				throw new InvalidOperationException($"Incompatable types: Could not find correct operator for: {lhs} and {rhs}");
+
 			switch (OperatorType)
 			{
 				case ConditionOperatorType.EQ:
@@ -38,26 +41,28 @@ namespace Redninja.Components.Conditions.Operators
 					return lhs != rhs;
 			}
 
-			if (lhs is float && rhs is float)
+			
+			if (lhs is IComparable)
 			{
-				return EvaluateNumbers((float) lhs, (float) rhs);
+				return EvaluateNumbers((IComparable) lhs, (IComparable) rhs);
 			}
 
 			throw new InvalidOperationException($"Could not find correct operator for: {lhs} and {rhs}");
 		}
 
-		private bool EvaluateNumbers(float lhs, float rhs)
+		private bool EvaluateNumbers(IComparable lhs, IComparable rhs)
 		{
+			int compareValue = lhs.CompareTo(rhs);
 			switch(OperatorType)
 			{
-				case ConditionOperatorType.LT:
-					return lhs < rhs;
+				case ConditionOperatorType.LT:					
+					return compareValue < 0;
 				case ConditionOperatorType.LTE:
-					return lhs <= rhs;
+					return compareValue <= 0;
 				case ConditionOperatorType.GT:
-					return lhs > rhs;
+					return compareValue > 0;
 				case ConditionOperatorType.GTE:
-					return lhs >= rhs;
+					return compareValue >= 0;
 			}
 
 			throw new InvalidOperationException("should never get here");

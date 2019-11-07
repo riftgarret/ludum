@@ -11,7 +11,7 @@ namespace Redninja.Data.Schema.Readers
 	{
 		private const string REGEX_OP = @"\>|\<|=|!=|\>=|\<=";
 		private const string REGEX_REQUIRE = @"any|all|(?:" + REGEX_OP + @")\s\d+";
-		private const string REGEX_EXP = @"[\w%]+";
+		private const string REGEX_EXP = @"[\w%\.]+";
 
 		private const string GROUP_REQUIRE = "require";
 		private const string GROUP_OP = "op";
@@ -27,8 +27,8 @@ namespace Redninja.Data.Schema.Readers
 		public ConditionParser()
 		{
 			RegexPatternBuilder builder = RegexPatternBuilder.Begin();
-			//AddRequireCapture(builder, GROUP_REQUIRE);
-			//builder.AddWhiteSpaceOptional();
+			AddRequireCapture(builder, GROUP_REQUIRE);
+			builder.AddWhiteSpaceOptional();
 			AddExpCapture(builder, GROUP_LEFT_EXPRESSION);
 			builder.AddWhiteSpaceOptional();
 			AddOpCapture(builder, GROUP_OP);
@@ -36,6 +36,7 @@ namespace Redninja.Data.Schema.Readers
 			AddExpCapture(builder, GROUP_RIGHT_EXPRESSION);
 
 			pattern = builder.Build();
+			RLog.D(this, pattern);
 			
 			conditionOpParser = new ConditionOpParser();
 			requirementParser = new RequirementParser();
@@ -84,17 +85,13 @@ namespace Redninja.Data.Schema.Readers
 				.StartOptionSet()
 				.AddNonCapture(@"require\s")
 				.AddCapture(captureGroup, REGEX_REQUIRE)
-				.EndOptions();
+				.EndOptions("?");
 		}
 
 		internal static RegexPatternBuilder AddExpCapture(RegexPatternBuilder builder, string captureGroup)
 		{
 			return builder
-				.AddCapture(captureGroup, REGEX_EXP)
-				.StartOptionSet()
-				.AddNonCapture(@"\.")
-				.AddCapture(captureGroup, REGEX_EXP)
-				.EndOptions("*");
+				.AddCapture(captureGroup, REGEX_EXP);				
 		}
 
 		internal static RegexPatternBuilder AddOpCapture(RegexPatternBuilder builder, string captureGroup)

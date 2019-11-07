@@ -256,15 +256,9 @@
     <Compile Include="Components\Conditions\Operators\AnyOpRequirement.cs" />
     <Compile Include="Components\Conditions\Operators\AllOpRequirement.cs" />
     <Compile Include="Components\Conditions\Operators\ConditionalOperator.cs" />
-    <Compile Include="Components\Conditions\IExpressionResultDef.cs" />
     <Compile Include="Components\Conditions\IExpression.cs" />
     <Compile Include="Components\Conditions\IConditionalOperator.cs" />
     <Compile Include="Components\Conditions\IOperatorCountRequirement.cs" />
-    <Compile Include="Components\Conditions\ResultDefinitions\IntResultDefinition.cs" />
-    <Compile Include="Components\Conditions\ResultDefinitions\StringResultDefinition.cs" />
-    <Compile Include="Components\Conditions\ResultDefinitions\ObjectResultDefinition.cs" />
-    <Compile Include="Components\Conditions\ResultDefinitions\ResultDefinitionBase.cs" />
-    <Compile Include="Components\Conditions\ResultDefFactory.cs" />
     <Compile Include="Data\Schema\Readers\ConditionOpParser.cs" />
     <Compile Include="Data\Schema\Readers\RequirementParser.cs" />
     <Compile Include="Components\Conditions\Expressions\ExpressionEnv.cs" />
