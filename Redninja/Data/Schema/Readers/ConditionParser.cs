@@ -69,7 +69,7 @@ namespace Redninja.Data.Schema.Readers
 			}
 
 			condition = new Condition(left, right, op, opRequirement);
-
+			((Condition)condition).Raw = raw;
 			return true;
 		}
 		

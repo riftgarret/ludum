@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using Davfalcon.Stats;
 using Newtonsoft.Json;
 using Redninja.Components.Actions;
+using Redninja.Components.Conditions;
 using Redninja.Components.Decisions.AI;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
@@ -16,6 +17,18 @@ namespace Redninja.Data.Schema.Readers
 {
 	internal static class ParseHelper
 	{
+		private static readonly List<Type> _KNOWN_ENUM_TYPES = new List<Type>()
+			{
+				typeof(Stat),
+				typeof(LiveStat),
+				typeof(CalculatedStat),
+				typeof(DamageType),
+				typeof(WeaponSlotType),
+				typeof(WeaponType)
+			};
+
+		private static ConditionParser _CONDITION_PARSER_INSTANCE = new ConditionParser();
+
 		/// <summary>
 		/// Parse out pattern so we can put in (0,1),(0,2)... or just 'row'.
 		/// </summary>
@@ -80,6 +93,17 @@ namespace Redninja.Data.Schema.Readers
 			}
 
 			return new ActionTime(time[0], time[1], time[2]);
+		}
+
+		/// <summary>
+		/// Create a new Condition from raw input. See Condition workflow on wiki.
+		/// </summary>
+		/// <param name="input"></param>
+		/// <returns></returns>
+		public static ICondition ParseCondition(string input)
+		{
+			if (_CONDITION_PARSER_INSTANCE.TryParseCondition(input, out ICondition condition)) return condition;
+			throw new InvalidOperationException($"Unable to parse condition: {input}");
 		}
 
 		/// <summary>
@@ -178,17 +202,7 @@ namespace Redninja.Data.Schema.Readers
 					throw new SystemException($"Failed to Apply property: {e.Key} : {e.Value}", ex);
 				}
 			});
-		}		
-
-		private static readonly List<Type> _KNOWN_ENUM_TYPES = new List<Type>()
-			{
-				typeof(Stat),
-				typeof(LiveStat),
-				typeof(CalculatedStat),
-				typeof(DamageType),
-				typeof(WeaponSlotType),
-				typeof(WeaponType)
-			};
+		}				
 
 		internal static bool TryParseStatRaw(string raw, out Enum val)
 		{

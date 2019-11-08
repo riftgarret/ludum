@@ -21,14 +21,9 @@ namespace Redninja.Data.Schema.Readers
 			b.SetRuleTargetType(rs.TargetType);
 			b.SetWeight(rs.Weight);
 
-			ReadTriggerConditions(b, rs.TriggerConditions);
-
-			foreach (string targetConditionExp in rs.TargetConditions)
-			{
-				IAITargetCondition cond = ParseHelper.ParseAITargetCondition(targetConditionExp);
-				b.AddFilterCondition(cond);
-			}
-
+			rs.TriggerConditions.ForEach(x => b.AddTriggerCondition(ParseHelper.ParseCondition(x)));
+			rs.TargetConditions.ForEach(x => b.AddFilterCondition(ParseHelper.ParseCondition(x)));
+			
 			foreach (var skillPriorityItem in rs.SkillPriorityMap)
 			{
 				ISkill skill = store.SingleInstance<ISkill>(skillPriorityItem.Key);
@@ -37,22 +32,6 @@ namespace Redninja.Data.Schema.Readers
 			}
 
 			return b.Build();
-		}
-
-		private void ReadTriggerConditions<ParentBuilder, T>(
-			AIRuleBase.BuilderBase<ParentBuilder, T> b,
-			Dictionary<TargetTeam, List<string>> triggerConditions)
-			where ParentBuilder : AIRuleBase.BuilderBase<ParentBuilder, T>
-			where T : AIRuleBase
-		{
-			foreach (var item in triggerConditions)
-			{
-				foreach (string condName in item.Value)
-				{
-					IAITargetCondition cond = ParseHelper.ParseAITargetCondition(condName);
-					b.AddTriggerCondition(item.Key, cond);
-				}
-			}
 		}
 	}
 }

@@ -11,7 +11,7 @@ namespace Redninja.Data.Schema
 		public int RefreshTime { get; set; }
 		public int Weight { get; set; }
 
-		public Dictionary<TargetTeam, List<string>> TriggerConditions { get; set; }
+		public List<string> TriggerConditions { get; set; }
 		public TargetTeam TargetType { get; set; }
 		public List<string> TargetConditions { get; set; }
 		public Dictionary<string, string> SkillPriorityMap { get; set; }

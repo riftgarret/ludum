@@ -4,6 +4,7 @@ using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
 using Redninja.Components.Actions;
+using Redninja.Components.Conditions;
 using Redninja.Components.Decisions;
 using Redninja.Components.Decisions.AI;
 using Redninja.Components.Skills;
@@ -33,14 +34,6 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			mActionHelper = Substitute.For<IActionContext>();
 
 			SetupBuilder();
-		}
-
-		private IAITargetCondition AddFilterCondition(bool isTrue, IBattleEntity onlyForTarget = null)
-		{
-			IAITargetCondition mFilterCondition = Substitute.For<IAITargetCondition>();
-			mFilterCondition.IsValid(onlyForTarget ?? Arg.Any<IBattleEntity>()).Returns(isTrue);
-			subjectBuilder.AddFilterCondition(mFilterCondition);
-			return mFilterCondition;
 		}
 
 		private Tuple<ISkill, IAITargetPriority> AddSkillPriority(IBattleEntity bestTarget)

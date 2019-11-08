@@ -112,9 +112,7 @@ namespace Redninja.Components.Decisions.AI
 		{
 			foreach (var trigger in rule.TriggerConditions)
 			{
-				var validEntities = FilterByType(trigger.Item1);				
-
-				bool foundValid = validEntities.Any(trigger.Item2.IsValid);
+				bool foundValid = trigger.IsConditionMet(x => x.Self(source).Context(context));				
 
 				if (!foundValid) return false;
 			}
@@ -198,15 +196,15 @@ namespace Redninja.Components.Decisions.AI
 			allEntities.ForEach(x => skillEval[x].IsValidType = false);
 
 			// first filter by TargetType
-			IEnumerable<IBattleEntity> leftoverTargets = FilterByType(rule.TargetType);
+			IEnumerable<IBattleEntity> leftoverTargets = FilterByType(rule.TargetType).ToList();
 			leftoverTargets.ForEach(x => skillEval[x].IsValidType = true);
 
 			// filter by skill rule
-			leftoverTargets = leftoverTargets.Where(ex => targetingRule.IsValidTarget(ex, source));
+			leftoverTargets = leftoverTargets.Where(ex => targetingRule.IsValidTarget(ex, source)).ToList();
 			leftoverTargets.ForEach(x => skillEval[x].IsValidTarget = true);
 
 			// filter by filter conditions (exclude by finding first condition that fails)
-			leftoverTargets = leftoverTargets.Where(ex => rule.TargetConditions.All(cond => cond.IsValid(ex)));
+			leftoverTargets = leftoverTargets.Where(ex => rule.TargetConditions.All(cond => cond.IsConditionMet(x => x.Self(source).Target(ex).Context(context)))).ToList();
 			leftoverTargets.ForEach(x => skillEval[x].IsValidConditions = true);
 
 			return leftoverTargets;

@@ -6,7 +6,7 @@
         "dataId": "fire_enemy",
         "refreshTime": 0,
         "weight": 1,
-        "triggerConditions": {},
+        "triggerConditions": [],
         "targetConditions": [],
         "skillPriorityMap": {
           "fire_skill": "Any"
@@ -17,13 +17,10 @@
       {
         "dataId": "fire_enemy2",
         "refreshTime": 0,
-        "weight": 1,
-        "triggerConditions": {
-          "Self": [
-            "LiveStat.LiveHP < 50%",
-            "LiveStat.LiveResource > 50"
-          ]
-        },
+        "weight": 100,
+        "triggerConditions": [
+          "require any bm.enemy.v_livehp% = 100"
+        ],
         "targetConditions": [],
         "skillPriorityMap": {
           "fire_skill": "Any"
@@ -35,12 +32,9 @@
         "dataId": "heal_self",
         "refreshTime": 10,
         "weight": 1,
-        "triggerConditions": {
-          "Self": [
-            "LiveStat.LiveHP < 50%",
-            "LiveStat.LiveResource > 50"
-          ]
-        },
+        "triggerConditions": [
+          "self.v_livehp% < 50"
+        ],
         "targetConditions": [],
         "skillPriorityMap": {
           "heal_self": "Any"

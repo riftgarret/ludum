@@ -2,6 +2,7 @@
 using Redninja.Components.Combat.Events;
 using Redninja.Components.Conditions.Expressions;
 using System.Linq;
+using System;
 
 namespace Redninja.Components.Conditions
 {
@@ -26,14 +27,15 @@ namespace Redninja.Components.Conditions
 			this.OpRequirement = req;
 		}
 
-		public bool IsTargetConditionMet(IBattleEntity self, IBattleEntity target, IBattleModel battleModel)
-			=> IsConditionMet(ExpressionEnv.From(battleModel, self, target));
 
-		public bool IsEventConditionMet(IBattleEntity self, ICombatEvent battleEvent, IBattleModel battleModel)
-			=> IsConditionMet(ExpressionEnv.From(battleModel, self, battleEvent));
+		public bool IsConditionMet(Action<ExpressionEnv.ExpressionEnvBuilder> builderFunc)
+		{
+			var builder = new ExpressionEnv.ExpressionEnvBuilder();			
+			builderFunc?.Invoke(builder);			
+			return IsConditionMet(builder.Build());
+		}		
 
-
-		private bool IsConditionMet(IExpressionEnv expressionEnv)
+		public bool IsConditionMet(IExpressionEnv expressionEnv)
 		{
 			var leftValue = Left.GetResult(expressionEnv, expressionEnv);			
 			var rightValue = Right.GetResult(expressionEnv, expressionEnv);			
@@ -44,6 +46,6 @@ namespace Redninja.Components.Conditions
 		private IEnumerable<object> AsEnumerable(object val)
 		{
 			return (val is IEnumerable<object>) ? (IEnumerable<object>)val : Enumerable.Repeat(val, 1);
-		} 
+		}
 	}
 }

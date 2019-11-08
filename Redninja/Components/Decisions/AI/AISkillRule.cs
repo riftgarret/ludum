@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Redninja.Components.Conditions;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 
@@ -14,8 +15,8 @@ namespace Redninja.Components.Decisions.AI
 	{
 		// targeting who gets focused should be uniform for rule
 		public TargetTeam TargetType { get; private set; }
-		private List<IAITargetCondition> filterConditions = new List<IAITargetCondition>();
-		public IEnumerable<IAITargetCondition> TargetConditions => filterConditions;
+		private List<ICondition> filterConditions = new List<ICondition>();
+		public IEnumerable<ICondition> TargetConditions => filterConditions;
 		private List<Tuple<IAITargetPriority, ISkill>> skillAssignments = new List<Tuple<IAITargetPriority, ISkill>>();
 		public IEnumerable<Tuple<IAITargetPriority, ISkill>> SkillAssignments => skillAssignments;
 
@@ -53,7 +54,7 @@ namespace Redninja.Components.Decisions.AI
 			/// </summary>
 			/// <param name="condition"></param>
 			/// <returns></returns>
-			public Builder AddFilterCondition(IAITargetCondition condition)
+			public Builder AddFilterCondition(ICondition condition)
 			{
 				rule.filterConditions.Add(condition);
 				return this;

@@ -36,10 +36,46 @@ namespace Redninja.Components.Conditions.Operators.UnitTests
 			subject = new ConditionalOperator(ConditionOperatorType.LT);
 
 			bool result = subject.IsTrue(
-				Enumerable.Repeat((object) 1, 1),
-				Enumerable.Repeat((object) 2, 1),
+				Enumerable.Repeat((object) left, 1),
+				Enumerable.Repeat((object) right, 1),
 				AnyOpRequirement.Instance
 			);
+
+			Assert.That(result, Is.EqualTo(expected));
+		}
+
+		[TestCase(0, 1, false)]
+		[TestCase(1, 1, true)]
+		[TestCase(1, 0, false)]
+		[TestCase(10, 10, true)]
+		public void IsTrue_OneToOne_EQ_IntValue(int left, int right, bool expected)
+		{
+			subject = new ConditionalOperator(ConditionOperatorType.EQ);
+
+			bool result = subject.IsTrue(
+				Enumerable.Repeat((object)left, 1),
+				Enumerable.Repeat((object)right, 1),
+				AnyOpRequirement.Instance
+			);
+
+			Assert.That(result, Is.EqualTo(expected));
+		}
+
+		[TestCase(0, 1, true)]
+		[TestCase(1, 1, false)]
+		[TestCase(1, 0, true)]
+		[TestCase(10, 10, false)]
+		public void IsTrue_OneToOne_NEQ_IntValue(int left, int right, bool expected)
+		{
+			subject = new ConditionalOperator(ConditionOperatorType.NEQ);
+
+			bool result = subject.IsTrue(
+				Enumerable.Repeat((object)left, 1),
+				Enumerable.Repeat((object)right, 1),
+				AnyOpRequirement.Instance
+			);
+
+			Assert.That(result, Is.EqualTo(expected));
 		}
 
 		[TestCase(0, 1, 5, true)]
@@ -52,10 +88,12 @@ namespace Redninja.Components.Conditions.Operators.UnitTests
 			subject = new ConditionalOperator(ConditionOperatorType.LT);
 
 			bool result = subject.IsTrue(
-				Enumerable.Repeat((object)1, 1),
-				Enumerable.Repeat((object)2, 1),
+				Enumerable.Repeat((object)left, 1),
+				new object[] { right, right2 },
 				AllOpRequirement.Instance
 			);
+
+			Assert.That(result, Is.EqualTo(expected));
 		}
 	}
 }

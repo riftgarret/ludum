@@ -19,10 +19,7 @@ namespace Redninja.Components.Combat.Events.Triggers
 		{
 			if (e.GetType() != eventType) return;
 
-			if (conditions.All(c => c.IsEventConditionMet(self, e, context.BattleModel)))
-			{
-
-			}
+			
 		}
 
 

@@ -1,4 +1,6 @@
-﻿using Redninja.Components.Combat.Events;
+﻿using System;
+using Redninja.Components.Combat.Events;
+using Redninja.Components.Conditions.Expressions;
 
 namespace Redninja.Components.Conditions
 {
@@ -9,7 +11,7 @@ namespace Redninja.Components.Conditions
 		IConditionalOperator Op { get; }
 		IOperatorCountRequirement OpRequirement { get; }
 
-		bool IsTargetConditionMet(IBattleEntity self, IBattleEntity target, IBattleModel battleModel);
-		bool IsEventConditionMet(IBattleEntity self, ICombatEvent battleEvent, IBattleModel battleModel);
+		bool IsConditionMet(IExpressionEnv env);
+		bool IsConditionMet(Action<ExpressionEnv.ExpressionEnvBuilder> builderFunc);		
 	}
 }

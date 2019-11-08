@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
 using Redninja.Components.Actions;
+using Redninja.Components.Conditions;
+using Redninja.Components.Conditions.Expressions;
 using Redninja.Components.Targeting;
 using Redninja.Entities;
 using static Redninja.Components.Decisions.AI.AIActionDecisionResult;
@@ -66,8 +69,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			mockCondition.IsValid(entityArg ?? Arg.Any<IBattleEntity>()).Returns(isValid);
 			// TODO
 			return mockCondition;
-		}
-
+		}		
 
 		[TestCase(4, 3)]
 		[TestCase(1, 0)]
@@ -138,16 +140,31 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			string validTargetsStr, 						
 			params string[] filteredContionSetStr)
 		{
-			var originalEntities = Enumerable.Range(1, 10).Select(x => Substitute.For<IBattleEntity>()).ToList();			
-			
+			var originalEntities = Enumerable.Range(1, 10).Select(x =>
+			{
+				var ex = Substitute.For<IBattleEntity>();
+				ex.Name.Returns($"{x}");
+				return ex;
+			}).ToList();
+
+			mContext.BattleModel.Entities.Returns(originalEntities);
+
 			var isValid = ParseDigitsToList(validTargetsStr).Select(x => originalEntities[x]);			
 			var expectedEntities = ParseDigitsToList(expectedSubsetStr).Select(x => originalEntities[x]);
 			var conditions = new List<string>(filteredContionSetStr)
 				.Select(filter =>
 				{
 					var allowedEntities = ParseDigitsToList(filter).Select(x => originalEntities[x]);
-					var cond = Substitute.For<IAITargetCondition>();
-					cond.IsValid(null).ReturnsForAnyArgs(x => allowedEntities.Contains(x[0]));
+					var cond = Substitute.For<ICondition>();
+					
+					cond.IsConditionMet(x => x.Context(null)).ReturnsForAnyArgs(x =>
+					{
+						originalEntities[0].Dispose();
+						var b = new ExpressionEnv.ExpressionEnvBuilder();
+						((Action<ExpressionEnv.ExpressionEnvBuilder>)x[0]).Invoke(b);
+						var env = b.Build();
+						return allowedEntities.Contains(env.Target);
+					});
 					return cond;
 				}).ToList();
 		

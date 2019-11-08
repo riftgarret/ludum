@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Redninja.Components.Conditions;
 using Redninja.Components.Targeting;
 
 namespace Redninja.Components.Decisions.AI
@@ -11,8 +12,8 @@ namespace Redninja.Components.Decisions.AI
 	public abstract class AIRuleBase : IAIRule
 	{
 		// trigger conditions can rely on different targets
-		private List<Tuple<TargetTeam, IAITargetCondition>> triggerConditions = new List<Tuple<TargetTeam, IAITargetCondition>>();
-		public IEnumerable<Tuple<TargetTeam, IAITargetCondition>> TriggerConditions => triggerConditions;
+		private List<ICondition> triggerConditions = new List<ICondition>();
+		public IEnumerable<ICondition> TriggerConditions => triggerConditions;
 
 		public string RuleName { get; private set; } = "Unnamed Rule";
 
@@ -41,9 +42,9 @@ namespace Redninja.Components.Decisions.AI
 			/// <param name="type"></param>
 			/// <param name="condition"></param>
 			/// <returns></returns>
-			public ParentBuilder AddTriggerCondition(TargetTeam type, IAITargetCondition condition)
+			public ParentBuilder AddTriggerCondition(ICondition condition)
 			{
-				rule.triggerConditions.Add(Tuple.Create(type, condition));
+				rule.triggerConditions.Add(condition);
 				return this as ParentBuilder;
 			}
 
@@ -83,13 +84,7 @@ namespace Redninja.Components.Decisions.AI
 			protected void BuildBase()
 			{
 				// validation check				
-				if (rule.Weight <= 0) throw new InvalidOperationException($"Invalid weight, must be > 0 for Rule: {rule.RuleName}");
-
-				if (rule.TriggerConditions.Count() == 0)
-				{
-					Logging.RLog.D(this, $"No conditions found for {rule.RuleName}, adding always true");
-					AddTriggerCondition(TargetTeam.Self, AIConditionFactory.AlwaysTrue);
-				}
+				if (rule.Weight <= 0) throw new InvalidOperationException($"Invalid weight, must be > 0 for Rule: {rule.RuleName}");				
 			}
 
 			public abstract T Build();

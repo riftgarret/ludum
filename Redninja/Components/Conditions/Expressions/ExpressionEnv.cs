@@ -3,17 +3,15 @@ using Redninja.Components.Combat.Events;
 
 namespace Redninja.Components.Conditions.Expressions
 {
-	internal class ExpressionEnv : IExpressionEnv
+	public class ExpressionEnv : IExpressionEnv
 	{
 		private IBattleEntity self;
-		private IBattleEntity target;
-		private IBattleEntity source;
+		private IBattleEntity target;		
 		private IBattleModel battleModel;
 		private ICombatEvent battleEvent;
 
-		public IBattleEntity Self => ReturnOrThrow(self, "SELF");
-		public IBattleEntity Source => ReturnOrThrow(source, "SOURCE");
-		public IBattleEntity Target => ReturnOrThrow(self, "TARGET");
+		public IBattleEntity Self => ReturnOrThrow(self, "SELF");		
+		public IBattleEntity Target => ReturnOrThrow(target, "TARGET");
 		public IBattleModel BattleModel => ReturnOrThrow(battleModel, "BATTLE");
 		public ICombatEvent BattleEvent => ReturnOrThrow(battleEvent, "EVENT");
 
@@ -27,24 +25,26 @@ namespace Redninja.Components.Conditions.Expressions
 			return item;
 		}
 
-		public static ExpressionEnv From(IBattleModel model, IBattleEntity self, IBattleEntity target)
+		public class ExpressionEnvBuilder : BuilderBase<IExpressionEnv, ExpressionEnvBuilder>
 		{
-			ExpressionEnv env = new ExpressionEnv();
-			env.self = self;
-			env.battleModel = model;
-			env.target = target;
-			return env;
-		}
+			private ExpressionEnv env;
 
-		public static ExpressionEnv From(IBattleModel model, IBattleEntity self, ICombatEvent battleEvent)
-		{
-			ExpressionEnv env = new ExpressionEnv();
-			env.source = battleEvent.Source;
-			env.self = self;
-			env.battleModel = model;
-			env.target = battleEvent.Target;
-			env.battleEvent = battleEvent;
-			return env;
+			public ExpressionEnvBuilder() => Reset();
+
+			public override ExpressionEnvBuilder Reset() => Self(x => env = new ExpressionEnv());
+
+			public ExpressionEnvBuilder Self(IBattleEntity self) => Self(x => env.self = self);
+
+			public ExpressionEnvBuilder Target(IBattleEntity target) => Self(x => env.target = target);
+
+			public ExpressionEnvBuilder Context(IBattleContext context) => Self(x => env.battleModel = context.BattleModel);
+
+			public ExpressionEnvBuilder Event(ICombatEvent e) => Self(x => env.battleEvent = e);
+			
+			public override IExpressionEnv Build()
+			{
+				return env;
+			}
 		}
 	}
 }

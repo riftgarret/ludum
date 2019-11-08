@@ -93,7 +93,7 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 
 			var unit = this.CreateEntity(10, 10);
 
-			var result = subject.IsTargetConditionMet(unit, unit, Substitute.For<IBattleModel>());
+			var result = subject.IsConditionMet(x => x.Self(unit).Target(unit));
 			Assert.That(result, Is.True);
 		}
 	}
