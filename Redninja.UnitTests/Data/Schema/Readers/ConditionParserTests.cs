@@ -1,13 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System;
+using NSubstitute;
 using NUnit.Framework;
+using Redninja.Components.Conditions;
 using Redninja.Text;
+using Redninja.Components.Conditions.Operators;
 
 namespace Redninja.Data.Schema.Readers.UnitTests
 {
 	[TestFixture]
-	public class ConditionParserTests
+	public class ConditionParserTests : TestBase
 	{
 		[TestCase("REQUIRE < 51", "< 51")]
 		[TestCase("REQUIRE <= 1", "<= 1")]
@@ -29,8 +33,21 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 			Assert.That(match.Groups["test"].Value, Is.EqualTo(expected));
 		}
 
-		[TestCase("SELF.EXP1.EXP2", "SELF", "EXP1", "EXP2")]
-		[TestCase("Ally.Helper.HP%", "Ally", "Helper", "HP%")]
+		[TestCase("require all", typeof(AllOpRequirement))]
+		[TestCase("require ANY", typeof(AnyOpRequirement))]
+		[TestCase("require > 3", typeof(OpCountRequirement))]
+		public void CreateCondition_ParseRequire(string prefix, Type expectedType)
+		{
+			string input = $"{prefix} bm.ally.s_hp < self.s_hp";
+			ConditionParser parser = new ConditionParser();
+
+			var success = parser.TryParseCondition(input, out ICondition subject);
+
+			Assert.That(subject.OpRequirement, Is.TypeOf(expectedType));
+		}
+
+		[TestCase("SELF.EXP1.EXP2", "SELF.EXP1.EXP2")]
+		[TestCase("Ally.Helper.HP%", "Ally.Helper.HP%")]
 		[TestCase("Ally", "Ally")]
 		public void AddExpCapture(string input, params string[] expectedArray)
 		{
@@ -64,6 +81,20 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 			var match = Regex.Match(input, pattern);
 			Assert.That(match.Groups.Count, Is.EqualTo(2));
 			Assert.That(match.Groups["test"].Success, Is.True);
+		}
+
+		[Test]
+		public void SelfEqualsTarget()
+		{
+			ConditionParser parser = new ConditionParser();
+
+			var success = parser.TryParseCondition("SELF = Target", out ICondition subject);
+			Assert.That(success, Is.True);
+
+			var unit = this.CreateEntity(10, 10);
+
+			var result = subject.IsConditionMet(x => x.Self(unit).Target(unit));
+			Assert.That(result, Is.True);
 		}
 	}
 }

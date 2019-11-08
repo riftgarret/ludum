@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Redninja.Components.Actions;
+using Redninja.Components.Conditions;
 using Redninja.Components.Skills;
 
 namespace Redninja.Components.Decisions.AI
@@ -133,7 +134,7 @@ namespace Redninja.Components.Decisions.AI
 		public class ConditionEval
 		{
 			public bool IsValid { get; set; }
-			public IAITargetCondition Condition { get; set; }
+			public ICondition Condition { get; set; }
 		}
 	}	
 }

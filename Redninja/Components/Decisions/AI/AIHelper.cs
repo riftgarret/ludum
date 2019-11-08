@@ -34,31 +34,6 @@ namespace Redninja.Components.Decisions.AI
 		}
 
 		/// <summary>
-		/// Helper to apply the proper conditional to evaluate the condition.
-		/// </summary>
-		/// <param name="left"></param>
-		/// <param name="op"></param>
-		/// <param name="right"></param>
-		/// <returns></returns>
-		internal static bool EvaluateCondition(double left, AIValueConditionOperator op, double right)
-		{
-			switch(op)
-			{				
-				case AIValueConditionOperator.LT:
-					return left < right;
-				case AIValueConditionOperator.LTE:
-					return left <= right;
-				case AIValueConditionOperator.GT:
-					return left > right;
-				case AIValueConditionOperator.GTE:
-					return left >= right;
-				case AIValueConditionOperator.EQ:
-				default:
-					return left == right;
-			}
-		}
-
-		/// <summary>
 		/// Helper method for finding best qualified member. 
 		/// </summary>
 		/// <param name="qualifier"></param>

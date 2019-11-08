@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NUnit.Framework;
 
-namespace Redninja.Components.Decisions.AI
+namespace Redninja.Components.Conditions
 {
-	public interface IAIAttackRule
+	[TestFixture]
+	public class ConditionTests
 	{
-		IAITargetPriority TargetPriority { get; }
+		
 	}
 }

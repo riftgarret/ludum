@@ -4,29 +4,15 @@ using System.Linq;
 
 namespace Redninja.Components.Conditions.Expressions
 {
-	public class NumberExpression : IEnvExpression
+	public class NumberExpression : IExpression
 	{
-		public NumberExpression(int result, bool percent = false)
+		public NumberExpression()
 		{
-			Result = result;
-			IsPercent = percent;
-			ResultType = percent ? ExpressionResultType.Percent : ExpressionResultType.IntValue;
+			
 		}
 
-		public ExpressionResultType ResultType { get; }
+		public ExpressionResultType ResultType { get; } = ExpressionResultType.IntValue;
 
-		public bool IsPercent { get; }
-
-		public object Result { get; }
-
-		public IParamExpression Next
-		{
-			get => null;
-			set => throw new InvalidOperationException("Cannot set string expression next");
-		}
-
-		public IEnumerable<object> GetResult(IExpressionEnv env) => Enumerable.Repeat(Result, 1);
-
-		public override string ToString() => $"{Result}";
+		public object GetResult(IExpressionEnv env, object number) => (float) number;		
 	}
 }

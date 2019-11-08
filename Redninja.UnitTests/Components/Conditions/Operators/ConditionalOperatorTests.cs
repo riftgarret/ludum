@@ -13,10 +13,7 @@ namespace Redninja.Components.Conditions.Operators.UnitTests
 		[Test]
 		public void IsTrue_AllCrossScanned([Values(0, 1, 10)] int leftCount, [Values(0, 1, 10)] int rightCount)
 		{
-			int expectedResult = leftCount * rightCount;
-
-			IExpressionResultDef resultDef = Substitute.For<IExpressionResultDef>();
-			resultDef.IsTrue(null, null, Arg.Any<ConditionOperatorType>()).ReturnsForAnyArgs(true);
+			int expectedResult = leftCount * rightCount;						
 
 			IOperatorCountRequirement requirement = Substitute.For<IOperatorCountRequirement>();
 
@@ -24,11 +21,9 @@ namespace Redninja.Components.Conditions.Operators.UnitTests
 
 			subject.IsTrue(Enumerable.Range(1, leftCount).Select(x => (object) x),
 						   Enumerable.Range(1, rightCount).Select(x => (object) x),
-						   requirement,
-						   resultDef);
-
-			resultDef.Received(expectedResult).IsTrue(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<ConditionOperatorType>());
-			requirement.Received().MeetsRequirement(expectedResult, expectedResult);
+						   requirement);
+			
+			requirement.Received().MeetsRequirement(Arg.Any<int>(), Arg.Is(expectedResult));
 		}
 
 
@@ -41,11 +36,46 @@ namespace Redninja.Components.Conditions.Operators.UnitTests
 			subject = new ConditionalOperator(ConditionOperatorType.LT);
 
 			bool result = subject.IsTrue(
-				Enumerable.Repeat((object) 1, 1),
-				Enumerable.Repeat((object) 2, 1),
-				AnyOpRequirement.Instance,
-				ResultDefFactory.IntValueResult
+				Enumerable.Repeat((object) left, 1),
+				Enumerable.Repeat((object) right, 1),
+				AnyOpRequirement.Instance
 			);
+
+			Assert.That(result, Is.EqualTo(expected));
+		}
+
+		[TestCase(0, 1, false)]
+		[TestCase(1, 1, true)]
+		[TestCase(1, 0, false)]
+		[TestCase(10, 10, true)]
+		public void IsTrue_OneToOne_EQ_IntValue(int left, int right, bool expected)
+		{
+			subject = new ConditionalOperator(ConditionOperatorType.EQ);
+
+			bool result = subject.IsTrue(
+				Enumerable.Repeat((object)left, 1),
+				Enumerable.Repeat((object)right, 1),
+				AnyOpRequirement.Instance
+			);
+
+			Assert.That(result, Is.EqualTo(expected));
+		}
+
+		[TestCase(0, 1, true)]
+		[TestCase(1, 1, false)]
+		[TestCase(1, 0, true)]
+		[TestCase(10, 10, false)]
+		public void IsTrue_OneToOne_NEQ_IntValue(int left, int right, bool expected)
+		{
+			subject = new ConditionalOperator(ConditionOperatorType.NEQ);
+
+			bool result = subject.IsTrue(
+				Enumerable.Repeat((object)left, 1),
+				Enumerable.Repeat((object)right, 1),
+				AnyOpRequirement.Instance
+			);
+
+			Assert.That(result, Is.EqualTo(expected));
 		}
 
 		[TestCase(0, 1, 5, true)]
@@ -58,11 +88,12 @@ namespace Redninja.Components.Conditions.Operators.UnitTests
 			subject = new ConditionalOperator(ConditionOperatorType.LT);
 
 			bool result = subject.IsTrue(
-				Enumerable.Repeat((object)1, 1),
-				Enumerable.Repeat((object)2, 1),
-				AllOpRequirement.Instance,
-				ResultDefFactory.IntValueResult
+				Enumerable.Repeat((object)left, 1),
+				new object[] { right, right2 },
+				AllOpRequirement.Instance
 			);
+
+			Assert.That(result, Is.EqualTo(expected));
 		}
 	}
 }

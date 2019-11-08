@@ -13,7 +13,8 @@
       {
         "dataid": "goblin_warrior",
         "ruleIds": [
-          "fire_enemy"
+          "fire_enemy",
+          "fire_enemy2"
         ]
       }
     ]

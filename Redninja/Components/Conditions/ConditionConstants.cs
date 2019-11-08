@@ -6,7 +6,9 @@
 		ClassName,
 		IntValue,
 		Percent,
-		Battle
+		Battle,
+		Event,
+		Environment // not to be used, but for consistency
 	}
 
 	public enum ConditionOperatorType
@@ -33,6 +35,8 @@
 		Avg
 	}
 
+	
+
 	public enum ConditionTargetType
 	{
 		Self,
@@ -41,6 +45,6 @@
 		Enemy,
 		Ally,
 		AllyNotSelf,
-		Any
+		Unit
 	}
 }

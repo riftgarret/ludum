@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using Davfalcon.Stats;
 using Newtonsoft.Json;
 using Redninja.Components.Actions;
+using Redninja.Components.Conditions;
 using Redninja.Components.Decisions.AI;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
@@ -16,6 +17,18 @@ namespace Redninja.Data.Schema.Readers
 {
 	internal static class ParseHelper
 	{
+		private static readonly List<Type> _KNOWN_ENUM_TYPES = new List<Type>()
+			{
+				typeof(Stat),
+				typeof(LiveStat),
+				typeof(CalculatedStat),
+				typeof(DamageType),
+				typeof(WeaponSlotType),
+				typeof(WeaponType)
+			};
+
+		private static ConditionParser _CONDITION_PARSER_INSTANCE = new ConditionParser();
+
 		/// <summary>
 		/// Parse out pattern so we can put in (0,1),(0,2)... or just 'row'.
 		/// </summary>
@@ -83,6 +96,17 @@ namespace Redninja.Data.Schema.Readers
 		}
 
 		/// <summary>
+		/// Create a new Condition from raw input. See Condition workflow on wiki.
+		/// </summary>
+		/// <param name="input"></param>
+		/// <returns></returns>
+		public static ICondition ParseCondition(string input)
+		{
+			if (_CONDITION_PARSER_INSTANCE.TryParseCondition(input, out ICondition condition)) return condition;
+			throw new InvalidOperationException($"Unable to parse condition: {input}");
+		}
+
+		/// <summary>
 		/// Convert enum to instance.
 		/// </summary>
 		/// <param name="targetCondition"></param>
@@ -102,54 +126,6 @@ namespace Redninja.Data.Schema.Readers
 			}
 			return paramz;
 		}			
-
-		public static IAITargetCondition ParseAITargetCondition(string conditionParam)
-		{
-			if (TryParseConditionExpression(conditionParam, out IAITargetCondition cond)) return cond;
-			return (IAITargetCondition)typeof(AIConditionFactory).GetProperty(conditionParam).GetValue(null);
-		}
-
-		private static bool TryParseConditionExpression(string raw, out IAITargetCondition condition)
-		{
-			// combat stats condition match
-			Match match = Regex.Match(raw, @"(?<stat>[^\s]+)(\s*)(?<op>\>|\<|=|\>=|\<=)(\s*)(?<val>\d+)(?<perc>%?)");
-			condition = null;
-			if (!match.Success) return false;					
-				
-			if (!TryParseStatRaw(match.Groups["stat"].Value, out Enum someStat)) return false;
-			if (!TryParseOperatorType(match.Groups["op"].Value, out AIValueConditionOperator op)) return false;
-			if (!int.TryParse(match.Groups["val"].Value, out int value)) return false;
-			bool isPercent = match.Groups["perc"].Value.Equals("%");
-
-			IStatEvaluator statEvaluator = CreateStatEval(someStat, isPercent);
-			condition = AIConditionFactory.CreateCombatStatCondition(value, statEvaluator, op);
-			return true;
-		}
-
-		private static bool TryParseOperatorType(string raw, out AIValueConditionOperator op)
-		{
-			switch(raw)
-			{
-				case ">":
-					op = AIValueConditionOperator.GT;
-					return true;
-				case ">=":
-					op = AIValueConditionOperator.GTE;
-					return true;
-				case "<":
-					op = AIValueConditionOperator.LT;
-					return true;
-				case "<=":
-					op = AIValueConditionOperator.LTE;
-					return true;
-				case "=":
-					op = AIValueConditionOperator.EQ;
-					return true;
-				default:
-					op = AIValueConditionOperator.EQ;
-					return false;
-			}
-		}
 
 		public static IAITargetPriority ParseAITargetPriority(string priorityFactoryProperty)
 			=> (IAITargetPriority)typeof(AITargetPriorityFactory).GetProperty(priorityFactoryProperty).GetValue(null);
@@ -178,17 +154,7 @@ namespace Redninja.Data.Schema.Readers
 					throw new SystemException($"Failed to Apply property: {e.Key} : {e.Value}", ex);
 				}
 			});
-		}		
-
-		private static readonly List<Type> _KNOWN_ENUM_TYPES = new List<Type>()
-			{
-				typeof(Stat),
-				typeof(LiveStat),
-				typeof(CalculatedStat),
-				typeof(DamageType),
-				typeof(WeaponSlotType),
-				typeof(WeaponType)
-			};
+		}				
 
 		internal static bool TryParseStatRaw(string raw, out Enum val)
 		{

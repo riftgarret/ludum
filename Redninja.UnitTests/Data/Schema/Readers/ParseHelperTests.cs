@@ -25,29 +25,6 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 			Assert.IsTrue(result(null, null));
 		}
 
-		public static IEnumerable ParseAITargetConditionTestCases
-		{
-			get
-			{
-				yield return new TestCaseData("AlwaysTrue", AIConditionFactory.AlwaysTrue);
-				yield return new TestCaseData("CalculatedStat.HPTotal > 50", AIConditionFactory.CreateCombatStatCondition(
-					50, new CalculatedStatEvaluator(CalculatedStat.HPTotal), AIValueConditionOperator.GT));
-				yield return new TestCaseData("LiveStat.LiveResource = 100%", AIConditionFactory.CreateCombatStatCondition(
-					100, new LiveStatEvaluator(LiveStat.LiveResource, true), AIValueConditionOperator.EQ));
-				yield return new TestCaseData("Stat.DEF <= 20", AIConditionFactory.CreateCombatStatCondition(
-					20, new StatEvaluator(Stat.DEF), AIValueConditionOperator.LTE));
-				yield return new TestCaseData("LiveStat.LiveHP >= 9%", AIConditionFactory.CreateCombatStatCondition(
-					9, new LiveStatEvaluator(LiveStat.LiveHP, true), AIValueConditionOperator.GTE));
-			}
-		}
-
-		[Test, TestCaseSource("ParseAITargetConditionTestCases")]
-		public void ParseAITargetCondition(string text, IAITargetCondition expected)
-		{
-			var result = ParseHelper.ParseAITargetCondition(text);
-			Assert.That(result, Is.EqualTo(expected));
-		}
-
 		[Test]
 		public void ParseAITargetPriority()
 		{
@@ -170,7 +147,7 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 		[Test]
 		public void CreateInstance_ExecutorBehavior()
 		{
-			var result = ParseHelper.CreateInstance<IBuffExecutionBehavior>("Redninja.Components.Buffs.Behavior", "DamageOvertimeExecutionBehavior");
+			var result = ParseHelper.CreateInstance<IBuffExecutionBehavior>("Redninja.Components.Buffs.Behaviors", "DamageOvertimeExecutionBehavior");
 			Assert.IsInstanceOf<IBuffExecutionBehavior>(result);
 		}
 
@@ -180,12 +157,12 @@ namespace Redninja.Data.Schema.Readers.UnitTests
 			var behavior = new DamageOvertimeExecutionBehavior();
 			ParseHelper.ApplyProperties(behavior, new Dictionary<string, object>()
 			{
-				{ "DamageSource", "Stat.HP" },
+				{ "DamageSource", "DamageType.Fire" },
 				{ "TicksPerSecond", 3 },
 				{ "KRatePerSecond", 2 }
 			});
 
-			Assert.That(behavior.DamageSource, Is.EqualTo(Stat.HP));
+			Assert.That(behavior.DamageSource, Is.EqualTo(DamageType.Fire));
 			Assert.That(behavior.TicksPerSecond, Is.EqualTo(3));
 			Assert.That(behavior.KRatePerSecond, Is.EqualTo(2));
 		}

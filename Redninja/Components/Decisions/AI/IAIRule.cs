@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Redninja.Components.Conditions;
 using Redninja.Components.Targeting;
 
 namespace Redninja.Components.Decisions.AI
@@ -10,6 +11,6 @@ namespace Redninja.Components.Decisions.AI
 		string RuleName { get; }
 		int Weight { get; }
 
-		IEnumerable<Tuple<TargetTeam, IAITargetCondition>> TriggerConditions { get; }
+		IEnumerable<ICondition> TriggerConditions { get; }
 	}
 }
