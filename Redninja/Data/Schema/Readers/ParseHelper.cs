@@ -127,54 +127,6 @@ namespace Redninja.Data.Schema.Readers
 			return paramz;
 		}			
 
-		public static IAITargetCondition ParseAITargetCondition(string conditionParam)
-		{
-			if (TryParseConditionExpression(conditionParam, out IAITargetCondition cond)) return cond;
-			return (IAITargetCondition)typeof(AIConditionFactory).GetProperty(conditionParam).GetValue(null);
-		}
-
-		private static bool TryParseConditionExpression(string raw, out IAITargetCondition condition)
-		{
-			// combat stats condition match
-			Match match = Regex.Match(raw, @"(?<stat>[^\s]+)(\s*)(?<op>\>|\<|=|\>=|\<=)(\s*)(?<val>\d+)(?<perc>%?)");
-			condition = null;
-			if (!match.Success) return false;					
-				
-			if (!TryParseStatRaw(match.Groups["stat"].Value, out Enum someStat)) return false;
-			if (!TryParseOperatorType(match.Groups["op"].Value, out AIValueConditionOperator op)) return false;
-			if (!int.TryParse(match.Groups["val"].Value, out int value)) return false;
-			bool isPercent = match.Groups["perc"].Value.Equals("%");
-
-			IStatEvaluator statEvaluator = CreateStatEval(someStat, isPercent);
-			condition = AIConditionFactory.CreateCombatStatCondition(value, statEvaluator, op);
-			return true;
-		}
-
-		private static bool TryParseOperatorType(string raw, out AIValueConditionOperator op)
-		{
-			switch(raw)
-			{
-				case ">":
-					op = AIValueConditionOperator.GT;
-					return true;
-				case ">=":
-					op = AIValueConditionOperator.GTE;
-					return true;
-				case "<":
-					op = AIValueConditionOperator.LT;
-					return true;
-				case "<=":
-					op = AIValueConditionOperator.LTE;
-					return true;
-				case "=":
-					op = AIValueConditionOperator.EQ;
-					return true;
-				default:
-					op = AIValueConditionOperator.EQ;
-					return false;
-			}
-		}
-
 		public static IAITargetPriority ParseAITargetPriority(string priorityFactoryProperty)
 			=> (IAITargetPriority)typeof(AITargetPriorityFactory).GetProperty(priorityFactoryProperty).GetValue(null);
 

@@ -62,14 +62,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			allEntities.Add(mEntity);
 			return mEntity;
 		}
-
-		protected IAITargetCondition AddMockCondition(TargetTeam target, bool isValid, IBattleEntity entityArg = null)
-		{
-			IAITargetCondition mockCondition = Substitute.For<IAITargetCondition>();
-			mockCondition.IsValid(entityArg ?? Arg.Any<IBattleEntity>()).Returns(isValid);
-			// TODO
-			return mockCondition;
-		}		
+			
 
 		[TestCase(4, 3)]
 		[TestCase(1, 0)]

@@ -69,7 +69,6 @@
     <Compile Include="Components\Conditions\ConditionTests.cs" />
     <Compile Include="Components\Conditions\Expressions\ExpressionParserTests.cs" />
     <Compile Include="Components\Decisions\AI\AICombatStatsPriorityTests.cs" />
-    <Compile Include="Components\Decisions\AI\AICombatStatsConditionTests.cs" />
     <Compile Include="Components\Decisions\AI\AIExecutorTests.cs" />
     <Compile Include="Components\Decisions\AI\AISkillRuleTests.cs" />
     <Compile Include="Components\Decisions\AI\AIRuleBaseTests.cs" />
