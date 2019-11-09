@@ -21,7 +21,7 @@ namespace Redninja
 			LiveStatContainer container = new LiveStatContainer(maxHp);
 			container.Current = curHp;
 			IBattleEntity unit = Substitute.For<IBattleEntity>();
-			unit.LiveStats[LiveStat.LiveHP].Returns(container);
+			unit.LiveStats[LiveStat.HP].Returns(container);
 			return unit;
 		}
 	}

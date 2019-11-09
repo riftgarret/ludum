@@ -7,7 +7,6 @@ using Redninja.Components.Actions;
 using Redninja.Components.Buffs;
 using Redninja.Components.Combat;
 using Redninja.Components.Decisions;
-using Redninja.Components.Properties;
 using System.Linq;
 using Redninja.Components.Decisions.AI;
 using Redninja.Components.StatCalculators;
@@ -72,13 +71,11 @@ namespace Redninja.Entities
 		private void HandleActionSet(IBattleEntity e, IOperationSource o) => ActionSet?.Invoke(e, o);
 		private void HandleActionNeeded(IBattleEntity e) => ActionNeeded?.Invoke(e);
 
-		public IUnitBuffManager Buffs { get; } = new UnitBuffManager();
+		public IUnitBuffManager Buffs { get; } = new UnitBuffManager();		
 
-		// TODO pull properties from equipment, buffs, class def
-		public IEnumerable<ITriggeredProperty> TriggeredProperties => Enumerable.Empty<ITriggeredProperty>();
-
-		public LiveStatContainer HP => LiveStats[LiveStat.LiveHP];
-		public LiveStatContainer Resource => LiveStats[LiveStat.LiveResource];
+		public LiveStatContainer HP => LiveStats[LiveStat.HP];
+		public LiveStatContainer Mana => LiveStats[LiveStat.Mana];
+		public LiveStatContainer Stamina => LiveStats[LiveStat.Stamina];
 
 		private readonly Dictionary<LiveStat, LiveStatContainer> liveStats = new Dictionary<LiveStat, LiveStatContainer>();
 
@@ -104,8 +101,9 @@ namespace Redninja.Entities
 			Modifiers.Bind(() => unit.AsModified());
 
 			// TODO add volatile stats component
-			liveStats[LiveStat.LiveHP] = new LiveStatContainer(Stats.CalculateTotalHp());
-			liveStats[LiveStat.LiveResource] = new LiveStatContainer(Stats.CalculateTotalResource());			
+			liveStats[LiveStat.HP] = new LiveStatContainer(Stats.FinalHp());
+			liveStats[LiveStat.Mana] = new LiveStatContainer(Stats.FinalMana());
+			liveStats[LiveStat.Stamina] = new LiveStatContainer(Stats.FinalStamina());
 		}
 
 		// Considering raising this stuff to BEM

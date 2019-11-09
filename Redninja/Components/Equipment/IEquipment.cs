@@ -1,5 +1,4 @@
 ﻿using Davfalcon.Equipment;
-using Redninja.Components.Properties;
 
 namespace Redninja.Components.Equipment
 {

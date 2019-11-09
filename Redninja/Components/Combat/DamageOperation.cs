@@ -6,7 +6,7 @@ using Redninja.Logging;
 
 namespace Redninja.Components.Combat
 {
-	internal class DamageOperationDefinition : IBattleOperationDefinition
+	internal class DamageOperationDefinition : IBattleOperationDefinition, IWeaponSkillParam
 	{
 		public int SkillDamage { get; set; }
 		public DamageType DamageType { get; set; }
@@ -36,9 +36,13 @@ namespace Redninja.Components.Combat
 
 		public void Execute(IBattleContext context)
 		{
+			IStats defStats = def.Stats;
+			IStats weaponStats = OperationHelper.ExtractWeaponStats(def, unit);
+			IStats combined = defStats.Join(weaponStats);
+
 			foreach (IBattleEntity t in target.GetValidTargets(unit, context.BattleModel))
 			{
-				// TODO, implement damage logic here
+				context.CombatExecutor.DealDamage(unit, t, combined, def.DamageType);
 				RLog.D(this, $"Damage operation from: {unit.Name} to: {t.Name}");
 			}
 		}

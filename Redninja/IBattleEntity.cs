@@ -4,7 +4,6 @@ using Redninja.Components.Actions;
 using Redninja.Components.Buffs;
 using Redninja.Components.Combat;
 using Redninja.Components.Decisions.AI;
-using Redninja.Components.Properties;
 
 namespace Redninja
 {
@@ -21,11 +20,10 @@ namespace Redninja
 
 		// dunno about these, are they necessary?
 		LiveStatContainer HP { get; }
-		LiveStatContainer Resource { get; }
+		LiveStatContainer Mana { get; }
+		LiveStatContainer Stamina { get; }
 
 		IReadOnlyDictionary<LiveStat, LiveStatContainer> LiveStats { get; }
-
-		IEnumerable<ITriggeredProperty> TriggeredProperties { get; }
 
 		void InitializeBattlePhase();
 		void MovePosition(int row, int col);

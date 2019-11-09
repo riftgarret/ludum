@@ -65,6 +65,7 @@
     <Compile Include="Nodes\NodeExtensions.cs" />
     <Compile Include="Nodes\NodeBase.cs" />
     <Compile Include="Nodes\ValueNode.cs" />
+    <Compile Include="Stats\EmptyStats.cs" />
     <Compile Include="Stats\IStatNode.cs" />
     <Compile Include="Stats\IStatsCalculator.cs" />
     <Compile Include="IStatsProperties.cs" />

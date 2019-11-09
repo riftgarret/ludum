@@ -24,18 +24,32 @@ namespace Redninja
 		{
 			switch (calcStat)
 			{
-				case CalculatedStat.HPTotal:
-					return stats.CalculateTotalHp();					
-				case CalculatedStat.ResourceTotal:
-					return stats.CalculateTotalResource();
-				case CalculatedStat.PhysicalDamageTotal:
-					return stats.GetPhysicalDamageTotal();
-				case CalculatedStat.PhysicalReductionTotal:
-					return stats.GetPhysicalReductionTotal();
-				case CalculatedStat.PhysicalResistanceTotal:
-					return stats.GetPhysicalResistanceTotal();
-				case CalculatedStat.PhysicalPenetrationTotal:
-					return stats.GetPhysicalPenetrationTotal();
+				case CalculatedStat.HP:
+					return stats.FinalHp();
+				case CalculatedStat.Mana:
+					return stats.FinalMana();
+				case CalculatedStat.Stamina:
+					return stats.FinalStamina();
+				case CalculatedStat.SlashDamage:
+					return stats.FinalSlashDamage();
+				case CalculatedStat.SlashResistance:
+					return stats.FinalSlashResistance();
+				case CalculatedStat.SlashReduction:
+					return stats.FinalSlashReduction();
+				case CalculatedStat.SlashPenetration:
+					return stats.FinalSlashPenetration();
+				case CalculatedStat.FireDamage:
+					return stats.FinalFireDamage();
+				case CalculatedStat.FireResistance:
+					return stats.FinalFireResistance();
+				case CalculatedStat.FireReduction:
+					return stats.FinalFireReduction();
+				case CalculatedStat.FirePenetration:
+					return stats.FinalFirePenetration();				
+				case CalculatedStat.Level:
+					return stats[Stat.Level];
+				case CalculatedStat.Zero:
+					return 0; 
 			}
 
 			throw new InvalidOperationException("Illegal stat value unmapped: " + calcStat);

@@ -8,15 +8,17 @@ namespace Redninja.Components.Combat.Events
 {
 	public class DamageResult
 	{
+		public DamageType DamageType { get; private set; }
 		public int Damage { get; private set; }
 		public int Reduction { get; private set; }
 		public int Penetration { get; private set; }
 		public int Resistance { get; private set; }
 		public int Total { get; private set; }
 
-		public static DamageResult Create(int damage, int reduction, int penetration, int resistance)
+		public static DamageResult Create(DamageType type, int damage, int reduction, int penetration, int resistance)
 		{
 			DamageResult result = new DamageResult();
+			result.DamageType = type;
 			result.Damage = damage;
 			result.Penetration = penetration;
 			result.Reduction = reduction;

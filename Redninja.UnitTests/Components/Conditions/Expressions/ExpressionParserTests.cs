@@ -43,13 +43,13 @@ namespace Redninja.Components.Conditions.Expressions
 		[Test]
 		public void ParseLiveStatCurrent()
 		{
-			string raw = "self.v_livehp";
+			string raw = "self.v_hp";
 			RootExpression subject = new RootExpression(raw);
 
 			LiveStatContainer container = new LiveStatContainer(100);
 			container.Current = 32;
 
-			mEnv.Self.LiveStats[LiveStat.LiveHP].Returns(container);
+			mEnv.Self.LiveStats[LiveStat.HP].Returns(container);
 
 			var result = subject.GetResult(mEnv, mEnv);
 			Assert.That(result, Is.EqualTo(32));
@@ -58,7 +58,7 @@ namespace Redninja.Components.Conditions.Expressions
 		[Test]
 		public void ParseLiveStatPercent()
 		{
-			string raw = "self.v_livehp%";
+			string raw = "self.v_hp%";
 			RootExpression subject = new RootExpression(raw);
 		
 			var unit = this.CreateEntity(32, 100);
@@ -71,7 +71,7 @@ namespace Redninja.Components.Conditions.Expressions
 		[Test]
 		public void ParseEntities_LiveStatCurrent()
 		{
-			string raw = "bm.unit.v_livehp";
+			string raw = "bm.unit.v_hp";
 			RootExpression subject = new RootExpression(raw);
 
 			var unit1 = this.CreateEntity(32, 100);
@@ -91,7 +91,7 @@ namespace Redninja.Components.Conditions.Expressions
 		[Test]
 		public void ParseEntities_LiveStatCurrent_AggregateMax()
 		{
-			string raw = "highest.bm.unit.v_livehp";
+			string raw = "highest.bm.unit.v_hp";
 			RootExpression subject = new RootExpression(raw);
 
 			var unit1 = this.CreateEntity(32, 100);
@@ -110,7 +110,7 @@ namespace Redninja.Components.Conditions.Expressions
 		[Test]
 		public void ParseEntities_LiveStatCurrent_AggregateMin()
 		{
-			string raw = "lowest.bm.unit.v_livehp";
+			string raw = "lowest.bm.unit.v_hp";
 			RootExpression subject = new RootExpression(raw);
 
 			var unit1 = this.CreateEntity(32, 100);
@@ -129,7 +129,7 @@ namespace Redninja.Components.Conditions.Expressions
 		[Test]
 		public void ParseEntities_LiveStatCurrent_AggregateAvg()
 		{
-			string raw = "avg.bm.unit.v_livehp";
+			string raw = "avg.bm.unit.v_hp";
 			RootExpression subject = new RootExpression(raw);
 
 			var unit1 = this.CreateEntity(32, 100);

@@ -59,7 +59,7 @@ public class BattleCharacterOverlayUI : MonoBehaviour, IPointerClickHandler
 
 		hpBar.PercentFill = unit.HP.Percent;
 		hpText.text = "" + unit.HP.Current;
-		resBar.PercentFill = unit.Resource.Percent;
+		resBar.PercentFill = unit.Mana.Percent;
 		resText.text = "" + unit.HP.Current;
 		nameText.text = Unit.Name;
 		switch (Unit.Actions.Phase)

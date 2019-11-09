@@ -30,23 +30,23 @@ namespace Redninja.Data.Schema.Readers
 			CombatSkill skill = new CombatSkill();
 			skill.Name = item.Name;			
 			skill.Time = ParseHelper.ParseActionTime(item.Time);
-			skill.Targets.AddRange(item.TargetingSets.Select(ts => ParseTargetSchema(ts, store)));		
+			skill.Targets.AddRange(item.TargetingSets.Select(ts => ParseTargetSchema(item, ts, store)));		
 
 			return skill;
 		}
 
-		internal SkillTargetingSet ParseTargetSchema(TargetingSetSchema tsSchema, ISchemaStore store)
+		internal SkillTargetingSet ParseTargetSchema(CombatSkillSchema rootSchema, TargetingSetSchema tsSchema, ISchemaStore store)
 		{
 			SkillTargetingSet targetSet = new SkillTargetingSet(store.SingleInstance<ITargetingRule>(tsSchema.TargetingRuleId));
 			foreach (BattleOperationSchema opSchema in tsSchema.Operations)
 			{
-				targetSet.OpDefinitions.Add(ParseOperation(opSchema));
+				targetSet.OpDefinitions.Add(ParseOperation(rootSchema, opSchema));
 			}
 			return targetSet;
 		}
 
 
-		internal IBattleOperationDefinition ParseOperation(BattleOperationSchema schema)
+		internal IBattleOperationDefinition ParseOperation(CombatSkillSchema rootSchema, BattleOperationSchema schema)
 		{
 			if(string.IsNullOrEmpty(schema.OperationType))
 				throw new NotSupportedException($"Required missing 'skill.operationType'");
@@ -56,9 +56,9 @@ namespace Redninja.Data.Schema.Readers
 			switch (opType)
 			{
 				case OperationType.Damage:
-					return ParseDamageParams(schema);
+					return ParseDamageParams(rootSchema, schema);
 				case OperationType.Debuff:
-					return ParseDebuffParams(schema);
+					return ParseDebuffParams(rootSchema, schema);
 			}
 
 			throw new NotImplementedException($"Missing implementation for {schema.OperationType}");
@@ -71,9 +71,10 @@ namespace Redninja.Data.Schema.Readers
 			public DamageType damageType;
 			public WeaponSlotType slotType;
 			public WeaponType weaponType;
+
 		}
 
-		private DamageOperationDefinition ParseDamageParams(BattleOperationSchema schema)
+		private DamageOperationDefinition ParseDamageParams(CombatSkillSchema rootSchema, BattleOperationSchema schema)
 		{
 			DamageOpSchema defSchema = schema.Params.ToObject<DamageOpSchema>();
 			DamageOperationDefinition def = new DamageOperationDefinition();
@@ -82,6 +83,7 @@ namespace Redninja.Data.Schema.Readers
 			def.DamageType = defSchema.damageType;
 			def.WeaponType = defSchema.weaponType;
 			def.ExecutionStart = schema.ExecutionStart;
+			def.Stats = ParseHelper.ParseStatsParams(schema.Stats, rootSchema.DefaultStats);
 			return def;
 		}
 		#endregion
@@ -91,12 +93,13 @@ namespace Redninja.Data.Schema.Readers
 			public string buffId;
 		}
 
-		private DebuffOperationDefinition ParseDebuffParams(BattleOperationSchema schema)
+		private DebuffOperationDefinition ParseDebuffParams(CombatSkillSchema rootSchema, BattleOperationSchema schema)
 		{
 			DebuffOpSchema defSchema = schema.Params.ToObject<DebuffOpSchema>();
 			DebuffOperationDefinition def = new DebuffOperationDefinition();
 			def.BuffId = defSchema.buffId;
 			def.ExecutionStart = schema.ExecutionStart;
+			def.Stats = ParseHelper.ParseStatsParams(schema.Stats, rootSchema.DefaultStats);
 			return def;
 		}
 		#endregion
