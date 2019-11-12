@@ -19,7 +19,7 @@
         "refreshTime": 0,
         "weight": 100,
         "triggerConditions": [
-          "require any bm.enemy.v_livehp% = 100"
+          "require any bm.enemy.v_hp% = 100"
         ],
         "targetConditions": [],
         "skillPriorityMap": {
@@ -33,7 +33,7 @@
         "refreshTime": 10,
         "weight": 1,
         "triggerConditions": [
-          "self.v_livehp% < 50"
+          "self.v_hp% < 50"
         ],
         "targetConditions": [],
         "skillPriorityMap": {

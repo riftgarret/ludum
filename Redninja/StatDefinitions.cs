@@ -1,52 +1,63 @@
 ﻿namespace Redninja
 {
 	public enum Stat
-    {
-		// basic stats
-        HP,
-		HPScale,
-		DEF,
-		ATK,
-        Resource,
-		STR,
-		STRScale,
+    {	
+		// Core stats
+		Level,
+
+		// volatile stats
+		HP,
+		HPConScale,
+		HPLevelScale,
+		Stamina,
+		StaminaStrScale,
+		StaminaLevelScale,
+		Mana,
+		ManaIntScale,
+		ManaLevelScale,
+
+		// attribute stats		
+		STR,		
 		CON,
 		AGI,
 		DEX,
 		INT,
 		WIS,
-		CHA,
-		LUK,
-		Level,
 
 		// WeaponTypes
 		WeaponTypeDagger,
 		WeaponTypeSword,
 
 		// Bleed 	
-		BleedDamageConst,
-		BleedDamageScale,
-		BleedReduction,
+		BleedDamageExtra,				
 
-		// Physical base stats
-		PhysicalDamage,
-		PhysicalDamageScale,
-		PhysicalDamagePenetration,
-		PhysicalDaggerDamage,
-		FlagPhysicalDamageAlsoUsesCon,
+		// Reduction base stats
+		ReductionAll,	
+		ReductionPhysical,
+		ReductionElemental,
+		ReductionFire,
+		ReductionSlash,
 
-		PhysicalDamageResistance,
-		PhysicalDamageReduction,
-		PhysicalDamageReductionCap,
-		
+		// Penetration
+		PenetrationSlash,
+		PenetrationFire,
 
+		// Resistance
+		ResistanceSlash,
+		ResistanceFire,
 
-		HpLevelScale,
+		// Damage
+		DamageAll,
+		DamagePhysical,
+		DamageElemental,
+		DamageSlash,
+		DamageFire,
+				
 	}
 
 	public enum DamageType
 	{
-		Physical,
+		Slash,
 		Fire,
 		Bleed
 	}
@@ -70,18 +81,26 @@
 
 	public enum CalculatedStat
 	{
-		HPTotal,
-		ResourceTotal,
-		PhysicalDamageTotal,
-		PhysicalReductionTotal,
-		PhysicalResistanceTotal,
-		PhysicalPenetrationTotal,
+		Zero,
+		HP,
+		Mana,
+		Stamina,
+		Level,
+		SlashDamage,
+		SlashReduction,
+		SlashResistance,
+		SlashPenetration,
+		FireDamage,
+		FireReduction,
+		FireResistance,
+		FirePenetration
 	}
 
 	public enum LiveStat
 	{
-		LiveHP,
-		LiveResource
+		HP,
+		Mana,
+		Stamina,
 	}
 
 	public enum StatModType

@@ -6,10 +6,19 @@ using System.Threading.Tasks;
 
 namespace Redninja.Components.Combat.Events
 {
-	public class DamageEvent : ICombatEvent
+	public enum DamageSourceType
 	{
+		Skill,
+		Tick,
+		Revenge
+	}
+
+	public class DamageEvent : ICombatEvent
+	{		
 		public IBattleEntity Source { get; }
 		public IBattleEntity Target { get; }
+
+		public DamageSourceType DamageSourceType { get; set; }
 
 		public int TotalDamage { get => results.Sum(x => x.Value.Total);  }
 
@@ -29,5 +38,11 @@ namespace Redninja.Components.Combat.Events
 		public void PutResult(DamageType type, DamageResult result) => results[type] = result;
 
 		public int Total => results.Values.Sum(x => x.Total);
+
+		private string DamageTypeDebug {
+			get => results.Keys.Select(val => Enum.GetName(typeof(DamageType), val)).Aggregate((cur, next) => cur + ", " + next);
+		}
+
+		public override string ToString() => $"DamageEvent [{Source.Name} -> {Target.Name}] : {DamageTypeDebug} {Total} Damage from {Enum.GetName(typeof(DamageSourceType), DamageSourceType)}";
 	}
 }

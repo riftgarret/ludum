@@ -36,7 +36,6 @@ namespace Redninja.Data.Schema.Readers
 			AddExpCapture(builder, GROUP_RIGHT_EXPRESSION);
 
 			pattern = builder.Build();
-			RLog.D(this, pattern);
 			
 			conditionOpParser = new ConditionOpParser();
 			requirementParser = new RequirementParser();
@@ -52,8 +51,6 @@ namespace Redninja.Data.Schema.Readers
 			if (!match.Groups[GROUP_LEFT_EXPRESSION].Success) return FalseWithLog($"Missing left expression: {raw}");
 			if (!match.Groups[GROUP_RIGHT_EXPRESSION].Success) return FalseWithLog($"Missing right expression: {raw}");
 			if (!match.Groups[GROUP_OP].Success) return FalseWithLog($"Missing OP expression: {raw}");
-
-
 
 			IExpression left = new RootExpression(match.Groups[GROUP_LEFT_EXPRESSION].Value);
 			IExpression right = new RootExpression(match.Groups[GROUP_RIGHT_EXPRESSION].Value);

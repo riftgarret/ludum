@@ -39,7 +39,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			int expectedIndex)
 		{
 
-			LiveStat stat = LiveStat.LiveHP;			
+			LiveStat stat = LiveStat.HP;			
 
 			AddUnit(stat, vol1);
 			AddUnit(stat, vol2);
@@ -61,7 +61,7 @@ namespace Redninja.Components.Decisions.AI.UnitTests
 			int vol3, int stat3,
 			int expectedIndex)
 		{
-			LiveStat stat = LiveStat.LiveHP;
+			LiveStat stat = LiveStat.HP;
 			AITargetingPriorityQualifier qualifier = AITargetingPriorityQualifier.Highest;
 
 			AddUnit(stat, vol1, stat1);

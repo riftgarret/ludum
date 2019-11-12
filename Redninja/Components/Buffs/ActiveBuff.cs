@@ -56,6 +56,7 @@ namespace Redninja.Components.Buffs
 			Duration = Properties.Duration;
 			ExecutionStart = context.Clock.Time;
 			Behavior.BattleOperationReady += (t, b) => context.OperationManager.Enqueue(t, b);
+			Behavior.Initialize(this);
 		}
 
 		private void OnTick(float timeDelta)

@@ -16,12 +16,14 @@
               {
                 "executionStart": 0.25,
                 "operationType": "Damage",
+                "stats": {
+                  "DamageFire": 30
+                },
                 "params": {
                   "damage": 20,
                   "damageType": "Fire",
                   "slotType": "Any",
-                  "weaponType": "Any",
-                  "stats": {}
+                  "weaponType": "Any"
                 }
               }
             ]
@@ -42,6 +44,7 @@
               {
                 "executionStart": 0.25,
                 "operationType": "Debuff",
+                "stats": {},
                 "params": {
                   "buffId": "bleed_hex"
                 }

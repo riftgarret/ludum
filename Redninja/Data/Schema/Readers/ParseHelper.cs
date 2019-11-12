@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Davfalcon;
 using Davfalcon.Stats;
 using Newtonsoft.Json;
 using Redninja.Components.Actions;
@@ -114,17 +115,26 @@ namespace Redninja.Data.Schema.Readers
 		public static TargetCondition ParseTargetCondition(string targetConditionName)
 			=> (TargetCondition)typeof(TargetConditions).GetProperty(targetConditionName).GetValue(null);
 
-		public static SkillOperationParameters ParseStatsParams(Dictionary<string, int> original)
+		public static IStats ParseStatsParams(Dictionary<string, int> operationStats, Dictionary<string, int> defaultStats)
 		{
-			if (original == null) return null;
-			SkillOperationParameters paramz = new SkillOperationParameters();
+			Dictionary<string, int> merged = new Dictionary<string, int>();
+			defaultStats.ForEach(e => merged[e.Key] = e.Value);
+			operationStats.ForEach(e => merged[e.Key] = e.Value);
+			return ParseStatsParams(merged);
+		}
+
+		public static IStats ParseStatsParams(Dictionary<string, int> original)
+		{
+			if (original == null) return EmptyStats.INSTANCE;
+			StatsMap stats = new StatsMap();
+			//SkillOperationParameters paramz = new SkillOperationParameters();
 			foreach(var e in original)
 			{
-				if(!Enum.TryParse<Stat>(e.Key, true, out Stat stat)) throw new FormatException($"Invalid Stat found {e.Key}");
-				paramz.EditableStats[stat] = e.Value;
+				if(!Enum.TryParse(e.Key, true, out Stat stat)) throw new FormatException($"Invalid Stat found {e.Key}");
+				stats[stat] = e.Value;
 				// TODO set combat flags (Projectile, Spell, Healing, Buff)
 			}
-			return paramz;
+			return stats;
 		}			
 
 		public static IAITargetPriority ParseAITargetPriority(string priorityFactoryProperty)
