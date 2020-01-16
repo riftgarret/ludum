@@ -14,7 +14,7 @@ namespace Redninja.Data.Schema.Readers
 			var unit = new Unit();
 			foreach (var item in cs.Stats)
 			{
-				unit.BaseStats[item.Key] = item.Value;
+				unit.CoreStats[item.Key] = item.Value;
 			}
 			unit.Name = cs.Name;			
 			//IUnit unit = Unit.Build(b =>

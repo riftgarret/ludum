@@ -54,6 +54,7 @@
     <Compile Include="Builders\IBuilder%28T%29.cs" />
     <Compile Include="Components\Actions\BattleOperationAction.cs" />
     <Compile Include="Components\Combat\DamageTickOperation.cs" />
+    <Compile Include="Components\Combat\Events\EventHistorian.cs" />
     <Compile Include="Components\Combat\IWeaponSkillParam.cs" />
     <Compile Include="Components\Combat\DebuffOperation .cs" />
     <Compile Include="Components\Combat\Events\Triggers\EventTrigger.cs" />
@@ -81,7 +82,7 @@
     <Compile Include="Components\Buffs\UnitBuffManager.cs" />
     <Compile Include="Components\Clock\Clock.cs" />
     <Compile Include="Components\Combat\Events\DamageEvent.cs" />
-    <Compile Include="Components\Combat\Events\DamageResult.cs" />
+    <Compile Include="Components\Combat\Events\DamageOperationResult.cs" />
     <Compile Include="Components\Combat\Events\BuffEvent.cs" />
     <Compile Include="Components\Combat\IBattleOperationDefinition.cs" />
     <Compile Include="Components\Combat\IDamageSource.cs" />

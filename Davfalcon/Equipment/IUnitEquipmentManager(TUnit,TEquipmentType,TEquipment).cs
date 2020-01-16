@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Davfalcon.Equipment
 {
-	public interface IUnitEquipmentManager<TUnit, TEquipmentType, TEquipment> : IModifier<TUnit>, IUnitComponent<TUnit>
+	public interface IUnitEquipmentManager<TUnit, TEquipmentType, TEquipment> : IStatsProvider, IUnitComponent<TUnit>
 		where TUnit : class, IUnitTemplate<TUnit>
 		where TEquipmentType : Enum
 		where TEquipment : class, IEquipment<TUnit, TEquipmentType>

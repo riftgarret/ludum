@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Davfalcon.Stats;
 
 namespace Davfalcon.Equipment
 {
 	[Serializable]
-	public class UnitEquipmentManager<TUnit, TEquipmentType, TEquipment> : Modifier<TUnit>,
+	public class UnitEquipmentManager<TUnit, TEquipmentType, TEquipment> : StatsProviderTemplate,
 		IUnitEquipmentManager<TUnit, TEquipmentType, TEquipment>,
 		IUnitComponent<TUnit>
 		where TUnit : class, IUnitTemplate<TUnit>
@@ -17,17 +18,16 @@ namespace Davfalcon.Equipment
 		protected class EquipmentSlot : IEquipmentSlot<TEquipmentType, TEquipment>
 		{
 			public TEquipmentType Type { get; }
-			public IModifierStack<TUnit> Modifiers { get; } = new ModifierStack<TUnit>();
-			public bool IsFull => Modifiers.Count > 0;
-			public TEquipment Get() => IsFull ? Modifiers[0] as TEquipment : null;
+			public bool IsFull => item != null;
+			public TEquipment Get() => item;
+			private TEquipment item;
 
 			public void Set(TEquipment equipment)
 			{
-				if (IsFull) Modifiers[0] = equipment;
-				else Modifiers.Add(equipment);
+				item = equipment;
 			}
 
-			public void Unset() => Modifiers.Clear();
+			public void Unset() => item = null;
 
 			public EquipmentSlot(TEquipmentType type)
 			{
@@ -35,7 +35,6 @@ namespace Davfalcon.Equipment
 			}
 		}
 
-		private readonly IModifierStack<TUnit> stack = new ModifierStack<TUnit>();
 		private readonly List<EquipmentSlot> slots = new List<EquipmentSlot>();
 
 		public IEquipmentSlot<TEquipmentType, TEquipment>[] EquipmentSlots => slots.ToArray();
@@ -44,7 +43,6 @@ namespace Davfalcon.Equipment
 		{
 			EquipmentSlot slot = new EquipmentSlot(type);
 			slots.Add(slot);
-			stack.Add(slot.Modifiers);
 		}
 
 		public TEquipment GetEquipmentOfType(TEquipmentType type) => GetEquipmentOfType(type, 0);
@@ -84,14 +82,6 @@ namespace Davfalcon.Equipment
 
 		private IList<EquipmentSlot> GetAllSlotsMatchingTypeOf(TEquipment equipment) => GetAllSlotsOfType(equipment.EquipmentType);
 
-		public virtual void Initialize(TUnit unit) => unit.Modifiers.Add(this);
-
-		public override TUnit AsModified() => stack.LastOrDefault()?.AsModified() ?? Target;
-
-		public override void Bind(TUnit target)
-		{
-			base.Bind(target);
-			stack.Bind(Target);
-		}
+		public virtual void Initialize(TUnit unit) { }		
 	}
 }

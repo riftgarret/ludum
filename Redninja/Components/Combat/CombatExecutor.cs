@@ -102,15 +102,18 @@ namespace Redninja.Components.Combat
 			context.SendEvent(e);
 		}
 
-		private DamageResult GetBleedResult(IBattleEntity attacker, 
+		private DamageOperationResult GetBleedResult(IBattleEntity attacker, 
 			IBattleEntity defender, 
 			IStats skillStats)
 		{
 			IStats combinedStats = attacker.Stats.Join(skillStats);
-			return DamageResult.Create(DamageType.Bleed, combinedStats[Stat.BleedDamageExtra], 0, 0, 0);
+
+			EventHistorian historian = new EventHistorian();
+			historian.AddPropery(DamageOperationResult.Property.DamageRaw, "temp", combinedStats[Stat.BleedDamageExtra]);
+			return new DamageOperationResult(DamageType.Bleed, historian);
 		}
 
-		private DamageResult GetGenericResult(IBattleEntity attacker, 
+		private DamageOperationResult GetGenericResult(IBattleEntity attacker, 
 			IBattleEntity defender, 
 			IStats skillStats, 
 			GenericDamageBundle bundle)
@@ -118,13 +121,13 @@ namespace Redninja.Components.Combat
 			IStats combinedStats = attacker.Stats.Join(skillStats);
 
 			// TODO combine attacker and skill into a single combiend node
-			return DamageResult.Create(
-				bundle.damageType,
-				combinedStats.Calculate(bundle.damage),
-				defender.Stats.Calculate(bundle.reduction),
-				combinedStats.Calculate(bundle.penetration),
-				defender.Stats.Calculate(bundle.resistance)
-				);
+			EventHistorian historian = new EventHistorian();
+			historian.AddPropery(DamageOperationResult.Property.DamageRaw, "temp", combinedStats.Calculate(bundle.damage));
+			historian.AddPropery(DamageOperationResult.Property.Resistance, "temp", combinedStats.Calculate(bundle.resistance));
+			historian.AddPropery(DamageOperationResult.Property.Reduction, "temp", combinedStats.Calculate(bundle.reduction));
+			historian.AddPropery(DamageOperationResult.Property.Penetration, "temp", combinedStats.Calculate(bundle.penetration));
+
+			return new DamageOperationResult(bundle.damageType, historian);
 		}
 	}
 }

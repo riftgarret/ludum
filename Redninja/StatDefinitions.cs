@@ -53,6 +53,8 @@
 		DamageSlash,
 		DamageFire,
 				
+		// extracted stats pre-execution
+		WeaponScaleEval
 	}
 
 	public enum DamageType

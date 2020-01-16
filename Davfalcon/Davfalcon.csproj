@@ -51,14 +51,13 @@
     <Compile Include="Collections\Adapters\EnumStringListAdapter.cs" />
     <Compile Include="Collections\Adapters\ListAdapter%28T1,T2%29.cs" />
     <Compile Include="Collections\Adapters\ManagedEnumStringList.cs" />
-    <Compile Include="Equipment\CompoundEquipment%28TUnit,TEquipmentType%29.cs" />
     <Compile Include="Equipment\Equipment%28TUnit,TEquipmentType%29.cs" />
     <Compile Include="Equipment\IEquipment%28TUnit,TEquipmentType%29.cs" />
     <Compile Include="Equipment\IEquipmentSlot.cs" />
     <Compile Include="Equipment\IUnitEquipmentManager%28TUnit,TEquipmentType,TEquipment%29.cs" />
     <Compile Include="Equipment\UnitEquipmentManager%28TUnit,TEquipmentType,TEquipment%29.cs" />
     <Compile Include="IStats.cs" />
-    <Compile Include="IStatsModifier%28T%29.cs" />
+    <Compile Include="IStatSource.cs" />
     <Compile Include="IUnitComponent%28TUnit%29.cs" />
     <Compile Include="Nodes\AggregatorNode%28T%29.cs" />
     <Compile Include="Nodes\CollectionNode%28T%29.cs" />
@@ -68,17 +67,13 @@
     <Compile Include="Stats\EmptyStats.cs" />
     <Compile Include="Stats\IStatNode.cs" />
     <Compile Include="Stats\IStatsCalculator.cs" />
-    <Compile Include="IStatsProperties.cs" />
     <Compile Include="IUnitTemplate%28TUnit%29.cs" />
     <Compile Include="Collections\Generic\CircularLinkedList%28T%29.cs" />
     <Compile Include="Collections\Generic\ICircularLinkedList%28T%29.cs" />
     <Compile Include="Collections\Generic\IRegistry%28T%29.cs" />
     <Compile Include="Collections\Generic\ManagedList%28T%29.cs" />
     <Compile Include="Collections\Generic\PrototypeCloner%28T%29.cs" />
-    <Compile Include="IModifier%28T%29.cs" />
     <Compile Include="MathExtensions.cs" />
-    <Compile Include="Modifier%28T%29.cs" />
-    <Compile Include="ModifierStack%28T%29.cs" />
     <Compile Include="Nodes\INode%28T%29.cs" />
     <Compile Include="Randomization\CenterWeightedChecker.cs" />
     <Compile Include="Randomization\ISuccessCheck.cs" />
@@ -87,17 +82,16 @@
     <Compile Include="Randomization\SuccessChecker.cs" />
     <Compile Include="Stats\IStatsEditable.cs" />
     <Compile Include="IUnit.cs" />
-    <Compile Include="IModifierStack%28T%29.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\EnumString.cs" />
     <Compile Include="Serialization\Serializer.cs" />
+    <Compile Include="IStatsProvider.cs" />
     <Compile Include="Stats\StatModification.cs" />
     <Compile Include="Stats\StatNode.cs" />
     <Compile Include="Stats\StatsMap.cs" />
     <Compile Include="Stats\StatsPrototype.cs" />
-    <Compile Include="UnitExtensions.cs" />
-    <Compile Include="UnitModifier%28TUnit%29.cs" />
-    <Compile Include="UnitStatsModifier%28TUnit%29.cs" />
+    <Compile Include="Stats\StatsProvider.cs" />
+    <Compile Include="Stats\StatsProviderTemplate.cs" />
     <Compile Include="UnitTemplate%28TUnit%29.cs" />
   </ItemGroup>
   <ItemGroup />

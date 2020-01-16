@@ -11,6 +11,8 @@ namespace Davfalcon.Stats
 	{
 		private readonly Dictionary<Enum, int> map = new Dictionary<Enum, int>();
 
+		public override IEnumerable<Enum> StatKeys => map.Keys;
+
 		/// <summary>
 		/// Gets a stat.
 		/// </summary>

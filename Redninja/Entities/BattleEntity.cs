@@ -21,15 +21,16 @@ namespace Redninja.Entities
 	{
 		private readonly IUnit unit;
 		private readonly IBattleContext context;
-		private readonly ICombatExecutor combatExecutor;				
+		private readonly ICombatExecutor combatExecutor;						
 
-		private IUnit ModifiedUnit => Modifiers.AsModified();
+		public string Name => unit.Name;
 
-		public string Name => ModifiedUnit.Name;
+		public IStats Stats => unit.Stats;
 
-		public IStatsProperties Stats => ModifiedUnit.Stats;
-
-		public IModifierStack<IUnit> Modifiers { get; } = new ModifierStack<IUnit>();
+		public IEnumerable<IStatSource> GetSources(Enum stat)
+		{
+			return unit.GetSources(stat).Union(Buffs.GetSources(stat));
+		}
 
 		TComponent IUnitTemplate<IUnit>.GetComponent<TComponent>(Enum id)
 		{
@@ -39,7 +40,7 @@ namespace Redninja.Entities
 				case VolatileUnitComponents.Buffs:
 					return Buffs as TComponent;
 				default:
-					return ModifiedUnit.GetComponent<TComponent>(id);
+					throw new InvalidOperationException($"Invalid enum for component: {id}");
 			}
 		}
 
@@ -94,11 +95,7 @@ namespace Redninja.Entities
 			combatExecutor.EntityMoving += OnEntityMoving;
 
 			Actions = new UnitActionManager(context, this);
-			//Buffs = new UnitBuffManager(context, this);
-
-			// set up new modifier layer
-			//Modifiers.Add(Buffs);
-			Modifiers.Bind(() => unit.AsModified());
+			Buffs = new UnitBuffManager();			
 
 			// TODO add volatile stats component
 			liveStats[LiveStat.HP] = new LiveStatContainer(Stats.FinalHp());
@@ -135,6 +132,6 @@ namespace Redninja.Entities
 		public void SetAIBehavior(AIRuleSet ruleSet)
 		{
 			Actions = new AIUnitActionManager(context, this, ruleSet);
-		}
+		}		
 	}
 }

@@ -1,6 +1,6 @@
 ﻿namespace Davfalcon.Buffs
 {
-	public interface IBuff<TUnit> : IStatsModifier<TUnit> where TUnit : class, IUnitTemplate<TUnit>
+	public interface IBuff<TUnit> : IStatSource where TUnit : class, IUnitTemplate<TUnit>
 	{
 		bool IsDebuff { get; }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Davfalcon.Stats
 {
@@ -8,6 +9,8 @@ namespace Davfalcon.Stats
 	[Serializable]
 	public abstract class StatsPrototype : IStats
 	{
+		public abstract IEnumerable<Enum> StatKeys { get; }
+
 		// Allow implementation to decide how stat is returned
 		/// <summary>
 		/// Gets a stat by string name.

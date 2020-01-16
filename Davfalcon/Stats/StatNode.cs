@@ -4,7 +4,8 @@ using System.Linq;
 using Davfalcon.Nodes;
 
 namespace Davfalcon.Stats
-{
+{		
+	[Obsolete]
 	public class StatNode : NodeBase<int>, IStatNode
 	{
 		private readonly Dictionary<Enum, INode<int>> mods;

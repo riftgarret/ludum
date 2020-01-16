@@ -22,7 +22,7 @@ namespace Redninja.Components.Combat.Events
 
 		public int TotalDamage { get => results.Sum(x => x.Value.Total);  }
 
-		private IDictionary<DamageType, DamageResult> results = new Dictionary<DamageType, DamageResult>();
+		private IDictionary<DamageType, DamageOperationResult> results = new Dictionary<DamageType, DamageOperationResult>();
 
 		internal DamageEvent(IBattleEntity source, IBattleEntity target)
 		{
@@ -30,12 +30,12 @@ namespace Redninja.Components.Combat.Events
 			Target = target ?? throw new ArgumentNullException(nameof(target));			
 		}		
 
-		public DamageResult this[DamageType type]
+		public DamageOperationResult this[DamageType type]
 		{
 			get => results.ContainsKey(type)? results[type] : null;
 		}
 
-		public void PutResult(DamageType type, DamageResult result) => results[type] = result;
+		public void PutResult(DamageType type, DamageOperationResult result) => results[type] = result;
 
 		public int Total => results.Values.Sum(x => x.Total);
 

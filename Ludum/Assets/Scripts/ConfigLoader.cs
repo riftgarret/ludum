@@ -2,6 +2,7 @@
 using Redninja;
 using Redninja.Components.Actions;
 using Redninja.Components.Combat;
+using Redninja.Components.Decisions.AI;
 using Redninja.Components.Skills;
 using Redninja.Data;
 using Redninja.Entities;
@@ -27,10 +28,9 @@ public class ConfigLoader : MonoBehaviour
 
 		string path = Path.Combine(Application.streamingAssetsPath, configPath);
 		IDataManager dataManager = DataManagerFactory.Create(path);
-
-		ICombatExecutor combatExecutor = new CombatExecutor();
-
-		context = new BattleContext(dataManager, combatExecutor);
+		
+		context = new BattleContext(dataManager);
+		context.OnCombatEvent += (e) => RLog.D(this, e);
 
 		var bem = context.Get<IBattleEntityManager>();
 
@@ -60,6 +60,8 @@ public class ConfigLoader : MonoBehaviour
 		}
 
 		GetComponent<BattleView>().Initialize(context);
+
+		var val = dataManager.CreateInstance<IAIRule>("fire_enemy2");
 	}
 
 	void OnDestroy()
@@ -73,9 +75,9 @@ public class ConfigLoader : MonoBehaviour
 		{
 			Unit unit = new Unit();
 			unit.Name = "Davfalcon";
-			unit.BaseStats[Stat.HP] = 100;
-			unit.BaseStats[Stat.ATK] = 20;
-			unit.BaseStats[Stat.Resource] = 200;
+			unit.CoreStats[Stat.HP] = 100;
+			unit.CoreStats[Stat.Mana] = 50;
+			unit.CoreStats[Stat.Stamina] = 50;
 			return unit;
 		}
 			
