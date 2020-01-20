@@ -4,17 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Davfalcon;
+using Redninja.Components.Combat;
 
 namespace Redninja.Components.StatCalculators
 {
-	abstract class StatCalculator<T>
+	public abstract class StatCalculator<T> : StatCalculator
 	{
-		protected abstract T Param { get; }
+		protected T Param { get; set; }
 
-		public virtual int Calculate(IStats stats) => CalculateExtra(Param, stats, CalculateCommon(Param, stats));
+		public abstract int Calculate(IStats stats);
 
-		protected abstract int CalculateCommon(T param, IStats stats);
+		public abstract void DamageOperationProcess(OperationContext oc);
+	}
 
-		protected virtual int CalculateExtra(T param, IStats stats, int commonValue) { return commonValue; }
+	public interface StatCalculator
+	{
+		int Calculate(IStats stats);
+
+		void DamageOperationProcess(OperationContext oc);
 	}
 }

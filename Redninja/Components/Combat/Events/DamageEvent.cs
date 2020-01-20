@@ -18,31 +18,21 @@ namespace Redninja.Components.Combat.Events
 		public IBattleEntity Source { get; }
 		public IBattleEntity Target { get; }
 
-		public DamageSourceType DamageSourceType { get; set; }
+		public DamageSourceType DamageSourceType => OperationResult.SourceType;
+		
+		public OperationResult OperationResult { get; }
 
-		public int TotalDamage { get => results.Sum(x => x.Value.Total);  }
-
-		private IDictionary<DamageType, DamageOperationResult> results = new Dictionary<DamageType, DamageOperationResult>();
-
-		internal DamageEvent(IBattleEntity source, IBattleEntity target)
+		public DamageType DamageType => OperationResult.DamageType;
+		
+		internal DamageEvent(IBattleEntity source, IBattleEntity target, OperationResult operationResult)
 		{
 			Source = source ?? throw new ArgumentNullException(nameof(source));
-			Target = target ?? throw new ArgumentNullException(nameof(target));			
-		}		
+			Target = target ?? throw new ArgumentNullException(nameof(target));
+			OperationResult = operationResult;
+		}				
+				
+		public int Total => OperationResult.Total;		
 
-		public DamageOperationResult this[DamageType type]
-		{
-			get => results.ContainsKey(type)? results[type] : null;
-		}
-
-		public void PutResult(DamageType type, DamageOperationResult result) => results[type] = result;
-
-		public int Total => results.Values.Sum(x => x.Total);
-
-		private string DamageTypeDebug {
-			get => results.Keys.Select(val => Enum.GetName(typeof(DamageType), val)).Aggregate((cur, next) => cur + ", " + next);
-		}
-
-		public override string ToString() => $"DamageEvent [{Source.Name} -> {Target.Name}] : {DamageTypeDebug} {Total} Damage from {Enum.GetName(typeof(DamageSourceType), DamageSourceType)}";
+		public override string ToString() => $"DamageEvent [{Source.Name} -> {Target.Name}] : {Total} {Enum.GetName(typeof(DamageType), DamageType)} {Enum.GetName(typeof(DamageSourceType), DamageSourceType)}";
 	}
 }

@@ -4,32 +4,37 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Davfalcon;
+using Redninja.Components.Combat;
+using Redninja.Components.Combat.Events;
 
 namespace Redninja.Components.StatCalculators
 {
-	struct PenetrationParam
+	public struct PenetrationParam
 	{
 		public Stat dmgTypePenetration;
 	}
 
-	class PenetrationCalculator : StatCalculator<PenetrationParam>
+	public class PenetrationCalculator : StatCalculator<PenetrationParam>
 	{		
 		public PenetrationCalculator(PenetrationParam param) => Param = param;
 
-		protected override PenetrationParam Param { get; }
+		public override int Calculate(IStats stats)
+			=> stats[Param.dmgTypePenetration];
 
-		protected override int CalculateCommon(PenetrationParam param, IStats stats)
-			=> stats[param.dmgTypePenetration];
-	}	
+		public override void DamageOperationProcess(OperationContext oc)
+		{
+			oc.CaptureSourceStat(SkillOperationResult.Property.Penetration, Param.dmgTypePenetration);
+		}
+	}
 
-	public static class PenetrationCalculatorExt
+	public static partial class Calculators
 	{
-		private static readonly PenetrationCalculator SLASH_PEN = new PenetrationCalculator(new PenetrationParam()
+		public static readonly PenetrationCalculator SLASH_PEN = new PenetrationCalculator(new PenetrationParam()
 		{
 			dmgTypePenetration = Stat.PenetrationSlash
 		});
 
-		private static readonly PenetrationCalculator FIRE_PEN = new PenetrationCalculator(new PenetrationParam()
+		public static readonly PenetrationCalculator FIRE_PEN = new PenetrationCalculator(new PenetrationParam()
 		{
 			dmgTypePenetration = Stat.PenetrationFire
 		});

@@ -12,6 +12,10 @@ namespace Davfalcon.Stats
 
 		public IStats Stats => statsProvider.Stats;
 
+		public IEnumerable<IStatSource> AllSources() => statsProvider.AllSources();
+
 		public IEnumerable<IStatSource> GetSources(Enum stat) => statsProvider.GetSources(stat);
+
+
 	}
 }

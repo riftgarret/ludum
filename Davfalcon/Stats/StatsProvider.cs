@@ -39,5 +39,7 @@ namespace Davfalcon.Stats
 		{
 			return sources.Where(x => x.Stats.StatKeys.Contains(stat));
 		}
+
+		public IEnumerable<IStatSource> AllSources() => sources;
 	}
 }

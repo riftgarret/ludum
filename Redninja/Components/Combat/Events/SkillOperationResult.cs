@@ -7,7 +7,7 @@ using Redninja.Components.StatCalculators;
 
 namespace Redninja.Components.Combat.Events
 {
-	public class DamageOperationResult
+	public class SkillOperationResult : OperationResult
 	{
 		public enum Property
 		{			
@@ -27,6 +27,7 @@ namespace Redninja.Components.Combat.Events
 		}
 
 		public DamageType DamageType { get; set; }
+
 		public int Damage { get => Historian.Stats[EvalProperty.Damage]; }
 		public int Reduction { get => Historian.Stats[EvalProperty.Reduction]; }
 		public int Penetration { get => Historian.Stats[EvalProperty.Penetration]; }
@@ -34,9 +35,11 @@ namespace Redninja.Components.Combat.Events
 
 		public int Total { get; private set; }
 
-		public EventHistorian Historian { get; private set; }
+		public DamageSourceType SourceType => DamageSourceType.Skill;
 
-		public DamageOperationResult(DamageType type, EventHistorian historian)
+		public EventHistorian Historian { get; }
+
+		public SkillOperationResult(DamageType type, EventHistorian historian)
 		{
 			Historian = historian;
 			DamageType = type;
@@ -44,7 +47,7 @@ namespace Redninja.Components.Combat.Events
 			historian.RegisterEvaluator(EvalProperty.Damage, stats => (int) (stats[Property.DamageRaw] * stats.AsScalor(Property.DamageScale)));
 			historian.RegisterEvaluator(EvalProperty.Penetration, stats => stats[Property.Penetration]);
 			historian.RegisterEvaluator(EvalProperty.Resistance, stats => stats[Property.Resistance]);
-			historian.RegisterEvaluator(EvalProperty.Reduction, stats => stats[Property.Reduction]);
+			historian.RegisterEvaluator(EvalProperty.Reduction, stats => Math.Min(GameRules.MAX_REDUCTION, stats[Property.Reduction]));
 			historian.CalculateEvalators();
 									
 			float calculatedReduction = Math.Max(0, Reduction - Penetration) / 100f;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Davfalcon;
+using Redninja.Components.Combat;
 
 namespace Redninja.Components.StatCalculators
 {
@@ -16,16 +17,19 @@ namespace Redninja.Components.StatCalculators
 	{
 		public ResourceCalculator(ResourceParam param) => Param = param;
 
-		protected override ResourceParam Param { get; }
+		public override void DamageOperationProcess(OperationContext oc)
+		{
+			throw new NotImplementedException();
+		}
 
-		protected override int CalculateCommon(ResourceParam param, IStats stats)
-			=> (int)(stats[param.raw]
-			+ (stats.AsScalor(param.statScale) * stats[param.stat])
-			+ (stats.AsScalor(param.levelScale) * stats.Calculate(CalculatedStat.Level)));		
+		public override int Calculate(IStats stats)
+			=> (int)(stats[Param.raw]
+			+ (stats.AsScalor(Param.statScale) * stats[Param.stat])
+			+ (stats.AsScalor(Param.levelScale) * stats.Calculate(CalculatedStat.Level)));		
 	}
 
 	// move these to unit definition
-	public static class ResourceStatCalculatorExt
+	public static partial class Calculators
 	{
 		private static ResourceCalculator HP_CALCULATOR = new ResourceCalculator(
 			new ResourceParam()

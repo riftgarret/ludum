@@ -27,10 +27,9 @@ namespace Redninja.Entities
 
 		public IStats Stats => unit.Stats;
 
-		public IEnumerable<IStatSource> GetSources(Enum stat)
-		{
-			return unit.GetSources(stat).Union(Buffs.GetSources(stat));
-		}
+		public IEnumerable<IStatSource> GetSources(Enum stat) => unit.GetSources(stat).Union(Buffs.GetSources(stat));
+
+		public IEnumerable<IStatSource> AllSources() => unit.AllSources().Union(Buffs.AllSources());
 
 		TComponent IUnitTemplate<IUnit>.GetComponent<TComponent>(Enum id)
 		{
@@ -132,6 +131,8 @@ namespace Redninja.Entities
 		public void SetAIBehavior(AIRuleSet ruleSet)
 		{
 			Actions = new AIUnitActionManager(context, this, ruleSet);
-		}		
+		}
+
+	
 	}
 }

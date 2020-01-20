@@ -4,37 +4,47 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Davfalcon;
+using Redninja.Components.Combat;
+using Redninja.Components.Combat.Events;
 
 namespace Redninja.Components.StatCalculators
 {
-	struct ReductionParam
+	public struct ReductionParam
 	{
 		public Stat dmgTypeReduction, genericTypeReduction;
 	}
 
-	class ReductionCalculator : StatCalculator<ReductionParam>
-	{
-		private const int MAX_REDUCTION = 70;
-
+	public class ReductionCalculator : StatCalculator<ReductionParam>
+	{		
 		public ReductionCalculator(ReductionParam param) => Param = param;
 
-		public override int Calculate(IStats stats) => Math.Max(MAX_REDUCTION, base.Calculate(stats));
+		public override int Calculate(IStats stats)
+		{
+			int val = 0;
+			val += stats[Param.dmgTypeReduction];
+			val += stats[Param.genericTypeReduction];
+			val += stats[Stat.ReductionAll];
 
-		protected override ReductionParam Param { get; }
+			return Math.Min(val, GameRules.MAX_REDUCTION);			
+		}
 
-		protected override int CalculateCommon(ReductionParam param, IStats stats)
-			=> stats[param.dmgTypeReduction] + stats[param.genericTypeReduction] + stats[Stat.ReductionAll];
-	}	
+		public override void DamageOperationProcess(OperationContext oc)
+		{
+			oc.CaptureSourceStat(SkillOperationResult.Property.Reduction, Param.dmgTypeReduction);
+			oc.CaptureSourceStat(SkillOperationResult.Property.Reduction, Param.genericTypeReduction);
+			oc.CaptureSourceStat(SkillOperationResult.Property.Reduction, Stat.ReductionAll);
+		}		
+	}
 
-	public static class ReductionCalculatorExt
+	public static partial class Calculators
 	{
-		private static readonly ReductionCalculator SLASH_REDUCTION = new ReductionCalculator(new ReductionParam()
-			{
-				dmgTypeReduction = Stat.ReductionSlash,
-				genericTypeReduction = Stat.ReductionPhysical
-			});
+		public static readonly ReductionCalculator SLASH_REDUCTION = new ReductionCalculator(new ReductionParam()
+		{
+			dmgTypeReduction = Stat.ReductionSlash,
+			genericTypeReduction = Stat.ReductionPhysical
+		});
 
-		private static readonly ReductionCalculator FIRE_REDUCTION = new ReductionCalculator(new ReductionParam()
+		public static readonly ReductionCalculator FIRE_REDUCTION = new ReductionCalculator(new ReductionParam()
 		{
 			dmgTypeReduction = Stat.ReductionFire,
 			genericTypeReduction = Stat.ReductionElemental

@@ -1,5 +1,6 @@
 ﻿using System;
 using Davfalcon;
+using Davfalcon.Stats;
 using Redninja.Components.Skills;
 using Redninja.Components.Targeting;
 using Redninja.Logging;
@@ -23,11 +24,20 @@ namespace Redninja.Components.Combat
 
 		public float ExecutionStart => 0;
 
+		private class TempStatSource : IStatSource
+		{
+			public string Name => "Temp";
+
+			public IStats Stats { get; set; }
+		}
+
 		public void Execute(IBattleContext context)
-		{			
+		{
+			TempStatSource skillSource = new TempStatSource();
+			skillSource.Stats = opStats;
 			foreach (IBattleEntity t in target.GetValidTargets(unit, context.BattleModel))
 			{
-				context.CombatExecutor.DealTickDamage(unit, t, opStats, damageType);
+				context.CombatExecutor.DealTickDamage(unit, t, skillSource, damageType);
 				RLog.D(this, $"Damage Tick operation from: {unit.Name} to: {t.Name}");
 			}
 		}

@@ -16,6 +16,12 @@ namespace Davfalcon
 		IEnumerable<IStatSource> GetSources(Enum stat);
 
 		/// <summary>
+		/// Get all sources.
+		/// </summary>
+		/// <returns></returns>
+		IEnumerable<IStatSource> AllSources();
+
+		/// <summary>
 		/// Raw stats for getting values
 		/// </summary>
 		IStats Stats { get; }

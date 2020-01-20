@@ -29,7 +29,9 @@
 		WeaponTypeSword,
 
 		// Bleed 	
-		BleedDamageExtra,				
+		BleedDamageExtra,
+		BleedDamageScale,
+		BleedDamageReduction,
 
 		// Reduction base stats
 		ReductionAll,	
@@ -47,12 +49,19 @@
 		ResistanceFire,
 
 		// Damage
-		DamageAll,
-		DamagePhysical,
-		DamageElemental,
-		DamageSlash,
-		DamageFire,
-				
+		DamageAllExtra,
+		DamageAllScale,
+
+		DamagePhysicalExtra,
+		DamagePhysicalScale,
+		DamageElementalExtra,
+		DamageElementalScale,
+
+		DamageSlashExtra,
+		DamageSlashScale,
+		DamageFireExtra,
+		DamageFireScale,
+
 		// extracted stats pre-execution
 		WeaponScaleEval
 	}

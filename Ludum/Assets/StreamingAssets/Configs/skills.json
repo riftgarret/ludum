@@ -17,7 +17,7 @@
                 "executionStart": 0.25,
                 "operationType": "Damage",
                 "stats": {
-                  "DamageFire": 30
+                  "DamageFireExtra": 40
                 },
                 "params": {
                   "damage": 20,

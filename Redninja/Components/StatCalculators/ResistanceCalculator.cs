@@ -4,40 +4,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Davfalcon;
+using Redninja.Components.Combat;
+using Redninja.Components.Combat.Events;
 
 namespace Redninja.Components.StatCalculators
 {
-	struct ResistanceParam
+	public struct ResistanceParam
 	{
 		public Stat dmgTypeResistance;
 	}
 
-	class ResistanceCalculator : StatCalculator<ResistanceParam>
+	public class ResistanceCalculator : StatCalculator<ResistanceParam>
 	{		
-		public ResistanceCalculator(ResistanceParam param) => Param = param;
+		public ResistanceCalculator(ResistanceParam param) => Param = param;		
 
-		protected override ResistanceParam Param { get; }
+		public override int Calculate(IStats stats)
+			=> stats[Param.dmgTypeResistance];
 
-		protected override int CalculateCommon(ResistanceParam param, IStats stats)
-			=> stats[param.dmgTypeResistance];
-	}	
+		public override void DamageOperationProcess(OperationContext oc)
+		{
+			oc.CaptureTargetStat(SkillOperationResult.Property.Resistance, Param.dmgTypeResistance);
+		}
+	}
 
-	public static class ResistanceCalculatorExt
+	public static partial class Calculators
 	{
-		private static readonly ResistanceCalculator SLASH_RES = new ResistanceCalculator(new ResistanceParam()
+		public static readonly ResistanceCalculator SLASH_RES = new ResistanceCalculator(new ResistanceParam()
 		{
 			dmgTypeResistance = Stat.ResistanceSlash
 		});
 
-		private static readonly ResistanceCalculator FIRE_RES = new ResistanceCalculator(new ResistanceParam()
+		public static readonly ResistanceCalculator FIRE_RES = new ResistanceCalculator(new ResistanceParam()
 		{
 			dmgTypeResistance = Stat.ResistanceFire
-		});
-		
+		});				
 
 		public static int FinalSlashResistance(this IStats stats) => SLASH_RES.Calculate(stats);
 
-		public static int FinalFireResistance(this IStats stats) => FIRE_RES.Calculate(stats);
+		public static void PopulateSlashResistance(OperationContext oc)
+		{
 
+		}
+
+		public static int FinalFireResistance(this IStats stats) => FIRE_RES.Calculate(stats);
 	}
 }

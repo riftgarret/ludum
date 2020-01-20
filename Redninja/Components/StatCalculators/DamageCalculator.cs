@@ -4,43 +4,76 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Davfalcon;
+using Redninja.Components.Combat;
+using Redninja.Components.Combat.Events;
 
 namespace Redninja.Components.StatCalculators
 {
-	struct DamageParam
+	public struct DamageParam
 	{
-		public Stat dmgTypeDamage, genericTypeDamage;		
+		public Stat
+			extra,
+			scale,
+			genericExtra,
+			genericScale;
 	}
 
-	class DamageCalculator : StatCalculator<DamageParam>
+	public class DamageCalculator : StatCalculator<DamageParam>
 	{		
 		public DamageCalculator(DamageParam param) => Param = param;
-
-		protected override DamageParam Param { get; }
-
-		protected override int CalculateCommon(DamageParam param, IStats stats)
-			=> stats[param.dmgTypeDamage] 
-			+ stats[param.genericTypeDamage] 
-			+ stats[Stat.DamageAll];
-	}	
-
-	public static class DamageCalculatorExt
-	{
-		private static readonly DamageCalculator SLASH_PEN = new DamageCalculator(new DamageParam()
-		{
-			dmgTypeDamage = Stat.DamageSlash,
-			genericTypeDamage = Stat.DamagePhysical
-		});
-
-		private static readonly DamageCalculator FIRE_PEN = new DamageCalculator(new DamageParam()
-		{
-			dmgTypeDamage = Stat.DamageFire,
-			genericTypeDamage = Stat.DamageElemental
-		});
 		
+		public override int Calculate(IStats stats)
+		{
+			float valExtra = 0;
+			valExtra += stats[Param.extra];
+			valExtra += stats[Param.genericExtra];
+			valExtra += stats[Stat.DamageAllExtra];
 
-		public static int FinalSlashDamage(this IStats stats) => SLASH_PEN.Calculate(stats);
+			float valScale = 100; // because 1 int = 1%, start at 100%
+			valScale += stats[Param.scale];
+			valScale += stats[Param.genericScale];
+			valScale += stats[Stat.DamageAllScale];
 
-		public static int FinalFireDamage(this IStats stats) => FIRE_PEN.Calculate(stats);		
+			return Math.Max((int)(valExtra * valScale / 100F), 0);
+		}
+			
+		public override void DamageOperationProcess(OperationContext oc)
+		{
+			oc.CaptureSourceStat(SkillOperationResult.Property.DamageRaw, Param.extra);
+			oc.CaptureSourceStat(SkillOperationResult.Property.DamageRaw, Param.genericExtra);
+			oc.CaptureSourceStat(SkillOperationResult.Property.DamageRaw, Stat.DamageAllExtra);
+
+			oc.CaptureSourceStat(SkillOperationResult.Property.DamageScale, Param.scale);
+			oc.CaptureSourceStat(SkillOperationResult.Property.DamageScale, Param.genericScale);
+			oc.CaptureSourceStat(SkillOperationResult.Property.DamageScale, Stat.DamageAllScale);
+		}
+	}
+
+	public static partial class Calculators
+	{
+		public static readonly DamageCalculator SLASH_DMG = new DamageCalculator(new DamageParam()
+		{
+			extra = Stat.DamageSlashExtra,
+			scale = Stat.DamageSlashScale,
+			genericExtra = Stat.DamagePhysicalExtra,
+			genericScale = Stat.DamagePhysicalScale
+		});
+
+		public static readonly DamageCalculator FIRE_DMG = new DamageCalculator(new DamageParam()
+		{
+			extra = Stat.DamageFireExtra,
+			scale = Stat.DamageFireScale,
+			genericExtra = Stat.DamageFireExtra,
+			genericScale = Stat.DamageFireScale
+		});
+
+		public static void SlashDamageOp(this OperationContext oc) => SLASH_DMG.DamageOperationProcess(oc);
+
+		public static void FireDamageOp(this OperationContext oc) => FIRE_DMG.DamageOperationProcess(oc);
+
+
+		public static int FinalSlashDamage(this IStats stats) => SLASH_DMG.Calculate(stats);
+
+		public static int FinalFireDamage(this IStats stats) => FIRE_DMG.Calculate(stats);		
 	}
 }
