@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Davfalcon
 {
@@ -19,5 +20,10 @@ namespace Davfalcon
 		/// </summary>
 		/// <param name="stat">The enum identifier for the stat.</param>
 		int this[Enum stat] { get; }
+
+		/// <summary>
+		/// List of known Stats.
+		/// </summary>
+		IEnumerable<Enum> StatKeys { get; }
 	}
 }

@@ -19,7 +19,7 @@ namespace Redninja.Components.Skills
 			List<IBattleOperation> ops = new List<IBattleOperation>();
 			for (int i = 0; i < Targets.Count; i++)
 			{
-				ops.AddRange(Targets[i].OpDefinitions.Select(opDef => opDef.CreateOperation(entity, targets[i])));				
+				ops.AddRange(Targets[i].OpDefinitions.Select(opDef => opDef.CreateOperation(this, entity, targets[i])));				
 			}
 			return new SkillAction(entity, this, ops);
 		}		

@@ -14,6 +14,8 @@ namespace Davfalcon.Stats
 		
 		public int this[Enum stat] => 0;
 
-		public int Get(Enum stat) => 0;		
+		public IEnumerable<Enum> StatKeys => Enumerable.Empty<Enum>();
+
+		public int Get(Enum stat) => 0;
 	}
 }

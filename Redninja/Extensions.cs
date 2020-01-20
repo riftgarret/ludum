@@ -15,5 +15,16 @@ namespace Redninja
 				action(item);
 			}
 		}
+
+		public static V GetOrNew<K, V>(this IDictionary<K, V> dict, K key, Func<V> newObjFunc)
+		{
+			if(dict.ContainsKey(key))
+			{
+				return dict[key];				
+			} else
+			{
+				return dict[key] = newObjFunc.Invoke();				
+			}
+		}
 	}
 }

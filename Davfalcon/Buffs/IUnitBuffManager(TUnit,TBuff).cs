@@ -1,6 +1,6 @@
 ﻿namespace Davfalcon.Buffs
 {
-	public interface IUnitBuffManager<TUnit, TBuff> : IModifier<TUnit>, IUnitComponent<TUnit>
+	public interface IUnitBuffManager<TUnit, TBuff> : IStatsProvider, IUnitComponent<TUnit>
 		where TUnit : class, IUnitTemplate<TUnit>
 		where TBuff : IBuff<TUnit>
 	{

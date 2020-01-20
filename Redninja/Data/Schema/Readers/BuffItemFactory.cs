@@ -11,7 +11,8 @@ namespace Redninja.Data.Schema.Readers
 
 			ActiveBuff buff = new ActiveBuff()
 			{
-				Properties = buffSchema.Properties
+				Properties = buffSchema.Properties,
+				Name = buffSchema.Name
 			};
 
 			if (!string.IsNullOrEmpty(buffSchema.Executor))

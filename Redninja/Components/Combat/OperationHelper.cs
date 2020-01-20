@@ -13,7 +13,11 @@ namespace Redninja.Components.Combat
 		public static IStats ExtractWeaponStats(IWeaponSkillParam param, IBattleEntity source)
 		{
 			// TODO, pull out weapon requirements, and turn them into IStats
-			return new StatsMap();
-		}
+			StatsMap stats = new StatsMap();
+
+			stats[Stat.WeaponScaleEval] = 1;
+
+			return stats;
+		}		
 	}
 }

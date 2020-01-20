@@ -14,8 +14,8 @@ namespace Redninja.Components.Combat
 		void MoveEntity(IBattleEntity entity, int newRow, int newCol);
 		void MoveEntity(IBattleEntity entity, UnitPosition newPosition);
 		void ApplyStatusEffect(IBattleEntity source, IBattleEntity target, IBuff effect);
-		void RemoveStatusEffect(IBattleEntity entity, IBuff effect);		
-		void DealDamage(IBattleEntity attacker, IBattleEntity defender, IStats skillStats, DamageType damageType);
-		void DealTickDamage(IBattleEntity attacker, IBattleEntity defender, IStats skillStats, DamageType damageType);
+		void RemoveStatusEffect(IBattleEntity entity, IBuff effect);
+		DamageEvent DealSkillDamage(IBattleEntity attacker, IBattleEntity defender, IStatSource skillSource, DamageType damageType);
+		DamageEvent DealTickDamage(IBattleEntity attacker, IBattleEntity defender, IStatSource skillSource, DamageType damageType);
 	}
 }

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Davfalcon;
 using Davfalcon.Buffs;
 using Redninja.Components.Combat;
 
 namespace Redninja.Components.Buffs
 {
 	[Serializable]
-	public sealed class ActiveBuff : Buff<IUnit>, IBuff, IUnit
+	public sealed class ActiveBuff : Buff<IUnit>, IBuff
 	{
 		private IBattleContext context;
 
@@ -28,18 +29,11 @@ namespace Redninja.Components.Buffs
 
 		public bool IsExpired { get => CalculatedMaxDuration > 0 && CurrentDuration >= CalculatedMaxDuration; }
 
-		public event Action<IBuff> Expired;		
+		public override string Name { get; set; }
 
-		protected override IUnit SelfAsUnit => this;
+		public override IStats Stats => throw new NotImplementedException();		
 
-		protected override int Resolve(int baseValue, IReadOnlyDictionary<Enum, int> modifications)
-			=> StatFunctions.Resolve(baseValue, modifications);
-
-		protected override Func<int, int, int> GetAggregator(Enum modificationType)
-			=> StatFunctions.GetAggregator(modificationType);
-
-		protected override int GetAggregatorSeed(Enum modificationType)
-			=> StatFunctions.GetAggregatorSeed(modificationType);
+		public event Action<IBuff> Expired;				
 
 		public void InitializeBattleState(IBattleContext context, IBattleEntity owner, IBattleEntity target)
 		{
