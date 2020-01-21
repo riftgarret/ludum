@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Davfalcon;
 using Davfalcon.Buffs;
+using Davfalcon.Stats;
 using Redninja.Components.Combat;
 
 namespace Redninja.Components.Buffs
@@ -31,7 +32,8 @@ namespace Redninja.Components.Buffs
 
 		public override string Name { get; set; }
 
-		public override IStats Stats => throw new NotImplementedException();		
+		// TODO connect this to a stats behavior
+		public override IStats Stats => EmptyStats.INSTANCE;		
 
 		public event Action<IBuff> Expired;				
 
