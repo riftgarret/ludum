@@ -1,5 +1,4 @@
-﻿using Davfalcon.Revelator;
-using NSubstitute;
+﻿using NSubstitute;
 using NUnit.Framework;
 using Redninja.Components.Actions;
 using Redninja.Components.Combat;
