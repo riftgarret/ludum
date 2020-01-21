@@ -17,10 +17,23 @@
                 "executionStart": 0.25,
                 "operationType": "Damage",
                 "stats": {
-                  "DamageFireExtra": 40
+                  "DamageFireExtra": 10
                 },
                 "params": {
                   "damage": 20,
+                  "damageType": "Fire",
+                  "slotType": "Any",
+                  "weaponType": "Any"
+                }
+              },
+              {
+                "executionStart": 0.65,
+                "operationType": "Damage",
+                "stats": {
+                  "DamageFireExtra": 30
+                },
+                "params": {
+                  "damage": 80,
                   "damageType": "Fire",
                   "slotType": "Any",
                   "weaponType": "Any"

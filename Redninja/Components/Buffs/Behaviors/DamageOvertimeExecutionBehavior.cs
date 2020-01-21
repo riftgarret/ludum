@@ -14,16 +14,25 @@ namespace Redninja.Components.Buffs.Behaviors
 
 		// TODO put in damage scale to max HP or MP
 		private float nextTick;
-		private IStats tempStats;
+		private OperationStatSource operationSkillSource;		
 		
 		public event Action<float, IBattleOperation> BattleOperationReady;
+
+		private class OperationStatSource : IStatSource
+		{
+			public string Name { get; set; }
+
+			public IStats Stats { get; set; }
+		}
 
 		public void Initialize(IBuff buff)
 		{
 			nextTick = TickDelta;
-			StatsMap tempStats = new StatsMap();
-			tempStats[Stat.BleedDamageExtra] = (int)DamagePerTick;
-			this.tempStats = tempStats;
+			StatsMap stats = new StatsMap();
+			stats[Stat.BleedDamageExtra] = (int)DamagePerTick;
+			operationSkillSource = new OperationStatSource();
+			operationSkillSource.Name = buff.Name;
+			operationSkillSource.Stats = stats;
 		}
 
 		public void OnClockTick(float delta, IBuff buff)
@@ -32,7 +41,7 @@ namespace Redninja.Components.Buffs.Behaviors
 			{
 				BattleOperationReady?.Invoke(buff.ExecutionStart + nextTick, 
 					new DamageTickOperation(buff.Owner, 
-					new StaticTarget(buff.TargetUnit), /*buff.AsModified().Stats*/ tempStats, DamageSource));
+					new StaticTarget(buff.TargetUnit), /*buff.AsModified().Stats*/ operationSkillSource, DamageSource));
 				nextTick += TickDelta;
 			}			
 		}
